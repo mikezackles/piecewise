@@ -2,6 +2,7 @@
 #define UUID_3B9EC844_BFEE_4E1F_AA7D_540B1D69E7F7
 
 #include <tuple>
+#include <type_traits>
 #include <utility>
 
 namespace mz { namespace piecewise {
@@ -17,7 +18,7 @@ namespace mz { namespace piecewise {
   // forwarding to construct multiple data members. See README.md for more
   // detail.
   template <typename T, typename ...Args>
-  T make_from_tuple(std::tuple<Args...> const& args) {
+  T make_from_tuple(std::tuple<Args...> const& args) noexcept(std::is_nothrow_constructible<T, Args...>::value) {
     return detail::make_from_tuple_and_indices<T>(
       args, std::make_index_sequence<sizeof...(Args)>{}
     );
