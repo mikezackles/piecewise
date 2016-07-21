@@ -1,0 +1,17 @@
+sudo: required
+
+arch:
+  #repos:
+  packages:
+    # pacman packages
+    - cmake
+    - clang
+    - ninja
+    # aur packages
+  script:
+    - "CXX=clang++ cmake -G Ninja -DCMAKE_BUILD_TYPE=Release"
+    - "ninja"
+    - "ctest"
+
+script:
+  - "curl -s https://raw.githubusercontent.com/mikkeloscar/arch-travis/master/arch-travis.sh | bash"

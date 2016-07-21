@@ -1,0 +1,6 @@
+[submodule "bundle/catch"]
+	path = bundle/catch
+	url = git://github.com/philsquared/Catch
+[submodule "cmake"]
+	path = cmake
+	url = git://github.com/mikezackles/cmake_tools
