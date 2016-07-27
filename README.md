@@ -21,8 +21,8 @@ public:
   , std::tuple<TArgs...>&& tArgs
   , std::tuple<UArgs...>&& uArgs
   )
-    : t{zampp::piecewise::makeFromTuple<T>(tArgs)}
-    , u{zampp::piecewise::makeFromTuple<U>(uArgs)}
+    : t{mz::piecewise::make_from_tuple<T>(tArgs)}
+    , u{mz::piecewise::make_from_tuple<U>(uArgs)}
   {}
 
   T t;

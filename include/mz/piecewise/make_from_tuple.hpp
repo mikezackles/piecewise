@@ -5,6 +5,8 @@
 #include <type_traits>
 #include <utility>
 
+#include <iostream>
+
 namespace mz { namespace piecewise {
   namespace detail {
     template <typename ...Args, std::size_t ...Indices, typename Callback>
@@ -29,8 +31,13 @@ namespace mz { namespace piecewise {
   // forwarding to construct multiple data members. See README.md for more
   // detail.
   template <typename T, typename ...Args>
-  T make_from_tuple(std::tuple<Args...> const& packed) noexcept(std::is_nothrow_constructible<T, Args...>::value) {
+  auto braced_make_from_tuple(std::tuple<Args...> const& packed) {
     return forward_tuple(packed, [](auto&&... args) { return T{std::forward<decltype(args)>(args)...}; });
+  }
+
+  template <typename T, typename ...Args>
+  auto make_from_tuple(std::tuple<Args...> const& packed) {
+    return forward_tuple(packed, [](auto&&... args) { return T(std::forward<decltype(args)>(args)...); });
   }
 }}
 
