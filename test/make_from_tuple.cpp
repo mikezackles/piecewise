@@ -13,6 +13,8 @@ namespace {
       return mz::piecewise::braced_make_from_tuple<A>(std::move(args));
     }
 
+    A(std::string foo_, int thirty_three_) : foo{std::move(foo_)}, thirty_three{thirty_three_} {}
+
     std::string foo;
     int thirty_three;
   };
@@ -27,6 +29,8 @@ namespace {
     static B create(std::tuple<Args...>&& args) {
       return mz::piecewise::braced_make_from_tuple<B>(std::move(args));
     }
+
+    B(int forty_two_, std::string bar_, int seventy_seven_) : forty_two{forty_two_}, bar{std::move(bar_)}, seventy_seven{seventy_seven_} {}
 
     int forty_two;
     std::string bar;
