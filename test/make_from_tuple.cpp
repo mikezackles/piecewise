@@ -2,35 +2,43 @@
 #include <mz/piecewise/make_from_tuple.hpp>
 
 namespace {
-  struct A {
+  template <typename T>
+  class Factory {
+  private:
+    template <typename ...RefTypes>
+    struct Wrapper {
+      std::tuple<RefTypes...> packed_args;
+    };
+
+  public:
     template <typename ...Args>
-    static auto forward(Args&&... args) {
-      return std::forward_as_tuple(std::forward<Args>(args)...);
+    static Wrapper<Args&&...> wrap(Args&&... args) {
+      return {std::forward_as_tuple(std::forward<Args>(args)...)};
     }
 
-    template <typename ...Args>
-    static A create(std::tuple<Args...>&& args) {
-      return mz::piecewise::braced_make_from_tuple<A>(std::move(args));
+    template <typename ...RefTypes>
+    static T unwrap(Wrapper<RefTypes...>&& wrapped) {
+      return mz::piecewise::forward_tuple(
+        std::move(wrapped.packed_args)
+      , [](auto&&... args) { return T{Private{}, std::forward<decltype(args)>(args)...}; }
+      );
     }
 
-    A(std::string foo_, int thirty_three_) : foo{std::move(foo_)}, thirty_three{thirty_three_} {}
+  protected:
+    struct Private{};
+  };
+
+  struct A : public Factory<A> {
+    A(Private, std::string foo_, int thirty_three_)
+    : foo{std::move(foo_)}, thirty_three{thirty_three_} {}
 
     std::string foo;
     int thirty_three;
   };
 
-  struct B {
-    template <typename ...Args>
-    static auto forward(Args&&... args) {
-      return std::forward_as_tuple(std::forward<Args>(args)...);
-    }
-
-    template <typename ...Args>
-    static B create(std::tuple<Args...>&& args) {
-      return mz::piecewise::braced_make_from_tuple<B>(std::move(args));
-    }
-
-    B(int forty_two_, std::string bar_, int seventy_seven_) : forty_two{forty_two_}, bar{std::move(bar_)}, seventy_seven{seventy_seven_} {}
+  struct B : public Factory<B> {
+    B(Private, int forty_two_, std::string bar_, int seventy_seven_)
+    : forty_two{forty_two_}, bar{std::move(bar_)}, seventy_seven{seventy_seven_} {}
 
     int forty_two;
     std::string bar;
@@ -41,14 +49,14 @@ namespace {
   class Aggregate {
   public:
     // Note that we explicitly force the incoming tuples to be rvalues
-    template <typename ...TArgs, typename ...UArgs>
+    template <typename TArgs, typename UArgs>
     Aggregate(
       std::piecewise_construct_t
-    , std::tuple<TArgs...>&& tArgs
-    , std::tuple<UArgs...>&& uArgs
+    , TArgs&& tArgs
+    , UArgs&& uArgs
     )
-      : t{T::create(std::move(tArgs))}
-      , u{U::create(std::move(uArgs))}
+      : t{T::unwrap(std::move(tArgs))}
+      , u{U::unwrap(std::move(uArgs))}
     {}
 
     T t;
@@ -60,8 +68,8 @@ SCENARIO("piecewise construction") {
   GIVEN("an aggregate type constructed with rvalue tuples") {
     Aggregate<A, B> aggregate{
       std::piecewise_construct
-    , A::forward("foo", 33)
-    , B::forward(42, "bar", 77)
+    , A::wrap("foo", 33)
+    , B::wrap(42, "bar", 77)
     };
 
     THEN("piecewise construction works") {
