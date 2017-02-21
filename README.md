@@ -33,11 +33,21 @@ public:
 an instance can be constructed like this:
 ```c++
 struct A {
+  template <typename ...Args>
+  static auto forward(Args&&... args) {
+    return std::forward_as_tuple(std::forward<Args>(args)...);
+  }
+
   std::string foo;
   int thirtyThree;
 };
 
 struct B {
+  template <typename ...Args>
+  static auto forward(Args&&... args) {
+    return std::forward_as_tuple(std::forward<Args>(args)...);
+  }
+
   int fortyTwo;
   std::string bar;
   int seventySeven;

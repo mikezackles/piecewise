@@ -3,11 +3,21 @@
 
 namespace {
   struct A {
+    template <typename ...Args>
+    static auto forward(Args&&... args) {
+      return std::forward_as_tuple(std::forward<Args>(args)...);
+    }
+
     std::string foo;
     int thirtyThree;
   };
 
   struct B {
+    template <typename ...Args>
+    static auto forward(Args&&... args) {
+      return std::forward_as_tuple(std::forward<Args>(args)...);
+    }
+
     int fortyTwo;
     std::string bar;
     int seventySeven;
@@ -36,8 +46,8 @@ SCENARIO("piecewise construction") {
   GIVEN("an aggregate type constructed with rvalue tuples") {
     Aggregate<A, B> aggregate{
       std::piecewise_construct
-    , std::forward_as_tuple("foo", 33)
-    , std::forward_as_tuple(42, "bar", 77)
+    , A::forward("foo", 33)
+    , B::forward(42, "bar", 77)
     };
 
     THEN("piecewise construction works") {
