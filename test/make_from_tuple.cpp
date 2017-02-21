@@ -14,7 +14,7 @@ namespace {
     }
 
     std::string foo;
-    int thirtyThree;
+    int thirty_three;
   };
 
   struct B {
@@ -28,9 +28,9 @@ namespace {
       return mz::piecewise::braced_make_from_tuple<B>(std::move(args));
     }
 
-    int fortyTwo;
+    int forty_two;
     std::string bar;
-    int seventySeven;
+    int seventy_seven;
   };
 
   template <typename T, typename U>
@@ -61,11 +61,11 @@ SCENARIO("piecewise construction") {
     };
 
     THEN("piecewise construction works") {
-      REQUIRE(aggregate.t.thirtyThree == 33);
+      REQUIRE(aggregate.t.thirty_three == 33);
       REQUIRE(aggregate.t.foo == "foo");
-      REQUIRE(aggregate.u.fortyTwo == 42);
+      REQUIRE(aggregate.u.forty_two == 42);
       REQUIRE(aggregate.u.bar == "bar");
-      REQUIRE(aggregate.u.seventySeven == 77);
+      REQUIRE(aggregate.u.seventy_seven == 77);
     }
   }
 }

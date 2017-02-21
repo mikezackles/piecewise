@@ -44,7 +44,7 @@ struct A {
   }
 
   std::string foo;
-  int thirtyThree;
+  int thirty_three;
 };
 
 struct B {
@@ -58,9 +58,9 @@ struct B {
     return mz::piecewise::braced_make_from_tuple<B>(std::move(args));
   }
 
-  int fortyTwo;
+  int forty_two;
   std::string bar;
-  int seventySeven;
+  int seventy_seven;
 };
 
 Aggregate<A, B> aggregate{
