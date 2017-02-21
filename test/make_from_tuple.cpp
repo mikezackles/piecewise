@@ -8,6 +8,11 @@ namespace {
       return std::forward_as_tuple(std::forward<Args>(args)...);
     }
 
+    template <typename ...Args>
+    static A create(std::tuple<Args...>&& args) {
+      return mz::piecewise::braced_make_from_tuple<A>(std::move(args));
+    }
+
     std::string foo;
     int thirtyThree;
   };
@@ -16,6 +21,11 @@ namespace {
     template <typename ...Args>
     static auto forward(Args&&... args) {
       return std::forward_as_tuple(std::forward<Args>(args)...);
+    }
+
+    template <typename ...Args>
+    static B create(std::tuple<Args...>&& args) {
+      return mz::piecewise::braced_make_from_tuple<B>(std::move(args));
     }
 
     int fortyTwo;
@@ -33,8 +43,8 @@ namespace {
     , std::tuple<TArgs...>&& tArgs
     , std::tuple<UArgs...>&& uArgs
     )
-      : t{mz::piecewise::braced_make_from_tuple<T>(std::move(tArgs))}
-      , u{mz::piecewise::braced_make_from_tuple<U>(std::move(uArgs))}
+      : t{T::create(std::move(tArgs))}
+      , u{U::create(std::move(uArgs))}
     {}
 
     T t;
