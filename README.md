@@ -21,8 +21,8 @@ public:
   , std::tuple<TArgs...>&& tArgs
   , std::tuple<UArgs...>&& uArgs
   )
-    : t{mz::piecewise::braced_make_from_tuple<T>(tArgs)}
-    , u{mz::piecewise::braced_make_from_tuple<U>(uArgs)}
+    : t{mz::piecewise::braced_make_from_tuple<T>(std::move(tArgs))}
+    , u{mz::piecewise::braced_make_from_tuple<U>(std::move(uArgs))}
   {}
 
   T t;
