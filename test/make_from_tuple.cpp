@@ -2,23 +2,23 @@
 #include <mz/piecewise/make_from_tuple.hpp>
 
 namespace {
-  struct a {
+  struct A {
     std::string foo;
     int thirtyThree;
   };
 
-  struct b {
+  struct B {
     int fortyTwo;
     std::string bar;
     int seventySeven;
   };
 
   template <typename T, typename U>
-  class aggregate {
+  class Aggregate {
   public:
     // Note that we explicitly force the incoming tuples to be rvalues
     template <typename ...TArgs, typename ...UArgs>
-    aggregate(
+    Aggregate(
       std::piecewise_construct_t
     , std::tuple<TArgs...>&& tArgs
     , std::tuple<UArgs...>&& uArgs
@@ -34,7 +34,7 @@ namespace {
 
 SCENARIO("piecewise construction") {
   GIVEN("an aggregate type constructed with rvalue tuples") {
-    aggregate<a, b> aggregate{
+    Aggregate<A, B> aggregate{
       std::piecewise_construct
     , std::forward_as_tuple("foo", 33)
     , std::forward_as_tuple(42, "bar", 77)
