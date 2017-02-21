@@ -5,15 +5,20 @@ namespace {
   template <typename T>
   class Factory {
   private:
+    struct VeryPrivate{};
+
+  public:
     template <typename ...RefTypes>
     struct Wrapper {
+      Wrapper(VeryPrivate, std::tuple<RefTypes...>&& packed_args_)
+      : packed_args{std::move(packed_args_)} {}
+
       std::tuple<RefTypes...> packed_args;
     };
 
-  public:
     template <typename ...Args>
     static Wrapper<Args&&...> wrap(Args&&... args) {
-      return {std::forward_as_tuple(std::forward<Args>(args)...)};
+      return {VeryPrivate{}, std::forward_as_tuple(std::forward<Args>(args)...)};
     }
 
     template <typename ...RefTypes>
@@ -48,15 +53,13 @@ namespace {
   template <typename T, typename U>
   class Aggregate {
   public:
-    // Note that we explicitly force the incoming tuples to be rvalues
     template <typename TArgs, typename UArgs>
     Aggregate(
-      std::piecewise_construct_t
-    , TArgs&& tArgs
-    , UArgs&& uArgs
+      TArgs t_args
+    , UArgs u_args
     )
-      : t{T::unwrap(std::move(tArgs))}
-      , u{U::unwrap(std::move(uArgs))}
+      : t{T::unwrap(std::move(t_args))}
+      , u{U::unwrap(std::move(u_args))}
     {}
 
     T t;
@@ -67,8 +70,7 @@ namespace {
 SCENARIO("piecewise construction") {
   GIVEN("an aggregate type constructed with rvalue tuples") {
     Aggregate<A, B> aggregate{
-      std::piecewise_construct
-    , A::wrap("foo", 33)
+      A::wrap("foo", 33)
     , B::wrap(42, "bar", 77)
     };
 
