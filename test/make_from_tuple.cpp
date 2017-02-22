@@ -29,7 +29,7 @@ namespace {
   };
 
   template <typename T, template <typename, typename> class Unwrapper>
-  class Forwarder {
+  class ArgForwarder {
   protected:
     struct Private{};
 
@@ -41,7 +41,7 @@ namespace {
         : packed_args{std::move(packed_args_)}
       {}
 
-      T create() {
+      T construct() {
         return mz::piecewise::forward_tuple(
           std::move(packed_args)
         , Unwrapper<T, Private>{}
@@ -58,12 +58,12 @@ namespace {
     }
 
     template <typename ...Args>
-    static T create(Args&&... args) {
+    static T construct(Args&&... args) {
       return forward(std::forward<Args>(args)...).create();
     }
   };
 
-  struct A : public Forwarder<A, BracedConstructor> {
+  struct A final : public ArgForwarder<A, BracedConstructor> {
     A(Private, std::string foo_, int thirty_three_)
       : foo{std::move(foo_)}, thirty_three{thirty_three_}
     {}
@@ -72,9 +72,10 @@ namespace {
     int thirty_three;
   };
 
-  struct B : public Forwarder<B, BracedConstructor> {
+  struct B final : public ArgForwarder<B, BracedConstructor> {
     B(Private, int forty_two_, std::string bar_, int seventy_seven_)
-    : forty_two{forty_two_}, bar{std::move(bar_)}, seventy_seven{seventy_seven_} {}
+      : forty_two{forty_two_}, bar{std::move(bar_)}, seventy_seven{seventy_seven_}
+    {}
 
     int forty_two;
     std::string bar;
@@ -82,11 +83,11 @@ namespace {
   };
 
   template <typename T, typename U>
-  class Aggregate {
+  class Aggregate final {
   public:
     template <typename TArgs, typename UArgs>
     Aggregate(TArgs t_args, UArgs u_args)
-      : t{t_args.create()}, u{u_args.create()}
+      : t{t_args.construct()}, u{u_args.construct()}
     {}
 
     T t;
