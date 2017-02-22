@@ -20,7 +20,7 @@ target_use_modern_cxx(piecewise TYPE INTERFACE)
 
 add_executable(tests
   "test/main.cpp"
-  "test/make_from_tuple.cpp")
+  "test/arg_forwarder.cpp")
 
 target_include_directories(tests
   PRIVATE
