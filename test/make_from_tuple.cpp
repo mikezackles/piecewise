@@ -45,11 +45,7 @@ namespace {
     int thirty_three;
   };
 
-  struct B final : public ArgForwarder<B> {
-    B(int forty_two_, std::string bar_, int seventy_seven_)
-      : forty_two{forty_two_}, bar{std::move(bar_)}, seventy_seven{seventy_seven_}
-    {}
-
+  struct B final {
     int forty_two;
     std::string bar;
     int seventy_seven;
@@ -72,7 +68,7 @@ SCENARIO("piecewise construction") {
   GIVEN("an aggregate type constructed with rvalue tuples") {
     Aggregate<A, B> aggregate{
       A::forward("foo", 33)
-    , B::forward(42, "bar", 77)
+    , ArgForwarder<B>::forward(42, "bar", 77) // alternate syntax (no inheritance required)
     };
 
     THEN("piecewise construction works") {
