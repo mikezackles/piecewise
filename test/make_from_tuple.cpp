@@ -34,11 +34,6 @@ namespace {
     static Wrapper<Args&&...> forward(Args&&... args) {
       return {std::forward_as_tuple(std::forward<Args>(args)...)};
     }
-
-    template <typename ...Args>
-    static T construct(Args&&... args) {
-      return forward(std::forward<Args>(args)...).create();
-    }
   };
 
   struct A final : public ArgForwarder<A> {
