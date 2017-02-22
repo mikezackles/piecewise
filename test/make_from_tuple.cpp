@@ -2,37 +2,8 @@
 #include <mz/piecewise/make_from_tuple.hpp>
 
 namespace {
-  template <typename T, typename Private>
-  class BracedConstructor {
-  public:
-    template <typename ...Args>
-    T operator()(Args&&... args) {
-      return T{Private{}, std::forward<Args>(args)...};
-    }
-  };
-
-  template <typename T, typename Private>
-  class RegularConstructor {
-  public:
-    template <typename ...Args>
-    T operator()(Args&&... args) {
-      return T(Private{}, std::forward<Args>(args)...);
-    }
-  };
-
-  template <typename T, typename Private>
-  class FactoryFunction {
-    template <typename ...Args>
-    T operator()(Args&&... args) {
-      return T::create(Private{}, std::forward<Args>(args)...);
-    }
-  };
-
-  template <typename T, template <typename, typename> class Unwrapper>
+  template <typename T>
   class ArgForwarder {
-  protected:
-    struct Private{};
-
   public:
     template <typename ...RefTypes>
     class Wrapper {
@@ -44,7 +15,14 @@ namespace {
       T construct() {
         return mz::piecewise::forward_tuple(
           std::move(packed_args)
-        , Unwrapper<T, Private>{}
+        , [](auto&&... args) { return T(std::forward<decltype(args)>(args)...); }
+        );
+      }
+
+      T braced_construct() {
+        return mz::piecewise::forward_tuple(
+          std::move(packed_args)
+        , [](auto&&... args) { return T{std::forward<decltype(args)>(args)...}; }
         );
       }
 
@@ -63,8 +41,8 @@ namespace {
     }
   };
 
-  struct A final : public ArgForwarder<A, BracedConstructor> {
-    A(Private, std::string foo_, int thirty_three_)
+  struct A final : public ArgForwarder<A> {
+    A(std::string foo_, int thirty_three_)
       : foo{std::move(foo_)}, thirty_three{thirty_three_}
     {}
 
@@ -72,8 +50,8 @@ namespace {
     int thirty_three;
   };
 
-  struct B final : public ArgForwarder<B, BracedConstructor> {
-    B(Private, int forty_two_, std::string bar_, int seventy_seven_)
+  struct B final : public ArgForwarder<B> {
+    B(int forty_two_, std::string bar_, int seventy_seven_)
       : forty_two{forty_two_}, bar{std::move(bar_)}, seventy_seven{seventy_seven_}
     {}
 
@@ -87,7 +65,7 @@ namespace {
   public:
     template <typename TArgs, typename UArgs>
     Aggregate(TArgs t_args, UArgs u_args)
-      : t{t_args.construct()}, u{u_args.construct()}
+      : t{t_args.construct()}, u{u_args.braced_construct()}
     {}
 
     T t;
