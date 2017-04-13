@@ -2,11 +2,6 @@
 
 This utility assumes a C++14-capable compiler/standard library.
 
-`make_from_tuple` and `braced_make_from_tuple`
---
-
-These helper functions simplify piecewise construction via perfect forwarding.
-
 Given a generic aggregate type:
 ```c++
 #include <mz/piecewise/arg_forwarder.hpp>
