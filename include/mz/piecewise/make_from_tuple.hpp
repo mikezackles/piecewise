@@ -13,16 +13,16 @@ namespace mz { namespace piecewise {
     auto unpack_tuple(
       std::tuple<Args...> args
     , std::index_sequence<Indices...>
-    , Callback&& callback) {
+    , Callback callback) {
       return callback(std::forward<Args>(std::get<Indices>(args))...);
     }
   }
 
   // This function can be used for generic forwarding (e.g., to a factory function)
   template <typename ...Args, typename Callback>
-  auto forward_tuple(std::tuple<Args...> args, Callback&& callback) {
+  auto forward_tuple(std::tuple<Args...> args, Callback callback) {
     return detail::unpack_tuple(
-      std::move(args), std::make_index_sequence<sizeof...(Args)>{}, std::forward<Callback>(callback)
+      std::move(args), std::make_index_sequence<sizeof...(Args)>{}, callback
     );
   }
 
