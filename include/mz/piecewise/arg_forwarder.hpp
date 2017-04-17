@@ -4,39 +4,36 @@
 #include <mz/piecewise/make_from_tuple.hpp>
 
 namespace mz { namespace piecewise {
-  template <typename T>
-  class ArgForwarder {
+  template <typename Callback, typename ...RefTypes>
+  class Wrapper {
   public:
-    template <typename ...RefTypes>
-    class Wrapper {
-    public:
-      Wrapper(std::tuple<RefTypes...> packed_args_)
-        : packed_args{std::move(packed_args_)}
-      {}
+    Wrapper(std::tuple<RefTypes...> packed_args_, Callback callback_)
+      : packed_args{std::move(packed_args_)}, callback{std::move(callback_)}
+    {}
 
-      T construct() {
-        return forward_tuple(
-          std::move(packed_args)
-        , [](auto&&... args) { return T(std::forward<decltype(args)>(args)...); }
-        );
-      }
-
-      T braced_construct() {
-        return forward_tuple(
-          std::move(packed_args)
-        , [](auto&&... args) { return T{std::forward<decltype(args)>(args)...}; }
-        );
-      }
-
-    private:
-      std::tuple<RefTypes...> packed_args;
-    };
-
-    template <typename ...Args>
-    static Wrapper<Args&&...> forward(Args&&... args) {
-      return {std::forward_as_tuple(std::forward<Args>(args)...)};
+    auto construct() {
+      return forward_tuple(std::move(packed_args), callback);
     }
+
+  private:
+    std::tuple<RefTypes...> packed_args;
+    Callback callback;
   };
+
+  template <typename Callback, typename ...RefTypes>
+  static Wrapper<Callback, RefTypes...> make_wrapper(std::tuple<RefTypes...> packed_args, Callback callback) {
+    return {std::move(packed_args), std::move(callback)};
+  }
+
+  template <typename Callback, typename ...Args>
+  static auto forward(Callback callback, Args&&... args) {
+    return make_wrapper(std::forward_as_tuple(std::forward<Args>(args)...), std::move(callback));
+  }
 }}
+
+#define CONSTRUCT_(T, args) [](auto&&... args) { return T(std::forward<decltype(args)>(args)...); }
+#define BRACED_(T, args) [](auto&&... args) { return T{std::forward<decltype(args)>(args)...}; }
+#define CONSTRUCT(T) CONSTRUCT_(T, args)
+#define BRACED(T) BRACED_(T, args)
 
 #endif

@@ -4,7 +4,7 @@
 namespace mp = mz::piecewise;
 
 namespace {
-  struct A final : public mp::ArgForwarder<A> {
+  struct A final {
     A(std::string foo_, int thirty_three_)
       : foo{std::move(foo_)}, thirty_three{thirty_three_}
     {}
@@ -24,7 +24,7 @@ namespace {
   public:
     template <typename TArgs, typename UArgs>
     Aggregate(TArgs t_args, UArgs u_args)
-      : t{t_args.construct()}, u{u_args.braced_construct()}
+      : t{t_args.construct()}, u{u_args.construct()}
     {}
 
     T t;
@@ -35,8 +35,8 @@ namespace {
 SCENARIO("piecewise construction") {
   GIVEN("an aggregate type constructed with rvalue tuples") {
     Aggregate<A, B> aggregate{
-      A::forward("foo", 33)
-    , mp::ArgForwarder<B>::forward(42, "bar", 77) // alternate syntax (no inheritance required)
+      mp::forward(CONSTRUCT(A), "foo", 33)
+    , mp::forward(BRACED(B), 42, "bar", 77)
     };
 
     THEN("piecewise construction works") {
