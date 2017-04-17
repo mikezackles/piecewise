@@ -5,19 +5,41 @@ namespace mp = mz::piecewise;
 
 namespace {
   struct A final {
-    A(std::string foo_, int thirty_three_)
-      : foo{std::move(foo_)}, thirty_three{thirty_three_}
-    {}
+    static A create(std::string foo, int thirty_three) {
+      return A(std::move(foo), thirty_three);
+    }
 
     std::string foo;
     int thirty_three;
+
+  private:
+    A(std::string foo_, int thirty_three_)
+      : foo{std::move(foo_)}, thirty_three{thirty_three_}
+    {}
   };
 
   struct B final {
+    static B create(int forty_two, std::string bar, int seventy_seven) {
+      return B{forty_two, std::move(bar), seventy_seven};
+    }
+
     int forty_two;
     std::string bar;
     int seventy_seven;
   };
+
+  //class C final {
+  //public:
+  //  static C create(std::string foo_, int thirty_three_) {
+  //  }
+
+  //  std::string foo;
+  //  int thirty_three;
+  //private:
+  //  C(std::string foo_, int thirty_three_)
+  //    : foo{std::move(foo_)}, thirty_three{thirty_three_}
+  //  {}
+  //};
 
   template <typename T, typename U>
   class Aggregate final {
@@ -35,8 +57,8 @@ namespace {
 SCENARIO("piecewise construction") {
   GIVEN("an aggregate type constructed with rvalue tuples") {
     Aggregate<A, B> aggregate{
-      mp::forward(CONSTRUCT(A), "foo", 33)
-    , mp::forward(BRACED(B), 42, "bar", 77)
+      mp::forward(A::create, "foo", 33)
+    , mp::forward(B::create, 42, "bar", 77)
     };
 
     THEN("piecewise construction works") {

@@ -9,19 +9,19 @@
 
 namespace mz { namespace piecewise {
   namespace detail {
-    template <typename ...Args, std::size_t ...Indices, typename Callback>
+    template <typename ...Args, std::size_t ...Indices, typename Callback, typename ...ExtraArgs>
     auto unpack_tuple(
-      std::tuple<Args...> args
-    , std::index_sequence<Indices...>
-    , Callback callback) {
-      return callback(std::forward<Args>(std::get<Indices>(args))...);
+      std::tuple<Args...> args, std::index_sequence<Indices...>
+    , Callback&& callback
+    , ExtraArgs&&... extra_args) {
+      return callback(std::forward<Args>(std::get<Indices>(args))..., std::forward<ExtraArgs>(extra_args)...);
     }
   }
 
-  template <typename ...Args, typename Callback>
-  auto forward_tuple(std::tuple<Args...> args, Callback callback) {
+  template <typename ...Args, typename Callback, typename ...ExtraArgs>
+  auto forward_tuple(std::tuple<Args...> args, Callback&& callback, ExtraArgs&&... extra_args) {
     return detail::unpack_tuple(
-      std::move(args), std::make_index_sequence<sizeof...(Args)>{}, callback
+      std::move(args), std::make_index_sequence<sizeof...(Args)>{}, std::forward<Callback>(callback), std::forward<ExtraArgs>(extra_args)...
     );
   }
 }}
