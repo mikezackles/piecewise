@@ -13,12 +13,10 @@ namespace mz { namespace piecewise { namespace tuple_list {
 
   namespace detail {
     template <typename T, typename ...Ts, std::size_t ...Indices>
-    static auto
-    split_impl(
+    static auto split_impl(
       std::tuple<T, Ts...> list
     , std::index_sequence<Indices...>
-    ) ->
-    split_result<T, Ts...> {
+    )-> split_result<T, Ts...> {
       return {
         std::forward_as_tuple(std::forward<T>(std::get<0>(list)))
       , std::forward_as_tuple(
@@ -28,8 +26,7 @@ namespace mz { namespace piecewise { namespace tuple_list {
     }
 
     template <typename T, typename ...Ts, std::size_t ...Indices>
-    static auto
-    combine_impl(
+    static auto combine_impl(
       std::tuple<T> head
     , std::tuple<Ts...> tail
     , std::index_sequence<Indices...>
@@ -42,8 +39,7 @@ namespace mz { namespace piecewise { namespace tuple_list {
   }
 
   template <typename T, typename ...Ts>
-  static auto
-  split(std::tuple<T, Ts...> list) {
+  static auto split(std::tuple<T, Ts...> list) {
     return detail::split_impl(
       std::move(list)
     , std::make_index_sequence<sizeof...(Ts)>{}
@@ -51,8 +47,7 @@ namespace mz { namespace piecewise { namespace tuple_list {
   }
 
   template <typename T, typename ...Ts>
-  static auto
-  combine(std::tuple<T> head, std::tuple<Ts...> tail) {
+  static auto combine(std::tuple<T> head, std::tuple<Ts...> tail) {
     return detail::combine_impl(
       std::move(head)
     , std::move(tail)

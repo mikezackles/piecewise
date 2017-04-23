@@ -14,8 +14,7 @@ namespace mz { namespace piecewise {
     {}
 
     template <typename ...Args>
-    auto
-    construct(Args&&... args) {
+    auto construct(Args&&... args) {
       return forward_tuple(
         std::move(packed_args)
       , std::forward<Callback>(callback)
@@ -29,65 +28,68 @@ namespace mz { namespace piecewise {
   };
 
   template <typename Callback, typename ...RefTypes>
-  static auto
-  make_wrapper(
+  static auto make_wrapper(
     std::tuple<RefTypes...> packed_args
   , Callback&& callback
-  ) -> Wrapper<Callback, RefTypes...> {
+  )-> Wrapper<Callback, RefTypes...> {
     return {std::move(packed_args), std::forward<Callback>(callback)};
   }
 
   template <typename Callback, typename ...Args>
-  static auto
-  forward(Callback&& callback, Args&&... args) {
+  static auto forward(Callback&& callback, Args&&... args) {
     return make_wrapper(
       std::forward_as_tuple(std::forward<Args>(args)...)
     , std::forward<Callback>(callback)
     );
   }
 
-  template <
-    typename ...ArgPacks
-  , typename ...Thunks
-  , typename OnSuccess
-  , typename OnFail
-  > static auto
-  multifail(
-    std::tuple<ArgPacks...> arg_packs
-  , std::tuple<Thunks...> thunks
-  , OnSuccess&& on_success
-  , OnFail&& on_fail
-  ) {
-    auto split_arg_packs = tuple_list::split(std::move(arg_packs));
-    return split_arg_packs.unpack_head().construct(
-      [ arg_packs = std::move(split_arg_packs.tail)
-      , thunks = std::move(thunks)
-      , &on_success
-      , &on_fail
-      ] (auto thunk) {
-        multifail(
-          std::move(arg_packs)
-        , tuple_list::combine(thunk, thunks)
-        , on_success
-        , on_fail
-        );
-      }
-    , on_fail
-    );
+  namespace detail {
+    template <
+      typename ...ArgPacks, typename ...Thunks
+    , typename OnSuccess, typename OnFail
+    > static auto multifail_impl(
+      std::tuple<ArgPacks...> arg_packs, std::tuple<Thunks...> thunks
+    , OnSuccess& on_success, OnFail& on_fail
+    ) {
+      auto split_arg_packs = tuple_list::split(std::move(arg_packs));
+      return split_arg_packs.unpack_head().construct(
+        [ arg_packs = std::move(split_arg_packs.tail)
+        , thunks = std::move(thunks)
+        , &on_success, &on_fail
+        ] (auto thunk) {
+          multifail(
+            std::move(arg_packs)
+          , tuple_list::combine(thunk, thunks)
+          , on_success, on_fail
+          );
+        }
+      , on_fail
+      );
+    }
+
+    template <
+      typename ...Thunks
+    , typename OnSuccess, typename OnFail
+    > static auto multifail_impl(
+      std::tuple<>, std::tuple<Thunks...> thunks
+    , OnSuccess& on_success, OnFail&
+    ) {
+      return forward_tuple(std::move(thunks), on_success);
+    }
   }
 
   template <
-    typename ...Thunks
-  , typename OnSuccess
-  , typename OnFail
-  > static auto
-  multifail(
-    std::tuple<>
-  , std::tuple<Thunks...> thunks
-  , OnSuccess&& on_success
-  , OnFail&&
+    typename ...ArgPacks
+  , typename OnSuccess, typename OnFail
+  > static auto multifail(
+    OnSuccess&& on_success, OnFail&& on_fail
+  , ArgPacks&&... arg_packs
   ) {
-    return forward_tuple(std::move(thunks), on_success);
+    return detail::multifail_impl(
+      std::forward_as_tuple(std::forward<ArgPacks>(arg_packs)...)
+    , std::tuple<>{}
+    , on_success, on_fail
+    );
   }
 }}
 
