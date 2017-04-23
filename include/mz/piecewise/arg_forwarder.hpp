@@ -14,7 +14,8 @@ namespace mz { namespace piecewise {
     {}
 
     template <typename ...Args>
-    auto construct(Args&&... args) {
+    auto
+    construct(Args&&... args) {
       return forward_tuple(
         std::move(packed_args)
       , std::forward<Callback>(callback)
@@ -28,15 +29,17 @@ namespace mz { namespace piecewise {
   };
 
   template <typename Callback, typename ...RefTypes>
-  static Wrapper<Callback, RefTypes...> make_wrapper(
+  static auto
+  make_wrapper(
     std::tuple<RefTypes...> packed_args
   , Callback&& callback
-  ) {
+  ) -> Wrapper<Callback, RefTypes...> {
     return {std::move(packed_args), std::forward<Callback>(callback)};
   }
 
   template <typename Callback, typename ...Args>
-  static auto forward(Callback&& callback, Args&&... args) {
+  static auto
+  forward(Callback&& callback, Args&&... args) {
     return make_wrapper(
       std::forward_as_tuple(std::forward<Args>(args)...)
     , std::forward<Callback>(callback)
@@ -48,7 +51,8 @@ namespace mz { namespace piecewise {
   , typename ...Thunks
   , typename OnSuccess
   , typename OnFail
-  > static auto multifail(
+  > static auto
+  multifail(
     std::tuple<ArgPacks...> arg_packs
   , std::tuple<Thunks...> thunks
   , OnSuccess&& on_success
@@ -72,8 +76,12 @@ namespace mz { namespace piecewise {
     );
   }
 
-  template <typename ...Thunks, typename OnSuccess, typename OnFail>
-  static auto multifail(
+  template <
+    typename ...Thunks
+  , typename OnSuccess
+  , typename OnFail
+  > static auto
+  multifail(
     std::tuple<>
   , std::tuple<Thunks...> thunks
   , OnSuccess&& on_success
