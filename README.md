@@ -1,6 +1,8 @@
 [![Build Status](https://travis-ci.org/mikezackles/piecewise.svg?branch=master)](https://travis-ci.org/mikezackles/piecewise)
 
-This utility assumes a C++14-capable compiler/standard library.
+Piecewise is an opinionated library for structuring code via compile-time
+dependency injection and a pattern matching approach to error handling. A
+C++14-capable compiler and standard library are required.
 
 Given a generic aggregate type:
 ```c++
