@@ -2,56 +2,9 @@
 #define UUID_49150B38_5CFC_48B8_91E5_4A965B99305D
 
 #include <mz/piecewise/make_from_tuple.hpp>
+#include <mz/piecewise/tuple_list.hpp>
 
 namespace mz { namespace piecewise {
-  namespace tuple_list {
-    namespace detail {
-      template <typename ...Ts, std::size_t ...Indices>
-      static auto tail_impl(
-        std::tuple<Ts...> list
-      , std::index_sequence<Indices...>
-      ) {
-        return std::forward_as_tuple(
-          std::forward<Ts>(std::get<Indices+1>(list))...
-        );
-      }
-
-      template <typename T, typename ...Ts, std::size_t ...Indices>
-      static auto cons_impl(
-        T&& head
-      , std::tuple<Ts...> tail
-      , std::index_sequence<Indices...>
-      ) {
-        return std::forward_as_tuple(
-          std::forward<T>(head)
-        , std::forward<Ts>(std::get<Indices>(tail))...
-        );
-      }
-    }
-
-    template <typename ...Ts>
-    static decltype(auto) head(std::tuple<Ts...> list) {
-      return std::get<0>(list);
-    }
-
-    template <typename ...Ts>
-    static auto tail(std::tuple<Ts...> list) {
-      return detail::tail_impl(
-        std::move(list)
-      , std::make_index_sequence<sizeof...(Ts)-1>{}
-      );
-    }
-
-    template <typename T, typename ...Ts>
-    static auto cons(T&& head, std::tuple<Ts...> tail) {
-      return detail::cons_impl(
-        std::forward<T>(head)
-      , std::move(tail)
-      , std::make_index_sequence<sizeof...(Ts)>{}
-      );
-    }
-  }
-
   template <typename Callback, typename ...RefTypes>
   class Wrapper {
   public:
@@ -101,14 +54,16 @@ namespace mz { namespace piecewise {
   , OnSuccess&& on_success
   , OnFail&& on_fail
   ) {
-    return tuple_list::head(arg_packs).construct(
-      [ arg_packs = tuple_list::tail(arg_packs)
+    auto split_arg_packs = tuple_list::split(std::move(arg_packs));
+    return split_arg_packs.unpack_head().construct(
+      [ arg_packs = std::move(split_arg_packs.tail)
       , thunks = std::move(thunks)
-      , &on_success, &on_fail
+      , &on_success
+      , &on_fail
       ] (auto thunk) {
         multifail(
           std::move(arg_packs)
-        , tuple_list::cons(thunk, thunks)
+        , tuple_list::combine(thunk, thunks)
         , on_success
         , on_fail
         );
@@ -121,7 +76,8 @@ namespace mz { namespace piecewise {
   static auto multifail(
     std::tuple<>
   , std::tuple<Thunks...> thunks
-  , OnSuccess&& on_success, OnFail&&
+  , OnSuccess&& on_success
+  , OnFail&&
   ) {
     return forward_tuple(std::move(thunks), on_success);
   }
