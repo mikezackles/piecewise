@@ -36,10 +36,20 @@ namespace mz { namespace piecewise { namespace tuple_list {
       , std::forward<Ts>(std::get<Indices>(tail))...
       );
     }
+
+    template <bool...> struct bool_pack;
+    template <bool... bools>
+    using all_true = std::is_same<bool_pack<bools..., true>, bool_pack<true, bools...>>;
   }
 
   template <typename T, typename ...Ts>
   static auto split(std::tuple<T, Ts...> list) {
+    static_assert(
+      detail::all_true<
+        std::is_reference<T>::value, std::is_reference<Ts>::value...
+      >::value
+    , "tuple must contain only references"
+    );
     return detail::split_impl(
       std::move(list)
     , std::make_index_sequence<sizeof...(Ts)>{}
@@ -48,6 +58,12 @@ namespace mz { namespace piecewise { namespace tuple_list {
 
   template <typename T, typename ...Ts>
   static auto combine(std::tuple<T> head, std::tuple<Ts...> tail) {
+    static_assert(
+      detail::all_true<
+        std::is_reference<T>::value, std::is_reference<Ts>::value...
+      >::value
+    , "tuple must contain only references"
+    );
     return detail::combine_impl(
       std::move(head)
     , std::move(tail)
