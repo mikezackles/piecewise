@@ -5,23 +5,40 @@
 #include <type_traits>
 #include <utility>
 
-#include <iostream>
-
 namespace mz { namespace piecewise {
   namespace detail {
-    template <typename ...Args, std::size_t ...Indices, typename Callback, typename ...ExtraArgs>
-    auto unpack_tuple(
-      std::tuple<Args...> args, std::index_sequence<Indices...>
+    template <
+      typename ...Args
+    , std::size_t ...Indices
+    , typename Callback
+    , typename ...ExtraArgs
+    > auto unpack_tuple(
+      std::tuple<Args...> args
+    , std::index_sequence<Indices...>
     , Callback&& callback
-    , ExtraArgs&&... extra_args) {
-      return callback(std::forward<Args>(std::get<Indices>(args))..., std::forward<ExtraArgs>(extra_args)...);
+    , ExtraArgs&&... extra_args
+    ) {
+      return callback(
+        std::forward<Args>(std::get<Indices>(args))...
+      , std::forward<ExtraArgs>(extra_args)...
+      );
     }
   }
 
-  template <typename ...Args, typename Callback, typename ...ExtraArgs>
-  auto forward_tuple(std::tuple<Args...> args, Callback&& callback, ExtraArgs&&... extra_args) {
+  template <
+    typename ...Args
+  , typename Callback
+  , typename ...ExtraArgs
+  > auto forward_tuple(
+    std::tuple<Args...> args
+  , Callback&& callback
+  , ExtraArgs&&... extra_args
+  ) {
     return detail::unpack_tuple(
-      std::move(args), std::make_index_sequence<sizeof...(Args)>{}, std::forward<Callback>(callback), std::forward<ExtraArgs>(extra_args)...
+      std::move(args)
+    , std::make_index_sequence<sizeof...(Args)>{}
+    , std::forward<Callback>(callback)
+    , std::forward<ExtraArgs>(extra_args)...
     );
   }
 }}
