@@ -9,7 +9,7 @@ namespace mz { namespace piecewise {
     template <
       typename ...ArgPacks, typename ...Thunks
     , typename OnSuccess, typename OnFail
-    > static auto multifail_impl(
+    > inline auto multifail_impl(
       std::tuple<ArgPacks...> arg_packs, std::tuple<Thunks...> thunks
     , OnSuccess& on_success, OnFail& on_fail
     ) {
@@ -32,7 +32,7 @@ namespace mz { namespace piecewise {
     template <
       typename ...Thunks
     , typename OnSuccess, typename OnFail
-    > static auto multifail_impl(
+    > inline auto multifail_impl(
       std::tuple<>, std::tuple<Thunks...> thunks
     , OnSuccess& on_success, OnFail&
     ) {
@@ -43,7 +43,7 @@ namespace mz { namespace piecewise {
   template <
     typename ...ArgPacks
   , typename OnSuccess, typename OnFail
-  > static auto multifail(
+  > inline auto multifail(
     OnSuccess&& on_success, OnFail&& on_fail
   , ArgPacks&&... arg_packs
   ) {

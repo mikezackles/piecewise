@@ -27,7 +27,7 @@ namespace mz { namespace piecewise {
   };
 
   template <typename Callback, typename ...RefTypes>
-  static auto make_wrapper(
+  inline auto make_wrapper(
     std::tuple<RefTypes...> packed_args
   , Callback&& callback
   )-> Wrapper<Callback, RefTypes...> {
@@ -35,7 +35,7 @@ namespace mz { namespace piecewise {
   }
 
   template <typename Callback, typename ...Args>
-  static auto forward(Callback&& callback, Args&&... args) {
+  inline auto forward(Callback&& callback, Args&&... args) {
     return make_wrapper(
       std::forward_as_tuple(std::forward<Args>(args)...)
     , std::forward<Callback>(callback)

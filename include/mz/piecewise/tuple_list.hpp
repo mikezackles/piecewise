@@ -13,7 +13,7 @@ namespace mz { namespace piecewise { namespace tuple_list {
 
   namespace detail {
     template <typename T, typename ...Ts, std::size_t ...Indices>
-    static auto split_impl(
+    inline auto split_impl(
       std::tuple<T, Ts...> list
     , std::index_sequence<Indices...>
     )-> split_result<T, Ts...> {
@@ -26,7 +26,7 @@ namespace mz { namespace piecewise { namespace tuple_list {
     }
 
     template <typename T, typename ...Ts, std::size_t ...Indices>
-    static auto combine_impl(
+    inline auto combine_impl(
       std::tuple<T> head
     , std::tuple<Ts...> tail
     , std::index_sequence<Indices...>
@@ -43,7 +43,7 @@ namespace mz { namespace piecewise { namespace tuple_list {
   }
 
   template <typename T, typename ...Ts>
-  static auto split(std::tuple<T, Ts...> list) {
+  inline auto split(std::tuple<T, Ts...> list) {
     static_assert(
       detail::all_true<
         std::is_reference<T>::value, std::is_reference<Ts>::value...
@@ -57,7 +57,7 @@ namespace mz { namespace piecewise { namespace tuple_list {
   }
 
   template <typename T, typename ...Ts>
-  static auto combine(std::tuple<T> head, std::tuple<Ts...> tail) {
+  inline auto combine(std::tuple<T> head, std::tuple<Ts...> tail) {
     static_assert(
       detail::all_true<
         std::is_reference<T>::value, std::is_reference<Ts>::value...

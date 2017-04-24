@@ -12,15 +12,15 @@ namespace mz { namespace piecewise {
     , std::size_t ...Indices
     , typename Callback
     , typename ...ExtraArgs
-    > auto unpack_tuple(
+    > inline auto unpack_tuple(
       std::tuple<Args...> args
     , std::index_sequence<Indices...>
     , Callback&& callback
     , ExtraArgs&&... extra_args
     ) {
       return callback(
-        std::forward<Args>(std::get<Indices>(args))...
-      , std::forward<ExtraArgs>(extra_args)...
+        std::forward<ExtraArgs>(extra_args)...
+      , std::forward<Args>(std::get<Indices>(args))...
       );
     }
   }
@@ -29,7 +29,7 @@ namespace mz { namespace piecewise {
     typename ...Args
   , typename Callback
   , typename ...ExtraArgs
-  > auto forward_tuple(
+  > inline auto forward_tuple(
     std::tuple<Args...> args
   , Callback&& callback
   , ExtraArgs&&... extra_args
