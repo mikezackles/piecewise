@@ -1,7 +1,7 @@
 #ifndef UUID_49150B38_5CFC_48B8_91E5_4A965B99305D
 #define UUID_49150B38_5CFC_48B8_91E5_4A965B99305D
 
-#include <mz/piecewise/make_from_tuple.hpp>
+#include <mz/piecewise/forward_tuple.hpp>
 
 namespace mz { namespace piecewise {
   template <typename Callback, typename ...RefTypes>
