@@ -21,6 +21,7 @@ target_use_modern_cxx(piecewise TYPE INTERFACE)
 add_executable(tests
   "test/main.cpp"
   "test/basic_aggregate.cpp"
+  "test/multifail.cpp"
   "test/tuple_list.cpp")
 
 target_include_directories(tests

@@ -7,38 +7,38 @@ namespace mz { namespace piecewise {
   template <typename Callback, typename ...RefTypes>
   class Wrapper {
   public:
-    Wrapper(std::tuple<RefTypes...> packed_args_, Callback&& callback_)
+    Wrapper(Callback&& callback_, std::tuple<RefTypes...> packed_args_)
       : packed_args{std::move(packed_args_)}
-      , callback{std::forward<Callback>(callback_)}
+      , callback{callback_}
     {}
 
     template <typename ...Args>
     auto construct(Args&&... args) {
       return forward_tuple(
-        std::move(packed_args)
-      , std::forward<Callback>(callback)
+        callback
+      , std::move(packed_args)
       , std::forward<Args>(args)...
       );
     }
 
   private:
     std::tuple<RefTypes...> packed_args;
-    Callback&& callback;
+    Callback& callback;
   };
 
   template <typename Callback, typename ...RefTypes>
   inline auto make_wrapper(
-    std::tuple<RefTypes...> packed_args
-  , Callback&& callback
+    Callback&& callback
+  , std::tuple<RefTypes...> packed_args
   )-> Wrapper<Callback, RefTypes...> {
-    return {std::move(packed_args), std::forward<Callback>(callback)};
+    return {callback, std::move(packed_args)};
   }
 
   template <typename Callback, typename ...Args>
   inline auto forward(Callback&& callback, Args&&... args) {
     return make_wrapper(
-      std::forward_as_tuple(std::forward<Args>(args)...)
-    , std::forward<Callback>(callback)
+      callback
+    , std::forward_as_tuple(std::forward<Args>(args)...)
     );
   }
 

@@ -1,43 +1,64 @@
 #ifndef UUID_5562D1DE_F4CC_4547_8BC3_0D931B26520D
 #define UUID_5562D1DE_F4CC_4547_8BC3_0D931B26520D
 
-#include <mz/piecewise/make_from_tuple.hpp>
+#include <mz/piecewise/forward_tuple.hpp>
 #include <mz/piecewise/tuple_list.hpp>
 
 namespace mz { namespace piecewise {
   namespace detail {
     template <
-      typename ...ArgPacks, typename ...Thunks
-    , typename OnSuccess, typename OnFail
+      typename OnSuccess, typename OnFail
+    , typename ArgPacks, typename Thunks
+    > struct MultifailImpl;
+
+    template <
+      typename OnSuccess, typename OnFail
+    , typename ...ArgPacks, typename ...Thunks
     > inline auto multifail_impl(
-      std::tuple<ArgPacks...> arg_packs, std::tuple<Thunks...> thunks
-    , OnSuccess& on_success, OnFail& on_fail
+        OnSuccess& on_success, OnFail& on_fail
+      , std::tuple<ArgPacks...> arg_packs, std::tuple<Thunks...> thunks
     ) {
-      auto split_arg_packs = tuple_list::split(std::move(arg_packs));
-      return split_arg_packs.unpack_head().construct(
-        [ arg_packs = std::move(split_arg_packs.tail)
-        , thunks = std::move(thunks)
-        , &on_success, &on_fail
-        ] (auto thunk) {
-          multifail(
-            std::move(arg_packs)
-          , tuple_list::combine(thunk, thunks)
-          , on_success, on_fail
-          );
-        }
-      , on_fail
+      return MultifailImpl<OnSuccess, OnFail, std::tuple<ArgPacks...>, std::tuple<Thunks...>>{}(
+        on_success, on_fail, std::move(arg_packs), std::move(thunks)
       );
     }
 
     template <
-      typename ...Thunks
-    , typename OnSuccess, typename OnFail
-    > inline auto multifail_impl(
-      std::tuple<>, std::tuple<Thunks...> thunks
-    , OnSuccess& on_success, OnFail&
-    ) {
-      return forward_tuple(std::move(thunks), on_success);
-    }
+      typename OnSuccess, typename OnFail
+    , typename ArgPacks, typename Thunks
+    > struct MultifailImpl {
+      auto operator()(
+        OnSuccess& on_success, OnFail& on_fail
+      , ArgPacks arg_packs, Thunks thunks
+      ) const {
+        auto split_arg_packs = tuple_list::split(std::move(arg_packs));
+        return split_arg_packs.head.construct(
+          [ &on_success, &on_fail
+          , arg_packs = std::move(split_arg_packs.tail)
+          , thunks = std::move(thunks)
+          ] (auto thunk) mutable {
+            multifail_impl(
+              on_success, on_fail
+            , std::move(arg_packs)
+            , tuple_list::combine(std::move(thunks), std::move(thunk))
+            );
+          }
+        , on_fail
+        );
+      }
+    };
+
+    template <
+      typename OnSuccess, typename OnFail
+    , typename Thunks
+    > struct MultifailImpl<OnSuccess, OnFail, std::tuple<>, Thunks> {
+      auto operator()(
+        OnSuccess& on_success, OnFail&
+      , std::tuple<>, Thunks thunks
+      ) const {
+        return forward_tuple(on_success, std::move(thunks));
+      }
+    };
   }
 
   template <
@@ -45,13 +66,32 @@ namespace mz { namespace piecewise {
   , typename OnSuccess, typename OnFail
   > inline auto multifail(
     OnSuccess&& on_success, OnFail&& on_fail
-  , ArgPacks&&... arg_packs
+  , ArgPacks... arg_packs
   ) {
     return detail::multifail_impl(
-      std::forward_as_tuple(std::forward<ArgPacks>(arg_packs)...)
+      on_success, on_fail
+    , std::make_tuple(std::move(arg_packs)...)
     , std::tuple<>{}
-    , on_success, on_fail
     );
+  }
+
+  template <typename T>
+  struct factory {
+    template <typename OnSuccess, typename OnFail, typename ...Args>
+    auto operator()(OnSuccess&& on_success, OnFail&&, Args&&... args) const {
+      return on_success(std::forward<Args>(args)...);
+    }
+  };
+
+  template <
+    typename T
+  , typename OnSuccess
+  , typename OnFail
+  , typename ...Args
+  > inline auto create(
+    OnSuccess&& on_success, OnFail&& on_fail, Args&&... args
+  ) {
+    return factory<T>{}(on_success, on_fail, std::forward<Args>(args)...);
   }
 }}
 

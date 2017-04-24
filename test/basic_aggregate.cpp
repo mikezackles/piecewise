@@ -38,40 +38,9 @@ namespace {
     T t;
     U u;
   };
-
-  //template <typename T, typename U>
-  //class FailableAggregate final {
-  //public:
-  //  template <typename TArgs, typename UArgs, typename OnSuccess, typename OnFail>
-  //  static auto create(
-  //    bool should_fail
-  //  , TArgs t_args, UArgs u_args
-  //  , OnSuccess&& on_success, OnFail&& on_fail
-  //  ) {
-  //    if (should_fail) return on_fail();
-  //    return on_success(&internal_create, std::move(t_args), std::move(u_args));
-  //  }
-
-  //  T const &get_t() const { return t; }
-  //  U const &get_u() const { return u; }
-
-  //private:
-  //  template <typename TArgs, typename UArgs>
-  //  static FailableAggregate internal_create(TArgs t_args, UArgs u_args) {
-  //    return {std::move(t_args), std::move(u_args)};
-  //  }
-
-  //  template <typename TArgs, typename UArgs>
-  //  FailableAggregate(TArgs t_args, UArgs u_args)
-  //    : t{t_args.construct()}, u{u_args.construct()}
-  //  {}
-
-  //  T t;
-  //  U u;
-  //};
 }
 
-SCENARIO("piecewise construction") {
+SCENARIO("basic aggregate") {
   GIVEN("an aggregate type constructed with rvalue tuples") {
     Aggregate<A, B> aggregate{
       mp::forward(mp::construct<A>{}, "foo", 33)

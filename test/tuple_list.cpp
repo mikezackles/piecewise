@@ -18,10 +18,10 @@ SCENARIO("tuple lists") {
       REQUIRE(split_res.tail == std::make_tuple('b', 'c'));
     }
 
-    THEN("recombining head and tail should yield the original list") {
+    THEN("recombining head and tail should put the head after the tail") {
       REQUIRE((
-        mt::combine(std::move(split_res.head), std::move(split_res.tail))
-        == std::make_tuple('a', 'b', 'c')
+        mt::combine(std::move(split_res.tail), std::move(split_res.head))
+        == std::make_tuple('b', 'c', 'a')
       ));
     }
   }

@@ -18,20 +18,20 @@ namespace mz { namespace piecewise { namespace tuple_list {
     , std::index_sequence<Indices...>
     )-> split_result<T, Ts...> {
       return {
-        std::get<0>(list)
-      , std::make_tuple(std::get<Indices+1>(list)...)
+        std::move(std::get<0>(list))
+      , std::make_tuple(std::move(std::get<Indices+1>(list))...)
       };
     }
 
-    template <typename T, typename ...Ts, std::size_t ...Indices>
+    template <typename ...Ts, typename T, std::size_t ...Indices>
     inline auto combine_impl(
-      T head
-    , std::tuple<Ts...> tail
+      std::tuple<Ts...> reverse_tail
     , std::index_sequence<Indices...>
+    , T reverse_head
     ) {
       return std::make_tuple(
-        std::move(head)
-      , std::get<Indices>(tail)...
+        std::move(std::get<Indices>(reverse_tail))...
+      , std::move(reverse_head)
       );
     }
   }
@@ -44,12 +44,12 @@ namespace mz { namespace piecewise { namespace tuple_list {
     );
   }
 
-  template <typename T, typename ...Ts>
-  inline auto combine(T head, std::tuple<Ts...> tail) {
+  template <typename ...Ts, typename T>
+  inline auto combine(std::tuple<Ts...> reverse_tail, T reverse_head) {
     return detail::combine_impl(
-      std::move(head)
-    , std::move(tail)
+      std::move(reverse_tail)
     , std::make_index_sequence<sizeof...(Ts)>{}
+    , std::move(reverse_head)
     );
   }
 }}}

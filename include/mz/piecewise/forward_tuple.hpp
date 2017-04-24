@@ -8,14 +8,14 @@
 namespace mz { namespace piecewise {
   namespace detail {
     template <
-      typename ...Args
+      typename Callback
+    , typename ...Args
     , std::size_t ...Indices
-    , typename Callback
     , typename ...ExtraArgs
     > inline auto unpack_tuple(
-      std::tuple<Args...> args
+      Callback& callback
+    , std::tuple<Args...> args
     , std::index_sequence<Indices...>
-    , Callback&& callback
     , ExtraArgs&&... extra_args
     ) {
       return callback(
@@ -26,18 +26,18 @@ namespace mz { namespace piecewise {
   }
 
   template <
-    typename ...Args
-  , typename Callback
+    typename Callback
+  , typename ...Args
   , typename ...ExtraArgs
   > inline auto forward_tuple(
-    std::tuple<Args...> args
-  , Callback&& callback
+    Callback&& callback
+  , std::tuple<Args...> args
   , ExtraArgs&&... extra_args
   ) {
     return detail::unpack_tuple(
-      std::move(args)
+      callback
+    , std::move(args)
     , std::make_index_sequence<sizeof...(Args)>{}
-    , std::forward<Callback>(callback)
     , std::forward<ExtraArgs>(extra_args)...
     );
   }
