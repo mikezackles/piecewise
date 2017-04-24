@@ -41,6 +41,22 @@ namespace mz { namespace piecewise {
     , std::forward<Callback>(callback)
     );
   }
+
+  template <typename T>
+  struct construct {
+    template <typename ...Args>
+    auto operator()(Args&&... args) const {
+      return T(std::forward<Args>(args)...);
+    }
+  };
+
+  template <typename T>
+  struct braced_construct {
+    template <typename ...Args>
+    auto operator()(Args&&... args) const {
+      return T{std::forward<Args>(args)...};
+    }
+  };
 }}
 
 #endif

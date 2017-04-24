@@ -5,27 +5,19 @@ namespace mp = mz::piecewise;
 
 namespace {
   struct A final {
-    static A create(std::string foo, int thirty_three) {
-      return A(std::move(foo), thirty_three);
-    }
+    A(std::string foo_, int thirty_three_)
+      : foo{std::move(foo_)}, thirty_three{thirty_three_}
+    {}
 
     std::string const &get_foo() const { return foo; }
     int get_thirty_three() const { return thirty_three; }
 
   private:
-    A(std::string foo_, int thirty_three_)
-      : foo{std::move(foo_)}, thirty_three{thirty_three_}
-    {}
-
     std::string foo;
     int thirty_three;
   };
 
   struct B final {
-    static B create(int forty_two, std::string bar, int seventy_seven) {
-      return B{forty_two, std::move(bar), seventy_seven};
-    }
-
     int forty_two;
     std::string bar;
     int seventy_seven;
@@ -82,8 +74,8 @@ namespace {
 SCENARIO("piecewise construction") {
   GIVEN("an aggregate type constructed with rvalue tuples") {
     Aggregate<A, B> aggregate{
-      mp::forward(A::create, "foo", 33)
-    , mp::forward(B::create, 42, "bar", 77)
+      mp::forward(mp::construct<A>{}, "foo", 33)
+    , mp::forward(mp::braced_construct<B>{}, 42, "bar", 77)
     };
 
     THEN("piecewise construction works") {
