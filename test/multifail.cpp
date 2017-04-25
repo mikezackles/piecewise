@@ -92,6 +92,7 @@ SCENARIO("multifail") {
       );
 
       THEN("the failure callback is called") {
+        REQUIRE(!success);
         REQUIRE(failure);
       }
     }
@@ -106,6 +107,7 @@ SCENARIO("multifail") {
       );
 
       THEN("the failure callback is called") {
+        REQUIRE(!success);
         REQUIRE(failure);
       }
     }
@@ -115,7 +117,8 @@ SCENARIO("multifail") {
         mp::factory_forward<A>(false, "abc", 42)
       , mp::factory_forward<A>(false, "def", 123)
       ).construct(
-        [](auto thunk) {
+        [&](auto thunk) {
+          success = true;
           auto res = thunk.construct();
           THEN("the nested types contain the correct values") {
             REQUIRE(res.get_t().get_a_string() == "abc");
@@ -124,12 +127,13 @@ SCENARIO("multifail") {
             REQUIRE(res.get_u().get_an_int() == 123);
           }
         }
-      , []() {
-          THEN("the on_fail callback should not execute") {
-            REQUIRE(false);
-          }
-        }
+      , [&]() { failure = true; }
       );
+
+      THEN("the success callback is called") {
+        REQUIRE(success);
+        REQUIRE(!failure);
+      }
     }
   }
 }
