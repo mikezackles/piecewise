@@ -59,4 +59,30 @@ namespace mz { namespace piecewise {
   };
 }}
 
+// We use UUIDs here to avoid name conflicts
+// Note that this is just sugar and completely optional!
+#ifndef PIECEWISE_NO_MACROS
+  #define PIECEWISE_CONSTRUCT(T) \
+    [](auto&&... args_A2D4A30C_4719_4075_B8AA_554DF8C9BE9D) { \
+      return T( \
+        std::forward< \
+          decltype(args_A2D4A30C_4719_4075_B8AA_554DF8C9BE9D) \
+        >( \
+          args_A2D4A30C_4719_4075_B8AA_554DF8C9BE9D \
+        )... \
+      ); \
+    }
+
+  #define PIECEWISE_BRACED_CONSTRUCT(T) \
+    [](auto&&... args_A2D4A30C_4719_4075_B8AA_554DF8C9BE9D) { \
+      return T{ \
+        std::forward< \
+          decltype(args_A2D4A30C_4719_4075_B8AA_554DF8C9BE9D) \
+        >( \
+          args_A2D4A30C_4719_4075_B8AA_554DF8C9BE9D \
+        )... \
+      }; \
+    }
+#endif
+
 #endif

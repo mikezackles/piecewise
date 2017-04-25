@@ -31,9 +31,7 @@ namespace mz { namespace piecewise {
       if (should_fail) return on_fail();
       return on_success(
         mp::forward(
-          [](auto&&... args)-> A {
-            return {std::forward<decltype(args)>(args)...};
-          }
+          PIECEWISE_BRACED_CONSTRUCT(A)
         , std::move(a_string), an_int
         )
       );
@@ -69,9 +67,7 @@ namespace mz { namespace piecewise {
     , TArgs t_args, UArgs u_args
     ) const {
       return multifail(
-        [](auto&&... args)-> Aggregate<T, U> {
-          return {std::forward<decltype(args)>(args)...};
-        }
+        PIECEWISE_BRACED_CONSTRUCT((Aggregate<T, U>))
       , on_success
       , on_fail
       , std::move(t_args)
