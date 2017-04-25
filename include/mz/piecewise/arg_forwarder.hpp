@@ -43,7 +43,7 @@ namespace mz { namespace piecewise {
   }
 
   template <typename T>
-  struct construct {
+  struct Construct {
     template <typename ...Args>
     auto operator()(Args&&... args) const {
       return T(std::forward<Args>(args)...);
@@ -51,7 +51,7 @@ namespace mz { namespace piecewise {
   };
 
   template <typename T>
-  struct braced_construct {
+  struct BracedConstruct {
     template <typename ...Args>
     auto operator()(Args&&... args) const {
       return T{std::forward<Args>(args)...};
