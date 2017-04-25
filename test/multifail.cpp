@@ -87,11 +87,12 @@ SCENARIO("multifail") {
     bool failure = false;
 
     WHEN("the first nested construction fails") {
-      mp::create<Aggregate<A, A>>(
+      mp::factory_forward<Aggregate<A, A>>(
+        mp::factory_forward<A>(true, "abc", 42)
+      , mp::factory_forward<A>(false, "def", 123)
+      ).construct(
         [&](auto) { success = true; }
       , [&]() { failure = true; }
-      , mp::forward(mp::Factory<A>{}, true, "abc", 42)
-      , mp::forward(mp::Factory<A>{}, false, "def", 123)
       );
 
       THEN("the failure callback is called") {
@@ -100,11 +101,12 @@ SCENARIO("multifail") {
     }
 
     WHEN("the second nested construction fails") {
-      mp::create<Aggregate<A, A>>(
+      mp::factory_forward<Aggregate<A, A>>(
+        mp::factory_forward<A>(false, "abc", 42)
+      , mp::factory_forward<A>(true, "def", 123)
+      ).construct(
         [&](auto) { success = true; }
       , [&]() { failure = true; }
-      , mp::forward(mp::Factory<A>{}, false, "abc", 42)
-      , mp::forward(mp::Factory<A>{}, true, "def", 123)
       );
 
       THEN("the failure callback is called") {
@@ -113,7 +115,10 @@ SCENARIO("multifail") {
     }
 
     WHEN("construction succeeds") {
-      mp::create<Aggregate<A, A>>(
+      mp::factory_forward<Aggregate<A, A>>(
+        mp::factory_forward<A>(false, "abc", 42)
+      , mp::factory_forward<A>(false, "def", 123)
+      ).construct(
         [](auto thunk) {
           auto res = thunk.construct();
           THEN("the nested types contain the correct values") {
@@ -128,8 +133,6 @@ SCENARIO("multifail") {
             REQUIRE(false);
           }
         }
-      , mp::forward(mp::Factory<A>{}, false, "abc", 42)
-      , mp::forward(mp::Factory<A>{}, false, "def", 123)
       );
     }
   }

@@ -115,15 +115,9 @@ namespace mz { namespace piecewise {
     }
   };
 
-  template <
-    typename T
-  , typename OnSuccess
-  , typename OnFail
-  , typename ...Args
-  > inline auto create(
-    OnSuccess&& on_success, OnFail&& on_fail, Args&&... args
-  ) {
-    return Factory<T>{}(on_success, on_fail, std::forward<Args>(args)...);
+  template <typename T, typename ...Args>
+  inline auto factory_forward(Args&&... args) {
+    return forward(Factory<T>{}, std::forward<Args>(args)...);
   }
 }}
 
