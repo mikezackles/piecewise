@@ -69,17 +69,10 @@ namespace mz { namespace piecewise {
     , TArgs t_args, UArgs u_args
     ) const {
       return multifail(
-        [&on_success](auto t_thunk, auto u_thunk) {
-          return on_success(
-            mp::forward(
-              [](auto&&... args)-> Aggregate<T, U> {
-                return {std::forward<decltype(args)>(args)...};
-              }
-            , std::move(t_thunk)
-            , std::move(u_thunk)
-            )
-          );
+        [](auto&&... args)-> Aggregate<T, U> {
+          return {std::forward<decltype(args)>(args)...};
         }
+      , on_success
       , on_fail
       , std::move(t_args)
       , std::move(u_args)
