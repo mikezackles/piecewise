@@ -108,7 +108,7 @@ namespace mz { namespace piecewise {
   }
 
   template <typename T>
-  struct factory {
+  struct Factory {
     template <typename OnSuccess, typename OnFail, typename ...Args>
     auto operator()(OnSuccess&& on_success, OnFail&&, Args&&... args) const {
       return on_success(std::forward<Args>(args)...);
@@ -123,7 +123,7 @@ namespace mz { namespace piecewise {
   > inline auto create(
     OnSuccess&& on_success, OnFail&& on_fail, Args&&... args
   ) {
-    return factory<T>{}(on_success, on_fail, std::forward<Args>(args)...);
+    return Factory<T>{}(on_success, on_fail, std::forward<Args>(args)...);
   }
 }}
 

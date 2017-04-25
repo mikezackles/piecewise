@@ -10,7 +10,7 @@ namespace {
     int get_an_int() const { return an_int; }
 
   private:
-    friend struct mp::factory<A>;
+    friend struct mp::Factory<A>;
     A(std::string a_string_, int an_int_)
       : a_string{std::move(a_string_)}, an_int{an_int_}
     {}
@@ -22,7 +22,7 @@ namespace {
 
 namespace mz { namespace piecewise {
   template <>
-  struct factory<A> {
+  struct Factory<A> {
     template <typename OnSuccess, typename OnFail>
     auto operator()(
       OnSuccess&& on_success, OnFail&& on_fail
@@ -49,7 +49,7 @@ namespace {
     U const &get_u() const { return u; }
 
   private:
-    friend struct mp::factory<Aggregate<T, U>>;
+    friend struct mp::Factory<Aggregate<T, U>>;
     template <typename TArgs, typename UArgs>
     Aggregate(TArgs t_args, UArgs u_args)
       : t{t_args.construct()}, u{u_args.construct()}
@@ -62,7 +62,7 @@ namespace {
 
 namespace mz { namespace piecewise {
   template <typename T, typename U>
-  struct factory<Aggregate<T, U>> {
+  struct Factory<Aggregate<T, U>> {
     template <typename OnSuccess, typename OnFail, typename TArgs, typename UArgs>
     auto operator()(
       OnSuccess&& on_success, OnFail&& on_fail
@@ -90,8 +90,8 @@ SCENARIO("multifail") {
       mp::create<Aggregate<A, A>>(
         [&](auto) { success = true; }
       , [&]() { failure = true; }
-      , mp::forward(mp::factory<A>{}, true, "abc", 42)
-      , mp::forward(mp::factory<A>{}, false, "def", 123)
+      , mp::forward(mp::Factory<A>{}, true, "abc", 42)
+      , mp::forward(mp::Factory<A>{}, false, "def", 123)
       );
 
       THEN("the failure callback is called") {
@@ -103,8 +103,8 @@ SCENARIO("multifail") {
       mp::create<Aggregate<A, A>>(
         [&](auto) { success = true; }
       , [&]() { failure = true; }
-      , mp::forward(mp::factory<A>{}, false, "abc", 42)
-      , mp::forward(mp::factory<A>{}, true, "def", 123)
+      , mp::forward(mp::Factory<A>{}, false, "abc", 42)
+      , mp::forward(mp::Factory<A>{}, true, "def", 123)
       );
 
       THEN("the failure callback is called") {
@@ -128,8 +128,8 @@ SCENARIO("multifail") {
             REQUIRE(false);
           }
         }
-      , mp::forward(mp::factory<A>{}, false, "abc", 42)
-      , mp::forward(mp::factory<A>{}, false, "def", 123)
+      , mp::forward(mp::Factory<A>{}, false, "abc", 42)
+      , mp::forward(mp::Factory<A>{}, false, "def", 123)
       );
     }
   }
