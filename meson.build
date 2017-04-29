@@ -1,0 +1,42 @@
+project(
+  'piecewise'
+, 'cpp'
+, default_options: [
+    'cpp_std=c++14'
+  , 'werror=true'
+  , 'warning_level=3'
+  ]
+)
+
+compiler = meson.get_compiler('cpp')
+if compiler.get_id() == 'gcc'
+  args = [
+    '-fmax-errors=3'
+  ]
+elif compiler.get_id() == 'clang'
+  args = [
+    '-ferror-limit=3'
+  ]
+else
+  args = []
+endif
+
+incdir = include_directories(
+  'bundle/catch/include'
+, 'include'
+)
+
+src = [
+  'test/main.cpp'
+, 'test/basic_aggregate.cpp'
+, 'test/multifail.cpp'
+, 'test/tuple_list.cpp'
+]
+
+tests = executable(
+  'tests'
+, src
+, cpp_args: args
+, include_directories: incdir
+)
+test('all tests', tests)

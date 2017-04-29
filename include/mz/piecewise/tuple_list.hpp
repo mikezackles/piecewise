@@ -23,6 +23,11 @@ namespace mz { namespace piecewise { namespace tuple_list {
       };
     }
 
+    #if defined(__clang__)
+    #elif defined(__GNUC__) || defined(__GNUG__)
+      #pragma GCC diagnostic push
+      #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
+    #endif
     template <typename ...Ts, typename T, std::size_t ...Indices>
     inline auto combine_impl(
       std::tuple<Ts...> reverse_tail
@@ -34,6 +39,10 @@ namespace mz { namespace piecewise { namespace tuple_list {
       , std::move(reverse_head)
       );
     }
+    #if defined(__clang__)
+    #elif defined(__GNUC__) || defined(__GNUG__)
+      #pragma GCC diagnostic pop
+    #endif
   }
 
   template <typename T, typename ...Ts>
