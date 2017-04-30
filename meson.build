@@ -26,7 +26,7 @@ incdir = include_directories(
 , 'include'
 )
 
-src = [
+test_src = [
   'test/main.cpp'
 , 'test/basic_aggregate.cpp'
 , 'test/multifail.cpp'
@@ -35,8 +35,10 @@ src = [
 
 tests = executable(
   'tests'
-, src
+, test_src
 , cpp_args: args
 , include_directories: incdir
 )
 test('all tests', tests)
+
+install_subdir('include', install_dir: 'include')
