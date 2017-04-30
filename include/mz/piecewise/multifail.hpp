@@ -111,7 +111,15 @@ namespace mz { namespace piecewise {
   struct Factory {
     template <typename OnSuccess, typename OnFail, typename ...Args>
     auto operator()(OnSuccess&& on_success, OnFail&&, Args&&... args) const {
-      return on_success(std::forward<Args>(args)...);
+      return on_success(
+        forward(
+          [](auto&&... args) {
+            // Note that we explicitly brace construct
+            return T{std::forward<decltype(args)>(args)...};
+          }
+        , std::forward<Args>(args)...
+        )
+      );
     }
   };
 
