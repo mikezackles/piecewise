@@ -27,6 +27,9 @@ namespace mz { namespace piecewise { namespace tuple_list {
     #elif defined(__GNUC__) || defined(__GNUG__)
       #pragma GCC diagnostic push
       #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
+    #elif defined(_MSC_VER)
+      #pragma warning( push )
+      #pragma warning( disable : 4100 )
     #endif
     template <typename ...Ts, typename T, std::size_t ...Indices>
     inline auto combine_impl(
@@ -42,6 +45,8 @@ namespace mz { namespace piecewise { namespace tuple_list {
     #if defined(__clang__)
     #elif defined(__GNUC__) || defined(__GNUG__)
       #pragma GCC diagnostic pop
+    #elif defined(_MSC_VER)
+      #pragma warning( pop )
     #endif
   }
 

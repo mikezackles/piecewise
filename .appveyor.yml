@@ -1,0 +1,36 @@
+os: Visual Studio 2017
+
+environment:
+  matrix:
+    - arch: x64
+      compiler: msvc2017
+
+platform:
+  - x64
+
+install:
+  - mkdir C:\projects\deps
+  - set NINJA_URL="https://github.com/ninja-build/ninja/releases/download/v1.6.0/ninja-win.zip"
+  - appveyor DownloadFile %NINJA_URL% -FileName C:\projects\deps\ninja.zip
+  - 7z x C:\projects\deps\ninja.zip -oC:\projects\deps\ninja > nul
+  - set PATH=C:\projects\deps\ninja;%PATH%
+  - ninja --version
+  # Use the x86 python only when building for x86 for the cpython tests.
+  # For all other archs (including, say, arm), use the x64 python.
+  - if %arch%==x86 (set MESON_PYTHON_PATH=C:\python34) else (set MESON_PYTHON_PATH=C:\python34-x64)
+  - set PATH=%MESON_PYTHON_PATH%;%PATH%
+  - set PATH=%MESON_PYTHON_PATH%\Scripts;%PATH%
+  - echo Using Python at %MESON_PYTHON_PATH%
+  - python --version
+  - python -m pip install meson
+  - if %compiler%==msvc2017 ( call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\Tools\VsDevCmd.bat" -arch=%arch% )
+
+build_script:
+  - echo Building on %arch% with %compiler%
+  - git submodule update --init
+  - mkdir builddir
+  - meson builddir --backend=ninja --buildtype=release
+  - ninja -C builddir
+
+test_script:
+  - ninja -C builddir test
