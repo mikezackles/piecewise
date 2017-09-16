@@ -16,15 +16,15 @@ arch:
     - ninja
     # aur packages
   script:
-    - mkdir build_sanitizer
-    - CXX=clang++ meson build_sanitizer -Db_sanitize=address
-    - mesontest -C build_sanitizer
-    - mkdir build_clang
-    - CXX=clang++ meson build_clang --buildtype=release
-    - mesontest -C build_clang
-    - mkdir build_gcc
-    - CXX=g++ meson build_gcc --buildtype=release
-    - mesontest -C build_gcc
+    # Disable sanitizer build pending fix in kernel 4.13:
+    # https://github.com/google/sanitizers/issues/856 and
+    # https://github.com/google/sanitizers/issues/837
+    #- CC=clang CXX=clang++ meson build/sanitizer -Db_sanitize=address
+    #- meson test -C build_sanitizer
+    - CC=clang CXX=clang++ meson build/clang --buildtype=release
+    - meson test -C build/clang
+    - CC=gcc CXX=g++ meson build/gcc --buildtype=release
+    - mesontest -C build/gcc
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
