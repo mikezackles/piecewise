@@ -43,19 +43,13 @@ namespace mz { namespace piecewise {
   }
 
   template <typename T>
-  struct Construct {
-    template <typename ...Args>
-    auto operator()(Args&&... args) const {
-      return T(std::forward<Args>(args)...);
-    }
+  auto construct = [](auto... args) {
+    return T(std::forward<decltype(args)>(args)...);
   };
 
   template <typename T>
-  struct BracedConstruct {
-    template <typename ...Args>
-    auto operator()(Args&&... args) const {
-      return T{std::forward<Args>(args)...};
-    }
+  auto braced_construct = [](auto... args) {
+    return T{std::forward<decltype(args)>(args)...};
   };
 }}
 

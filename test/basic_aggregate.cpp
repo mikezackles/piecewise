@@ -50,8 +50,8 @@ namespace {
 SCENARIO("basic aggregate") {
   GIVEN("an aggregate type constructed with rvalue tuples") {
     Aggregate<A, B> aggregate{
-      mp::forward(mp::Construct<A>{}, "foo", 33)
-    , mp::forward(mp::BracedConstruct<B>{}, 42, "bar", 77)
+      mp::forward(mp::construct<A>, "foo", 33)
+    , mp::forward(mp::braced_construct<B>, 42, "bar", 77)
     };
 
     THEN("piecewise construction works") {
