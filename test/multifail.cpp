@@ -230,7 +230,7 @@ SCENARIO("multifail") {
       , [&](auto /* e */) {
           // We could print the error generically here:
           // ```
-          // std::cout << "Error: " << decltype(e)::description << std::endl;
+          // std::cerr << "Error: " << decltype(e)::description << std::endl;
           // ```
         }
       );
