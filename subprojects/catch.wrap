@@ -1,0 +1,5 @@
+[wrap-git]
+directory=catch
+url=https://github.com/mikezackles/Catch
+push-url=git@github.com:mikezackles/Catch
+revision=origin/meson

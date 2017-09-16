@@ -8,6 +8,8 @@ project(
   ]
 )
 
+catch = subproject('catch')
+
 compiler = meson.get_compiler('cpp')
 if compiler.get_id() == 'gcc'
   args = [
@@ -22,8 +24,7 @@ else
 endif
 
 incdir = include_directories(
-  'bundle/catch/include'
-, 'include'
+  'include'
 )
 
 test_src = [
@@ -38,6 +39,7 @@ tests = executable(
 , test_src
 , cpp_args: args
 , include_directories: incdir
+, dependencies: catch.get_variable('catch')
 )
 test('all tests', tests)
 

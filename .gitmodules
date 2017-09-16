@@ -1,3 +1,0 @@
-[submodule "bundle/catch"]
-	path = bundle/catch
-	url = git://github.com/philsquared/Catch
