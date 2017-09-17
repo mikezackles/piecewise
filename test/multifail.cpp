@@ -85,8 +85,8 @@ namespace mz { namespace piecewise {
           [](auto&&... args)-> A {
             return {std::forward<decltype(args)>(args)...};
           }
-          // The arguments to be passed to `A`'s constructor
-        , std::move(a_string), an_int
+        , // The arguments to be passed to `A`'s constructor
+          std::move(a_string), an_int
         )
       );
     }
@@ -107,7 +107,7 @@ namespace {
 
   private:
     // This gives piecewise the ability to call the private constructor.
-    friend struct mp::AggregateFactory<Aggregate<T, U, V>>;
+    friend struct mp::Aggregate<Aggregate<T, U, V>>;
     template <typename TThunk, typename UThunk, typename VThunk>
     Aggregate(TThunk t_thunk, UThunk u_thunk, VThunk v_thunk)
       : t{t_thunk.construct()}
