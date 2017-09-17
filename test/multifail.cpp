@@ -108,11 +108,11 @@ namespace {
   private:
     // This gives piecewise the ability to call the private constructor.
     friend struct mp::AggregateFactory<Aggregate<T, U, V>>;
-    template <typename TBuilder, typename UBuilder, typename VBuilder>
-    Aggregate(TBuilder t_builder, UBuilder u_builder, VBuilder v_builder)
-      : t{t_builder.construct()}
-      , u{u_builder.construct()}
-      , v{v_builder.construct()}
+    template <typename TThunk, typename UThunk, typename VThunk>
+    Aggregate(TThunk t_thunk, UThunk u_thunk, VThunk v_thunk)
+      : t{t_thunk.construct()}
+      , u{u_thunk.construct()}
+      , v{v_thunk.construct()}
     {}
 
     T t;
@@ -146,7 +146,7 @@ SCENARIO("multifail") {
         [&](auto) { success = true; }
       , // Here we construct a failure callback out of lambdas that pattern
         // matches based on error type. Notice that order makes no difference.
-        mp::make_lambda_overload(
+        mp::error_handler(
           [&](A::IntNegativeError) { failure2 = true; }
         , [&](A::StringEmptyError) { failure1 = true; }
         )
@@ -168,7 +168,7 @@ SCENARIO("multifail") {
       , mp::forward(mp::factory<B>, 5, 6)
       ).construct(
         [&](auto) { success = true; }
-      , mp::make_lambda_overload(
+      , mp::error_handler(
           [&](A::StringEmptyError) { failure1 = true; }
         , [&](A::IntNegativeError) { failure2 = true; }
         )
