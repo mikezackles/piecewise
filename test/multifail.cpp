@@ -10,6 +10,8 @@
 #include <mz/piecewise/constructors.hpp>
 #include <mz/piecewise/lambda_overload.hpp>
 #include <mz/piecewise/multifail.hpp>
+#include <mz/piecewise/factory.hpp>
+#include <mz/piecewise/aggregate.hpp>
 
 #include <string>
 
@@ -85,7 +87,7 @@ namespace {
   };
 
   // `B` can be constructed normally, so it needs no explicit factory function
-  // to be compatible with `mz::piecewise::factory_forward`.
+  // to be compatible with `mz::piecewise::factory`.
   struct B {
     int int_a;
     int int_b;

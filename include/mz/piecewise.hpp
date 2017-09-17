@@ -4,3 +4,5 @@
 #include <mz/piecewise/lambda_overload.hpp>
 #include <mz/piecewise/multifail.hpp>
 #include <mz/piecewise/tuple_list.hpp>
+#include <mz/piecewise/factory.hpp>
+#include <mz/piecewise/aggregate.hpp>
