@@ -131,13 +131,13 @@ SCENARIO("multifail") {
       // Here we specify all the information necessary to construct an
       // `Aggregate<A, A, B>`.
       mp::forward(
-        mp::AggregateFactory<Aggregate<A, A, B>>{}
+        mp::aggregate<Aggregate<A, A, B>>
       , // Here we specify the arguments to construct each of the aggregate's
         // nested types. Notice that in this case, the first call should fail
         // validation.
-        mp::forward(mp::Factory<A>{}, "abc", -42)
-      , mp::forward(mp::Factory<A>{}, "def", 123)
-      , mp::forward(mp::Factory<B>{}, 5, 6)
+        mp::forward(mp::factory<A>, "abc", -42)
+      , mp::forward(mp::factory<A>, "def", 123)
+      , mp::forward(mp::factory<B>, 5, 6)
       )
       // Here we pass one lambda to be invoked if the instance is successfully
       // created and one lambda to be invoked if instantiation fails. In this
@@ -161,11 +161,11 @@ SCENARIO("multifail") {
 
     WHEN("the second nested construction fails") {
       mp::forward(
-        mp::AggregateFactory<Aggregate<A, A, B>>{}
-      , mp::forward(mp::Factory<A>{}, "abc", 42)
+        mp::aggregate<Aggregate<A, A, B>>
+      , mp::forward(mp::factory<A>, "abc", 42)
       , // Should fail validation
-        mp::forward(mp::Factory<A>{}, "", 123)
-      , mp::forward(mp::Factory<B>{}, 5, 6)
+        mp::forward(mp::factory<A>, "", 123)
+      , mp::forward(mp::factory<B>, 5, 6)
       ).construct(
         [&](auto) { success = true; }
       , mp::make_lambda_overload(
@@ -183,10 +183,10 @@ SCENARIO("multifail") {
 
     WHEN("construction succeeds") {
       mp::forward(
-        mp::AggregateFactory<Aggregate<A, A, B>>{}
-      , mp::forward(mp::Factory<A>{}, "abc", 42)
-      , mp::forward(mp::Factory<A>{}, "def", 123)
-      , mp::forward(mp::Factory<B>{}, 5, 6)
+        mp::aggregate<Aggregate<A, A, B>>
+      , mp::forward(mp::factory<A>, "abc", 42)
+      , mp::forward(mp::factory<A>, "def", 123)
+      , mp::forward(mp::factory<B>, 5, 6)
       ).construct(
         [&](auto thunk) {
           success = true;

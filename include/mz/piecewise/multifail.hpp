@@ -123,7 +123,10 @@ namespace mz { namespace piecewise {
     }
   };
 
-  template <typename Aggregate>
+  template <typename T>
+  Factory<T> factory{};
+
+  template <typename T>
   struct AggregateFactory {
     template <
       typename OnSuccess, typename OnFail
@@ -136,7 +139,7 @@ namespace mz { namespace piecewise {
       // for each member. If it encounters an error, it calls the on_fail
       // callback and returns that function's result.
       return multifail(
-        [](auto&&... args)-> Aggregate {
+        [](auto&&... args)-> T {
           return {std::forward<decltype(args)>(args)...};
         }
       , on_success
@@ -145,6 +148,9 @@ namespace mz { namespace piecewise {
       );
     }
   };
+
+  template <typename T>
+  AggregateFactory<T> aggregate{};
 }}
 
 #endif
