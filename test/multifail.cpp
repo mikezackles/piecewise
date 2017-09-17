@@ -7,6 +7,7 @@
   #pragma warning( pop )
 #endif
 #include <mz/piecewise/arg_forwarder.hpp>
+#include <mz/piecewise/constructors.hpp>
 #include <mz/piecewise/lambda_overload.hpp>
 #include <mz/piecewise/multifail.hpp>
 
@@ -16,7 +17,7 @@ namespace mp = mz::piecewise;
 
 namespace {
   // `A` simulates a type that could fail during creation.
-  class A final {
+  class A final : private mp::Constructors<A> {
   public:
     // Two error types are used to distinguish separate error conditions. Below
     // there are examples of handling both errors generically and of handling
@@ -55,11 +56,9 @@ namespace {
         return on_success(
           // Create a thunk
           mp::forward(
-            // This is the actual creation callback. Note that this has access to
-            // `A`'s constructor because `A` specified `Factory<A>` as a friend.
-            [](auto&&... args)-> A {
-              return {std::forward<decltype(args)>(args)...};
-            }
+            // This is the actual creation callback. It just calls `A`'s
+            // constructor in the normal way
+            constructor()
           , // The arguments to be passed to `A`'s constructor
             std::move(a_string), an_int
           )
@@ -68,6 +67,7 @@ namespace {
     }
 
   private:
+    friend class mp::Constructors<A>;
     // The private constructor is the final step of construction an object of
     // type `A`, and it is only called if `A`'s factory function has succeeded.
     A(std::string a_string_, int an_int_)
