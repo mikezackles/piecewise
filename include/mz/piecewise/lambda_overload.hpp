@@ -17,7 +17,7 @@ namespace mz { namespace piecewise {
   };
 
   template <typename ...Lambdas>
-  auto error_handler(Lambdas... lambdas) {
+  auto handler(Lambdas... lambdas) {
     return LambdaOverload<Lambdas...>{std::move(lambdas)...};
   }
 }}

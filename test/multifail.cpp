@@ -145,7 +145,7 @@ SCENARIO("multifail") {
         [&](auto) { success = true; }
       , // Here we construct a failure callback out of lambdas that pattern
         // matches based on error type. Notice that order makes no difference.
-        mp::error_handler(
+        mp::handler(
           [&](A::IntNegativeError) { failure2 = true; }
         , [&](A::StringEmptyError) { failure1 = true; }
         )
@@ -167,7 +167,7 @@ SCENARIO("multifail") {
       , mp::forward(mp::factory<B>, 5, 6)
       ).construct(
         [&](auto) { success = true; }
-      , mp::error_handler(
+      , mp::handler(
           [&](A::StringEmptyError) { failure1 = true; }
         , [&](A::IntNegativeError) { failure2 = true; }
         )
