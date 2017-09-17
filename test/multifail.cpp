@@ -15,6 +15,12 @@
 
 namespace mp = mz::piecewise;
 
+#if __cplusplus >= 201703L
+  #define CONSTEXPR_LAMBDA constexpr
+#else
+  #define CONSTEXPR_LAMBDA
+#endif
+
 namespace {
   // `A` simulates a type that could fail during creation.
   class A final : private mp::Constructors<A> {
@@ -41,7 +47,7 @@ namespace {
     // the `on_success` callback via `mz::piecewise::forward`. A thunk is
     // basically a construction callback paired with a group of perfectly
     // forwarded references to arguments.
-    static auto factory() {
+    static CONSTEXPR_LAMBDA auto factory() {
       return [](
         auto&& on_success, auto&& on_fail
       , std::string a_string, int an_int
@@ -205,3 +211,5 @@ SCENARIO("multifail") {
     }
   }
 }
+
+#undef CONSTEXPR_LAMBDA

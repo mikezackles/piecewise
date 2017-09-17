@@ -4,17 +4,28 @@
 namespace mz { namespace piecewise {
   template <typename T>
   class Constructors {
+  private:
+    struct ParenthesizedConstructor {
+      template <typename ...Args>
+      T operator()(Args&&... args) const {
+        return T(std::forward<Args>(args)...);
+      }
+    };
+
+    struct BracedConstructor {
+      template <typename ...Args>
+      T operator()(Args&&... args) const {
+        return T{std::forward<Args>(args)...};
+      }
+    };
+
   public:
-    static auto constructor() {
-      return [](auto&&... args) {
-        return T(std::forward<decltype(args)>(args)...);
-      };
+    static constexpr auto constructor() {
+      return ParenthesizedConstructor{};
     }
 
-    static auto braced_constructor() {
-      return [](auto&&... args) {
-        return T{std::forward<decltype(args)>(args)...};
-      };
+    static constexpr auto braced_constructor() {
+      return BracedConstructor{};
     }
   };
 }}

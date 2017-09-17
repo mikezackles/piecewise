@@ -124,7 +124,7 @@ namespace mz { namespace piecewise {
   };
 
   template <typename T>
-  Factory<T> factory{};
+  constexpr Factory<T> factory{};
 
   template <typename T>
   struct Aggregate {
@@ -150,7 +150,7 @@ namespace mz { namespace piecewise {
   };
 
   template <typename T>
-  Aggregate<T> aggregate{};
+  constexpr Aggregate<T> aggregate{};
 }}
 
 #endif
