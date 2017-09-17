@@ -44,3 +44,5 @@ tests = executable(
 test('all tests', tests)
 
 install_subdir('include', install_dir: 'include')
+
+piecewise = declare_dependency(include_directories : incdir)
