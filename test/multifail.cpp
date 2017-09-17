@@ -95,9 +95,9 @@ namespace mz { namespace piecewise {
 
 namespace {
   // `Aggregate` demonstrates an aggregate type whose private members can all be
-  // injected as template parameters. Since some of its members' can fail to be
-  // created, it must also define a factory function by specializing
-  // `mz::piecewise::Factory`.
+  // injected as template parameters. If any of these members fail to be
+  // created, the failure callback will be called, and the aggregate will not be
+  // created.
   template <typename T, typename U, typename V>
   class Aggregate final {
   public:
@@ -106,12 +106,13 @@ namespace {
     V const &get_v() const { return v; }
 
   private:
-    friend struct mp::Factory<Aggregate<T, U, V>>;
-    template <typename TArgs, typename UArgs, typename VArgs>
-    Aggregate(TArgs t_args, UArgs u_args, VArgs v_args)
-      : t{t_args.construct()}
-      , u{u_args.construct()}
-      , v{v_args.construct()}
+    // This gives piecewise the ability to call the private constructor.
+    friend struct mp::AggregateFactory<Aggregate<T, U, V>>;
+    template <typename TBuilder, typename UBuilder, typename VBuilder>
+    Aggregate(TBuilder t_builder, UBuilder u_builder, VBuilder v_builder)
+      : t{t_builder.construct()}
+      , u{u_builder.construct()}
+      , v{v_builder.construct()}
     {}
 
     T t;
@@ -119,37 +120,6 @@ namespace {
     V v;
   };
 }
-
-namespace mz { namespace piecewise {
-  // A factory function for `Aggregate`. Notice that we call
-  // `mz::piecewise::multifail`. This function takes care of forwarding
-  // arguments to the appropriate members and calling the failure callback on
-  // any failure.
-  template <typename T, typename U, typename V>
-  struct Factory<Aggregate<T, U, V>> {
-    template <
-      typename OnSuccess, typename OnFail
-    , typename TArgs, typename UArgs, typename VArgs
-    > auto operator()(
-      OnSuccess&& on_success, OnFail&& on_fail
-    , TArgs t_args, UArgs u_args, VArgs v_args
-    ) const {
-      // This function iterates through the argument packs, generating a thunk
-      // for each member. If it encounters an error, it calls the on_fail
-      // callback and returns that function's result.
-      return multifail(
-        [](auto&&... args)-> Aggregate<T, U, V> {
-          return {std::forward<decltype(args)>(args)...};
-        }
-      , on_success
-      , on_fail
-      , std::move(t_args)
-      , std::move(u_args)
-      , std::move(v_args)
-      );
-    }
-  };
-}}
 
 SCENARIO("multifail") {
   GIVEN("a multifail aggregate") {
@@ -160,13 +130,14 @@ SCENARIO("multifail") {
     WHEN("the first nested construction fails") {
       // Here we specify all the information necessary to construct an
       // `Aggregate<A, A, B>`.
-      mp::factory_forward<Aggregate<A, A, B>>(
-        // Here we specify the arguments to construct each of the aggregate's
+      mp::forward(
+        mp::AggregateFactory<Aggregate<A, A, B>>{}
+      , // Here we specify the arguments to construct each of the aggregate's
         // nested types. Notice that in this case, the first call should fail
         // validation.
-        mp::factory_forward<A>("abc", -42)
-      , mp::factory_forward<A>("def", 123)
-      , mp::factory_forward<B>(5, 6)
+        mp::forward(mp::Factory<A>{}, "abc", -42)
+      , mp::forward(mp::Factory<A>{}, "def", 123)
+      , mp::forward(mp::Factory<B>{}, 5, 6)
       )
       // Here we pass one lambda to be invoked if the instance is successfully
       // created and one lambda to be invoked if instantiation fails. In this
@@ -189,11 +160,12 @@ SCENARIO("multifail") {
     }
 
     WHEN("the second nested construction fails") {
-      mp::factory_forward<Aggregate<A, A, B>>(
-        mp::factory_forward<A>("abc", 42)
+      mp::forward(
+        mp::AggregateFactory<Aggregate<A, A, B>>{}
+      , mp::forward(mp::Factory<A>{}, "abc", 42)
       , // Should fail validation
-        mp::factory_forward<A>("", 123)
-      , mp::factory_forward<B>(5, 6)
+        mp::forward(mp::Factory<A>{}, "", 123)
+      , mp::forward(mp::Factory<B>{}, 5, 6)
       ).construct(
         [&](auto) { success = true; }
       , mp::make_lambda_overload(
@@ -210,10 +182,11 @@ SCENARIO("multifail") {
     }
 
     WHEN("construction succeeds") {
-      mp::factory_forward<Aggregate<A, A, B>>(
-        mp::factory_forward<A>("abc", 42)
-      , mp::factory_forward<A>("def", 123)
-      , mp::factory_forward<B>(5, 6)
+      mp::forward(
+        mp::AggregateFactory<Aggregate<A, A, B>>{}
+      , mp::forward(mp::Factory<A>{}, "abc", 42)
+      , mp::forward(mp::Factory<A>{}, "def", 123)
+      , mp::forward(mp::Factory<B>{}, 5, 6)
       ).construct(
         [&](auto thunk) {
           success = true;
