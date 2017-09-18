@@ -35,7 +35,7 @@ namespace mz { namespace piecewise {
   }
 
   template <typename Callback, typename ...Args>
-  inline auto forward(Callback&& callback, Args&&... args) {
+  inline auto builder(Callback&& callback, Args&&... args) {
     return make_wrapper(
       callback
     , std::forward_as_tuple(std::forward<Args>(args)...)

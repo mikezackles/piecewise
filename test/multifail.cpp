@@ -45,8 +45,8 @@ namespace {
 
     // The true logic for construction of `A` lives here. Error cases in this
     // function result in calls to the `on_fail` callback, and successful
-    // construction results in the forwarding of what we will call a "thunk" to
-    // the `on_success` callback via `mz::piecewise::forward`. A thunk is
+    // construction results in the forwarding of what we will call a "builder"
+    // to the `on_success` callback via `mz::piecewise::forward`. A builder is
     // basically a construction callback paired with a group of perfectly
     // forwarded references to arguments.
     static CONSTEXPR_LAMBDA auto factory() {
@@ -57,13 +57,14 @@ namespace {
         // Validate arguments
         if (a_string.empty()) return on_fail(A::StringEmptyError{});
         if (an_int < 0) return on_fail(A::IntNegativeError{});
-        // Now the success callback gets a thunk which creates a *valid* instance
-        // of `A`. We can now always assume that every instance of `A` satisfies
-        // these preconditions. (This doesn't necessarily hold for a moved-from
-        // instance of `A`, so it is up to the programmer to avoid such usage.)
+        // Now the success callback gets a builder which creates a *valid*
+        // instance of `A`. We can now always assume that every instance of `A`
+        // satisfies these preconditions. (This doesn't necessarily hold for a
+        // moved-from instance of `A`, so it is up to the programmer to avoid
+        // such usage.)
         return on_success(
-          // Create a thunk
-          mp::forward(
+          // Create a builder
+          mp::builder(
             // This is the actual creation callback. It just calls `A`'s
             // constructor in the normal way
             constructor()
@@ -107,11 +108,11 @@ namespace {
   private:
     // This gives piecewise the ability to call the private constructor.
     friend struct mp::Aggregate<Aggregate<T, U, V>>;
-    template <typename TThunk, typename UThunk, typename VThunk>
-    Aggregate(TThunk t_thunk, UThunk u_thunk, VThunk v_thunk)
-      : t{t_thunk.construct()}
-      , u{u_thunk.construct()}
-      , v{v_thunk.construct()}
+    template <typename TBuilder, typename UBuilder, typename VBuilder>
+    Aggregate(TBuilder t_builder, UBuilder u_builder, VBuilder v_builder)
+      : t{t_builder.construct()}
+      , u{u_builder.construct()}
+      , v{v_builder.construct()}
     {}
 
     T t;
@@ -129,14 +130,14 @@ SCENARIO("multifail") {
     WHEN("the first nested construction fails") {
       // Here we specify all the information necessary to construct an
       // `Aggregate<A, A, B>`.
-      mp::forward(
-        mp::aggregate<Aggregate<A, A, B>>
+      mp::builder(
+        mp::multifactory<Aggregate<A, A, B>>
       , // Here we specify the arguments to construct each of the aggregate's
         // nested types. Notice that in this case, the first call should fail
         // validation.
-        mp::forward(A::factory(), "abc", -42)
-      , mp::forward(A::factory(), "def", 123)
-      , mp::forward(mp::factory<B>, 5, 6)
+        mp::builder(A::factory(), "abc", -42)
+      , mp::builder(A::factory(), "def", 123)
+      , mp::builder(mp::factory<B>, 5, 6)
       )
       // Here we pass one lambda to be invoked if the instance is successfully
       // created and one lambda to be invoked if instantiation fails. In this
@@ -159,12 +160,12 @@ SCENARIO("multifail") {
     }
 
     WHEN("the second nested construction fails") {
-      mp::forward(
-        mp::aggregate<Aggregate<A, A, B>>
-      , mp::forward(A::factory(), "abc", 42)
+      mp::builder(
+        mp::multifactory<Aggregate<A, A, B>>
+      , mp::builder(A::factory(), "abc", 42)
       , // Should fail validation
-        mp::forward(A::factory(), "", 123)
-      , mp::forward(mp::factory<B>, 5, 6)
+        mp::builder(A::factory(), "", 123)
+      , mp::builder(mp::factory<B>, 5, 6)
       ).construct(
         [&](auto) { success = true; }
       , mp::handler(
@@ -181,15 +182,15 @@ SCENARIO("multifail") {
     }
 
     WHEN("construction succeeds") {
-      mp::forward(
-        mp::aggregate<Aggregate<A, A, B>>
-      , mp::forward(A::factory(), "abc", 42)
-      , mp::forward(A::factory(), "def", 123)
-      , mp::forward(mp::factory<B>, 5, 6)
+      mp::builder(
+        mp::multifactory<Aggregate<A, A, B>>
+      , mp::builder(A::factory(), "abc", 42)
+      , mp::builder(A::factory(), "def", 123)
+      , mp::builder(mp::factory<B>, 5, 6)
       ).construct(
-        [&](auto thunk) {
+        [&](auto builder) {
           success = true;
-          auto res = thunk.construct();
+          auto res = builder.construct();
           THEN("the nested types contain the correct values") {
             REQUIRE(res.get_t().get_a_string() == "abc");
             REQUIRE(res.get_t().get_an_int() == 42);

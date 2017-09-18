@@ -13,7 +13,7 @@ namespace mz { namespace piecewise {
       OnSuccess&& on_success, OnFail&& on_fail
     , TBuilders... t_builders
     ) const {
-      // This function iterates through the argument packs, generating a thunk
+      // This function iterates through the argument packs, generating a builder
       // for each member. If it encounters an error, it calls the on_fail
       // callback and returns that function's result.
       return multifail(
@@ -28,7 +28,7 @@ namespace mz { namespace piecewise {
   };
 
   template <typename T>
-  constexpr Aggregate<T> aggregate{};
+  constexpr Aggregate<T> multifactory{};
 }}
 
 #endif

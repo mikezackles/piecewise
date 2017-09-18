@@ -9,53 +9,53 @@ namespace mz { namespace piecewise {
     template <
       typename Constructor
     , typename OnSuccess, typename OnFail
-    , typename ArgPacks, typename Thunks
+    , typename ArgPacks, typename Builders
     > struct MultifailImpl;
 
     template <
       typename Constructor
     , typename OnSuccess, typename OnFail
-    , typename ...ArgPacks, typename ...Thunks
+    , typename ...ArgPacks, typename ...Builders
     > inline auto multifail_impl(
         Constructor& constructor
       , OnSuccess& on_success, OnFail& on_fail
-      , std::tuple<ArgPacks...> arg_packs, std::tuple<Thunks...> thunks
+      , std::tuple<ArgPacks...> arg_packs, std::tuple<Builders...> builders
     ) {
       return MultifailImpl<
         Constructor
       , OnSuccess, OnFail
       , std::tuple<ArgPacks...>
-      , std::tuple<Thunks...>
+      , std::tuple<Builders...>
       >{}(
         constructor
       , on_success, on_fail
       , std::move(arg_packs)
-      , std::move(thunks)
+      , std::move(builders)
       );
     }
 
     template <
       typename Constructor
     , typename OnSuccess, typename OnFail
-    , typename ArgPacks, typename Thunks
+    , typename ArgPacks, typename Builders
     > struct MultifailImpl {
       auto operator()(
         Constructor& constructor
       , OnSuccess& on_success, OnFail& on_fail
-      , ArgPacks arg_packs, Thunks thunks
+      , ArgPacks arg_packs, Builders builders
       ) const {
         auto split_arg_packs = tuple_list::split(std::move(arg_packs));
         return split_arg_packs.head.construct(
           [ &constructor
           , &on_success, &on_fail
           , arg_packs = std::move(split_arg_packs.tail)
-          , thunks = std::move(thunks)
-          ] (auto thunk) mutable {
+          , builders = std::move(builders)
+          ] (auto builder) mutable {
             multifail_impl(
               constructor
             , on_success, on_fail
             , std::move(arg_packs)
-            , tuple_list::combine(std::move(thunks), std::move(thunk))
+            , tuple_list::combine(std::move(builders), std::move(builder))
             );
           }
         , on_fail
@@ -66,25 +66,25 @@ namespace mz { namespace piecewise {
     template <
       typename Constructor
     , typename OnSuccess, typename OnFail
-    , typename Thunks
+    , typename Builders
     > struct MultifailImpl<
         Constructor
       , OnSuccess, OnFail
       , std::tuple<>
-      , Thunks
+      , Builders
       > {
       auto operator()(
         Constructor& constructor
       , OnSuccess& on_success, OnFail&
-      , std::tuple<>, Thunks packed_thunks
+      , std::tuple<>, Builders packed_builders
       ) const {
         return forward_tuple(
-          [&constructor, &on_success](auto... thunks) {
+          [&constructor, &on_success](auto... builders) {
             return on_success(
-              forward(constructor, std::move(thunks)...)
+              builder(constructor, std::move(builders)...)
             );
           }
-        , std::move(packed_thunks)
+        , std::move(packed_builders)
         );
       }
     };

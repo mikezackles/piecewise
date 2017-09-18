@@ -9,7 +9,7 @@ namespace mz { namespace piecewise {
     template <typename OnSuccess, typename OnFail, typename ...Args>
     auto operator()(OnSuccess&& on_success, OnFail&&, Args&&... args) const {
       return on_success(
-        forward(
+        builder(
           [](auto&&... args) {
             // Note that we explicitly brace construct
             return T{std::forward<decltype(args)>(args)...};
