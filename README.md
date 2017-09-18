@@ -61,6 +61,8 @@ namespace {
     }
 
   private:
+    // Give the `Constructors` helper permission to call the private
+    // constructor.
     friend class mp::Constructors<A>;
     // The private constructor is the final step of construction an object of
     // type `A`, and it is only called if `A`'s factory function has succeeded.
