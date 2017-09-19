@@ -127,4 +127,21 @@ mp::builder(
 );
 ```
 
+And here we pattern match based on error type:
+```c++
+mp::builder(
+  mp::multifactory<Aggregate<A, A, B>>
+, mp::builder(A::factory(), "abc", 42)
+, // Should fail validation
+  mp::builder(A::factory(), "", 123)
+, mp::builder(mp::factory<B>, 5, 6)
+).construct(
+  [&](auto) { /* success! */ }
+, mp::handler(
+    [&](A::StringEmptyError) { /* Handle string validation error */ }
+  , [&](A::IntNegativeError) { /* Handle int validation error */ }
+  )
+);
+```
+
 The snippets above come from [here](test/multifail.cpp).
