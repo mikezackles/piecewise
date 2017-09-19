@@ -94,7 +94,7 @@ namespace {
 
   private:
     // This gives piecewise the ability to call the private constructor.
-    friend struct mp::Aggregate<Aggregate<T, U, V>>;
+    friend struct mp::MultiFactory<Aggregate<T, U, V>>;
     template <typename TBuilder, typename UBuilder, typename VBuilder>
     Aggregate(TBuilder t_builder, UBuilder u_builder, VBuilder v_builder)
       : t{t_builder.construct()}
