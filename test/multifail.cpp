@@ -6,7 +6,7 @@
 #if defined(_MSC_VER)
   #pragma warning( pop )
 #endif
-#include <mz/piecewise/arg_forwarder.hpp>
+#include <mz/piecewise/builder.hpp>
 #include <mz/piecewise/constructors.hpp>
 #include <mz/piecewise/lambda_overload.hpp>
 #include <mz/piecewise/multifail.hpp>

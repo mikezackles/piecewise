@@ -5,9 +5,9 @@
 
 namespace mz { namespace piecewise {
   template <typename Callback, typename ...RefTypes>
-  class Wrapper {
+  class Builder {
   public:
-    Wrapper(Callback&& callback_, std::tuple<RefTypes...> packed_args_)
+    Builder(Callback&& callback_, std::tuple<RefTypes...> packed_args_)
       : packed_args{std::move(packed_args_)}
       , callback{callback_}
     {}
@@ -27,30 +27,20 @@ namespace mz { namespace piecewise {
   };
 
   template <typename Callback, typename ...RefTypes>
-  inline auto make_wrapper(
+  inline auto make_builder(
     Callback&& callback
   , std::tuple<RefTypes...> packed_args
-  )-> Wrapper<Callback, RefTypes...> {
+  )-> Builder<Callback, RefTypes...> {
     return {callback, std::move(packed_args)};
   }
 
   template <typename Callback, typename ...Args>
   inline auto builder(Callback&& callback, Args&&... args) {
-    return make_wrapper(
+    return make_builder(
       callback
     , std::forward_as_tuple(std::forward<Args>(args)...)
     );
   }
-
-  template <typename T>
-  auto construct = [](auto... args) {
-    return T(std::forward<decltype(args)>(args)...);
-  };
-
-  template <typename T>
-  auto braced_construct = [](auto... args) {
-    return T{std::forward<decltype(args)>(args)...};
-  };
 }}
 
 #endif

@@ -1,4 +1,5 @@
-#include <mz/piecewise/arg_forwarder.hpp>
+#include <mz/piecewise/builder.hpp>
+#include <mz/piecewise/construct_helpers.hpp>
 #include <mz/piecewise/constructors.hpp>
 #include <mz/piecewise/factory.hpp>
 #include <mz/piecewise/forward_tuple.hpp>
