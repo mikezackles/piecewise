@@ -1,8 +1,8 @@
 #include <mz/piecewise/arg_forwarder.hpp>
 #include <mz/piecewise/constructors.hpp>
+#include <mz/piecewise/factory.hpp>
 #include <mz/piecewise/forward_tuple.hpp>
 #include <mz/piecewise/lambda_overload.hpp>
+#include <mz/piecewise/multifactory.hpp>
 #include <mz/piecewise/multifail.hpp>
 #include <mz/piecewise/tuple_list.hpp>
-#include <mz/piecewise/factory.hpp>
-#include <mz/piecewise/aggregate.hpp>

@@ -5,7 +5,7 @@
 
 namespace mz { namespace piecewise {
   template <typename T>
-  struct Aggregate {
+  struct MultiFactory {
     template <
       typename OnSuccess, typename OnFail
     , typename ...TBuilders
@@ -28,7 +28,7 @@ namespace mz { namespace piecewise {
   };
 
   template <typename T>
-  constexpr Aggregate<T> multifactory{};
+  constexpr MultiFactory<T> multifactory{};
 }}
 
 #endif
