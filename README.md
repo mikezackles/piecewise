@@ -12,12 +12,21 @@ namespace mp = mz::piecewise;
 
 namespace {
   // `A` simulates a type that could fail during creation.
-  class A final : private mp::Constructors<A> {
+  class A final
+    : private mp::ConstructorHelper<A>
+    , public mp::BuilderHelper<A>
+  {
+  private:
+    std::string a_string;
+    int an_int;
+
   public:
     // Two error types are used to distinguish separate error conditions. Below
     // there are examples of handling both errors generically and of handling
     // them individually.
     struct StringEmptyError {
+      // It's a good idea to give errors a static description so that generic
+      // error handlers can print it.
       static constexpr auto description = "String is empty";
     };
 
@@ -27,6 +36,12 @@ namespace {
 
     std::string const &get_a_string() const { return a_string; }
     int get_an_int() const { return an_int; }
+
+  private:
+    // Give the `Constructors` helper permission to call the private
+    // constructor and the factory member function.
+    friend class mp::ConstructorHelper<A>;
+    friend class mp::BuilderHelper<A>;
 
     // The true logic for construction of `A` lives here. Error cases in this
     // function result in calls to the `on_fail` callback, and successful
@@ -60,18 +75,11 @@ namespace {
       };
     }
 
-  private:
-    // Give the `Constructors` helper permission to call the private
-    // constructor.
-    friend class mp::Constructors<A>;
     // The private constructor is the final step of construction an object of
     // type `A`, and it is only called if `A`'s factory function has succeeded.
     A(std::string a_string_, int an_int_)
       : a_string{std::move(a_string_)}, an_int{an_int_}
     {}
-
-    std::string a_string;
-    int an_int;
   };
 
   // `B` can be constructed normally, so it needs no explicit factory function
@@ -86,7 +94,10 @@ namespace {
   // created, the failure callback will be called, and the aggregate will not be
   // created.
   template <typename T, typename U, typename V>
-  class Aggregate final {
+  class Aggregate final
+    : private mp::ConstructorHelper<Aggregate<T, U, V>>
+    , public mp::BuilderHelper<Aggregate<T, U, V>>
+  {
   public:
     T const &get_t() const { return t; }
     U const &get_u() const { return u; }
@@ -94,7 +105,23 @@ namespace {
 
   private:
     // This gives piecewise the ability to call the private constructor.
-    friend struct mp::MultiFactory<Aggregate<T, U, V>>;
+    friend class mp::ConstructorHelper<Aggregate<T, U, V>>;
+    friend class mp::BuilderHelper<Aggregate<T, U, V>>;
+
+    static CONSTEXPR_LAMBDA auto factory() {
+      return [](
+        auto&& on_success, auto&& on_fail
+      , auto... builders
+      ) {
+        return mp::multifail(
+          Aggregate::braced_constructor()
+        , on_success
+        , on_fail
+        , std::move(builders)...
+        );
+      };
+    }
+
     template <typename TBuilder, typename UBuilder, typename VBuilder>
     Aggregate(TBuilder t_builder, UBuilder u_builder, VBuilder v_builder)
       : t{t_builder.construct()}
@@ -111,10 +138,9 @@ namespace {
 
 And here we build it:
 ```c++
-mp::builder(
-  mp::multifactory<Aggregate<A, A, B>>
-, mp::builder(A::factory(), "abc", 42)
-, mp::builder(A::factory(), "def", 123)
+Aggregate<A, A, B>::builder(
+  A::builder("abc", 42)
+, A::builder("def", 123)
 , mp::builder(mp::factory<B>, 5, 6)
 ).construct(
   [](auto builder) {
@@ -129,11 +155,10 @@ mp::builder(
 
 And here we pattern match based on error type:
 ```c++
-mp::builder(
-  mp::multifactory<Aggregate<A, A, B>>
-, mp::builder(A::factory(), "abc", 42)
+Aggregate<A, A, B>::builder(
+  A::builder("abc", 42)
 , // Should fail validation
-  mp::builder(A::factory(), "", 123)
+  A::builder("", 123)
 , mp::builder(mp::factory<B>, 5, 6)
 ).construct(
   [&](auto) { /* success! */ }
