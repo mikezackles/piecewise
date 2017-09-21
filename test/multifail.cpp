@@ -114,6 +114,7 @@ namespace {
     T const &get_t() const { return t; }
     U const &get_u() const { return u; }
     V const &get_v() const { return v; }
+    int get_int() const { return an_int; }
 
   private:
     // This gives piecewise the ability to call the private constructor.
@@ -123,25 +124,33 @@ namespace {
     static CONSTEXPR_LAMBDA auto factory() {
       return [](
         auto&& on_success, auto&& on_fail
-      , auto... builders
+      , auto t_builder, auto u_builder, auto v_builder
+      , int an_int_
       ) {
         return mp::multifail(
           Aggregate::braced_constructor()
         , on_success
         , on_fail
-        , std::move(builders)...
+        , mp::builders(
+            std::move(t_builder), std::move(u_builder), std::move(v_builder)
+          )
+        , an_int_
         );
       };
     }
 
     template <typename TBuilder, typename UBuilder, typename VBuilder>
-    Aggregate(TBuilder t_builder, UBuilder u_builder, VBuilder v_builder)
-      : t{t_builder.construct()}
+    Aggregate(
+      int an_int_
+    , TBuilder t_builder, UBuilder u_builder, VBuilder v_builder
+    ) : t{t_builder.construct()}
+      , an_int{an_int_}
       , u{u_builder.construct()}
       , v{v_builder.construct()}
     {}
 
     T t;
+    int an_int;
     U u;
     V v;
   };
@@ -163,6 +172,7 @@ SCENARIO("multifail") {
         A::builder("abc", -42)
       , A::builder("def", 123)
       , mp::builder(mp::factory<B>, 5, 6)
+      , 3
       )
       // Here we pass one lambda to be invoked if the instance is successfully
       // created and one lambda to be invoked if instantiation fails. In this
@@ -190,6 +200,7 @@ SCENARIO("multifail") {
       , // Should fail validation
         A::builder("", 123)
       , mp::builder(mp::factory<B>, 5, 6)
+      , 3
       ).construct(
         [&](auto) { success = true; }
       , mp::handler(
@@ -210,6 +221,7 @@ SCENARIO("multifail") {
         A::builder("abc", 42)
       , A::builder("def", 123)
       , mp::builder(mp::factory<B>, 5, 6)
+      , 3
       ).construct(
         [&](auto builder) {
           success = true;
@@ -221,6 +233,7 @@ SCENARIO("multifail") {
             REQUIRE(res.get_u().get_an_int() == 123);
             REQUIRE(res.get_v().int_a == 5);
             REQUIRE(res.get_v().int_b == 6);
+            REQUIRE(res.get_int() == 3);
           }
         }
       , [&](auto /* e */) {
