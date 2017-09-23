@@ -134,7 +134,7 @@ namespace {
         , mp::builders(
             std::move(t_builder), std::move(u_builder), std::move(v_builder)
           )
-        , an_int_
+        , mp::arguments(an_int_)
         );
       };
     }
