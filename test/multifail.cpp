@@ -171,7 +171,7 @@ SCENARIO("multifail") {
         // validation.
         A::builder("abc", -42)
       , A::builder("def", 123)
-      , mp::builder(mp::factory<B>, 5, 6)
+      , mp::wrapper<B>(5, 6)
       , 3
       )
       // Here we pass one lambda to be invoked if the instance is successfully
@@ -199,7 +199,7 @@ SCENARIO("multifail") {
         A::builder("abc", 42)
       , // Should fail validation
         A::builder("", 123)
-      , mp::builder(mp::factory<B>, 5, 6)
+      , mp::wrapper<B>(5, 6)
       , 3
       ).construct(
         [&](auto) { success = true; }
@@ -220,7 +220,7 @@ SCENARIO("multifail") {
       Aggregate<A, A, B>::builder(
         A::builder("abc", 42)
       , A::builder("def", 123)
-      , mp::builder(mp::factory<B>, 5, 6)
+      , mp::wrapper<B>(5, 6)
       , 3
       ).construct(
         [&](auto builder) {
