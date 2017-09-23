@@ -149,7 +149,7 @@ And here we build it:
 Aggregate<A, A, B>::builder(
   A::builder("abc", 42)
 , A::builder("def", 123)
-, mp::builder(mp::factory<B>, 5, 6)
+, mp::wrapper<B>(5, 6)
 ).construct(
   [](auto builder) {
     Aggregate<A, A, B> result = builder.construct();
@@ -167,7 +167,7 @@ Aggregate<A, A, B>::builder(
   A::builder("abc", 42)
 , // Should fail validation
   A::builder("", 123)
-, mp::builder(mp::factory<B>, 5, 6)
+, mp::wrapper<B>(5, 6)
 ).construct(
   [&](auto) { /* success! */ }
 , mp::handler(
@@ -176,5 +176,8 @@ Aggregate<A, A, B>::builder(
   )
 );
 ```
+
+Notice that the `construct` calls are chained directly after the `builder` call.
+This is important if you're passing temporaries to your builder!
 
 The snippets above come from [here](test/multifail.cpp).
