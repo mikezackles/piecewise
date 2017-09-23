@@ -6,6 +6,13 @@ dependency injection and a pattern matching approach to error handling. It's
 still in a state of flux. A C++14-capable compiler and standard library are
 required.
 
+*Builders* are piecewise's fundamental construct. They're essentially callbacks
+paired with references to arguments. When `construct` is called on a `Builder`
+instance, the captured references are perfectly forwarded to the callback, along
+with any arguments to `construct`. Since builders are entirely composed of
+references, you should treat them as such! If you try to return the builders
+themselves, you're likely to have a bad time.
+
 Here we set up an aggregate type composed from two other types, one of which can
 fail to be created:
 ```c++
