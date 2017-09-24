@@ -3,6 +3,10 @@
 
 #include <mz/piecewise/builder.hpp>
 
+#if __cplusplus >= 201703L
+  #include <variant>
+#endif
+
 namespace mz { namespace piecewise {
   template <typename T>
   class ConstructorHelper {
@@ -39,6 +43,25 @@ namespace mz { namespace piecewise {
       return piecewise::builder(T::factory(), std::forward<Args>(args)...);
     }
   };
+
+#if __cplusplus >= 201703L
+  template <typename T>
+  class VariantHelper {
+  public:
+    template <typename ...ErrorTypes, typename ...Args>
+    static std::variant<T, ErrorTypes...> variant(Args&&... args) {
+      return piecewise::builder(T::factory(), std::forward<Args>(args)...)
+      .construct(
+        [](auto builder) {
+          return std::variant<T, ErrorTypes...>{builder.construct()};
+        }
+      , [](auto error) {
+          return std::variant<T, ErrorTypes...>{error};
+        }
+      );
+    }
+  };
+#endif
 }}
 
 #endif

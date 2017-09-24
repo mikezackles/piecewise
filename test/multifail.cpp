@@ -109,6 +109,9 @@ namespace {
   class Aggregate final
     : private mp::ConstructorHelper<Aggregate<T, U, V>>
     , public mp::BuilderHelper<Aggregate<T, U, V>>
+  #if __cplusplus >= 201703L
+    , public mp::VariantHelper<Aggregate<T, U, V>>
+  #endif
   {
   public:
     T const &get_t() const { return t; }
@@ -120,6 +123,9 @@ namespace {
     // This gives piecewise the ability to call the private constructor.
     friend class mp::ConstructorHelper<Aggregate<T, U, V>>;
     friend class mp::BuilderHelper<Aggregate<T, U, V>>;
+  #if __cplusplus >= 201703L
+    friend class mp::VariantHelper<Aggregate<T, U, V>>;
+  #endif
 
     static CONSTEXPR_LAMBDA auto factory() {
       return [](
@@ -247,6 +253,37 @@ SCENARIO("multifail aggregate") {
       REQUIRE(success);
     }
   }
+
+#if __cplusplus >= 201703L
+  WHEN("variant") {
+    // Doesn't work with clang as of version 5.0.0 due to bug
+    // https://bugs.llvm.org//show_bug.cgi?id=33222
+    auto variant = Aggregate<A, A, B>::variant<
+      A::StringEmptyError
+    , A::IntNegativeError
+    >(
+      A::builder("abc", 42)
+    , A::builder("def", 123)
+    , mp::wrapper<B>(5, 6)
+    , 3
+    );
+    std::visit(
+      mp::handler(
+        [](Aggregate<A, A, B> const &result) {
+          REQUIRE(result.get_t().get_a_string() == "abc");
+          REQUIRE(result.get_t().get_an_int() == 42);
+          REQUIRE(result.get_u().get_a_string() == "def");
+          REQUIRE(result.get_u().get_an_int() == 123);
+          REQUIRE(result.get_v().int_a == 5);
+          REQUIRE(result.get_v().int_b == 6);
+          REQUIRE(result.get_int() == 3);
+        }
+      , [](auto) { REQUIRE(false); }
+      )
+    , variant
+    );
+  }
+#endif
 }
 
 #undef CONSTEXPR_LAMBDA

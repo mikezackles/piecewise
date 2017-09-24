@@ -24,7 +24,13 @@ arch:
     - CC=clang CXX=clang++ meson build/clang --buildtype=release
     - meson test -C build/clang
     - CC=gcc CXX=g++ meson build/gcc --buildtype=release
-    - mesontest -C build/gcc
+    - meson test -C build/gcc
+    # Disabled due to clang bug:
+    # https://bugs.llvm.org//show_bug.cgi?id=33222
+    #- CC=clang CXX=clang++ meson build/17/clang --buildtype=release -Dcpp_std=c++1z
+    #- meson test -C build/clang
+    - CC=gcc CXX=g++ meson build/17/gcc --buildtype=release -Dcpp_std=c++1z
+    - meson test -C build/gcc
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
