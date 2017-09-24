@@ -57,7 +57,7 @@ namespace mz { namespace piecewise {
           , builders = std::move(builders)
           , regular_args = std::move(regular_args)
           ] (auto builder) mutable {
-            multifail_impl(
+            return multifail_impl(
               constructor
             , on_success, on_fail
             , std::move(arg_packs)
@@ -92,7 +92,7 @@ namespace mz { namespace piecewise {
           , &on_success
           , packed_builders = std::move(packed_builders)
           ] (auto&&... regular_args_) mutable {
-            forward_tuple(
+            return forward_tuple(
               [&constructor, &on_success](auto&&... args) {
                 return on_success(
                   builder(
