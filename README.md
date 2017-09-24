@@ -1,17 +1,38 @@
 [![Travis Status](https://travis-ci.org/mikezackles/piecewise.svg?branch=master)](https://travis-ci.org/mikezackles/piecewise)
 [![AppVeyor Status](https://ci.appveyor.com/api/projects/status/github/mikezackles/piecewise?svg=true&branch=master)](https://ci.appveyor.com/project/mikezackles/piecewise)
 
-Piecewise is an experimental library for structuring code via compile-time
-dependency injection and a pattern matching approach to error handling. It's
-still in a state of flux. A C++14-capable compiler and standard library are
-required.
+_Disclaimer_: This project is still experimental. It is still in a state of
+flux, and it may not work as advertised.
+
+Test Matrix
+--
+
+This table attempts to document the configurations that are currently tested by
+CI. Assume that compiler versions are the latest offered in the listed
+environment. Untested configurations may still work!
+
+| Environment | Compiler | Standard Library | C++14 | C++17 | Address Sanitizer |
+| --- | --- | --- | --- | --- | --- |
+| [Arch Travis](https://github.com/mikkeloscar/arch-travis) | gcc | libstdc++ | yes | yes | no |
+| [Arch Travis](https://github.com/mikkeloscar/arch-travis) | clang | libstdc++ | yes | disabled due to [bug](https://bugs.llvm.org//show_bug.cgi?id=33222) | disabled due to [bug1](https://github.com/google/sanitizers/issues/856), [bug2](https://github.com/google/sanitizers/issues/837) |
+| Travis OS X | clang | libc++ | yes | no | no |
+| AppVeyor Windows | msvc | ms | yes | no | no |
+
+Overview
+--
+
+Piecewise is a library for structuring code via compile-time dependency
+injection and a pattern matching approach to error handling. In particular it
+aims to facilitate the design of types with strong invariants whose creation may
+fail. It does not use exceptions. A C++14-capable compiler and standard library
+are required.
 
 *Builders* are piecewise's fundamental construct. They're essentially callbacks
-paired with references to arguments. When `construct` is called on a `Builder`
-instance, the captured references are perfectly forwarded to the callback, along
-with any arguments to `construct`. Since builders are entirely composed of
-references, you should treat them as such! If you try to return the builders
-themselves, you're likely to have a bad time.
+paired with references to arguments. When the `construct` member function is
+called on a `Builder` instance, the captured references are perfectly forwarded
+to the callback, along with any arguments to `construct`. Since builders are
+entirely composed of references, you should treat them as such! If you try to
+return the builders themselves, you're likely to have a bad time.
 
 Here we set up an aggregate type composed from two other types, one of which can
 fail to be created:
