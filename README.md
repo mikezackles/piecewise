@@ -104,7 +104,7 @@ builder.construct([](auto) {}, [](auto) {});
 Builders are designed so that it is impossible to construct a `Foo` instance
 without it being valid. But it *is* possible to return values from the success
 and error callbacks, as long as their types match.
-```
+```c++
 int res = Foo::builder(42).construct(
   [](auto) -> int { return 1; }
 , [](auto) -> int { return 2; }
@@ -112,7 +112,7 @@ int res = Foo::builder(42).construct(
 ```
 
 And for completeness, here's an example of a retry pattern:
-```
+```c++
 bool connected = false;
 while (!connected) {
   Connection::builder("https://github.com").construct(
