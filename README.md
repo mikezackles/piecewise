@@ -1,7 +1,7 @@
 [![Travis Status](https://travis-ci.org/mikezackles/piecewise.svg?branch=master)](https://travis-ci.org/mikezackles/piecewise)
 [![AppVeyor Status](https://ci.appveyor.com/api/projects/status/github/mikezackles/piecewise?svg=true&branch=master)](https://ci.appveyor.com/project/mikezackles/piecewise)
 
-_Disclaimer_: This project is still experimental. It may not work as advertised.
+**Disclaimer**: This project is still in its infancy. It may not work as advertised.
 
 Overview
 --
@@ -12,7 +12,6 @@ aims to facilitate type composition hierarchies with strong invariants. It does
 not use exceptions. A C++14-capable compiler and standard library are required.
 
 ```c++
-// This is a temporary -- don't store it!
 Foo::builder(
   Bar::builder("abc", 42)
 , Baz::builder("xyzzy")
@@ -43,7 +42,7 @@ Test Matrix
 
 This table attempts to document the configurations that are currently tested by
 CI. Assume that compiler versions are the latest offered in the listed
-environment. Untested configurations may still work!
+environment. Untested configurations may still work.
 
 | Environment | Compiler | Standard Library | C++14 | C++17 | Address Sanitizer |
 | --- | --- | --- | --- | --- | --- |
@@ -58,7 +57,8 @@ Build
 Piecewise is header only, so you don't have to build it to use it. That said, if
 you're a [meson](http://mesonbuild.com) user you
 can
-[use piecewise as a subproject](http://mesonbuild.com/Wrap-dependency-system-manual.html)!
+[use piecewise as a subproject](http://mesonbuild.com/Wrap-dependency-system-manual.html) (currently
+untested).
 
 If you'd like to build the tests:
 
@@ -74,31 +74,52 @@ Design
 *Builders* are piecewise's fundamental construct. They're essentially callbacks
 paired with references to arguments. When the `construct` member function is
 called on a `Builder` instance, the captured references are perfectly forwarded
-to the callback, along with any arguments to `construct`. Since builders are
-entirely composed of references, you should treat them as such! If you try to
-use the builders outside the scope of the original expression, you're likely to
-have a bad time.
-
-In piecewise, the heavy lifting for construction moves to the static
-`Foo::factory` function.
+to the callback, along with any arguments to `construct`.
 ```c++
-  static CONSTEXPR_LAMBDA auto factory() {
-    return [](
-      auto&& on_success, auto&& on_fail
-    , auto t_builder, auto u_builder, auto v_builder
-    , int an_int_
-    ) {
-      return mp::multifail(
-        Aggregate::braced_constructor()
-      , on_success
-      , on_fail
-      , mp::builders(
-          std::move(t_builder), std::move(u_builder), std::move(v_builder)
-        )
-      , mp::arguments(an_int_)
-      );
-    };
+// This is a pre-factory builder. It's factory callable has not yet run.
+Foo::builder(arg1, arg2)
+// This construct call invokes the builder's factory callable
+.construct(
+  // This callback receives a post-factory builder. It's factory callable has
+  // succeeded.
+  [](auto builder) {
+    // ...
   }
+, // This callback gets called if the factory callable fails
+  [](auto error) {
+    // ...
+  }
+);
+```
+
+Since builders are entirely composed of references, you should treat them as
+such! If you try to use the builders outside the scope of the original
+expression, you're likely to have a bad time. **Don't do this:**
+```c++
+auto builder = Foo::builder("this is temporary", 2)
+// NO! The temporaries are already gone.
+builder.construct([](auto) {}, [](auto) {});
+```
+
+Builders are designed so that it is impossible to construct a `Foo` instance
+without it being valid. But it *is* possible to return values from the success
+and error callbacks, as long as their types match.
+```
+int res = Foo::builder(42).construct(
+  [](auto) -> int { return 1; }
+, [](auto) -> int { return 2; }
+);
+```
+
+And for completeness, here's an example of a retry pattern:
+```
+bool connected = false;
+while (!connected) {
+  Connection::builder("https://github.com").construct(
+    [&connected] (auto) { connected = true; }
+  , [] (auto) { std::cerr << "Connection failed!" << std::endl; }
+  );
+}
 ```
 
 *Helpers* help you design a piecewise-enabled type. They are mix-ins implemented
@@ -125,16 +146,99 @@ Notice that this helper uses private inheritance to avoid exposing `Foo`'s
 constructor to client code.
 
 `BuilderHelper` creates the `Foo::builder` function. It requires a user-defined
-`Foo::factory` that returns a callable. This callable is what does the heavy
-lifting for constructing your type. All error handling happens here.
+`Foo::factory` that returns a callable containing the type's creation logic (see
+below).
 
-`VariantHelper` creates the templated `Foo::variant` function, which creates a
-`std::variant` containing either a `Foo` instance or one of the enumerated error
-types. Use it normally with `std::visit`.
+If you're using C++17, `VariantHelper` creates the templated `Foo::variant`
+function, which creates a `std::variant` containing either a `Foo` instance or
+one of the enumerated error types. Use it normally with `std::visit`.
+
+In piecewise, the heavy lifting for construction moves to the static
+`Foo::factory` function. It accepts two callbacks, one for success, and one for
+failure.
+
+```c++
+private:
+  // constexpr lambdas require C++17 support
+  static CONSTEXPR_LAMBDA auto factory() {
+    return [](
+      auto&& on_success, auto&& on_fail
+    , std::string a_string, int an_int
+    ) {
+      // Validate arguments
+      if (a_string.empty()) return on_fail(A::StringEmptyError{});
+      if (an_int < 0) return on_fail(A::IntNegativeError{});
+
+      // Now the success callback gets a builder which creates a *valid*
+      // instance of `Foo`.
+      return on_success(
+        // Create a builder
+        mp::builder(
+          // This is the actual creation callback. It just calls Foo's
+          // constructor in the normal way
+          constructor()
+        , // The arguments to be passed to Foo's constructor
+          std::move(a_string), an_int
+        )
+      );
+    };
+  }
+```
+
+Piecewise also contains a helper function called `multifail`. This important
+function handles invoking pre-factory builders in succession until it either
+successfully collects all required post-factory builders or the failure callback
+has been called. If successful, it invokes the requested constructor. Note that
+due to an implementation detail it will pass regular arguments to the
+constructor *before* it passes builders. Use this helper if your type contains
+nested types that are piecewise-enabled.
+```c++
+  static CONSTEXPR_LAMBDA auto factory() {
+    return [](
+      auto&& on_success, auto&& on_fail
+    , auto builder1, auto builder2
+    , int arg1, std::string arg2
+    ) {
+      // Error handling specific to this type would happen here
+      return mp::multifail(
+        Aggregate::braced_constructor()
+      , on_success
+      , on_fail
+      , mp::builders(
+          std::move(builder1), std::move(builder2)
+        )
+      , mp::arguments(arg1, std::move(arg2))
+      );
+    };
+  }
+```
+
+The private constructor is the final step for constructing an object of type
+`Foo`, and it is only called if `Foo`'s factory function has succeeded. Notice
+that variadic arguments are *not* supported at this phase of construction.
+Again, notice that regular arguments are passed before builders.
+```c++
+  template <typename Builder1, typename Builder2>
+  Foo(int arg1, std::string arg2, Builder1 builder1, Builder2 builder2)
+    : nested_type1{builder1.construct()}
+    , nested_type2{builder2.construct()}
+    , an_int{arg1}
+    , a_string{std::move(arg2)}
+  {}
+```
+
+Dependency Injection
+--
+
+You may have noticed that piecewise doesn't need to know anything about how to
+construct nested types. This means that you can create templated aggregate
+types and use compile-time dependency injection at no extra penalty.
 
 Coverage
 --
 
+This report is not automated and almost certain to lag behind the latest
+development. But it should at least give you an idea :)
 ![Coverage Report](coverage.png)
 
-See [here](test/multifail.cpp) for a more complex example.
+See [here](test/multifail.cpp) for a more complete example.
