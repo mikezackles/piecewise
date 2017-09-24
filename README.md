@@ -155,7 +155,7 @@ one of the enumerated error types. Use it normally with `std::visit`.
 
 In piecewise, the heavy lifting for construction moves to the static
 `Foo::factory` function. It accepts two callbacks, one for success, and one for
-failure.
+failure, along with the other arguments passed to `Foo::builder`.
 
 ```c++
 private:
@@ -201,7 +201,7 @@ nested types that are piecewise-enabled.
     ) {
       // Error handling specific to this type would happen here
       return mp::multifail(
-        Aggregate::braced_constructor()
+        Foo::braced_constructor()
       , on_success
       , on_fail
       , mp::builders(
@@ -225,6 +225,29 @@ Again, notice that regular arguments are passed before builders.
     , an_int{arg1}
     , a_string{std::move(arg2)}
   {}
+```
+
+Non-Piecewise Types
+--
+
+A compatibility wrapper is provided for passing arguments to nested types that
+must coexist with piecewise types.
+
+```
+struct B {
+  int int_a;
+  int int_b;
+};
+
+Aggregate<A, A, B>::builder(
+  A::builder("abc", -42)
+, A::builder("def", 123)
+, mp::wrapper<B>(5, 6)
+, 3
+)
+.construct(
+// ...
+);
 ```
 
 Dependency Injection
