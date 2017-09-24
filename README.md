@@ -234,15 +234,15 @@ A compatibility wrapper is provided for passing arguments to nested types that
 must coexist with piecewise types.
 
 ```c++
-struct B {
+struct C {
   int int_a;
   int int_b;
 };
 
-Aggregate<A, A, B>::builder(
+Aggregate<A, B>::builder(
   A::builder("abc", -42)
-, A::builder("def", 123)
-, mp::wrapper<B>(5, 6)
+, B::builder(123)
+, mp::wrapper<C>(5, 6)
 , 3
 )
 .construct(
