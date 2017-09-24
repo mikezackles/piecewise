@@ -233,7 +233,7 @@ Non-Piecewise Types
 A compatibility wrapper is provided for passing arguments to nested types that
 must coexist with piecewise types.
 
-```
+```c++
 struct B {
   int int_a;
   int int_b;
