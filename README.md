@@ -1,8 +1,42 @@
 [![Travis Status](https://travis-ci.org/mikezackles/piecewise.svg?branch=master)](https://travis-ci.org/mikezackles/piecewise)
 [![AppVeyor Status](https://ci.appveyor.com/api/projects/status/github/mikezackles/piecewise?svg=true&branch=master)](https://ci.appveyor.com/project/mikezackles/piecewise)
 
-_Disclaimer_: This project is still experimental. It is still in a state of
-flux, and it may not work as advertised.
+_Disclaimer_: This project is still experimental. It may not work as advertised.
+
+Overview
+--
+
+Piecewise is a library for structuring code via compile-time dependency
+injection and a pattern matching approach to error handling. In particular, it
+aims to facilitate type composition hierarchies with strong invariants. It does
+not use exceptions. A C++14-capable compiler and standard library are required.
+
+```c++
+// This is a temporary -- don't store it!
+Foo::builder(
+  Bar::builder("abc", 42)
+, Baz::builder("xyzzy")
+).construct(
+  [](auto builder) {
+    // We now know we can construct a valid Foo! Do so using arguments perfectly
+    // forwarded to the nested types Bar and Baz
+    Foo result = builder.construct();
+    // Use it here!
+    std::cout << result.bar().get_string(); // "abc"
+    std::cout << result.bar().get_int();    // 42
+    std::cout << result.baz().get_string(); // "xyzzy"
+  }
+, [](auto error) {
+    std::cerr << "Validation failed: " << decltype(error)::description << std::endl;
+  }
+);
+
+// Or save it for later as a std::variant
+auto saved = Foo::variant<Error1, Error2>(
+  Bar::builder("abc", 42)
+, Baz::builder("xyzzy")
+);
+```
 
 Test Matrix
 --
@@ -18,187 +52,89 @@ environment. Untested configurations may still work!
 | Travis OS X | clang | libc++ | yes | no | no |
 | AppVeyor Windows | msvc | ms | yes | no | no |
 
-Overview
+Build
 --
 
-Piecewise is a library for structuring code via compile-time dependency
-injection and a pattern matching approach to error handling. In particular it
-aims to facilitate the design of types with strong invariants whose creation may
-fail. It does not use exceptions. A C++14-capable compiler and standard library
-are required.
+Piecewise is header only, so you don't have to build it to use it. That said, if
+you're a [meson](http://mesonbuild.com) user you
+can
+[use piecewise as a subproject](http://mesonbuild.com/Wrap-dependency-system-manual.html)!
+
+If you'd like to build the tests:
+
+* [Install meson](http://mesonbuild.com/Getting-meson.html) with pip or your preferred package manager
+* Install the [ninja build system](https://ninja-build.org/)
+* `meson build` generates a ninja build inside the build directory (use the `CXX` env var to control the compiler)
+* `meson test -C build` will build and run the test suite
+* `meson configure -C build` will list all the knobs you can tweak
+
+Design
+--
 
 *Builders* are piecewise's fundamental construct. They're essentially callbacks
 paired with references to arguments. When the `construct` member function is
 called on a `Builder` instance, the captured references are perfectly forwarded
 to the callback, along with any arguments to `construct`. Since builders are
 entirely composed of references, you should treat them as such! If you try to
-return the builders themselves, you're likely to have a bad time.
+use the builders outside the scope of the original expression, you're likely to
+have a bad time.
 
-Here we set up an aggregate type composed from two other types, one of which can
-fail to be created:
+In piecewise, the heavy lifting for construction moves to the static
+`Foo::factory` function.
 ```c++
-namespace mp = mz::piecewise;
-
-namespace {
-  // `A` simulates a type that could fail during creation.
-  class A final
-    : private mp::ConstructorHelper<A>
-    , public mp::BuilderHelper<A>
-  {
-  private:
-    std::string a_string;
-    int an_int;
-
-  public:
-    // Two error types are used to distinguish separate error conditions. Below
-    // there are examples of handling both errors generically and of handling
-    // them individually.
-    struct StringEmptyError {
-      // It's a good idea to give errors a static description so that generic
-      // error handlers can print it.
-      static constexpr auto description = "String is empty";
+  static CONSTEXPR_LAMBDA auto factory() {
+    return [](
+      auto&& on_success, auto&& on_fail
+    , auto t_builder, auto u_builder, auto v_builder
+    , int an_int_
+    ) {
+      return mp::multifail(
+        Aggregate::braced_constructor()
+      , on_success
+      , on_fail
+      , mp::builders(
+          std::move(t_builder), std::move(u_builder), std::move(v_builder)
+        )
+      , mp::arguments(an_int_)
+      );
     };
-
-    struct IntNegativeError {
-      static constexpr auto description = "Int is negative";
-    };
-
-    std::string const &get_a_string() const { return a_string; }
-    int get_an_int() const { return an_int; }
-
-  private:
-    // Give the `Constructors` helper permission to call the private
-    // constructor and the factory member function.
-    friend class mp::ConstructorHelper<A>;
-    friend class mp::BuilderHelper<A>;
-
-    // The true logic for construction of `A` lives here. Error cases in this
-    // function result in calls to the `on_fail` callback, and successful
-    // construction results in the forwarding of what we will call a "builder"
-    // to the `on_success` callback via `mz::piecewise::forward`. A builder is
-    // basically a construction callback paired with a group of perfectly
-    // forwarded references to arguments.
-    static CONSTEXPR_LAMBDA auto factory() {
-      return [](
-        auto&& on_success, auto&& on_fail
-      , std::string a_string, int an_int
-      ) {
-        // Validate arguments
-        if (a_string.empty()) return on_fail(A::StringEmptyError{});
-        if (an_int < 0) return on_fail(A::IntNegativeError{});
-        // Now the success callback gets a builder which creates a *valid*
-        // instance of `A`. We can now always assume that every instance of `A`
-        // satisfies these preconditions. (This doesn't necessarily hold for a
-        // moved-from instance of `A`, so it is up to the programmer to avoid
-        // such usage.)
-        return on_success(
-          // Create a builder
-          mp::builder(
-            // This is the actual creation callback. It just calls `A`'s
-            // constructor in the normal way
-            constructor()
-          , // The arguments to be passed to `A`'s constructor
-            std::move(a_string), an_int
-          )
-        );
-      };
-    }
-
-    // The private constructor is the final step of construction an object of
-    // type `A`, and it is only called if `A`'s factory function has succeeded.
-    A(std::string a_string_, int an_int_)
-      : a_string{std::move(a_string_)}, an_int{an_int_}
-    {}
-  };
-
-  // `B` can be constructed normally, so it needs no explicit factory function
-  // to be compatible with `mz::piecewise::factory`.
-  struct B {
-    int int_a;
-    int int_b;
-  };
-
-  // `Aggregate` demonstrates an aggregate type whose private members can all be
-  // injected as template parameters. If any of these members fail to be
-  // created, the failure callback will be called, and the aggregate will not be
-  // created.
-  template <typename T, typename U, typename V>
-  class Aggregate final
-    : private mp::ConstructorHelper<Aggregate<T, U, V>>
-    , public mp::BuilderHelper<Aggregate<T, U, V>>
-  {
-  public:
-    T const &get_t() const { return t; }
-    U const &get_u() const { return u; }
-    V const &get_v() const { return v; }
-
-  private:
-    // This gives piecewise the ability to call the private constructor.
-    friend class mp::ConstructorHelper<Aggregate<T, U, V>>;
-    friend class mp::BuilderHelper<Aggregate<T, U, V>>;
-
-    static CONSTEXPR_LAMBDA auto factory() {
-      return [](
-        auto&& on_success, auto&& on_fail
-      , auto... builders
-      ) {
-        return mp::multifail(
-          Aggregate::braced_constructor()
-        , on_success
-        , on_fail
-        , std::move(builders)...
-        );
-      };
-    }
-
-    template <typename TBuilder, typename UBuilder, typename VBuilder>
-    Aggregate(TBuilder t_builder, UBuilder u_builder, VBuilder v_builder)
-      : t{t_builder.construct()}
-      , u{u_builder.construct()}
-      , v{v_builder.construct()}
-    {}
-
-    T t;
-    U u;
-    V v;
-  };
-}
-```
-
-And here we build it:
-```c++
-Aggregate<A, A, B>::builder(
-  A::builder("abc", 42)
-, A::builder("def", 123)
-, mp::wrapper<B>(5, 6)
-).construct(
-  [](auto builder) {
-    Aggregate<A, A, B> result = builder.construct();
-    // Use it here!
   }
-, [](auto error) {
-    std::cerr << "Error: " << decltype(error)::description << std::endl;
-  }
-);
 ```
 
-And here we pattern match based on error type:
+*Helpers* help you design a piecewise-enabled type. They are mix-ins implemented
+using
+[CRTP](https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern). If
+you want to keep your implementation details private, they require friendship
+with your derived class:
+
 ```c++
-Aggregate<A, A, B>::builder(
-  A::builder("abc", 42)
-, // Should fail validation
-  A::builder("", 123)
-, mp::wrapper<B>(5, 6)
-).construct(
-  [&](auto) { /* success! */ }
-, mp::handler(
-    [&](A::StringEmptyError) { /* Handle string validation error */ }
-  , [&](A::IntNegativeError) { /* Handle int validation error */ }
-  )
-);
+using mp = mz::piecewise;
+class Foo final
+  : private mp::ConstructorHelper<Foo>
+  , public mp::BuilderHelper<Foo>
+  , public mp::VariantHelper<Foo>
+{
+  friend mp::ConstructorHelper<Foo>;
+  friend mp::BuilderHelper<Foo>;
+  friend mp::VariantHelper<Foo>;
 ```
 
-Notice that the `construct` calls are chained directly after the `builder` call.
-This is important if you're passing temporaries to your builder!
+`ConstructorHelper` gives access to the helper functions `Foo::constructor` and
+`Foo::braced_constructor`. These return callables that do what you'd think.
+Notice that this helper uses private inheritance to avoid exposing `Foo`'s
+constructor to client code.
 
-The snippets above come from [here](test/multifail.cpp).
+`BuilderHelper` creates the `Foo::builder` function. It requires a user-defined
+`Foo::factory` that returns a callable. This callable is what does the heavy
+lifting for constructing your type. All error handling happens here.
+
+`VariantHelper` creates the templated `Foo::variant` function, which creates a
+`std::variant` containing either a `Foo` instance or one of the enumerated error
+types. Use it normally with `std::visit`.
+
+Coverage
+--
+
+![Coverage Report](coverage.png)
+
+See [here](test/multifail.cpp) for a more complex example.
