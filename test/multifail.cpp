@@ -156,97 +156,95 @@ namespace {
   };
 }
 
-SCENARIO("multifail") {
-  GIVEN("a multifail aggregate") {
-    bool success = false;
-    bool failure1 = false;
-    bool failure2 = false;
+SCENARIO("multifail aggregate") {
+  bool success = false;
+  bool failure1 = false;
+  bool failure2 = false;
 
-    WHEN("the first nested construction fails") {
-      // Here we specify all the information necessary to construct an
-      // `Aggregate<A, A, B>`.
-      Aggregate<A, A, B>::builder(
-        // Here we specify the arguments to construct each of the aggregate's
-        // nested types. Notice that in this case, the first call should fail
-        // validation.
-        A::builder("abc", -42)
-      , A::builder("def", 123)
-      , mp::wrapper<B>(5, 6)
-      , 3
+  WHEN("the first nested construction fails") {
+    // Here we specify all the information necessary to construct an
+    // `Aggregate<A, A, B>`.
+    Aggregate<A, A, B>::builder(
+      // Here we specify the arguments to construct each of the aggregate's
+      // nested types. Notice that in this case, the first call should fail
+      // validation.
+      A::builder("abc", -42)
+    , A::builder("def", 123)
+    , mp::wrapper<B>(5, 6)
+    , 3
+    )
+    // Here we pass one lambda to be invoked if the instance is successfully
+    // created and one lambda to be invoked if instantiation fails. In this
+    // case, the failure callback will receive an error type as an argument.
+    .construct(
+      [&](auto) { success = true; }
+    , // Here we construct a failure callback out of lambdas that pattern
+      // matches based on error type. Notice that order makes no difference.
+      mp::handler(
+        [&](A::IntNegativeError) { failure2 = true; }
+      , [&](A::StringEmptyError) { failure1 = true; }
       )
-      // Here we pass one lambda to be invoked if the instance is successfully
-      // created and one lambda to be invoked if instantiation fails. In this
-      // case, the failure callback will receive an error type as an argument.
-      .construct(
-        [&](auto) { success = true; }
-      , // Here we construct a failure callback out of lambdas that pattern
-        // matches based on error type. Notice that order makes no difference.
-        mp::handler(
-          [&](A::IntNegativeError) { failure2 = true; }
-        , [&](A::StringEmptyError) { failure1 = true; }
-        )
-      );
+    );
 
-      THEN("the failure callback is called") {
-        REQUIRE(!success);
-        REQUIRE(!failure1);
-        REQUIRE(failure2);
-      }
+    THEN("the failure callback is called") {
+      REQUIRE(!success);
+      REQUIRE(!failure1);
+      REQUIRE(failure2);
     }
+  }
 
-    WHEN("the second nested construction fails") {
-      Aggregate<A, A, B>::builder(
-        A::builder("abc", 42)
-      , // Should fail validation
-        A::builder("", 123)
-      , mp::wrapper<B>(5, 6)
-      , 3
-      ).construct(
-        [&](auto) { success = true; }
-      , mp::handler(
-          [&](A::StringEmptyError) { failure1 = true; }
-        , [&](A::IntNegativeError) { failure2 = true; }
-        )
-      );
+  WHEN("the second nested construction fails") {
+    Aggregate<A, A, B>::builder(
+      A::builder("abc", 42)
+    , // Should fail validation
+      A::builder("", 123)
+    , mp::wrapper<B>(5, 6)
+    , 3
+    ).construct(
+      [&](auto) { success = true; }
+    , mp::handler(
+        [&](A::StringEmptyError) { failure1 = true; }
+      , [&](A::IntNegativeError) { failure2 = true; }
+      )
+    );
 
-      THEN("the failure callback is called") {
-        REQUIRE(!success);
-        REQUIRE(failure1);
-        REQUIRE(!failure2);
-      }
+    THEN("the failure callback is called") {
+      REQUIRE(!success);
+      REQUIRE(failure1);
+      REQUIRE(!failure2);
     }
+  }
 
-    WHEN("construction succeeds") {
-      Aggregate<A, A, B>::builder(
-        A::builder("abc", 42)
-      , A::builder("def", 123)
-      , mp::wrapper<B>(5, 6)
-      , 3
-      ).construct(
-        [&](auto builder) {
-          success = true;
-          auto res = builder.construct();
-          THEN("the nested types contain the correct values") {
-            REQUIRE(res.get_t().get_a_string() == "abc");
-            REQUIRE(res.get_t().get_an_int() == 42);
-            REQUIRE(res.get_u().get_a_string() == "def");
-            REQUIRE(res.get_u().get_an_int() == 123);
-            REQUIRE(res.get_v().int_a == 5);
-            REQUIRE(res.get_v().int_b == 6);
-            REQUIRE(res.get_int() == 3);
-          }
+  WHEN("construction succeeds") {
+    Aggregate<A, A, B>::builder(
+      A::builder("abc", 42)
+    , A::builder("def", 123)
+    , mp::wrapper<B>(5, 6)
+    , 3
+    ).construct(
+      [&](auto builder) {
+        success = true;
+        auto res = builder.construct();
+        THEN("the nested types contain the correct values") {
+          REQUIRE(res.get_t().get_a_string() == "abc");
+          REQUIRE(res.get_t().get_an_int() == 42);
+          REQUIRE(res.get_u().get_a_string() == "def");
+          REQUIRE(res.get_u().get_an_int() == 123);
+          REQUIRE(res.get_v().int_a == 5);
+          REQUIRE(res.get_v().int_b == 6);
+          REQUIRE(res.get_int() == 3);
         }
-      , [&](auto /* e */) {
-          // We could print the error generically here:
-          // ```
-          // std::cerr << "Error: " << decltype(e)::description << std::endl;
-          // ```
-        }
-      );
-
-      THEN("the success callback is called") {
-        REQUIRE(success);
       }
+    , [&](auto /* e */) {
+        // We could print the error generically here:
+        // ```
+        // std::cerr << "Error: " << decltype(e)::description << std::endl;
+        // ```
+      }
+    );
+
+    THEN("the success callback is called") {
+      REQUIRE(success);
     }
   }
 }
