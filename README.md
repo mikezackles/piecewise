@@ -70,10 +70,10 @@ If you'd like to build the tests:
 * `meson test -C build` will build and run the test suite
 * `meson configure -C build` will list all the knobs you can tweak
 
-Design
+Builders
 --
 
-*Builders* are piecewise's fundamental construct. They're essentially callbacks
+Builders are piecewise's fundamental construct. They're essentially callbacks
 paired with references to arguments. When the `construct` member function is
 called on a `Builder` instance, the captured references are perfectly forwarded
 to the callback, along with any arguments to `construct`.
@@ -124,7 +124,10 @@ while (!connected) {
 }
 ```
 
-*Helpers* help you design a piecewise-enabled type. They are mix-ins implemented
+Helpers
+--
+
+Helpers help you design a piecewise-enabled type. They are mix-ins implemented
 using
 [CRTP](https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern). If
 you want to keep your implementation details private, they require friendship
@@ -154,6 +157,9 @@ below).
 If you're using C++17, `VariantHelper` creates the templated `Foo::variant`
 function, which creates a `std::variant` containing either a `Foo` instance or
 one of the enumerated error types. Use it normally with `std::visit`.
+
+Factory Function
+--
 
 In piecewise, the heavy lifting for construction moves to the static
 `Foo::factory` function. It accepts two callbacks, one for success, and one for
@@ -187,6 +193,9 @@ private:
   }
 ```
 
+Multifail
+--
+
 Piecewise also contains a helper function called `multifail`. This important
 function handles invoking pre-factory builders in succession until it either
 successfully collects all required post-factory builders or the failure callback
@@ -214,6 +223,9 @@ nested types that are piecewise-enabled.
     };
   }
 ```
+
+Constructor
+--
 
 The private constructor is the final step for constructing an object of type
 `Foo`, and it is only called if `Foo`'s factory function has succeeded. Notice
