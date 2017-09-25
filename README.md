@@ -211,6 +211,8 @@ nested types that are piecewise-enabled.
     , int arg1, std::string arg2
     ) {
       // Error handling specific to this type would happen here
+      
+      // Handle creation of nested types
       return mp::multifail(
         Foo::braced_constructor()
       , on_success
@@ -245,7 +247,8 @@ Non-Piecewise Types
 --
 
 A compatibility wrapper is provided for passing arguments to nested types that
-must coexist with piecewise types.
+must coexist with piecewise types. Note that this wrapper only works for types
+with public constructors.
 
 ```c++
 struct C {
@@ -256,7 +259,7 @@ struct C {
 Aggregate<A, B>::builder(
   A::builder("abc", -42)
 , B::builder(123)
-, mp::wrapper<C>(5, 6)
+, mp::wrapper<C>(5, 6) // Create a builder for type C
 , 3
 )
 .construct(
