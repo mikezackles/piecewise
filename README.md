@@ -51,6 +51,8 @@ environment. Untested configurations may still work.
 | Travis OS X | clang | libc++ | yes | no | no |
 | AppVeyor Windows | msvc | ms | yes | no | no |
 
+[Coverage Report](https://mikezackles.github.io/piecewise/home/travis/build/mikezackles/piecewise/include/mz/piecewise/index.html)
+
 Build
 --
 
@@ -256,12 +258,5 @@ Dependency Injection
 You may have noticed that piecewise doesn't need to know anything about how to
 construct nested types. This means that you can create templated aggregate
 types and use compile-time dependency injection at no extra penalty.
-
-Coverage
---
-
-This report is not automated and almost certain to lag behind the latest
-development. But it should at least give you an idea :)
-![Coverage Report](coverage.png)
 
 See [here](test/multifail.cpp) for a more complete example.
