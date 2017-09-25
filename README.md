@@ -1,6 +1,8 @@
 [![Travis Status](https://travis-ci.org/mikezackles/piecewise.svg?branch=master)](https://travis-ci.org/mikezackles/piecewise)
 [![AppVeyor Status](https://ci.appveyor.com/api/projects/status/github/mikezackles/piecewise?svg=true&branch=master)](https://ci.appveyor.com/project/mikezackles/piecewise)
 
+[Coverage Report](https://mikezackles.github.io/piecewise/home/travis/build/mikezackles/piecewise/include/mz/piecewise/index.html)
+
 **Disclaimer**: This project is still in its infancy. It may not work as advertised.
 
 Overview
@@ -50,8 +52,6 @@ environment. Untested configurations may still work.
 | [Arch Travis](https://github.com/mikkeloscar/arch-travis) | clang | libstdc++ | yes | disabled due to [bug](https://bugs.llvm.org//show_bug.cgi?id=33222) | disabled due to [bug1](https://github.com/google/sanitizers/issues/856), [bug2](https://github.com/google/sanitizers/issues/837) |
 | Travis OS X | clang | libc++ | yes | no | no |
 | AppVeyor Windows | msvc | ms | yes | no | no |
-
-[Coverage Report](https://mikezackles.github.io/piecewise/home/travis/build/mikezackles/piecewise/include/mz/piecewise/index.html)
 
 Build
 --
