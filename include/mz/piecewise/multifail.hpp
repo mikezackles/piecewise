@@ -16,12 +16,12 @@ namespace mz { namespace piecewise {
       typename Constructor
     , typename OnSuccess, typename OnFail
     , typename ...ArgPacks, typename ...Builders
-    , typename RegularArgs
+    , typename ...RegularArgs
     > inline auto multifail_impl(
         Constructor& constructor
       , OnSuccess& on_success, OnFail& on_fail
       , std::tuple<ArgPacks...> arg_packs, std::tuple<Builders...> builders
-      , RegularArgs regular_args
+      , std::tuple<RegularArgs...> regular_args
     ) {
       return MultifailImpl<
         Constructor
@@ -125,12 +125,12 @@ namespace mz { namespace piecewise {
     typename Constructor
   , typename OnSuccess, typename OnFail
   , typename ...ArgPacks
-  , typename RegularArgs
+  , typename ...RegularArgs
   > inline auto multifail(
     Constructor&& constructor
   , OnSuccess&& on_success, OnFail&& on_fail
   , std::tuple<ArgPacks...> arg_packs
-  , RegularArgs regular_args
+  , std::tuple<RegularArgs...> regular_args = std::tuple<>{}
   ) {
     return detail::multifail_impl(
       constructor
