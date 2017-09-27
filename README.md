@@ -78,11 +78,11 @@ paired with references to arguments. When the `construct` member function is
 called on a `Builder` instance, the captured references are perfectly forwarded
 to the callback, along with any arguments to `construct`.
 ```c++
-// This is a pre-factory builder. It's factory callable has not yet run.
+// This is a pre-factory builder. Its factory callable has not yet run.
 Foo::builder(arg1, arg2)
 // This construct call invokes the builder's factory callable
 .construct(
-  // This callback receives a post-factory builder. It's factory callable has
+  // This callback receives a post-factory builder. Its factory callable has
   // succeeded.
   [](auto builder) {
     // ...
