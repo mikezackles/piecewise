@@ -270,8 +270,10 @@ Aggregate<A, B>::builder(
 Dependency Injection
 --
 
-You may have noticed that piecewise doesn't need to know anything about how to
-construct nested types. This means that you can create templated aggregate
-types and use compile-time dependency injection at no extra penalty.
+You may have noticed that for piecewise-enabled types that contain other
+piecewise-enabled types, the containing types don't need to know anything about
+how to construct the types they contain. This means that you can create
+templated aggregate types and use compile-time dependency injection at no extra
+penalty.
 
 See [here](test/multifail.cpp) for a more complete example.
