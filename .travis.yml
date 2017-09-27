@@ -15,7 +15,7 @@ arch:
     - clang
     - ninja
     # aur packages
-    - lcov
+#    - lcov
   script:
     # Disable sanitizer build pending fix in kernel 4.13:
     # https://github.com/google/sanitizers/issues/856 and
@@ -32,11 +32,11 @@ arch:
     #- meson test -C build/clang
     - CC=gcc CXX=g++ meson build/17/gcc --buildtype=release -Dcpp_std=c++1z
     - meson test -C build/17/gcc
-    # Unoptimized build for coverage
-    - CC=gcc CXX=g++ meson build/17/coverage -Dcpp_std=c++1z -Db_coverage=true
-    - meson test -C build/17/coverage
-    # Generate a coverage report
-    - ninja -C build/17/coverage coverage-html
+#    # Unoptimized build for coverage
+#    - CC=gcc CXX=g++ meson build/17/coverage -Dcpp_std=c++1z -Db_coverage=true
+#    - meson test -C build/17/coverage
+#    # Generate a coverage report
+#    - ninja -C build/17/coverage coverage-html
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
@@ -47,12 +47,12 @@ script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then curl -s https://raw.githubusercontent.com/mikkeloscar/arch-travis/master/arch-travis.sh | bash; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then SDKROOT=$(xcodebuild -version -sdk macosx Path) mkdir build && meson build --buildtype=release && meson test -C build; fi
 
-# Deploy coverage report to github pages
-deploy:
-  local_dir: $ARCH_TRAVIS_CHROOT/home/travis/build/mikezackles/piecewise/build/17/coverage/meson-logs/coveragereport/
-  provider: pages
-  skip_cleanup: true
-  github_token: $GITHUB
-  on:
-    branch: master
-    condition: $TRAVIS_OS_NAME = linux
+## Deploy coverage report to github pages
+#deploy:
+#  local_dir: $ARCH_TRAVIS_CHROOT/home/travis/build/mikezackles/piecewise/build/17/coverage/meson-logs/coveragereport/
+#  provider: pages
+#  skip_cleanup: true
+#  github_token: $GITHUB
+#  on:
+#    branch: master
+#    condition: $TRAVIS_OS_NAME = linux
