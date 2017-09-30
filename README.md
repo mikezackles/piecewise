@@ -8,11 +8,10 @@
 Overview
 --
 
-Piecewise is a small library for structuring code via compile-time dependency
-injection. In particular, it aims to facilitate type composition hierarchies
-with strong invariants (no default constructors or two-stage initialization).
-Piecewise favors explicit error handling over exceptions, and a C++14-capable
-compiler and standard library are required.
+Piecewise is a small C++14 library for structuring code via compile-time
+dependency injection. In particular, it aims to facilitate type composition
+hierarchies with strong invariants (no default constructors or two-stage
+initialization). Piecewise favors explicit error handling over exceptions.
 
 There are many valid ways to achieve similar functionality. Piecewise was born
 out of a desire to minimize the associated boilerplate without sacrificing
@@ -120,7 +119,7 @@ int res = Foo::builder(42).construct(
 );
 ```
 
-And for completeness, here's an example of a retry pattern:
+Here's an example of a retry pattern:
 ```c++
 bool connected = false;
 while (!connected) {
