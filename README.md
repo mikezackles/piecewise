@@ -8,10 +8,11 @@
 Overview
 --
 
-Piecewise is a library for structuring code via compile-time dependency
-injection and a pattern matching approach to error handling. In particular, it
-aims to facilitate type composition hierarchies with strong invariants. It does
-not use exceptions. A C++14-capable compiler and standard library are required.
+Piecewise is a small library for structuring code via compile-time dependency
+injection. In particular, it aims to facilitate type composition hierarchies
+with strong invariants (no default constructors or two-stage initialization).
+Piecewise favors explicit error handling over exceptions, and a C++14-capable
+compiler and standard library are required.
 
 ```c++
 Foo::builder(
@@ -56,19 +57,21 @@ environment. Untested configurations may still work.
 Build
 --
 
-Piecewise is header only, so you don't have to build it to use it. That said, if
-you're a [meson](http://mesonbuild.com) user you
+Piecewise is header only, so you should be able to just set an appropriate
+include path, but if you're a [meson](http://mesonbuild.com) user you
 can
 [use piecewise as a subproject](http://mesonbuild.com/Wrap-dependency-system-manual.html) (currently
-untested).
+untested). Using meson has the added benefits of both enforcing a single
+piecewise instance within your meson-enabled dependencies and allowing you to
+run piecewise's tests as part of your build.
 
-If you'd like to build the tests:
+If you'd like to build the tests manually:
 
 * [Install meson](http://mesonbuild.com/Getting-meson.html) with pip or your preferred package manager
 * Install the [ninja build system](https://ninja-build.org/)
 * `meson build` generates a ninja build inside the build directory (use the `CXX` env var to control the compiler)
-* `meson test -C build` will build and run the test suite
 * `meson configure -C build` will list all the knobs you can tweak
+* `meson test -C build` will build and run the test suite
 
 Builders
 --
@@ -127,7 +130,8 @@ while (!connected) {
 Helpers
 --
 
-Helpers help you design a piecewise-enabled type. They are mix-ins implemented
+Helpers help you design a piecewise-enabled type. Some day they might be
+implemented using metaclasses, but for now they are mix-ins implemented
 using
 [CRTP](https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern). If
 you want to keep your implementation details private, they require friendship
