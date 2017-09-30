@@ -267,6 +267,36 @@ Aggregate<A, B>::builder(
 );
 ```
 
+Non-piecewise types without a public constructor can still be manually wrapped
+by defining a factory and passing it to `mp::builder`:
+
+```c++
+// Any callable will do
+struct CFactory {
+  template <typename OnSuccess, typename OnFail>
+  auto operator()(OnSuccess&& on_success, OnFail&&, int arg1, int arg2) const {
+    return on_success(
+      mp::builder(
+        [](int arg1_, int arg2_) {
+          return C::non_piecewise_factory(arg1_, arg2_);
+        }
+      , arg1, arg2
+      )
+    );
+  }
+};
+
+Aggregate<A, B>::builder(
+  A::builder("abc", -42)
+, B::builder(123)
+, mp::builder(CFactory{}, 5, 6) // Create a builder for type C
+, 3
+)
+.construct(
+// ...
+);
+```
+
 Dependency Injection
 --
 
