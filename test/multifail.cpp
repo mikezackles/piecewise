@@ -7,10 +7,10 @@
   #pragma warning( pop )
 #endif
 #include <mz/piecewise/builder.hpp>
-#include <mz/piecewise/helpers.hpp>
-#include <mz/piecewise/lambda_overload.hpp>
-#include <mz/piecewise/multifail.hpp>
+#include <mz/piecewise/callable_overload.hpp>
 #include <mz/piecewise/factory.hpp>
+#include <mz/piecewise/helpers.hpp>
+#include <mz/piecewise/multifail.hpp>
 
 #include <string>
 

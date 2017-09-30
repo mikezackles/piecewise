@@ -6,31 +6,31 @@
 namespace mz { namespace piecewise {
 #if __cplusplus >= 201703L
   template <typename ...Lambdas>
-  struct LambdaOverload : Lambdas... {
+  struct CallableOverload : Lambdas... {
     using Lambdas::operator()...;
   };
 #else
   template <typename Lambda, typename ...Lambdas>
-  struct LambdaOverload : Lambda, LambdaOverload<Lambdas...> {
+  struct CallableOverload : Lambda, CallableOverload<Lambdas...> {
     using Lambda::operator();
-    using LambdaOverload<Lambdas...>::operator();
+    using CallableOverload<Lambdas...>::operator();
     template <typename ForwardLambda, typename ...ForwardLambdas>
-    LambdaOverload(ForwardLambda&& lambda, ForwardLambdas&&... lambdas)
+    CallableOverload(ForwardLambda&& lambda, ForwardLambdas&&... lambdas)
       : Lambda{std::forward<ForwardLambda>(lambda)}
-      , LambdaOverload<Lambdas...>{std::forward<ForwardLambdas>(lambdas)...}
+      , CallableOverload<Lambdas...>{std::forward<ForwardLambdas>(lambdas)...}
     {}
   };
 
   template <typename Lambda>
-  struct LambdaOverload<Lambda> : Lambda {
+  struct CallableOverload<Lambda> : Lambda {
     using Lambda::operator();
-    LambdaOverload(Lambda lambda) : Lambda{std::move(lambda)} {}
+    CallableOverload(Lambda lambda) : Lambda{std::move(lambda)} {}
   };
 #endif
 
   template <typename ...ForwardLambdas>
   auto handler(ForwardLambdas&&... lambdas) {
-    return LambdaOverload<std::remove_reference_t<ForwardLambdas>...>{
+    return CallableOverload<std::remove_reference_t<ForwardLambdas>...>{
       std::forward<ForwardLambdas>(lambdas)...
     };
   }
