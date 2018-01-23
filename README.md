@@ -3,35 +3,39 @@
 
 [Coverage Report](https://mikezackles.github.io/piecewise/home/travis/build/mikezackles/piecewise/include/mz/piecewise/index.html)
 
-**Disclaimer**: This project is still in its infancy. It may not work as advertised.
+**Disclaimer**: This project is still experimental, and it is not yet used in
+any real-world projects (that I am aware of). But please let me know if you are
+using it with (or without) success!
 
 Overview
 --
 
 Piecewise is a small C++14 library for structuring code via compile-time
-dependency injection. In particular, it aims to facilitate type composition
-hierarchies with strong invariants (no default constructors or two-stage
-initialization). Piecewise favors explicit error handling over exceptions.
+dependency injection. It favors explicit error handling over exceptions.
 
-There are many valid ways to achieve similar functionality. Piecewise was born
-out of a desire to minimize the associated boilerplate without sacrificing
-flexibility.
+This library was born out of a desire to reduce the boilerplate associated with
+dependency injection in header-only types that have multiple templated members.
+It attempts to do so without sacrificing flexibility.
 
 ```c++
 Foo::builder(
+  // Perfectly forward arguments to the Bar member
   Bar::builder("abc", 42)
-, Baz::builder("xyzzy")
+, // Perfectly forward arguments to the Baz member
+  Baz::builder("xyzzy")
 ).construct(
+  // A success callback. It is only called if both the Bar and the Baz instances
+  // were successfully instantiated
   [](auto builder) {
-    // We now know we can construct a valid Foo! Do so using arguments perfectly
-    // forwarded to the nested types Bar and Baz
+    // We now know we can construct a valid Foo!
     Foo result = builder.construct();
     // Use it here!
     std::cout << result.bar().get_string(); // "abc"
     std::cout << result.bar().get_int();    // 42
     std::cout << result.baz().get_string(); // "xyzzy"
   }
-, [](auto error) {
+, // This is called if initialization fails at *any* point
+  [](auto error) {
     std::cerr << "Validation failed: " << decltype(error)::description << std::endl;
   }
 );
