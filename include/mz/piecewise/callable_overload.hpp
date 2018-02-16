@@ -2,6 +2,7 @@
 #define UUID_AA9FDD71_5F9D_4874_B5E2_888E951DB878
 
 #include <type_traits>
+#include <utility>
 
 namespace mz { namespace piecewise {
 #if __cplusplus >= 201703L
