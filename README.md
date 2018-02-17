@@ -327,13 +327,6 @@ how to construct the types they contain. This means that you can create
 templated aggregate types and use compile-time dependency injection at no extra
 penalty.
 
-The Future
---
-
-* [Metaclasses](https://herbsutter.com/2017/07/26/metaclasses-thoughts-on-generative-c/) seem
-like a great way to create a better abstraction for piecewise-enabled types
-* Construction of nested, unrelated types seems like a candidate for parallelism
-
 Example
 --
 
