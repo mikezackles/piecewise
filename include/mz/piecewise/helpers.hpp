@@ -83,7 +83,7 @@ namespace mz { namespace piecewise {
           }
         , [&](auto error) {
             error_callback(error);
-            return std::optional<T>{std::nullopt};
+            return std::optional<T>{};
           }
         );
       }
