@@ -92,6 +92,8 @@ namespace {
     A(std::string a_string_, int an_int_)
       : a_string{std::move(a_string_)}, an_int{an_int_}
     {}
+
+    A() : a_string{}, an_int{-1} {}
   };
 
   // `B` can be constructed normally, so it needs no explicit factory function
@@ -286,6 +288,31 @@ SCENARIO("multifail aggregate") {
     );
   }
 
+  WHEN("invalid variant") {
+    // Doesn't work with clang as of version 5.0.0 due to bug
+    // https://bugs.llvm.org//show_bug.cgi?id=33222
+    auto variant = Aggregate<A, A, B>::variant<
+      A::StringEmptyError
+    , A::IntNegativeError
+    >(
+      A::builder("abc", 42)
+    , A::builder("def", -123)
+    , mp::wrapper<B>(5, 6)
+    , 3
+    );
+    bool failed = false;
+    std::visit(
+      mp::handler(
+        [](Aggregate<A, A, B> const &) {
+          REQUIRE(false);
+        }
+      , [&](auto) { failed = true; }
+      )
+    , variant
+    );
+    REQUIRE(failed);
+  }
+
   WHEN("optional") {
     auto optional = Aggregate<A, A, B>::optional(
       A::builder("abc", 42)
@@ -304,6 +331,21 @@ SCENARIO("multifail aggregate") {
     REQUIRE(optional->get_v().int_a == 5);
     REQUIRE(optional->get_v().int_b == 6);
     REQUIRE(optional->get_int() == 3);
+  }
+
+  WHEN("invalid optional") {
+    bool failed = false;
+    auto optional = Aggregate<A, A, B>::optional(
+      A::builder("", 42)
+    , A::builder("def", 123)
+    , mp::wrapper<B>(5, 6)
+    , 3
+    ).construct(
+      [&](auto) { failed = true; }
+    );
+
+    REQUIRE(failed);
+    REQUIRE(!optional);
   }
 #endif
 }

@@ -45,6 +45,7 @@ auto saved = Foo::variant<Error1, Error2>(
 , Baz::builder("xyzzy")
 );
 
+// Or use a std::optional
 auto maybe_foo = Foo::optional(
   Bar::builder("abc", 42)
 , Baz::builder("xyzzy")
@@ -53,7 +54,6 @@ auto maybe_foo = Foo::optional(
     std::cerr << "Validation failed: " << decltype(error)::description << std::endl;
   }
 );
-
 if (maybe_foo) {
   maybe_foo->do_foo_things();
 }
@@ -325,15 +325,6 @@ Aggregate<A, B>::builder(
 // ...
 );
 ```
-
-Dependency Injection
---
-
-You may have noticed that for piecewise-enabled types that contain other
-piecewise-enabled types, the containing types don't need to know anything about
-how to construct the types they contain. This means that you can create
-templated aggregate types and use compile-time dependency injection at no extra
-penalty.
 
 Example
 --
