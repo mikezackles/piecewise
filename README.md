@@ -168,10 +168,12 @@ class Foo final
   : private mp::ConstructorHelper<Foo>
   , public mp::BuilderHelper<Foo>
   , public mp::VariantHelper<Foo>
+  , public mp::OptionalHelper<Foo>
 {
   friend mp::ConstructorHelper<Foo>;
   friend mp::BuilderHelper<Foo>;
   friend mp::VariantHelper<Foo>;
+  friend mp::OptionalHelper<Foo>;
 ```
 
 `ConstructorHelper` gives access to the helper functions `Foo::constructor` and
