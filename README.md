@@ -147,11 +147,8 @@ while (!connected) {
 Helpers
 --
 
-Helpers help you design a piecewise-enabled type. Some day they might be
-implemented using metaclasses, but for now they are mix-ins implemented
-using
-[CRTP](https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern). If
-you want to keep your implementation details private, they require friendship
+Helpers are mix-ins that help you design a piecewise-enabled type. If you
+want to keep your implementation details private, they require friendship
 with your derived class:
 
 ```c++
