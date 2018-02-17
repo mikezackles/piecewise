@@ -92,8 +92,6 @@ namespace {
     A(std::string a_string_, int an_int_)
       : a_string{std::move(a_string_)}, an_int{an_int_}
     {}
-
-    A() : a_string{}, an_int{-1} {}
   };
 
   // `B` can be constructed normally, so it needs no explicit factory function
