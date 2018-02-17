@@ -3,9 +3,7 @@
 
 [Coverage Report](https://mikezackles.github.io/piecewise/home/travis/build/mikezackles/piecewise/include/mz/piecewise/index.html)
 
-**Disclaimer**: This project is still experimental, and it is not yet used in
-any real-world projects (that I am aware of). But please let me know if you are
-using it with (or without) success!
+**Disclaimer**: This project is still experimental.
 
 Overview
 --
@@ -46,6 +44,19 @@ auto saved = Foo::variant<Error1, Error2>(
   Bar::builder("abc", 42)
 , Baz::builder("xyzzy")
 );
+
+auto maybe_foo = Foo::optional(
+  Bar::builder("abc", 42)
+, Baz::builder("xyzzy")
+).construct(
+  [](auto error) {
+    std::cerr << "Validation failed: " << decltype(error)::description << std::endl;
+  }
+);
+
+if (maybe_foo) {
+  maybe_foo->do_foo_things();
+}
 ```
 
 Test Matrix

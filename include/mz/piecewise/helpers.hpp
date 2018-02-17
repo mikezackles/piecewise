@@ -4,6 +4,7 @@
 #include <mz/piecewise/builder.hpp>
 
 #if __cplusplus >= 201703L
+  #include <optional>
   #include <variant>
 #endif
 
@@ -58,6 +59,45 @@ namespace mz { namespace piecewise {
       , [](auto error) {
           return std::variant<T, ErrorTypes...>{error};
         }
+      );
+    }
+  };
+
+  template <typename T>
+  class OptionalHelper {
+  public:
+    template <typename ...Args>
+    class Optional final {
+    private:
+      Builder<Args...> mBuilder;
+    public:
+      explicit Optional(Builder<Args...> builder)
+      : mBuilder(std::move(builder))
+      {}
+
+      template <typename ErrorCallback>
+      std::optional<T> construct(ErrorCallback &&error_callback) && {
+        return std::move(mBuilder).construct(
+          [](auto builder) {
+            return std::optional<T>{std::move(builder).construct()};
+          }
+        , [&](auto error) {
+            error_callback(error);
+            return std::optional<T>{std::nullopt};
+          }
+        );
+      }
+    };
+
+    template <typename ...Args>
+    static auto optional_helper(Builder<Args...> builder) {
+      return Optional<Args...>(std::move(builder));
+    }
+
+    template <typename ...Args>
+    static auto optional(Args&&... args) {
+      return optional_helper(
+        piecewise::builder(T::factory(), std::forward<Args>(args)...)
       );
     }
   };

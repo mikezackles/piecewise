@@ -111,6 +111,7 @@ namespace {
     , public mp::BuilderHelper<Aggregate<T, U, V>>
   #if __cplusplus >= 201703L
     , public mp::VariantHelper<Aggregate<T, U, V>>
+    , public mp::OptionalHelper<Aggregate<T, U, V>>
   #endif
   {
   public:
@@ -125,6 +126,7 @@ namespace {
     friend class mp::BuilderHelper<Aggregate<T, U, V>>;
   #if __cplusplus >= 201703L
     friend class mp::VariantHelper<Aggregate<T, U, V>>;
+    friend class mp::OptionalHelper<Aggregate<T, U, V>>;
   #endif
 
     static CONSTEXPR_LAMBDA auto factory() {
@@ -282,6 +284,26 @@ SCENARIO("multifail aggregate") {
       )
     , variant
     );
+  }
+
+  WHEN("optional") {
+    auto optional = Aggregate<A, A, B>::optional(
+      A::builder("abc", 42)
+    , A::builder("def", 123)
+    , mp::wrapper<B>(5, 6)
+    , 3
+    ).construct(
+      [](auto) { REQUIRE(false); }
+    );
+
+    REQUIRE(optional);
+    REQUIRE(optional->get_t().get_a_string() == "abc");
+    REQUIRE(optional->get_t().get_an_int() == 42);
+    REQUIRE(optional->get_u().get_a_string() == "def");
+    REQUIRE(optional->get_u().get_an_int() == 123);
+    REQUIRE(optional->get_v().int_a == 5);
+    REQUIRE(optional->get_v().int_b == 6);
+    REQUIRE(optional->get_int() == 3);
   }
 #endif
 }
