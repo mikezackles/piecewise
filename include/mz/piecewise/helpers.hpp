@@ -53,7 +53,7 @@ namespace mz { namespace piecewise {
       return piecewise::builder(T::factory(), std::forward<Args>(args)...)
       .construct(
         [](auto builder) {
-          return std::variant<T, ErrorTypes...>{builder.construct()};
+          return std::variant<T, ErrorTypes...>{std::move(builder).construct()};
         }
       , [](auto error) {
           return std::variant<T, ErrorTypes...>{error};
