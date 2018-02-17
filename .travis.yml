@@ -49,7 +49,7 @@ script:
 
 # Deploy coverage report to github pages
 deploy:
-  local_dir: $ARCH_TRAVIS_CHROOT/home/travis/build/mikezackles/piecewise/build/17/coverage/meson-logs/coveragereport/
+  local_dir: $ARCH_TRAVIS_CHROOT/build/17/coverage/meson-logs/coveragereport/
   provider: pages
   skip_cleanup: true
   github_token: $GITHUB
