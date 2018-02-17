@@ -36,7 +36,7 @@ namespace {
   public:
     template <typename TArgs, typename UArgs>
     Aggregate(TArgs t_args, UArgs u_args)
-      : t{t_args.construct()}, u{u_args.construct()}
+      : t{std::move(t_args).construct()}, u{std::move(u_args).construct()}
     {}
 
     T const &get_t() const { return t; }

@@ -27,8 +27,9 @@ Foo::builder(
   // A success callback. It is only called if both the Bar and the Baz instances
   // were successfully instantiated
   [](auto builder) {
-    // We now know we can construct a valid Foo!
-    Foo result = builder.construct();
+    // We now know we can construct a valid Foo! We use `std::move` to indicate
+    // that we are potentially stealing resources
+    Foo result = std::move(builder).construct();
     // Use it here!
     std::cout << result.bar().get_string(); // "abc"
     std::cout << result.bar().get_int();    // 42
@@ -105,12 +106,21 @@ Foo::builder(arg1, arg2)
 ```
 
 Since builders are entirely composed of references, you should treat them as
-such! If you try to use the builders outside the scope of the original
-expression, you're likely to have a bad time. **Don't do this:**
+such!
 ```c++
-auto builder = Foo::builder("this is temporary", 2)
-// NO! The temporaries are already gone.
-builder.construct([](auto) {}, [](auto) {});
+void does_not_compile() {}
+  auto builder = Foo::builder("the 2 is temporary", 2)
+  builder.construct([](auto) {}, [](auto) {}); // ERROR!
+}
+
+void compiles() {
+  auto builder = Foo::builder("the 2 is temporary", 2)
+  std::move(builder).construct([](auto) {}, [](auto) {}); // Bad!
+}
+
+void correct() {
+  Foo::builder("the 2 is temporary", 2).construct([](auto) {}, [](auto) {});
+}
 ```
 
 Builders are designed so that it is impossible to construct a `Foo` instance
@@ -247,8 +257,8 @@ Again, notice that regular arguments are passed before builders.
 ```c++
   template <typename Builder1, typename Builder2>
   Foo(int arg1, std::string arg2, Builder1 builder1, Builder2 builder2)
-    : nested_type1{builder1.construct()}
-    , nested_type2{builder2.construct()}
+    : nested_type1{std::move(sbuilder1).construct()}
+    , nested_type2{std::move(builder2).construct()}
     , an_int{arg1}
     , a_string{std::move(arg2)}
   {}

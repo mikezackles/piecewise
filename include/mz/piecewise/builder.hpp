@@ -13,7 +13,7 @@ namespace mz { namespace piecewise {
     {}
 
     template <typename ...Args>
-    auto construct(Args&&... args) {
+    auto construct(Args&&... args) && {
       return forward_tuple(
         callback
       , std::move(packed_args)

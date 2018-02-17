@@ -149,10 +149,10 @@ namespace {
     Aggregate(
       int an_int_
     , TBuilder t_builder, UBuilder u_builder, VBuilder v_builder
-    ) : t{t_builder.construct()}
+    ) : t{std::move(t_builder).construct()}
       , an_int{an_int_}
-      , u{u_builder.construct()}
-      , v{v_builder.construct()}
+      , u{std::move(u_builder).construct()}
+      , v{std::move(v_builder).construct()}
     {}
 
     T t;
@@ -230,7 +230,7 @@ SCENARIO("multifail aggregate") {
     ).construct(
       [&](auto builder) {
         success = true;
-        auto res = builder.construct();
+        auto res = std::move(builder).construct();
         THEN("the nested types contain the correct values") {
           REQUIRE(res.get_t().get_a_string() == "abc");
           REQUIRE(res.get_t().get_an_int() == 42);

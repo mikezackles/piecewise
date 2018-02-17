@@ -50,7 +50,7 @@ namespace mz { namespace piecewise {
       , RegularArgs regular_args
       ) const {
         auto split_arg_packs = tuple_list::split(std::move(arg_packs));
-        return split_arg_packs.head.construct(
+        return std::move(split_arg_packs.head).construct(
           [ &constructor
           , &on_success, &on_fail
           , arg_packs = std::move(split_arg_packs.tail)
