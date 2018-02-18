@@ -8,8 +8,6 @@ project(
   ]
 )
 
-catch = subproject('catch')
-
 cpp_args = []
 cpp_link_args = []
 
@@ -24,10 +22,12 @@ elif compiler.get_id() == 'clang'
   ]
 endif
 
-if get_option('libcxx')
-  cpp_args += ['-stdlib=libc++']
-  cpp_link_args += ['-stdlib=libc++', '-lc++abi']
+if get_option('libcxx') and compiler.get_id() == 'clang'
+  add_global_arguments(['-stdlib=libc++'], language: 'cpp')
+  add_global_link_arguments(['-stdlib=libc++', '-lc++abi'], language: 'cpp')
 endif
+
+catch = subproject('catch')
 
 incdir = include_directories(
   'include'

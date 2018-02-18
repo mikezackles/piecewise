@@ -66,12 +66,24 @@ This table attempts to document the configurations that are currently tested by
 CI. Assume that compiler versions are the latest offered in the listed
 environment. Untested configurations may still work.
 
-| Environment | Compiler | Standard Library | C++14 | C++17 | Address Sanitizer |
+| Environment | Compiler | Standard Library | Standard | Build Type | Sanitizers |
 | --- | --- | --- | --- | --- | --- |
-| [Arch Travis](https://github.com/mikkeloscar/arch-travis) | gcc | libstdc++ | yes | yes | no |
-| [Arch Travis](https://github.com/mikkeloscar/arch-travis) | clang | libstdc++ | yes | disabled due to [bug](https://bugs.llvm.org//show_bug.cgi?id=33222) | disabled due to [bug1](https://github.com/google/sanitizers/issues/856), [bug2](https://github.com/google/sanitizers/issues/837) |
-| Travis OS X | clang | libc++ | yes | no | no |
-| AppVeyor Windows | msvc | ms | yes | no | no |
+| [Arch Travis](https://github.com/mikkeloscar/arch-travis) | GCC | libstdc++ | C++14 | Release | None |
+| [Arch Travis](https://github.com/mikkeloscar/arch-travis) | GCC | libstdc++ | C++14 | Debug | Address/Undefined |
+| [Arch Travis](https://github.com/mikkeloscar/arch-travis) | Clang | libstdc++ | C++14 | Release | None |
+| [Arch Travis](https://github.com/mikkeloscar/arch-travis) | Clang | libstdc++ | C++14 | Debug | Address/Undefined |
+| [Arch Travis](https://github.com/mikkeloscar/arch-travis) | Clang | libc++ | C++14 | Release | None |
+| [Arch Travis](https://github.com/mikkeloscar/arch-travis) | Clang | libc++ | C++14 | Debug | Address/Undefined |
+| [Arch Travis](https://github.com/mikkeloscar/arch-travis) | GCC | libstdc++ | C++17 | Release | None |
+| [Arch Travis](https://github.com/mikkeloscar/arch-travis) | GCC | libstdc++ | C++17 | Debug | Address/Undefined |
+| ~~[Arch Travis](https://github.com/mikkeloscar/arch-travis)~~ | ~~Clang~~ | ~~libstdc++~~ | ~~C++17~~ | ~~Release~~ | ~~None~~ |
+| ~~[Arch Travis](https://github.com/mikkeloscar/arch-travis)~~ | ~~Clang~~ | ~~libstdc++~~ | ~~C++17~~ | ~~Debug~~ | ~~Address/Undefined~~ |
+| [Arch Travis](https://github.com/mikkeloscar/arch-travis) | Clang | libc++ | C++17 | Release | None |
+| [Arch Travis](https://github.com/mikkeloscar/arch-travis) | Clang | libc++ | C++17 | Debug | Address/Undefined |
+| Travis OS X | Apple Clang | libc++ | C++14 | Release | None |
+| AppVeyor Windows | MSVC | MS | C++14 | Release | None |
+
+Note that clang C++17 builds with libstdc++ are disabled due to [this bug](https://bugs.llvm.org//show_bug.cgi?id=33222)
 
 Build
 --

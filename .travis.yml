@@ -17,26 +17,43 @@ arch:
     # aur packages
     - lcov
   script:
-    # Disable sanitizer build pending fix in kernel 4.13:
-    # https://github.com/google/sanitizers/issues/856 and
-    # https://github.com/google/sanitizers/issues/837
-    #- CC=clang CXX=clang++ meson build/sanitizer -Db_sanitize=address
-    #- meson test -C build_sanitizer
-    - CC=clang CXX=clang++ meson build/clang --buildtype=release
-    - meson test -C build/clang
-    - CC=gcc CXX=g++ meson build/gcc --buildtype=release
-    - meson test -C build/gcc
-    # Disabled due to clang bug:
+    # Install libc++
+    - git clone https://aur.archlinux.org/libc++
+    - cd libc++ && makepkg -sri --skippgpcheck --noconfirm && cd ..
+    # C++14
+    - CC=clang CXX=clang++ meson build/clang/cxx14/libstdcxx/sanitizer -Db_sanitize=address,undefined
+    - ninja -vC build/clang/cxx14/libstdcxx/sanitizer test
+    - CC=clang CXX=clang++ meson build/clang/cxx14/libstdcxx/release --buildtype=release
+    - ninja -vC build/clang/cxx14/libstdcxx/release test
+    - CC=clang CXX=clang++ meson build/clang/cxx14/libcxx/sanitizer -Db_sanitize=address,undefined -Dlibcxx=true
+    - ninja -vC build/clang/cxx14/libcxx/sanitizer test
+    - CC=clang CXX=clang++ meson build/clang/cxx14/libcxx/release --buildtype=release -Dlibcxx=true
+    - ninja -vC build/clang/cxx14/libcxx/release test
+    - CC=gcc CXX=g++ meson build/gcc/cxx14/libstdcxx/sanitizer -Db_sanitize=address,undefined
+    - ninja -vC build/gcc/cxx14/libstdcxx/sanitizer test
+    - CC=gcc CXX=g++ meson build/gcc/cxx14/libstdcxx/release --buildtype=release
+    - ninja -vC build/gcc/cxx14/libstdcxx/release test
+
+    # C++17
+    # Disabled clang+libstdc++ due to clang bug:
     # https://bugs.llvm.org//show_bug.cgi?id=33222
-    #- CC=clang CXX=clang++ meson build/17/clang --buildtype=release -Dcpp_std=c++1z
-    #- meson test -C build/clang
-    - CC=gcc CXX=g++ meson build/17/gcc --buildtype=release -Dcpp_std=c++1z
-    - meson test -C build/17/gcc
-    # Unoptimized build for coverage
-    - CC=gcc CXX=g++ meson build/17/coverage -Dcpp_std=c++1z -Db_coverage=true
-    - meson test -C build/17/coverage
+    #- CC=clang CXX=clang++ meson build/clang/cxx17/libstdcxx/sanitizer -Dcpp_std=c++1z -Db_sanitize=address,undefined
+    #- ninja -vC build/clang/cxx17/libstdcxx/sanitizer test
+    #- CC=clang CXX=clang++ meson build/clang/cxx17/libstdcxx/release -Dcpp_std=c++1z --buildtype=release
+    #- ninja -vC build/clang/cxx17/libstdcxx/release test
+    - CC=clang CXX=clang++ meson build/clang/cxx17/libcxx/sanitizer -Dcpp_std=c++1z -Db_sanitize=address,undefined -Dlibcxx=true
+    - ninja -vC build/clang/cxx17/libcxx/sanitizer test
+    - CC=clang CXX=clang++ meson build/clang/cxx17/libcxx/release -Dcpp_std=c++1z --buildtype=release -Dlibcxx=true
+    - ninja -vC build/clang/cxx17/libcxx/release test
+    - CC=gcc CXX=g++ meson build/gcc/cxx17/libstdcxx/sanitizer -Dcpp_std=c++1z -Db_sanitize=address,undefined
+    - ninja -vC build/gcc/cxx17/libstdcxx/sanitizer test
+    - CC=gcc CXX=g++ meson build/gcc/cxx17/libstdcxx/release -Dcpp_std=c++1z --buildtype=release
+    - ninja -vC build/gcc/cxx17/libstdcxx/release test
+
     # Generate a coverage report
-    - ninja -C build/17/coverage coverage-html
+    - CC=gcc CXX=g++ meson build/gcc/cxx17/libstdcxx/coverage -Dcpp_std=c++1z -Db_coverage=true
+    - ninja -vC build/gcc/cxx17/libstdcxx/coverage test
+    - ninja -C build/gcc/cxx17/libstdcxx/coverage coverage-html
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
@@ -49,7 +66,7 @@ script:
 
 # Deploy coverage report to github pages
 deploy:
-  local_dir: $ARCH_TRAVIS_CHROOT/build/17/coverage/meson-logs/coveragereport/
+  local_dir: $ARCH_TRAVIS_CHROOT/build/gcc/cxx17/libstdcxx/coverage/meson-logs/coveragereport/
   provider: pages
   skip_cleanup: true
   github_token: $GITHUB
