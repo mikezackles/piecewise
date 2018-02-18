@@ -7,9 +7,9 @@ namespace mz { namespace piecewise {
   template <typename Callback, typename ...RefTypes>
   class Builder {
   public:
-    Builder(Callback&& callback_, std::tuple<RefTypes...> packed_args_)
+    Builder(Callback callback_, std::tuple<RefTypes...> packed_args_)
       : packed_args{std::move(packed_args_)}
-      , callback{callback_}
+      , callback{std::move(callback_)}
     {}
 
     template <typename ...Args>
@@ -23,21 +23,21 @@ namespace mz { namespace piecewise {
 
   private:
     std::tuple<RefTypes...> packed_args;
-    Callback& callback;
+    Callback callback;
   };
 
   template <typename Callback, typename ...RefTypes>
   inline auto make_builder(
-    Callback&& callback
+    Callback callback
   , std::tuple<RefTypes...> packed_args
   )-> Builder<Callback, RefTypes...> {
-    return {callback, std::move(packed_args)};
+    return {std::move(callback), std::move(packed_args)};
   }
 
   template <typename Callback, typename ...Args>
-  inline auto builder(Callback&& callback, Args&&... args) {
+  inline auto builder(Callback callback, Args&&... args) {
     return make_builder(
-      callback
+      std::move(callback)
     , std::forward_as_tuple(std::forward<Args>(args)...)
     );
   }
