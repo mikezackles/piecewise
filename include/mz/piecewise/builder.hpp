@@ -4,10 +4,10 @@
 #include <mz/piecewise/forward_tuple.hpp>
 
 namespace mz { namespace piecewise {
-  template <typename Callback, typename ...RefTypes>
+  template <typename ConstructCallback, typename ...RefTypes>
   class Builder {
   public:
-    Builder(Callback callback_, std::tuple<RefTypes...> packed_args_)
+    Builder(ConstructCallback callback_, std::tuple<RefTypes...> packed_args_)
       : packed_args{std::move(packed_args_)}
       , callback{std::move(callback_)}
     {}
@@ -23,19 +23,19 @@ namespace mz { namespace piecewise {
 
   private:
     std::tuple<RefTypes...> packed_args;
-    Callback callback;
+    ConstructCallback callback;
   };
 
-  template <typename Callback, typename ...RefTypes>
+  template <typename ConstructCallback, typename ...RefTypes>
   inline auto make_builder(
-    Callback callback
+    ConstructCallback callback
   , std::tuple<RefTypes...> packed_args
-  )-> Builder<Callback, RefTypes...> {
+  )-> Builder<ConstructCallback, RefTypes...> {
     return {std::move(callback), std::move(packed_args)};
   }
 
-  template <typename Callback, typename ...Args>
-  inline auto builder(Callback callback, Args&&... args) {
+  template <typename ConstructCallback, typename ...Args>
+  inline auto builder(ConstructCallback callback, Args&&... args) {
     return make_builder(
       std::move(callback)
     , std::forward_as_tuple(std::forward<Args>(args)...)
