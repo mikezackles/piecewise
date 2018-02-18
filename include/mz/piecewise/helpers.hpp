@@ -10,38 +10,21 @@
 
 namespace mz { namespace piecewise {
   template <typename T>
-  class ConstructorHelper {
-  private:
-    struct ParenthesizedConstructor {
-      template <typename ...Args>
-      T operator()(Args&&... args) const {
-        return T(std::forward<Args>(args)...);
-      }
-    };
-
-    struct BracedConstructor {
-      template <typename ...Args>
-      T operator()(Args&&... args) const {
-        return T{std::forward<Args>(args)...};
-      }
-    };
-
-  public:
-    static constexpr auto constructor() {
-      return ParenthesizedConstructor{};
-    }
-
-    static constexpr auto braced_constructor() {
-      return BracedConstructor{};
-    }
-  };
-
-  template <typename T>
   class BuilderHelper {
   public:
     template <typename ...Args>
     static auto builder(Args&&... args) {
-      return piecewise::builder(T::factory(), std::forward<Args>(args)...);
+      auto factory_wrapper = [](auto&&... args_) {
+        auto constructor = [](auto&&... args__) {
+          return T(
+            typename T::Private{}, std::forward<decltype(args__)>(args__)...
+          );
+        };
+        return T::factory()(
+          constructor, std::forward<decltype(args_)>(args_)...
+        );
+      };
+      return piecewise::builder(factory_wrapper, std::forward<Args>(args)...);
     }
   };
 
@@ -50,16 +33,30 @@ namespace mz { namespace piecewise {
   class VariantHelper {
   public:
     template <typename ...ErrorTypes, typename ...Args>
-    static std::variant<T, ErrorTypes...> variant(Args&&... args) {
-      return piecewise::builder(T::factory(), std::forward<Args>(args)...)
-      .construct(
-        [](auto builder) {
-          return std::variant<T, ErrorTypes...>{std::move(builder).construct()};
-        }
-      , [](auto error) {
-          return std::variant<T, ErrorTypes...>{error};
-        }
-      );
+    static auto variant(Args&&... args) {
+      auto factory_wrapper = [](auto&&... args_) {
+        auto constructor = [](auto&&... args__) {
+          return std::variant<T, ErrorTypes...>{
+            std::in_place_index<0>
+          , typename T::Private{}
+          , std::forward<decltype(args__)>(args__)...
+          };
+        };
+        return T::factory()(
+          constructor, std::forward<decltype(args_)>(args_)...
+        );
+      };
+      return
+        piecewise::builder(factory_wrapper, std::forward<Args>(args)...)
+        .construct(
+          [](auto builder) {
+            return std::move(builder).construct();
+          }
+        , [](auto error) {
+            return std::variant<T, ErrorTypes...>{error};
+          }
+        );
+      ;
     }
   };
 
@@ -76,10 +73,10 @@ namespace mz { namespace piecewise {
       {}
 
       template <typename ErrorCallback>
-      std::optional<T> construct(ErrorCallback &&error_callback) && {
+      auto construct(ErrorCallback &&error_callback) && {
         return std::move(mBuilder).construct(
           [](auto builder) {
-            return std::optional<T>{std::move(builder).construct()};
+            return std::move(builder).construct();
           }
         , [&](auto error) {
             error_callback(error);
@@ -96,8 +93,18 @@ namespace mz { namespace piecewise {
 
     template <typename ...Args>
     static auto optional(Args&&... args) {
+      auto factory_wrapper = [](auto&&... args_) {
+        auto constructor = [](auto&&... args__) {
+          return std::make_optional<T>(
+            typename T::Private{}, std::forward<decltype(args__)>(args__)...
+          );
+        };
+        return T::factory()(
+          constructor, std::forward<decltype(args_)>(args_)...
+        );
+      };
       return optional_helper(
-        piecewise::builder(T::factory(), std::forward<Args>(args)...)
+        piecewise::builder(factory_wrapper, std::forward<Args>(args)...)
       );
     }
   };

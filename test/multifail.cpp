@@ -24,9 +24,7 @@ namespace mp = mz::piecewise;
 
 namespace {
   // `A` simulates a type that could fail during creation.
-  class A final
-    : private mp::ConstructorHelper<A>
-    , public mp::BuilderHelper<A>
+  class A final : public mp::BuilderHelper<A>
   {
   private:
     std::string a_string;
@@ -50,9 +48,8 @@ namespace {
     int get_an_int() const { return an_int; }
 
   private:
-    // Give the `Constructors` helper permission to call the private
-    // constructor and the factory member function.
-    friend class mp::ConstructorHelper<A>;
+    // Give BuilderHelper permission to call the private constructor and the
+    // factory member function.
     friend class mp::BuilderHelper<A>;
 
     // The true logic for construction of `A` lives here. Error cases in this
@@ -63,7 +60,8 @@ namespace {
     // forwarded references to arguments.
     static CONSTEXPR_LAMBDA auto factory() {
       return [](
-        auto&& on_success, auto&& on_fail
+        auto constructor
+      , auto&& on_success, auto&& on_fail
       , std::string a_string, int an_int
       ) {
         // Validate arguments
@@ -77,9 +75,8 @@ namespace {
         return on_success(
           // Create a builder
           mp::builder(
-            // This is the actual creation callback. It just calls `A`'s
-            // constructor in the normal way
-            constructor()
+            // This is the actual creation callback.
+            std::move(constructor)
           , // The arguments to be passed to `A`'s constructor
             std::move(a_string), an_int
           )
@@ -87,9 +84,11 @@ namespace {
       };
     }
 
+    struct Private {};
+  public:
     // The private constructor is the final step of construction an object of
     // type `A`, and it is only called if `A`'s factory function has succeeded.
-    A(std::string a_string_, int an_int_)
+    A(Private, std::string a_string_, int an_int_)
       : a_string{std::move(a_string_)}, an_int{an_int_}
     {}
   };
@@ -107,8 +106,7 @@ namespace {
   // created.
   template <typename T, typename U, typename V>
   class Aggregate final
-    : private mp::ConstructorHelper<Aggregate<T, U, V>>
-    , public mp::BuilderHelper<Aggregate<T, U, V>>
+    : public mp::BuilderHelper<Aggregate<T, U, V>>
   #if __cplusplus >= 201703L
     , public mp::VariantHelper<Aggregate<T, U, V>>
     , public mp::OptionalHelper<Aggregate<T, U, V>>
@@ -121,8 +119,8 @@ namespace {
     int get_int() const { return an_int; }
 
   private:
-    // This gives piecewise the ability to call the private constructor.
-    friend class mp::ConstructorHelper<Aggregate<T, U, V>>;
+    // Give the helpers permission to call the private constructor and the
+    // factory member function.
     friend class mp::BuilderHelper<Aggregate<T, U, V>>;
   #if __cplusplus >= 201703L
     friend class mp::VariantHelper<Aggregate<T, U, V>>;
@@ -131,12 +129,13 @@ namespace {
 
     static CONSTEXPR_LAMBDA auto factory() {
       return [](
-        auto&& on_success, auto&& on_fail
+        auto constructor
+      , auto&& on_success, auto&& on_fail
       , auto t_builder, auto u_builder, auto v_builder
       , int an_int_
       ) {
         return mp::multifail(
-          Aggregate::braced_constructor()
+          constructor
         , on_success
         , on_fail
         , mp::builders(
@@ -147,9 +146,12 @@ namespace {
       };
     }
 
+    struct Private {};
+  public:
     template <typename TBuilder, typename UBuilder, typename VBuilder>
     Aggregate(
-      int an_int_
+      Private // Make this type effectively private
+    , int an_int_
     , TBuilder t_builder, UBuilder u_builder, VBuilder v_builder
     ) : t{std::move(t_builder).construct()}
       , an_int{an_int_}
@@ -157,6 +159,7 @@ namespace {
       , v{std::move(v_builder).construct()}
     {}
 
+  private:
     T t;
     int an_int;
     U u;
