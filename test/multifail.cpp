@@ -70,7 +70,7 @@ namespace {
           // Create a builder
           mp::builder(
             // This is the actual creation callback.
-            std::move(constructor)
+            constructor
           , // The arguments to be passed to `A`'s constructor
             std::move(a_string), an_int
           )

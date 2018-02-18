@@ -158,36 +158,23 @@ while (!connected) {
 Helpers
 --
 
-Helpers are mix-ins that help you design a piecewise-enabled type. If you
-want to keep your implementation details private, they require friendship
-with your derived class:
+Piecewise includes a `Helpers` mix-in to help you design a piecewise-enabled
+type. If you want to keep your implementation details private, it requires
+friendship with your derived class:
 
 ```c++
 using mp = mz::piecewise;
-class Foo final
-  : private mp::ConstructorHelper<Foo>
-  , public mp::BuilderHelper<Foo>
-  , public mp::VariantHelper<Foo>
-  , public mp::OptionalHelper<Foo>
-{
-  friend mp::ConstructorHelper<Foo>;
-  friend mp::BuilderHelper<Foo>;
-  friend mp::VariantHelper<Foo>;
-  friend mp::OptionalHelper<Foo>;
+class Foo final : private mp::Helpers<Foo> {
+  // Give the Helpers mixin access to Foo's factory function
+  friend mp::Helpers<Foo>;
+public:
+  // Use mp::Helpers<Foo>::Private here to hide the constructor
+  Foo(Private, ...);
+};
 ```
 
-`ConstructorHelper` gives access to the helper functions `Foo::constructor` and
-`Foo::braced_constructor`. These return callables that do what you'd think.
-Notice that this helper uses private inheritance to avoid exposing `Foo`'s
-constructor to client code.
-
-`BuilderHelper` creates the `Foo::builder` function. It requires a user-defined
-`Foo::factory` that returns a callable containing the type's creation logic (see
-below).
-
-If you're using C++17, `VariantHelper` creates the templated `Foo::variant`
-function, which creates a `std::variant` containing either a `Foo` instance or
-one of the enumerated error types. Use it normally with `std::visit`.
+The above boilerplate will enable `Foo::builder`, `Foo::variant`, and
+`Foo::optional` where appropriate.
 
 Factory Function
 --
@@ -199,9 +186,10 @@ failure, along with the other arguments passed to `Foo::builder`.
 ```c++
 private:
   // constexpr lambdas require C++17 support
-  static CONSTEXPR_LAMBDA auto factory() {
+  static auto factory() {
     return [](
-      auto&& on_success, auto&& on_fail
+      auto constructor
+    , auto&& on_success, auto&& on_fail
     , std::string a_string, int an_int
     ) {
       // Validate arguments
@@ -215,7 +203,7 @@ private:
         mp::builder(
           // This is the actual creation callback. It just calls Foo's
           // constructor in the normal way
-          constructor()
+          constructor
         , // The arguments to be passed to Foo's constructor
           std::move(a_string), an_int
         )
@@ -235,9 +223,10 @@ due to an implementation detail it will pass regular arguments to the
 constructor *before* it passes builders. Use this helper if your type contains
 nested types that are piecewise-enabled.
 ```c++
-  static CONSTEXPR_LAMBDA auto factory() {
+  static auto factory() {
     return [](
-      auto&& on_success, auto&& on_fail
+      auto constructor
+    , auto&& on_success, auto&& on_fail
     , auto builder1, auto builder2
     , int arg1, std::string arg2
     ) {
@@ -245,7 +234,7 @@ nested types that are piecewise-enabled.
       
       // Handle creation of nested types
       return mp::multifail(
-        Foo::braced_constructor()
+        constructor
       , on_success
       , on_fail
       , mp::builders(
