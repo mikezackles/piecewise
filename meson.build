@@ -10,17 +10,23 @@ project(
 
 catch = subproject('catch')
 
+cpp_args = []
+cpp_link_args = []
+
 compiler = meson.get_compiler('cpp')
 if compiler.get_id() == 'gcc'
-  args = [
+  cpp_args = [
     '-fmax-errors=3'
   ]
 elif compiler.get_id() == 'clang'
-  args = [
+  cpp_args = [
     '-ferror-limit=3'
   ]
-else
-  args = []
+endif
+
+if get_option('libcxx')
+  cpp_args += ['-stdlib=libc++']
+  cpp_link_args += ['-stdlib=libc++', '-lc++abi']
 endif
 
 incdir = include_directories(
@@ -37,7 +43,8 @@ test_src = [
 tests = executable(
   'tests'
 , test_src
-, cpp_args: args
+, cpp_args: cpp_args
+, link_args: cpp_link_args
 , include_directories: incdir
 , dependencies: catch.get_variable('catch')
 )

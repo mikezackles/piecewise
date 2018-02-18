@@ -1,0 +1,5 @@
+option('libcxx'
+, type: 'boolean'
+, value: false
+, description: 'Force use of libc++'
+)
