@@ -3,6 +3,8 @@
 
 #include <mz/piecewise/builder.hpp>
 
+#include <type_traits>
+
 #if __cplusplus >= 201703L
   #include <optional>
   #include <variant>
@@ -16,7 +18,7 @@ namespace mz { namespace piecewise {
     static auto builder(Args&&... args) {
       auto factory_wrapper = [](auto&&... args_) {
         auto constructor = [](auto&&... args__) {
-          return T(
+          return typename T::Implementation(
             typename T::Private{}, std::forward<decltype(args__)>(args__)...
           );
         };
@@ -36,7 +38,7 @@ namespace mz { namespace piecewise {
     static auto variant(Args&&... args) {
       auto factory_wrapper = [](auto&&... args_) {
         auto constructor = [](auto&&... args__) {
-          return std::variant<T, ErrorTypes...>{
+          return std::variant<typename T::Implementation, ErrorTypes...>{
             std::in_place_index<0>
           , typename T::Private{}
           , std::forward<decltype(args__)>(args__)...
@@ -53,7 +55,9 @@ namespace mz { namespace piecewise {
             return std::move(builder).construct();
           }
         , [](auto error) {
-            return std::variant<T, ErrorTypes...>{error};
+            return std::variant<typename T::Implementation, ErrorTypes...>{
+              error
+            };
           }
         );
       ;
@@ -80,7 +84,7 @@ namespace mz { namespace piecewise {
           }
         , [&](auto error) {
             error_callback(error);
-            return std::optional<T>{};
+            return std::optional<typename T::Implementation>{};
           }
         );
       }
@@ -95,7 +99,7 @@ namespace mz { namespace piecewise {
     static auto optional(Args&&... args) {
       auto factory_wrapper = [](auto&&... args_) {
         auto constructor = [](auto&&... args__) {
-          return std::make_optional<T>(
+          return std::make_optional<typename T::Implementation>(
             typename T::Private{}, std::forward<decltype(args__)>(args__)...
           );
         };
@@ -109,6 +113,27 @@ namespace mz { namespace piecewise {
     }
   };
 #endif
+
+  template <typename Derived>
+  class Helpers
+    : public BuilderHelper<Helpers<Derived>>
+  #if __cplusplus >= 201703L
+    , public VariantHelper<Helpers<Derived>>
+    , public OptionalHelper<Helpers<Derived>>
+  #endif
+  {
+    using Implementation = Derived;
+    static auto factory() { return Derived::factory(); }
+
+    friend class BuilderHelper<Helpers>;
+  #if __cplusplus >= 201703L
+    friend class VariantHelper<Helpers>;
+    friend class OptionalHelper<Helpers>;
+  #endif
+
+  protected:
+    struct Private {};
+  };
 }}
 
 #endif

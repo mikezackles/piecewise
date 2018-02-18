@@ -16,15 +16,9 @@
 
 namespace mp = mz::piecewise;
 
-#if __cplusplus >= 201703L
-  #define CONSTEXPR_LAMBDA constexpr
-#else
-  #define CONSTEXPR_LAMBDA
-#endif
-
 namespace {
   // `A` simulates a type that could fail during creation.
-  class A final : public mp::BuilderHelper<A>
+  class A final : public mp::Helpers<A>
   {
   private:
     std::string a_string;
@@ -50,7 +44,7 @@ namespace {
   private:
     // Give BuilderHelper permission to call the private constructor and the
     // factory member function.
-    friend class mp::BuilderHelper<A>;
+    friend class mp::Helpers<A>;
 
     // The true logic for construction of `A` lives here. Error cases in this
     // function result in calls to the `on_fail` callback, and successful
@@ -58,7 +52,7 @@ namespace {
     // to the `on_success` callback via `mz::piecewise::forward`. A builder is
     // basically a construction callback paired with a group of perfectly
     // forwarded references to arguments.
-    static CONSTEXPR_LAMBDA auto factory() {
+    static auto factory() {
       return [](
         auto constructor
       , auto&& on_success, auto&& on_fail
@@ -84,7 +78,6 @@ namespace {
       };
     }
 
-    struct Private {};
   public:
     // The private constructor is the final step of construction an object of
     // type `A`, and it is only called if `A`'s factory function has succeeded.
@@ -105,13 +98,7 @@ namespace {
   // created, the failure callback will be called, and the aggregate will not be
   // created.
   template <typename T, typename U, typename V>
-  class Aggregate final
-    : public mp::BuilderHelper<Aggregate<T, U, V>>
-  #if __cplusplus >= 201703L
-    , public mp::VariantHelper<Aggregate<T, U, V>>
-    , public mp::OptionalHelper<Aggregate<T, U, V>>
-  #endif
-  {
+  class Aggregate final : public mp::Helpers<Aggregate<T, U, V>> {
   public:
     T const &get_t() const { return t; }
     U const &get_u() const { return u; }
@@ -121,13 +108,9 @@ namespace {
   private:
     // Give the helpers permission to call the private constructor and the
     // factory member function.
-    friend class mp::BuilderHelper<Aggregate<T, U, V>>;
-  #if __cplusplus >= 201703L
-    friend class mp::VariantHelper<Aggregate<T, U, V>>;
-    friend class mp::OptionalHelper<Aggregate<T, U, V>>;
-  #endif
+    friend class mp::Helpers<Aggregate>;
 
-    static CONSTEXPR_LAMBDA auto factory() {
+    static auto factory() {
       return [](
         auto constructor
       , auto&& on_success, auto&& on_fail
@@ -146,11 +129,10 @@ namespace {
       };
     }
 
-    struct Private {};
   public:
     template <typename TBuilder, typename UBuilder, typename VBuilder>
     Aggregate(
-      Private // Make this type effectively private
+      typename mp::Helpers<Aggregate>::Private
     , int an_int_
     , TBuilder t_builder, UBuilder u_builder, VBuilder v_builder
     ) : t{std::move(t_builder).construct()}
@@ -350,5 +332,3 @@ SCENARIO("multifail aggregate") {
   }
 #endif
 }
-
-#undef CONSTEXPR_LAMBDA
