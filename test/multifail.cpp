@@ -14,6 +14,12 @@
 
 #include <string>
 
+#if __cplusplus >= 201703L
+  #define CONSTEXPR constexpr
+#else
+  #define CONSTEXPR
+#endif
+
 namespace mp = mz::piecewise;
 
 namespace {
@@ -52,7 +58,7 @@ namespace {
     // to the `on_success` callback via `mz::piecewise::forward`. A builder is
     // basically a construction callback paired with a group of perfectly
     // forwarded references to arguments.
-    static auto factory() {
+    static CONSTEXPR auto factory() {
       return [](
         auto constructor
       , auto&& on_success, auto&& on_fail
@@ -110,7 +116,7 @@ namespace {
     // factory member function.
     friend class mp::Helpers<Aggregate>;
 
-    static auto factory() {
+    static CONSTEXPR auto factory() {
       return [](
         auto constructor
       , auto&& on_success, auto&& on_fail

@@ -185,8 +185,7 @@ failure, along with the other arguments passed to `Foo::builder`.
 
 ```c++
 private:
-  // constexpr lambdas require C++17 support
-  static auto factory() {
+  static constexpr auto factory() {
     return [](
       auto constructor
     , auto&& on_success, auto&& on_fail
@@ -223,7 +222,7 @@ due to an implementation detail it will pass regular arguments to the
 constructor *before* it passes builders. Use this helper if your type contains
 nested types that are piecewise-enabled.
 ```c++
-  static auto factory() {
+  static constexpr auto factory() {
     return [](
       auto constructor
     , auto&& on_success, auto&& on_fail
