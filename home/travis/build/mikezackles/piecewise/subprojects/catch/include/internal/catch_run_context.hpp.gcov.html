@@ -1,0 +1,503 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Code coverage - /home/travis/build/mikezackles/piecewise/subprojects/catch/include/internal/catch_run_context.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../../../../../index.html">top level</a> - <a href="index.html">home/travis/build/mikezackles/piecewise/subprojects/catch/include/internal</a> - catch_run_context.hpp<span style="font-size: 80%;"> (source / <a href="catch_run_context.hpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Code coverage</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">149</td>
+            <td class="headerCovTableEntry">214</td>
+            <td class="headerCovTableEntryLo">69.6 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2018-02-19 01:04:17</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">22</td>
+            <td class="headerCovTableEntry">30</td>
+            <td class="headerCovTableEntryLo">73.3 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Legend:</td>
+            <td class="headerValueLeg">            Lines:
+            <span class="coverLegendCov">hit</span>
+            <span class="coverLegendNoCov">not hit</span>
+</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            :  /*</a>
+<span class="lineNum">       2 </span>            :  *  Created by Phil on 22/10/2010.
+<span class="lineNum">       3 </span>            :  *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
+<span class="lineNum">       4 </span>            :  *
+<span class="lineNum">       5 </span>            :  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
+<span class="lineNum">       6 </span>            :  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+<span class="lineNum">       7 </span>            :  */
+<span class="lineNum">       8 </span>            : #ifndef TWOBLUECUBES_CATCH_RUNNER_IMPL_HPP_INCLUDED
+<span class="lineNum">       9 </span>            : #define TWOBLUECUBES_CATCH_RUNNER_IMPL_HPP_INCLUDED
+<span class="lineNum">      10 </span>            : 
+<span class="lineNum">      11 </span>            : #include &quot;catch_interfaces_runner.h&quot;
+<span class="lineNum">      12 </span>            : #include &quot;catch_interfaces_reporter.h&quot;
+<span class="lineNum">      13 </span>            : #include &quot;catch_interfaces_exception.h&quot;
+<span class="lineNum">      14 </span>            : #include &quot;catch_config.hpp&quot;
+<span class="lineNum">      15 </span>            : #include &quot;catch_test_registry.hpp&quot;
+<span class="lineNum">      16 </span>            : #include &quot;catch_test_case_info.h&quot;
+<span class="lineNum">      17 </span>            : #include &quot;catch_capture.hpp&quot;
+<span class="lineNum">      18 </span>            : #include &quot;catch_totals.hpp&quot;
+<span class="lineNum">      19 </span>            : #include &quot;catch_test_spec.hpp&quot;
+<span class="lineNum">      20 </span>            : #include &quot;catch_test_case_tracker.hpp&quot;
+<span class="lineNum">      21 </span>            : #include &quot;catch_timer.h&quot;
+<span class="lineNum">      22 </span>            : #include &quot;catch_result_builder.h&quot;
+<span class="lineNum">      23 </span>            : #include &quot;catch_fatal_condition.hpp&quot;
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            : 
+<span class="lineNum">      26 </span>            : #include &lt;set&gt;
+<span class="lineNum">      27 </span>            : #include &lt;string&gt;
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span>            : namespace Catch {
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            :     class StreamRedirect {
+<a name="32"><span class="lineNum">      32 </span>            : </a>
+<span class="lineNum">      33 </span>            :     public:
+<span class="lineNum">      34 </span><span class="lineNoCov">          0 :         StreamRedirect( std::ostream&amp; stream, std::string&amp; targetString )</span>
+<span class="lineNum">      35 </span><span class="lineNoCov">          0 :         :   m_stream( stream ),</span>
+<span class="lineNum">      36 </span><span class="lineNoCov">          0 :             m_prevBuf( stream.rdbuf() ),</span>
+<span class="lineNum">      37 </span><span class="lineNoCov">          0 :             m_targetString( targetString )</span>
+<span class="lineNum">      38 </span>            :         {
+<span class="lineNum">      39 </span><span class="lineNoCov">          0 :             stream.rdbuf( m_oss.rdbuf() );</span>
+<a name="40"><span class="lineNum">      40 </span><span class="lineNoCov">          0 :         }</span></a>
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span><span class="lineNoCov">          0 :         ~StreamRedirect() {</span>
+<span class="lineNum">      43 </span><span class="lineNoCov">          0 :             m_targetString += m_oss.str();</span>
+<span class="lineNum">      44 </span><span class="lineNoCov">          0 :             m_stream.rdbuf( m_prevBuf );</span>
+<span class="lineNum">      45 </span><span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">      46 </span>            : 
+<span class="lineNum">      47 </span>            :     private:
+<span class="lineNum">      48 </span>            :         std::ostream&amp; m_stream;
+<span class="lineNum">      49 </span>            :         std::streambuf* m_prevBuf;
+<span class="lineNum">      50 </span>            :         std::ostringstream m_oss;
+<span class="lineNum">      51 </span>            :         std::string&amp; m_targetString;
+<span class="lineNum">      52 </span>            :     };
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span>            :     // StdErr has two constituent streams in C++, std::cerr and std::clog
+<span class="lineNum">      55 </span>            :     // This means that we need to redirect 2 streams into 1 to keep proper
+<span class="lineNum">      56 </span>            :     // order of writes and cannot use StreamRedirect on its own
+<a name="57"><span class="lineNum">      57 </span>            :     class StdErrRedirect {</a>
+<span class="lineNum">      58 </span>            :     public:
+<span class="lineNum">      59 </span><span class="lineNoCov">          0 :         StdErrRedirect(std::string&amp; targetString)</span>
+<span class="lineNum">      60 </span><span class="lineNoCov">          0 :         :m_cerrBuf( cerr().rdbuf() ), m_clogBuf(clog().rdbuf()),</span>
+<span class="lineNum">      61 </span><span class="lineNoCov">          0 :         m_targetString(targetString){</span>
+<span class="lineNum">      62 </span><span class="lineNoCov">          0 :             cerr().rdbuf(m_oss.rdbuf());</span>
+<a name="63"><span class="lineNum">      63 </span><span class="lineNoCov">          0 :             clog().rdbuf(m_oss.rdbuf());</span></a>
+<span class="lineNum">      64 </span><span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">      65 </span><span class="lineNoCov">          0 :         ~StdErrRedirect() {</span>
+<span class="lineNum">      66 </span><span class="lineNoCov">          0 :             m_targetString += m_oss.str();</span>
+<span class="lineNum">      67 </span><span class="lineNoCov">          0 :             cerr().rdbuf(m_cerrBuf);</span>
+<span class="lineNum">      68 </span><span class="lineNoCov">          0 :             clog().rdbuf(m_clogBuf);</span>
+<span class="lineNum">      69 </span><span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">      70 </span>            :     private:
+<span class="lineNum">      71 </span>            :         std::streambuf* m_cerrBuf;
+<span class="lineNum">      72 </span>            :         std::streambuf* m_clogBuf;
+<span class="lineNum">      73 </span>            :         std::ostringstream m_oss;
+<span class="lineNum">      74 </span>            :         std::string&amp; m_targetString;
+<span class="lineNum">      75 </span>            :     };
+<span class="lineNum">      76 </span>            : 
+<span class="lineNum">      77 </span>            :     ///////////////////////////////////////////////////////////////////////////
+<span class="lineNum">      78 </span>            : 
+<span class="lineNum">      79 </span>            :     class RunContext : public IResultCapture, public IRunner {
+<span class="lineNum">      80 </span>            : 
+<span class="lineNum">      81 </span>            :         RunContext( RunContext const&amp; );
+<span class="lineNum">      82 </span>            :         void operator =( RunContext const&amp; );
+<span class="lineNum">      83 </span>            : 
+<a name="84"><span class="lineNum">      84 </span>            :     public:</a>
+<span class="lineNum">      85 </span>            : 
+<span class="lineNum">      86 </span><span class="lineCov">          2 :         explicit RunContext( Ptr&lt;IConfig const&gt; const&amp; _config, Ptr&lt;IStreamingReporter&gt; const&amp; reporter )</span>
+<span class="lineNum">      87 </span><span class="lineCov">          6 :         :   m_runInfo( _config-&gt;name() ),</span>
+<span class="lineNum">      88 </span><span class="lineCov">          2 :             m_context( getCurrentMutableContext() ),</span>
+<span class="lineNum">      89 </span>            :             m_activeTestCase( CATCH_NULL ),
+<span class="lineNum">      90 </span>            :             m_config( _config ),
+<span class="lineNum">      91 </span>            :             m_reporter( reporter ),
+<span class="lineNum">      92 </span><span class="lineCov">          6 :             m_shouldReportUnexpected ( true )</span>
+<span class="lineNum">      93 </span>            :         {
+<span class="lineNum">      94 </span><span class="lineCov">          2 :             m_context.setRunner( this );</span>
+<span class="lineNum">      95 </span><span class="lineCov">          2 :             m_context.setConfig( m_config );</span>
+<span class="lineNum">      96 </span><span class="lineCov">          2 :             m_context.setResultCapture( this );</span>
+<span class="lineNum">      97 </span><span class="lineCov">          2 :             m_reporter-&gt;testRunStarting( m_runInfo );</span>
+<a name="98"><span class="lineNum">      98 </span><span class="lineCov">          2 :         }</span></a>
+<span class="lineNum">      99 </span>            : 
+<span class="lineNum">     100 </span><span class="lineCov">          4 :         virtual ~RunContext() {</span>
+<span class="lineNum">     101 </span><span class="lineCov">          2 :             m_reporter-&gt;testRunEnded( TestRunStats( m_runInfo, m_totals, aborting() ) );</span>
+<a name="102"><span class="lineNum">     102 </span><span class="lineCov">          2 :         }</span></a>
+<span class="lineNum">     103 </span>            : 
+<span class="lineNum">     104 </span><span class="lineCov">          2 :         void testGroupStarting( std::string const&amp; testSpec, std::size_t groupIndex, std::size_t groupsCount ) {</span>
+<a name="105"><span class="lineNum">     105 </span><span class="lineCov">          2 :             m_reporter-&gt;testGroupStarting( GroupInfo( testSpec, groupIndex, groupsCount ) );</span></a>
+<span class="lineNum">     106 </span><span class="lineCov">          2 :         }</span>
+<span class="lineNum">     107 </span><span class="lineCov">          2 :         void testGroupEnded( std::string const&amp; testSpec, Totals const&amp; totals, std::size_t groupIndex, std::size_t groupsCount ) {</span>
+<span class="lineNum">     108 </span><span class="lineCov">          2 :             m_reporter-&gt;testGroupEnded( TestGroupStats( GroupInfo( testSpec, groupIndex, groupsCount ), totals, aborting() ) );</span>
+<a name="109"><span class="lineNum">     109 </span><span class="lineCov">          2 :         }</span></a>
+<span class="lineNum">     110 </span>            : 
+<span class="lineNum">     111 </span><span class="lineCov">        113 :         Totals runTest( TestCase const&amp; testCase ) {</span>
+<span class="lineNum">     112 </span><span class="lineCov">        113 :             Totals prevTotals = m_totals;</span>
+<span class="lineNum">     113 </span>            : 
+<span class="lineNum">     114 </span><span class="lineCov">        226 :             std::string redirectedCout;</span>
+<span class="lineNum">     115 </span><span class="lineCov">        226 :             std::string redirectedCerr;</span>
+<span class="lineNum">     116 </span>            : 
+<span class="lineNum">     117 </span><span class="lineCov">        226 :             TestCaseInfo testInfo = testCase.getTestCaseInfo();</span>
+<span class="lineNum">     118 </span>            : 
+<span class="lineNum">     119 </span><span class="lineCov">        113 :             m_reporter-&gt;testCaseStarting( testInfo );</span>
+<span class="lineNum">     120 </span>            : 
+<span class="lineNum">     121 </span><span class="lineCov">        113 :             m_activeTestCase = &amp;testCase;</span>
+<span class="lineNum">     122 </span>            : 
+<span class="lineNum">     123 </span>            : 
+<span class="lineNum">     124 </span><span class="lineCov">         72 :             do {</span>
+<span class="lineNum">     125 </span><span class="lineCov">        185 :                 ITracker&amp; rootTracker = m_trackerContext.startRun();</span>
+<span class="lineNum">     126 </span><span class="lineCov">        185 :                 assert( rootTracker.isSectionTracker() );</span>
+<span class="lineNum">     127 </span><span class="lineCov">        185 :                 static_cast&lt;SectionTracker&amp;&gt;( rootTracker ).addInitialFilters( m_config-&gt;getSectionsToRun() );</span>
+<span class="lineNum">     128 </span><span class="lineCov">        119 :                 do {</span>
+<span class="lineNum">     129 </span><span class="lineCov">        304 :                     m_trackerContext.startCycle();</span>
+<span class="lineNum">     130 </span><span class="lineCov">        304 :                     m_testCaseTracker = &amp;SectionTracker::acquire( m_trackerContext, TestCaseTracking::NameAndLocation( testInfo.name, testInfo.lineInfo ) );</span>
+<span class="lineNum">     131 </span><span class="lineCov">        304 :                     runCurrentTest( redirectedCout, redirectedCerr );</span>
+<span class="lineNum">     132 </span>            :                 }
+<span class="lineNum">     133 </span><span class="lineCov">        304 :                 while( !m_testCaseTracker-&gt;isSuccessfullyCompleted() &amp;&amp; !aborting() );</span>
+<span class="lineNum">     134 </span>            :             }
+<span class="lineNum">     135 </span>            :             // !TBD: deprecated - this will be replaced by indexed trackers
+<span class="lineNum">     136 </span><span class="lineCov">        185 :             while( getCurrentContext().advanceGeneratorsForCurrentTest() &amp;&amp; !aborting() );</span>
+<span class="lineNum">     137 </span>            : 
+<span class="lineNum">     138 </span><span class="lineCov">        113 :             Totals deltaTotals = m_totals.delta( prevTotals );</span>
+<span class="lineNum">     139 </span><span class="lineCov">        113 :             if( testInfo.expectedToFail() &amp;&amp; deltaTotals.testCases.passed &gt; 0 ) {</span>
+<span class="lineNum">     140 </span><span class="lineNoCov">          0 :                 deltaTotals.assertions.failed++;</span>
+<span class="lineNum">     141 </span><span class="lineNoCov">          0 :                 deltaTotals.testCases.passed--;</span>
+<span class="lineNum">     142 </span><span class="lineNoCov">          0 :                 deltaTotals.testCases.failed++;</span>
+<span class="lineNum">     143 </span>            :             }
+<span class="lineNum">     144 </span><span class="lineCov">        113 :             m_totals.testCases += deltaTotals.testCases;</span>
+<span class="lineNum">     145 </span><span class="lineCov">        226 :             m_reporter-&gt;testCaseEnded( TestCaseStats(   testInfo,</span>
+<span class="lineNum">     146 </span>            :                                                         deltaTotals,
+<span class="lineNum">     147 </span>            :                                                         redirectedCout,
+<span class="lineNum">     148 </span>            :                                                         redirectedCerr,
+<span class="lineNum">     149 </span><span class="lineCov">        113 :                                                         aborting() ) );</span>
+<span class="lineNum">     150 </span>            : 
+<span class="lineNum">     151 </span><span class="lineCov">        113 :             m_activeTestCase = CATCH_NULL;</span>
+<span class="lineNum">     152 </span><span class="lineCov">        113 :             m_testCaseTracker = CATCH_NULL;</span>
+<span class="lineNum">     153 </span>            : 
+<span class="lineNum">     154 </span><span class="lineCov">        226 :             return deltaTotals;</span>
+<span class="lineNum">     155 </span>            :         }
+<span class="lineNum">     156 </span>            : 
+<span class="lineNum">     157 </span>            :         Ptr&lt;IConfig const&gt; config() const {
+<span class="lineNum">     158 </span>            :             return m_config;
+<span class="lineNum">     159 </span>            :         }
+<span class="lineNum">     160 </span>            : 
+<span class="lineNum">     161 </span>            :     private: // IResultCapture
+<a name="162"><span class="lineNum">     162 </span>            : </a>
+<span class="lineNum">     163 </span>            : 
+<span class="lineNum">     164 </span><span class="lineCov">        847 :         virtual void assertionEnded( AssertionResult const&amp; result ) {</span>
+<span class="lineNum">     165 </span><span class="lineCov">        847 :             if( result.getResultType() == ResultWas::Ok ) {</span>
+<span class="lineNum">     166 </span><span class="lineCov">        843 :                 m_totals.assertions.passed++;</span>
+<span class="lineNum">     167 </span>            :             }
+<span class="lineNum">     168 </span><span class="lineCov">          4 :             else if( !result.isOk() ) {</span>
+<span class="lineNum">     169 </span><span class="lineCov">          3 :                 if( m_activeTestCase-&gt;getTestCaseInfo().okToFail() )</span>
+<span class="lineNum">     170 </span><span class="lineCov">          3 :                     m_totals.assertions.failedButOk++;</span>
+<span class="lineNum">     171 </span>            :                 else
+<span class="lineNum">     172 </span><span class="lineNoCov">          0 :                     m_totals.assertions.failed++;</span>
+<span class="lineNum">     173 </span>            :             }
+<span class="lineNum">     174 </span>            : 
+<span class="lineNum">     175 </span>            :             // We have no use for the return value (whether messages should be cleared), because messages were made scoped
+<span class="lineNum">     176 </span>            :             // and should be let to clear themselves out.
+<span class="lineNum">     177 </span><span class="lineCov">        847 :             static_cast&lt;void&gt;(m_reporter-&gt;assertionEnded(AssertionStats(result, m_messages, m_totals)));</span>
+<span class="lineNum">     178 </span>            : 
+<span class="lineNum">     179 </span>            :             // Reset working state
+<span class="lineNum">     180 </span><span class="lineCov">        847 :             m_lastAssertionInfo = AssertionInfo( &quot;&quot;, m_lastAssertionInfo.lineInfo, &quot;{Unknown expression after the reported line}&quot; , m_lastAssertionInfo.resultDisposition );</span>
+<span class="lineNum">     181 </span><span class="lineCov">        847 :             m_lastResult = result;</span>
+<a name="182"><span class="lineNum">     182 </span><span class="lineCov">        847 :         }</span></a>
+<span class="lineNum">     183 </span>            : 
+<span class="lineNum">     184 </span><span class="lineCov">          2 :         virtual bool lastAssertionPassed()</span>
+<span class="lineNum">     185 </span>            :         {
+<span class="lineNum">     186 </span><span class="lineCov">          2 :             return m_totals.assertions.passed == (m_prevPassed + 1);</span>
+<a name="187"><span class="lineNum">     187 </span>            :         }</a>
+<span class="lineNum">     188 </span>            : 
+<span class="lineNum">     189 </span><span class="lineCov">         40 :         virtual void assertionPassed()</span>
+<span class="lineNum">     190 </span>            :         {
+<span class="lineNum">     191 </span><span class="lineCov">         40 :             m_totals.assertions.passed++;</span>
+<span class="lineNum">     192 </span><span class="lineCov">         40 :             m_lastAssertionInfo.capturedExpression = &quot;{Unknown expression after the reported line}&quot;;</span>
+<span class="lineNum">     193 </span><span class="lineCov">         40 :             m_lastAssertionInfo.macroName = &quot;&quot;;</span>
+<a name="194"><span class="lineNum">     194 </span><span class="lineCov">         40 :         }</span></a>
+<span class="lineNum">     195 </span>            : 
+<span class="lineNum">     196 </span><span class="lineCov">        827 :         virtual void assertionRun()</span>
+<span class="lineNum">     197 </span>            :         {
+<span class="lineNum">     198 </span><span class="lineCov">        827 :             m_prevPassed = m_totals.assertions.passed;</span>
+<a name="199"><span class="lineNum">     199 </span><span class="lineCov">        827 :         }</span></a>
+<span class="lineNum">     200 </span>            : 
+<span class="lineNum">     201 </span><span class="lineCov">       1786 :         virtual bool sectionStarted (</span>
+<span class="lineNum">     202 </span>            :             SectionInfo const&amp; sectionInfo,
+<span class="lineNum">     203 </span>            :             Counts&amp; assertions
+<span class="lineNum">     204 </span>            :         )
+<span class="lineNum">     205 </span>            :         {
+<span class="lineNum">     206 </span><span class="lineCov">       1786 :             ITracker&amp; sectionTracker = SectionTracker::acquire( m_trackerContext, TestCaseTracking::NameAndLocation( sectionInfo.name, sectionInfo.lineInfo ) );</span>
+<span class="lineNum">     207 </span><span class="lineCov">       1786 :             if( !sectionTracker.isOpen() )</span>
+<span class="lineNum">     208 </span><span class="lineCov">       1567 :                 return false;</span>
+<span class="lineNum">     209 </span><span class="lineCov">        219 :             m_activeSections.push_back( &amp;sectionTracker );</span>
+<span class="lineNum">     210 </span>            : 
+<span class="lineNum">     211 </span><span class="lineCov">        219 :             m_lastAssertionInfo.lineInfo = sectionInfo.lineInfo;</span>
+<span class="lineNum">     212 </span>            : 
+<span class="lineNum">     213 </span><span class="lineCov">        219 :             m_reporter-&gt;sectionStarting( sectionInfo );</span>
+<span class="lineNum">     214 </span>            : 
+<span class="lineNum">     215 </span><span class="lineCov">        219 :             assertions = m_totals.assertions;</span>
+<span class="lineNum">     216 </span>            : 
+<a name="217"><span class="lineNum">     217 </span><span class="lineCov">        219 :             return true;</span></a>
+<span class="lineNum">     218 </span>            :         }
+<span class="lineNum">     219 </span><span class="lineCov">        523 :         bool testForMissingAssertions( Counts&amp; assertions ) {</span>
+<span class="lineNum">     220 </span><span class="lineCov">        523 :             if( assertions.total() != 0 )</span>
+<span class="lineNum">     221 </span><span class="lineCov">        516 :                 return false;</span>
+<span class="lineNum">     222 </span><span class="lineCov">          7 :             if( !m_config-&gt;warnAboutMissingAssertions() )</span>
+<span class="lineNum">     223 </span><span class="lineCov">          7 :                 return false;</span>
+<span class="lineNum">     224 </span><span class="lineNoCov">          0 :             if( m_trackerContext.currentTracker().hasChildren() )</span>
+<span class="lineNum">     225 </span><span class="lineNoCov">          0 :                 return false;</span>
+<span class="lineNum">     226 </span><span class="lineNoCov">          0 :             m_totals.assertions.failed++;</span>
+<span class="lineNum">     227 </span><span class="lineNoCov">          0 :             assertions.failed++;</span>
+<span class="lineNum">     228 </span><span class="lineNoCov">          0 :             return true;</span>
+<a name="229"><span class="lineNum">     229 </span>            :         }</a>
+<span class="lineNum">     230 </span>            : 
+<span class="lineNum">     231 </span><span class="lineCov">        219 :         virtual void sectionEnded( SectionEndInfo const&amp; endInfo ) {</span>
+<span class="lineNum">     232 </span><span class="lineCov">        219 :             Counts assertions = m_totals.assertions - endInfo.prevAssertions;</span>
+<span class="lineNum">     233 </span><span class="lineCov">        219 :             bool missingAssertions = testForMissingAssertions( assertions );</span>
+<span class="lineNum">     234 </span>            : 
+<span class="lineNum">     235 </span><span class="lineCov">        219 :             if( !m_activeSections.empty() ) {</span>
+<span class="lineNum">     236 </span><span class="lineCov">        217 :                 m_activeSections.back()-&gt;close();</span>
+<span class="lineNum">     237 </span><span class="lineCov">        217 :                 m_activeSections.pop_back();</span>
+<span class="lineNum">     238 </span>            :             }
+<span class="lineNum">     239 </span>            : 
+<span class="lineNum">     240 </span><span class="lineCov">        219 :             m_reporter-&gt;sectionEnded( SectionStats( endInfo.sectionInfo, assertions, endInfo.durationInSeconds, missingAssertions ) );</span>
+<span class="lineNum">     241 </span><span class="lineCov">        219 :             m_messages.clear();</span>
+<a name="242"><span class="lineNum">     242 </span><span class="lineCov">        219 :         }</span></a>
+<span class="lineNum">     243 </span>            : 
+<span class="lineNum">     244 </span><span class="lineCov">          2 :         virtual void sectionEndedEarly( SectionEndInfo const&amp; endInfo ) {</span>
+<span class="lineNum">     245 </span><span class="lineCov">          2 :             if( m_unfinishedSections.empty() )</span>
+<span class="lineNum">     246 </span><span class="lineCov">          2 :                 m_activeSections.back()-&gt;fail();</span>
+<span class="lineNum">     247 </span>            :             else
+<span class="lineNum">     248 </span><span class="lineNoCov">          0 :                 m_activeSections.back()-&gt;close();</span>
+<span class="lineNum">     249 </span><span class="lineCov">          2 :             m_activeSections.pop_back();</span>
+<span class="lineNum">     250 </span>            : 
+<span class="lineNum">     251 </span><span class="lineCov">          2 :             m_unfinishedSections.push_back( endInfo );</span>
+<a name="252"><span class="lineNum">     252 </span><span class="lineCov">          2 :         }</span></a>
+<span class="lineNum">     253 </span>            : 
+<span class="lineNum">     254 </span><span class="lineCov">          6 :         virtual void pushScopedMessage( MessageInfo const&amp; message ) {</span>
+<span class="lineNum">     255 </span><span class="lineCov">          6 :             m_messages.push_back( message );</span>
+<a name="256"><span class="lineNum">     256 </span><span class="lineCov">          6 :         }</span></a>
+<span class="lineNum">     257 </span>            : 
+<span class="lineNum">     258 </span><span class="lineCov">          4 :         virtual void popScopedMessage( MessageInfo const&amp; message ) {</span>
+<span class="lineNum">     259 </span><span class="lineCov">          4 :             m_messages.erase( std::remove( m_messages.begin(), m_messages.end(), message ), m_messages.end() );</span>
+<a name="260"><span class="lineNum">     260 </span><span class="lineCov">          4 :         }</span></a>
+<span class="lineNum">     261 </span>            : 
+<span class="lineNum">     262 </span><span class="lineCov">        333 :         virtual std::string getCurrentTestName() const {</span>
+<span class="lineNum">     263 </span><span class="lineCov">        333 :             return m_activeTestCase</span>
+<span class="lineNum">     264 </span><span class="lineCov">        333 :                 ? m_activeTestCase-&gt;getTestCaseInfo().name</span>
+<span class="lineNum">     265 </span><span class="lineCov">        666 :                 : std::string();</span>
+<a name="266"><span class="lineNum">     266 </span>            :         }</a>
+<span class="lineNum">     267 </span>            : 
+<span class="lineNum">     268 </span><span class="lineNoCov">          0 :         virtual const AssertionResult* getLastResult() const {</span>
+<span class="lineNum">     269 </span><span class="lineNoCov">          0 :             return &amp;m_lastResult;</span>
+<a name="270"><span class="lineNum">     270 </span>            :         }</a>
+<span class="lineNum">     271 </span>            : 
+<span class="lineNum">     272 </span><span class="lineNoCov">          0 :         virtual void exceptionEarlyReported() {</span>
+<span class="lineNum">     273 </span><span class="lineNoCov">          0 :             m_shouldReportUnexpected = false;</span>
+<a name="274"><span class="lineNum">     274 </span><span class="lineNoCov">          0 :         }</span></a>
+<span class="lineNum">     275 </span>            : 
+<span class="lineNum">     276 </span><span class="lineNoCov">          0 :         virtual void handleFatalErrorCondition( std::string const&amp; message ) {</span>
+<span class="lineNum">     277 </span>            :             // Don't rebuild the result -- the stringification itself can cause more fatal errors
+<span class="lineNum">     278 </span>            :             // Instead, fake a result data.
+<span class="lineNum">     279 </span><span class="lineNoCov">          0 :             AssertionResultData tempResult;</span>
+<span class="lineNum">     280 </span><span class="lineNoCov">          0 :             tempResult.resultType = ResultWas::FatalErrorCondition;</span>
+<span class="lineNum">     281 </span><span class="lineNoCov">          0 :             tempResult.message = message;</span>
+<span class="lineNum">     282 </span><span class="lineNoCov">          0 :             AssertionResult result(m_lastAssertionInfo, tempResult);</span>
+<span class="lineNum">     283 </span>            : 
+<span class="lineNum">     284 </span><span class="lineNoCov">          0 :             getResultCapture().assertionEnded(result);</span>
+<span class="lineNum">     285 </span>            : 
+<span class="lineNum">     286 </span><span class="lineNoCov">          0 :             handleUnfinishedSections();</span>
+<span class="lineNum">     287 </span>            : 
+<span class="lineNum">     288 </span>            :             // Recreate section for test case (as we will lose the one that was in scope)
+<span class="lineNum">     289 </span><span class="lineNoCov">          0 :             TestCaseInfo const&amp; testCaseInfo = m_activeTestCase-&gt;getTestCaseInfo();</span>
+<span class="lineNum">     290 </span><span class="lineNoCov">          0 :             SectionInfo testCaseSection( testCaseInfo.lineInfo, testCaseInfo.name, testCaseInfo.description );</span>
+<span class="lineNum">     291 </span>            : 
+<span class="lineNum">     292 </span><span class="lineNoCov">          0 :             Counts assertions;</span>
+<span class="lineNum">     293 </span><span class="lineNoCov">          0 :             assertions.failed = 1;</span>
+<span class="lineNum">     294 </span><span class="lineNoCov">          0 :             SectionStats testCaseSectionStats( testCaseSection, assertions, 0, false );</span>
+<span class="lineNum">     295 </span><span class="lineNoCov">          0 :             m_reporter-&gt;sectionEnded( testCaseSectionStats );</span>
+<span class="lineNum">     296 </span>            : 
+<span class="lineNum">     297 </span><span class="lineNoCov">          0 :             TestCaseInfo testInfo = m_activeTestCase-&gt;getTestCaseInfo();</span>
+<span class="lineNum">     298 </span>            : 
+<span class="lineNum">     299 </span><span class="lineNoCov">          0 :             Totals deltaTotals;</span>
+<span class="lineNum">     300 </span><span class="lineNoCov">          0 :             deltaTotals.testCases.failed = 1;</span>
+<span class="lineNum">     301 </span><span class="lineNoCov">          0 :             deltaTotals.assertions.failed = 1;</span>
+<span class="lineNum">     302 </span><span class="lineNoCov">          0 :             m_reporter-&gt;testCaseEnded( TestCaseStats(   testInfo,</span>
+<span class="lineNum">     303 </span>            :                                                         deltaTotals,
+<span class="lineNum">     304 </span><span class="lineNoCov">          0 :                                                         std::string(),</span>
+<span class="lineNum">     305 </span><span class="lineNoCov">          0 :                                                         std::string(),</span>
+<span class="lineNum">     306 </span><span class="lineNoCov">          0 :                                                         false ) );</span>
+<span class="lineNum">     307 </span><span class="lineNoCov">          0 :             m_totals.testCases.failed++;</span>
+<span class="lineNum">     308 </span><span class="lineNoCov">          0 :             testGroupEnded( std::string(), m_totals, 1, 1 );</span>
+<span class="lineNum">     309 </span><span class="lineNoCov">          0 :             m_reporter-&gt;testRunEnded( TestRunStats( m_runInfo, m_totals, false ) );</span>
+<span class="lineNum">     310 </span><span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">     311 </span>            : 
+<a name="312"><span class="lineNum">     312 </span>            :     public:</a>
+<span class="lineNum">     313 </span>            :         // !TBD We need to do this another way!
+<span class="lineNum">     314 </span><span class="lineCov">        500 :         bool aborting() const {</span>
+<span class="lineNum">     315 </span><span class="lineCov">        500 :             return m_totals.assertions.failed == static_cast&lt;std::size_t&gt;( m_config-&gt;abortAfter() );</span>
+<span class="lineNum">     316 </span>            :         }
+<span class="lineNum">     317 </span>            : 
+<a name="318"><span class="lineNum">     318 </span>            :     private:</a>
+<span class="lineNum">     319 </span>            : 
+<span class="lineNum">     320 </span><span class="lineCov">        304 :         void runCurrentTest( std::string&amp; redirectedCout, std::string&amp; redirectedCerr ) {</span>
+<span class="lineNum">     321 </span><span class="lineCov">        304 :             TestCaseInfo const&amp; testCaseInfo = m_activeTestCase-&gt;getTestCaseInfo();</span>
+<span class="lineNum">     322 </span><span class="lineCov">        608 :             SectionInfo testCaseSection( testCaseInfo.lineInfo, testCaseInfo.name, testCaseInfo.description );</span>
+<span class="lineNum">     323 </span><span class="lineCov">        304 :             m_reporter-&gt;sectionStarting( testCaseSection );</span>
+<span class="lineNum">     324 </span><span class="lineCov">        304 :             Counts prevAssertions = m_totals.assertions;</span>
+<span class="lineNum">     325 </span><span class="lineCov">        304 :             double duration = 0;</span>
+<span class="lineNum">     326 </span><span class="lineCov">        304 :             m_shouldReportUnexpected = true;</span>
+<span class="lineNum">     327 </span>            :             try {
+<span class="lineNum">     328 </span><span class="lineCov">        304 :                 m_lastAssertionInfo = AssertionInfo( &quot;TEST_CASE&quot;, testCaseInfo.lineInfo, &quot;&quot;, ResultDisposition::Normal );</span>
+<span class="lineNum">     329 </span>            : 
+<span class="lineNum">     330 </span><span class="lineCov">        304 :                 seedRng( *m_config );</span>
+<span class="lineNum">     331 </span>            : 
+<span class="lineNum">     332 </span><span class="lineCov">        304 :                 Timer timer;</span>
+<span class="lineNum">     333 </span><span class="lineCov">        304 :                 timer.start();</span>
+<span class="lineNum">     334 </span><span class="lineCov">        304 :                 if( m_reporter-&gt;getPreferences().shouldRedirectStdOut ) {</span>
+<span class="lineNum">     335 </span><span class="lineNoCov">          0 :                     StreamRedirect coutRedir( Catch::cout(), redirectedCout );</span>
+<span class="lineNum">     336 </span><span class="lineNoCov">          0 :                     StdErrRedirect errRedir( redirectedCerr );</span>
+<span class="lineNum">     337 </span><span class="lineNoCov">          0 :                     invokeActiveTestCase();</span>
+<span class="lineNum">     338 </span>            :                 }
+<span class="lineNum">     339 </span>            :                 else {
+<span class="lineNum">     340 </span><span class="lineCov">        304 :                     invokeActiveTestCase();</span>
+<span class="lineNum">     341 </span>            :                 }
+<span class="lineNum">     342 </span><span class="lineCov">        302 :                 duration = timer.getElapsedSeconds();</span>
+<span class="lineNum">     343 </span>            :             }
+<span class="lineNum">     344 </span><span class="lineCov">          1 :             catch( TestFailureException&amp; ) {</span>
+<span class="lineNum">     345 </span>            :                 // This just means the test was aborted due to failure
+<span class="lineNum">     346 </span>            :             }
+<span class="lineNum">     347 </span><span class="lineCov">          2 :             catch(...) {</span>
+<span class="lineNum">     348 </span>            :                 // Under CATCH_CONFIG_FAST_COMPILE, unexpected exceptions under REQUIRE assertions
+<span class="lineNum">     349 </span>            :                 // are reported without translation at the point of origin.
+<span class="lineNum">     350 </span><span class="lineCov">          1 :                 if (m_shouldReportUnexpected) {</span>
+<span class="lineNum">     351 </span><span class="lineCov">          1 :                     makeUnexpectedResultBuilder().useActiveException();</span>
+<span class="lineNum">     352 </span>            :                 }
+<span class="lineNum">     353 </span>            :             }
+<span class="lineNum">     354 </span><span class="lineCov">        304 :             m_testCaseTracker-&gt;close();</span>
+<span class="lineNum">     355 </span><span class="lineCov">        304 :             handleUnfinishedSections();</span>
+<span class="lineNum">     356 </span><span class="lineCov">        304 :             m_messages.clear();</span>
+<span class="lineNum">     357 </span>            : 
+<span class="lineNum">     358 </span><span class="lineCov">        304 :             Counts assertions = m_totals.assertions - prevAssertions;</span>
+<span class="lineNum">     359 </span><span class="lineCov">        304 :             bool missingAssertions = testForMissingAssertions( assertions );</span>
+<span class="lineNum">     360 </span>            : 
+<span class="lineNum">     361 </span><span class="lineCov">        608 :             SectionStats testCaseSectionStats( testCaseSection, assertions, duration, missingAssertions );</span>
+<span class="lineNum">     362 </span><span class="lineCov">        304 :             m_reporter-&gt;sectionEnded( testCaseSectionStats );</span>
+<a name="363"><span class="lineNum">     363 </span><span class="lineCov">        304 :         }</span></a>
+<span class="lineNum">     364 </span>            : 
+<span class="lineNum">     365 </span><span class="lineCov">        304 :         void invokeActiveTestCase() {</span>
+<span class="lineNum">     366 </span><span class="lineCov">        608 :             FatalConditionHandler fatalConditionHandler; // Handle signals</span>
+<span class="lineNum">     367 </span><span class="lineCov">        304 :             m_activeTestCase-&gt;invoke();</span>
+<span class="lineNum">     368 </span><span class="lineCov">        302 :             fatalConditionHandler.reset();</span>
+<span class="lineNum">     369 </span><span class="lineCov">        302 :         }</span>
+<span class="lineNum">     370 </span>            : 
+<a name="371"><span class="lineNum">     371 </span>            :     private:</a>
+<span class="lineNum">     372 </span>            : 
+<span class="lineNum">     373 </span><span class="lineCov">          1 :         ResultBuilder makeUnexpectedResultBuilder() const {</span>
+<span class="lineNum">     374 </span><span class="lineCov">          1 :             return ResultBuilder(   m_lastAssertionInfo.macroName,</span>
+<span class="lineNum">     375 </span>            :                                     m_lastAssertionInfo.lineInfo,
+<span class="lineNum">     376 </span><span class="lineCov">          1 :                                     m_lastAssertionInfo.capturedExpression,</span>
+<span class="lineNum">     377 </span><span class="lineCov">          3 :                                     m_lastAssertionInfo.resultDisposition );</span>
+<a name="378"><span class="lineNum">     378 </span>            :         }</a>
+<span class="lineNum">     379 </span>            : 
+<span class="lineNum">     380 </span><span class="lineCov">        304 :         void handleUnfinishedSections() {</span>
+<span class="lineNum">     381 </span>            :             // If sections ended prematurely due to an exception we stored their
+<span class="lineNum">     382 </span>            :             // infos here so we can tear them down outside the unwind process.
+<span class="lineNum">     383 </span><span class="lineCov">        306 :             for( std::vector&lt;SectionEndInfo&gt;::const_reverse_iterator it = m_unfinishedSections.rbegin(),</span>
+<span class="lineNum">     384 </span><span class="lineCov">        304 :                         itEnd = m_unfinishedSections.rend();</span>
+<span class="lineNum">     385 </span><span class="lineCov">        306 :                     it != itEnd;</span>
+<span class="lineNum">     386 </span>            :                     ++it )
+<span class="lineNum">     387 </span><span class="lineCov">          2 :                 sectionEnded( *it );</span>
+<span class="lineNum">     388 </span><span class="lineCov">        304 :             m_unfinishedSections.clear();</span>
+<span class="lineNum">     389 </span><span class="lineCov">        304 :         }</span>
+<span class="lineNum">     390 </span>            : 
+<span class="lineNum">     391 </span>            :         TestRunInfo m_runInfo;
+<span class="lineNum">     392 </span>            :         IMutableContext&amp; m_context;
+<span class="lineNum">     393 </span>            :         TestCase const* m_activeTestCase;
+<span class="lineNum">     394 </span>            :         ITracker* m_testCaseTracker;
+<span class="lineNum">     395 </span>            :         ITracker* m_currentSectionTracker;
+<span class="lineNum">     396 </span>            :         AssertionResult m_lastResult;
+<span class="lineNum">     397 </span>            : 
+<span class="lineNum">     398 </span>            :         Ptr&lt;IConfig const&gt; m_config;
+<span class="lineNum">     399 </span>            :         Totals m_totals;
+<span class="lineNum">     400 </span>            :         Ptr&lt;IStreamingReporter&gt; m_reporter;
+<span class="lineNum">     401 </span>            :         std::vector&lt;MessageInfo&gt; m_messages;
+<span class="lineNum">     402 </span>            :         AssertionInfo m_lastAssertionInfo;
+<span class="lineNum">     403 </span>            :         std::vector&lt;SectionEndInfo&gt; m_unfinishedSections;
+<span class="lineNum">     404 </span>            :         std::vector&lt;ITracker*&gt; m_activeSections;
+<span class="lineNum">     405 </span>            :         TrackerContext m_trackerContext;
+<span class="lineNum">     406 </span>            :         size_t m_prevPassed;
+<span class="lineNum">     407 </span>            :         bool m_shouldReportUnexpected;
+<a name="408"><span class="lineNum">     408 </span>            :     };</a>
+<span class="lineNum">     409 </span>            : 
+<span class="lineNum">     410 </span><span class="lineCov">       3731 :     IResultCapture&amp; getResultCapture() {</span>
+<span class="lineNum">     411 </span><span class="lineCov">       3731 :         if( IResultCapture* capture = getCurrentContext().getResultCapture() )</span>
+<span class="lineNum">     412 </span><span class="lineCov">       7462 :             return *capture;</span>
+<span class="lineNum">     413 </span>            :         else
+<span class="lineNum">     414 </span><span class="lineNoCov">          0 :             throw std::logic_error( &quot;No result capture instance&quot; );</span>
+<span class="lineNum">     415 </span>            :     }
+<span class="lineNum">     416 </span>            : 
+<span class="lineNum">     417 </span>            : } // end namespace Catch
+<span class="lineNum">     418 </span>            : 
+<span class="lineNum">     419 </span>            : #endif // TWOBLUECUBES_CATCH_RUNNER_IMPL_HPP_INCLUDED
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

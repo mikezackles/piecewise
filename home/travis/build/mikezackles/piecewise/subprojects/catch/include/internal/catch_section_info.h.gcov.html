@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Code coverage - /home/travis/build/mikezackles/piecewise/subprojects/catch/include/internal/catch_section_info.h</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../../../../../index.html">top level</a> - <a href="index.html">home/travis/build/mikezackles/piecewise/subprojects/catch/include/internal</a> - catch_section_info.h<span style="font-size: 80%;"> (source / <a href="catch_section_info.h.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Code coverage</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2018-02-19 01:04:17</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntry">8</td>
+            <td class="headerCovTableEntryMed">75.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Legend:</td>
+            <td class="headerValueLeg">            Lines:
+            <span class="coverLegendCov">hit</span>
+            <span class="coverLegendNoCov">not hit</span>
+</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<span class="lineNum">       2 </span>            :  *  Created by Phil on 03/11/2010.
+<span class="lineNum">       3 </span>            :  *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
+<span class="lineNum">       4 </span>            :  *
+<span class="lineNum">       5 </span>            :  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
+<span class="lineNum">       6 </span>            :  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+<span class="lineNum">       7 </span>            :  */
+<span class="lineNum">       8 </span>            : #ifndef TWOBLUECUBES_CATCH_SECTION_INFO_H_INCLUDED
+<span class="lineNum">       9 </span>            : #define TWOBLUECUBES_CATCH_SECTION_INFO_H_INCLUDED
+<span class="lineNum">      10 </span>            : 
+<span class="lineNum">      11 </span>            : #include &quot;catch_common.h&quot;
+<span class="lineNum">      12 </span>            : #include &quot;catch_totals.hpp&quot;
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            : #include &lt;string&gt;
+<span class="lineNum">      15 </span>            : 
+<a name="16"><span class="lineNum">      16 </span>            : namespace Catch {</a>
+<span class="lineNum">      17 </span>            : 
+<span class="lineNum">      18 </span><span class="lineCov">       8216 :     struct SectionInfo {</span>
+<span class="lineNum">      19 </span>            :         SectionInfo
+<span class="lineNum">      20 </span>            :             (   SourceLineInfo const&amp; _lineInfo,
+<span class="lineNum">      21 </span>            :                 std::string const&amp; _name,
+<span class="lineNum">      22 </span>            :                 std::string const&amp; _description = std::string() );
+<span class="lineNum">      23 </span>            : 
+<span class="lineNum">      24 </span>            :         std::string name;
+<span class="lineNum">      25 </span>            :         std::string description;
+<span class="lineNum">      26 </span>            :         SourceLineInfo lineInfo;
+<a name="27"><span class="lineNum">      27 </span>            :     };</a>
+<a name="28"><span class="lineNum">      28 </span>            : </a>
+<span class="lineNum">      29 </span><span class="lineCov">        223 :     struct SectionEndInfo {</span>
+<span class="lineNum">      30 </span><span class="lineCov">        219 :         SectionEndInfo( SectionInfo const&amp; _sectionInfo, Counts const&amp; _prevAssertions, double _durationInSeconds )</span>
+<span class="lineNum">      31 </span><span class="lineCov">        219 :         : sectionInfo( _sectionInfo ), prevAssertions( _prevAssertions ), durationInSeconds( _durationInSeconds )</span>
+<span class="lineNum">      32 </span><span class="lineCov">        219 :         {}</span>
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span>            :         SectionInfo sectionInfo;
+<span class="lineNum">      35 </span>            :         Counts prevAssertions;
+<span class="lineNum">      36 </span>            :         double durationInSeconds;
+<span class="lineNum">      37 </span>            :     };
+<span class="lineNum">      38 </span>            : 
+<span class="lineNum">      39 </span>            : } // end namespace Catch
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span>            : #endif // TWOBLUECUBES_CATCH_SECTION_INFO_H_INCLUDED
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

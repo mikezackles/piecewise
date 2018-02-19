@@ -1,0 +1,645 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Code coverage - /usr/include/c++/7.3.0/bits/stl_heap.h</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../index.html">top level</a> - <a href="index.html">usr/include/c++/7.3.0/bits</a> - stl_heap.h<span style="font-size: 80%;"> (source / <a href="stl_heap.h.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Code coverage</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">48</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2018-02-19 01:04:17</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Legend:</td>
+            <td class="headerValueLeg">            Lines:
+            <span class="coverLegendCov">hit</span>
+            <span class="coverLegendNoCov">not hit</span>
+</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : // Heap implementation -*- C++ -*-</a>
+<span class="lineNum">       2 </span>            : 
+<span class="lineNum">       3 </span>            : // Copyright (C) 2001-2017 Free Software Foundation, Inc.
+<span class="lineNum">       4 </span>            : //
+<span class="lineNum">       5 </span>            : // This file is part of the GNU ISO C++ Library.  This library is free
+<span class="lineNum">       6 </span>            : // software; you can redistribute it and/or modify it under the
+<span class="lineNum">       7 </span>            : // terms of the GNU General Public License as published by the
+<span class="lineNum">       8 </span>            : // Free Software Foundation; either version 3, or (at your option)
+<span class="lineNum">       9 </span>            : // any later version.
+<span class="lineNum">      10 </span>            : 
+<span class="lineNum">      11 </span>            : // This library is distributed in the hope that it will be useful,
+<span class="lineNum">      12 </span>            : // but WITHOUT ANY WARRANTY; without even the implied warranty of
+<span class="lineNum">      13 </span>            : // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<span class="lineNum">      14 </span>            : // GNU General Public License for more details.
+<span class="lineNum">      15 </span>            : 
+<span class="lineNum">      16 </span>            : // Under Section 7 of GPL version 3, you are granted additional
+<span class="lineNum">      17 </span>            : // permissions described in the GCC Runtime Library Exception, version
+<span class="lineNum">      18 </span>            : // 3.1, as published by the Free Software Foundation.
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : // You should have received a copy of the GNU General Public License and
+<span class="lineNum">      21 </span>            : // a copy of the GCC Runtime Library Exception along with this program;
+<span class="lineNum">      22 </span>            : // see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<span class="lineNum">      23 </span>            : // &lt;http://www.gnu.org/licenses/&gt;.
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            : /*
+<span class="lineNum">      26 </span>            :  *
+<span class="lineNum">      27 </span>            :  * Copyright (c) 1994
+<span class="lineNum">      28 </span>            :  * Hewlett-Packard Company
+<span class="lineNum">      29 </span>            :  *
+<span class="lineNum">      30 </span>            :  * Permission to use, copy, modify, distribute and sell this software
+<span class="lineNum">      31 </span>            :  * and its documentation for any purpose is hereby granted without fee,
+<span class="lineNum">      32 </span>            :  * provided that the above copyright notice appear in all copies and
+<span class="lineNum">      33 </span>            :  * that both that copyright notice and this permission notice appear
+<span class="lineNum">      34 </span>            :  * in supporting documentation.  Hewlett-Packard Company makes no
+<span class="lineNum">      35 </span>            :  * representations about the suitability of this software for any
+<span class="lineNum">      36 </span>            :  * purpose.  It is provided &quot;as is&quot; without express or implied warranty.
+<span class="lineNum">      37 </span>            :  *
+<span class="lineNum">      38 </span>            :  * Copyright (c) 1997
+<span class="lineNum">      39 </span>            :  * Silicon Graphics Computer Systems, Inc.
+<span class="lineNum">      40 </span>            :  *
+<span class="lineNum">      41 </span>            :  * Permission to use, copy, modify, distribute and sell this software
+<span class="lineNum">      42 </span>            :  * and its documentation for any purpose is hereby granted without fee,
+<span class="lineNum">      43 </span>            :  * provided that the above copyright notice appear in all copies and
+<span class="lineNum">      44 </span>            :  * that both that copyright notice and this permission notice appear
+<span class="lineNum">      45 </span>            :  * in supporting documentation.  Silicon Graphics makes no
+<span class="lineNum">      46 </span>            :  * representations about the suitability of this software for any
+<span class="lineNum">      47 </span>            :  * purpose.  It is provided &quot;as is&quot; without express or implied warranty.
+<span class="lineNum">      48 </span>            :  */
+<span class="lineNum">      49 </span>            : 
+<span class="lineNum">      50 </span>            : /** @file bits/stl_heap.h
+<span class="lineNum">      51 </span>            :  *  This is an internal header file, included by other library headers.
+<span class="lineNum">      52 </span>            :  *  Do not attempt to use it directly. @headername{queue}
+<span class="lineNum">      53 </span>            :  */
+<span class="lineNum">      54 </span>            : 
+<span class="lineNum">      55 </span>            : #ifndef _STL_HEAP_H
+<span class="lineNum">      56 </span>            : #define _STL_HEAP_H 1
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span>            : #include &lt;debug/debug.h&gt;
+<span class="lineNum">      59 </span>            : #include &lt;bits/move.h&gt;
+<span class="lineNum">      60 </span>            : #include &lt;bits/predefined_ops.h&gt;
+<span class="lineNum">      61 </span>            : 
+<span class="lineNum">      62 </span>            : namespace std _GLIBCXX_VISIBILITY(default)
+<span class="lineNum">      63 </span>            : {
+<span class="lineNum">      64 </span>            : _GLIBCXX_BEGIN_NAMESPACE_VERSION
+<span class="lineNum">      65 </span>            : 
+<span class="lineNum">      66 </span>            :   /**
+<span class="lineNum">      67 </span>            :    * @defgroup heap_algorithms Heap
+<span class="lineNum">      68 </span>            :    * @ingroup sorting_algorithms
+<span class="lineNum">      69 </span>            :    */
+<span class="lineNum">      70 </span>            : 
+<span class="lineNum">      71 </span>            :   template&lt;typename _RandomAccessIterator, typename _Distance,
+<span class="lineNum">      72 </span>            :            typename _Compare&gt;
+<span class="lineNum">      73 </span>            :     _Distance
+<span class="lineNum">      74 </span>            :     __is_heap_until(_RandomAccessIterator __first, _Distance __n,
+<span class="lineNum">      75 </span>            :                     _Compare&amp; __comp)
+<span class="lineNum">      76 </span>            :     {
+<span class="lineNum">      77 </span>            :       _Distance __parent = 0;
+<span class="lineNum">      78 </span>            :       for (_Distance __child = 1; __child &lt; __n; ++__child)
+<span class="lineNum">      79 </span>            :         {
+<span class="lineNum">      80 </span>            :           if (__comp(__first + __parent, __first + __child))
+<span class="lineNum">      81 </span>            :             return __child;
+<span class="lineNum">      82 </span>            :           if ((__child &amp; 1) == 0)
+<span class="lineNum">      83 </span>            :             ++__parent;
+<span class="lineNum">      84 </span>            :         }
+<span class="lineNum">      85 </span>            :       return __n;
+<span class="lineNum">      86 </span>            :     }
+<span class="lineNum">      87 </span>            : 
+<span class="lineNum">      88 </span>            :   // __is_heap, a predicate testing whether or not a range is a heap.
+<span class="lineNum">      89 </span>            :   // This function is an extension, not part of the C++ standard.
+<span class="lineNum">      90 </span>            :   template&lt;typename _RandomAccessIterator, typename _Distance&gt;
+<span class="lineNum">      91 </span>            :     inline bool
+<span class="lineNum">      92 </span>            :     __is_heap(_RandomAccessIterator __first, _Distance __n)
+<span class="lineNum">      93 </span>            :     {
+<span class="lineNum">      94 </span>            :       __gnu_cxx::__ops::_Iter_less_iter __comp;
+<span class="lineNum">      95 </span>            :       return std::__is_heap_until(__first, __n, __comp) == __n;
+<span class="lineNum">      96 </span>            :     }
+<span class="lineNum">      97 </span>            : 
+<span class="lineNum">      98 </span>            :   template&lt;typename _RandomAccessIterator, typename _Compare,
+<span class="lineNum">      99 </span>            :            typename _Distance&gt;
+<span class="lineNum">     100 </span>            :     inline bool
+<span class="lineNum">     101 </span>            :     __is_heap(_RandomAccessIterator __first, _Compare __comp, _Distance __n)
+<span class="lineNum">     102 </span>            :     {
+<span class="lineNum">     103 </span>            :       typedef __decltype(__comp) _Cmp;
+<span class="lineNum">     104 </span>            :       __gnu_cxx::__ops::_Iter_comp_iter&lt;_Cmp&gt; __cmp(_GLIBCXX_MOVE(__comp));
+<span class="lineNum">     105 </span>            :       return std::__is_heap_until(__first, __n, __cmp) == __n;
+<span class="lineNum">     106 </span>            :     }
+<span class="lineNum">     107 </span>            : 
+<span class="lineNum">     108 </span>            :   template&lt;typename _RandomAccessIterator&gt;
+<span class="lineNum">     109 </span>            :     inline bool
+<span class="lineNum">     110 </span>            :     __is_heap(_RandomAccessIterator __first, _RandomAccessIterator __last)
+<span class="lineNum">     111 </span>            :     { return std::__is_heap(__first, std::distance(__first, __last)); }
+<span class="lineNum">     112 </span>            : 
+<span class="lineNum">     113 </span>            :   template&lt;typename _RandomAccessIterator, typename _Compare&gt;
+<span class="lineNum">     114 </span>            :     inline bool
+<span class="lineNum">     115 </span>            :     __is_heap(_RandomAccessIterator __first, _RandomAccessIterator __last,
+<span class="lineNum">     116 </span>            :               _Compare __comp)
+<span class="lineNum">     117 </span>            :     {
+<span class="lineNum">     118 </span>            :       return std::__is_heap(__first, _GLIBCXX_MOVE(__comp),
+<span class="lineNum">     119 </span>            :                             std::distance(__first, __last));
+<span class="lineNum">     120 </span>            :     }
+<span class="lineNum">     121 </span>            : 
+<span class="lineNum">     122 </span>            :   // Heap-manipulation functions: push_heap, pop_heap, make_heap, sort_heap,
+<span class="lineNum">     123 </span>            :   // + is_heap and is_heap_until in C++0x.
+<span class="lineNum">     124 </span>            : 
+<span class="lineNum">     125 </span>            :   template&lt;typename _RandomAccessIterator, typename _Distance, typename _Tp,
+<a name="126"><span class="lineNum">     126 </span>            :            typename _Compare&gt;</a>
+<span class="lineNum">     127 </span>            :     void
+<span class="lineNum">     128 </span><span class="lineNoCov">          0 :     __push_heap(_RandomAccessIterator __first,</span>
+<span class="lineNum">     129 </span>            :                 _Distance __holeIndex, _Distance __topIndex, _Tp __value,
+<span class="lineNum">     130 </span>            :                 _Compare&amp; __comp)
+<span class="lineNum">     131 </span>            :     {
+<span class="lineNum">     132 </span><span class="lineNoCov">          0 :       _Distance __parent = (__holeIndex - 1) / 2;</span>
+<span class="lineNum">     133 </span><span class="lineNoCov">          0 :       while (__holeIndex &gt; __topIndex &amp;&amp; __comp(__first + __parent, __value))</span>
+<span class="lineNum">     134 </span>            :         {
+<span class="lineNum">     135 </span><span class="lineNoCov">          0 :           *(__first + __holeIndex) = _GLIBCXX_MOVE(*(__first + __parent));</span>
+<span class="lineNum">     136 </span><span class="lineNoCov">          0 :           __holeIndex = __parent;</span>
+<span class="lineNum">     137 </span><span class="lineNoCov">          0 :           __parent = (__holeIndex - 1) / 2;</span>
+<span class="lineNum">     138 </span>            :         }
+<span class="lineNum">     139 </span><span class="lineNoCov">          0 :       *(__first + __holeIndex) = _GLIBCXX_MOVE(__value);</span>
+<span class="lineNum">     140 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">     141 </span>            : 
+<span class="lineNum">     142 </span>            :   /**
+<span class="lineNum">     143 </span>            :    *  @brief  Push an element onto a heap.
+<span class="lineNum">     144 </span>            :    *  @param  __first  Start of heap.
+<span class="lineNum">     145 </span>            :    *  @param  __last   End of heap + element.
+<span class="lineNum">     146 </span>            :    *  @ingroup heap_algorithms
+<span class="lineNum">     147 </span>            :    *
+<span class="lineNum">     148 </span>            :    *  This operation pushes the element at last-1 onto the valid heap
+<span class="lineNum">     149 </span>            :    *  over the range [__first,__last-1).  After completion,
+<span class="lineNum">     150 </span>            :    *  [__first,__last) is a valid heap.
+<span class="lineNum">     151 </span>            :   */
+<span class="lineNum">     152 </span>            :   template&lt;typename _RandomAccessIterator&gt;
+<span class="lineNum">     153 </span>            :     inline void
+<span class="lineNum">     154 </span>            :     push_heap(_RandomAccessIterator __first, _RandomAccessIterator __last)
+<span class="lineNum">     155 </span>            :     {
+<span class="lineNum">     156 </span>            :       typedef typename iterator_traits&lt;_RandomAccessIterator&gt;::value_type
+<span class="lineNum">     157 </span>            :           _ValueType;
+<span class="lineNum">     158 </span>            :       typedef typename iterator_traits&lt;_RandomAccessIterator&gt;::difference_type
+<span class="lineNum">     159 </span>            :           _DistanceType;
+<span class="lineNum">     160 </span>            : 
+<span class="lineNum">     161 </span>            :       // concept requirements
+<span class="lineNum">     162 </span>            :       __glibcxx_function_requires(_Mutable_RandomAccessIteratorConcept&lt;
+<span class="lineNum">     163 </span>            :             _RandomAccessIterator&gt;)
+<span class="lineNum">     164 </span>            :       __glibcxx_function_requires(_LessThanComparableConcept&lt;_ValueType&gt;)
+<span class="lineNum">     165 </span>            :       __glibcxx_requires_valid_range(__first, __last);
+<span class="lineNum">     166 </span>            :       __glibcxx_requires_irreflexive(__first, __last);
+<span class="lineNum">     167 </span>            :       __glibcxx_requires_heap(__first, __last - 1);
+<span class="lineNum">     168 </span>            : 
+<span class="lineNum">     169 </span>            :       __gnu_cxx::__ops::_Iter_less_val __comp;
+<span class="lineNum">     170 </span>            :       _ValueType __value = _GLIBCXX_MOVE(*(__last - 1));
+<span class="lineNum">     171 </span>            :       std::__push_heap(__first, _DistanceType((__last - __first) - 1),
+<span class="lineNum">     172 </span>            :                        _DistanceType(0), _GLIBCXX_MOVE(__value), __comp);
+<span class="lineNum">     173 </span>            :     }
+<span class="lineNum">     174 </span>            : 
+<span class="lineNum">     175 </span>            :   /**
+<span class="lineNum">     176 </span>            :    *  @brief  Push an element onto a heap using comparison functor.
+<span class="lineNum">     177 </span>            :    *  @param  __first  Start of heap.
+<span class="lineNum">     178 </span>            :    *  @param  __last   End of heap + element.
+<span class="lineNum">     179 </span>            :    *  @param  __comp   Comparison functor.
+<span class="lineNum">     180 </span>            :    *  @ingroup heap_algorithms
+<span class="lineNum">     181 </span>            :    *
+<span class="lineNum">     182 </span>            :    *  This operation pushes the element at __last-1 onto the valid
+<span class="lineNum">     183 </span>            :    *  heap over the range [__first,__last-1).  After completion,
+<span class="lineNum">     184 </span>            :    *  [__first,__last) is a valid heap.  Compare operations are
+<span class="lineNum">     185 </span>            :    *  performed using comp.
+<span class="lineNum">     186 </span>            :   */
+<span class="lineNum">     187 </span>            :   template&lt;typename _RandomAccessIterator, typename _Compare&gt;
+<span class="lineNum">     188 </span>            :     inline void
+<span class="lineNum">     189 </span>            :     push_heap(_RandomAccessIterator __first, _RandomAccessIterator __last,
+<span class="lineNum">     190 </span>            :               _Compare __comp)
+<span class="lineNum">     191 </span>            :     {
+<span class="lineNum">     192 </span>            :       typedef typename iterator_traits&lt;_RandomAccessIterator&gt;::value_type
+<span class="lineNum">     193 </span>            :           _ValueType;
+<span class="lineNum">     194 </span>            :       typedef typename iterator_traits&lt;_RandomAccessIterator&gt;::difference_type
+<span class="lineNum">     195 </span>            :           _DistanceType;
+<span class="lineNum">     196 </span>            : 
+<span class="lineNum">     197 </span>            :       // concept requirements
+<span class="lineNum">     198 </span>            :       __glibcxx_function_requires(_Mutable_RandomAccessIteratorConcept&lt;
+<span class="lineNum">     199 </span>            :             _RandomAccessIterator&gt;)
+<span class="lineNum">     200 </span>            :       __glibcxx_requires_valid_range(__first, __last);
+<span class="lineNum">     201 </span>            :       __glibcxx_requires_irreflexive_pred(__first, __last, __comp);
+<span class="lineNum">     202 </span>            :       __glibcxx_requires_heap_pred(__first, __last - 1, __comp);
+<span class="lineNum">     203 </span>            : 
+<span class="lineNum">     204 </span>            :       __decltype(__gnu_cxx::__ops::__iter_comp_val(_GLIBCXX_MOVE(__comp)))
+<span class="lineNum">     205 </span>            :         __cmp(_GLIBCXX_MOVE(__comp));
+<span class="lineNum">     206 </span>            :       _ValueType __value = _GLIBCXX_MOVE(*(__last - 1));
+<span class="lineNum">     207 </span>            :       std::__push_heap(__first, _DistanceType((__last - __first) - 1),
+<span class="lineNum">     208 </span>            :                        _DistanceType(0), _GLIBCXX_MOVE(__value), __cmp);
+<span class="lineNum">     209 </span>            :     }
+<span class="lineNum">     210 </span>            : 
+<span class="lineNum">     211 </span>            :   template&lt;typename _RandomAccessIterator, typename _Distance,
+<a name="212"><span class="lineNum">     212 </span>            :            typename _Tp, typename _Compare&gt;</a>
+<span class="lineNum">     213 </span>            :     void
+<span class="lineNum">     214 </span><span class="lineNoCov">          0 :     __adjust_heap(_RandomAccessIterator __first, _Distance __holeIndex,</span>
+<span class="lineNum">     215 </span>            :                   _Distance __len, _Tp __value, _Compare __comp)
+<span class="lineNum">     216 </span>            :     {
+<span class="lineNum">     217 </span><span class="lineNoCov">          0 :       const _Distance __topIndex = __holeIndex;</span>
+<span class="lineNum">     218 </span><span class="lineNoCov">          0 :       _Distance __secondChild = __holeIndex;</span>
+<span class="lineNum">     219 </span><span class="lineNoCov">          0 :       while (__secondChild &lt; (__len - 1) / 2)</span>
+<span class="lineNum">     220 </span>            :         {
+<span class="lineNum">     221 </span><span class="lineNoCov">          0 :           __secondChild = 2 * (__secondChild + 1);</span>
+<span class="lineNum">     222 </span><span class="lineNoCov">          0 :           if (__comp(__first + __secondChild,</span>
+<span class="lineNum">     223 </span>            :                      __first + (__secondChild - 1)))
+<span class="lineNum">     224 </span><span class="lineNoCov">          0 :             __secondChild--;</span>
+<span class="lineNum">     225 </span><span class="lineNoCov">          0 :           *(__first + __holeIndex) = _GLIBCXX_MOVE(*(__first + __secondChild));</span>
+<span class="lineNum">     226 </span><span class="lineNoCov">          0 :           __holeIndex = __secondChild;</span>
+<span class="lineNum">     227 </span>            :         }
+<span class="lineNum">     228 </span><span class="lineNoCov">          0 :       if ((__len &amp; 1) == 0 &amp;&amp; __secondChild == (__len - 2) / 2)</span>
+<span class="lineNum">     229 </span>            :         {
+<span class="lineNum">     230 </span><span class="lineNoCov">          0 :           __secondChild = 2 * (__secondChild + 1);</span>
+<span class="lineNum">     231 </span><span class="lineNoCov">          0 :           *(__first + __holeIndex) = _GLIBCXX_MOVE(*(__first</span>
+<span class="lineNum">     232 </span>            :                                                      + (__secondChild - 1)));
+<span class="lineNum">     233 </span><span class="lineNoCov">          0 :           __holeIndex = __secondChild - 1;</span>
+<span class="lineNum">     234 </span>            :         }
+<span class="lineNum">     235 </span>            :       __decltype(__gnu_cxx::__ops::__iter_comp_val(_GLIBCXX_MOVE(__comp)))
+<span class="lineNum">     236 </span><span class="lineNoCov">          0 :         __cmp(_GLIBCXX_MOVE(__comp));</span>
+<span class="lineNum">     237 </span><span class="lineNoCov">          0 :       std::__push_heap(__first, __holeIndex, __topIndex,</span>
+<span class="lineNum">     238 </span><span class="lineNoCov">          0 :                        _GLIBCXX_MOVE(__value), __cmp);</span>
+<span class="lineNum">     239 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">     240 </span>            : 
+<a name="241"><span class="lineNum">     241 </span>            :   template&lt;typename _RandomAccessIterator, typename _Compare&gt;</a>
+<span class="lineNum">     242 </span>            :     inline void
+<span class="lineNum">     243 </span><span class="lineNoCov">          0 :     __pop_heap(_RandomAccessIterator __first, _RandomAccessIterator __last,</span>
+<span class="lineNum">     244 </span>            :                _RandomAccessIterator __result, _Compare&amp; __comp)
+<span class="lineNum">     245 </span>            :     {
+<span class="lineNum">     246 </span>            :       typedef typename iterator_traits&lt;_RandomAccessIterator&gt;::value_type
+<span class="lineNum">     247 </span>            :         _ValueType;
+<span class="lineNum">     248 </span>            :       typedef typename iterator_traits&lt;_RandomAccessIterator&gt;::difference_type
+<span class="lineNum">     249 </span>            :         _DistanceType;
+<span class="lineNum">     250 </span>            : 
+<span class="lineNum">     251 </span><span class="lineNoCov">          0 :       _ValueType __value = _GLIBCXX_MOVE(*__result);</span>
+<span class="lineNum">     252 </span><span class="lineNoCov">          0 :       *__result = _GLIBCXX_MOVE(*__first);</span>
+<span class="lineNum">     253 </span><span class="lineNoCov">          0 :       std::__adjust_heap(__first, _DistanceType(0),</span>
+<span class="lineNum">     254 </span><span class="lineNoCov">          0 :                          _DistanceType(__last - __first),</span>
+<span class="lineNum">     255 </span><span class="lineNoCov">          0 :                          _GLIBCXX_MOVE(__value), __comp);</span>
+<span class="lineNum">     256 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">     257 </span>            : 
+<span class="lineNum">     258 </span>            :   /**
+<span class="lineNum">     259 </span>            :    *  @brief  Pop an element off a heap.
+<span class="lineNum">     260 </span>            :    *  @param  __first  Start of heap.
+<span class="lineNum">     261 </span>            :    *  @param  __last   End of heap.
+<span class="lineNum">     262 </span>            :    *  @pre    [__first, __last) is a valid, non-empty range.
+<span class="lineNum">     263 </span>            :    *  @ingroup heap_algorithms
+<span class="lineNum">     264 </span>            :    *
+<span class="lineNum">     265 </span>            :    *  This operation pops the top of the heap.  The elements __first
+<span class="lineNum">     266 </span>            :    *  and __last-1 are swapped and [__first,__last-1) is made into a
+<span class="lineNum">     267 </span>            :    *  heap.
+<span class="lineNum">     268 </span>            :   */
+<span class="lineNum">     269 </span>            :   template&lt;typename _RandomAccessIterator&gt;
+<span class="lineNum">     270 </span>            :     inline void
+<span class="lineNum">     271 </span>            :     pop_heap(_RandomAccessIterator __first, _RandomAccessIterator __last)
+<span class="lineNum">     272 </span>            :     {
+<span class="lineNum">     273 </span>            :       // concept requirements
+<span class="lineNum">     274 </span>            :       __glibcxx_function_requires(_Mutable_RandomAccessIteratorConcept&lt;
+<span class="lineNum">     275 </span>            :             _RandomAccessIterator&gt;)
+<span class="lineNum">     276 </span>            :       __glibcxx_function_requires(_LessThanComparableConcept&lt;
+<span class="lineNum">     277 </span>            :         typename iterator_traits&lt;_RandomAccessIterator&gt;::value_type&gt;)
+<span class="lineNum">     278 </span>            :       __glibcxx_requires_non_empty_range(__first, __last);
+<span class="lineNum">     279 </span>            :       __glibcxx_requires_valid_range(__first, __last);
+<span class="lineNum">     280 </span>            :       __glibcxx_requires_irreflexive(__first, __last);
+<span class="lineNum">     281 </span>            :       __glibcxx_requires_heap(__first, __last);
+<span class="lineNum">     282 </span>            : 
+<span class="lineNum">     283 </span>            :       if (__last - __first &gt; 1)
+<span class="lineNum">     284 </span>            :         {
+<span class="lineNum">     285 </span>            :           --__last;
+<span class="lineNum">     286 </span>            :           __gnu_cxx::__ops::_Iter_less_iter __comp;
+<span class="lineNum">     287 </span>            :           std::__pop_heap(__first, __last, __last, __comp);
+<span class="lineNum">     288 </span>            :         }
+<span class="lineNum">     289 </span>            :     }
+<span class="lineNum">     290 </span>            : 
+<span class="lineNum">     291 </span>            :   /**
+<span class="lineNum">     292 </span>            :    *  @brief  Pop an element off a heap using comparison functor.
+<span class="lineNum">     293 </span>            :    *  @param  __first  Start of heap.
+<span class="lineNum">     294 </span>            :    *  @param  __last   End of heap.
+<span class="lineNum">     295 </span>            :    *  @param  __comp   Comparison functor to use.
+<span class="lineNum">     296 </span>            :    *  @ingroup heap_algorithms
+<span class="lineNum">     297 </span>            :    *
+<span class="lineNum">     298 </span>            :    *  This operation pops the top of the heap.  The elements __first
+<span class="lineNum">     299 </span>            :    *  and __last-1 are swapped and [__first,__last-1) is made into a
+<span class="lineNum">     300 </span>            :    *  heap.  Comparisons are made using comp.
+<span class="lineNum">     301 </span>            :   */
+<span class="lineNum">     302 </span>            :   template&lt;typename _RandomAccessIterator, typename _Compare&gt;
+<span class="lineNum">     303 </span>            :     inline void
+<span class="lineNum">     304 </span>            :     pop_heap(_RandomAccessIterator __first,
+<span class="lineNum">     305 </span>            :              _RandomAccessIterator __last, _Compare __comp)
+<span class="lineNum">     306 </span>            :     {
+<span class="lineNum">     307 </span>            :       // concept requirements
+<span class="lineNum">     308 </span>            :       __glibcxx_function_requires(_Mutable_RandomAccessIteratorConcept&lt;
+<span class="lineNum">     309 </span>            :             _RandomAccessIterator&gt;)
+<span class="lineNum">     310 </span>            :       __glibcxx_requires_valid_range(__first, __last);
+<span class="lineNum">     311 </span>            :       __glibcxx_requires_irreflexive_pred(__first, __last, __comp);
+<span class="lineNum">     312 </span>            :       __glibcxx_requires_non_empty_range(__first, __last);
+<span class="lineNum">     313 </span>            :       __glibcxx_requires_heap_pred(__first, __last, __comp);
+<span class="lineNum">     314 </span>            : 
+<span class="lineNum">     315 </span>            :       if (__last - __first &gt; 1)
+<span class="lineNum">     316 </span>            :         {
+<span class="lineNum">     317 </span>            :           typedef __decltype(__comp) _Cmp;
+<span class="lineNum">     318 </span>            :           __gnu_cxx::__ops::_Iter_comp_iter&lt;_Cmp&gt; __cmp(_GLIBCXX_MOVE(__comp));
+<span class="lineNum">     319 </span>            :           --__last;
+<span class="lineNum">     320 </span>            :           std::__pop_heap(__first, __last, __last, __cmp);
+<span class="lineNum">     321 </span>            :         }
+<span class="lineNum">     322 </span>            :     }
+<span class="lineNum">     323 </span>            : 
+<a name="324"><span class="lineNum">     324 </span>            :   template&lt;typename _RandomAccessIterator, typename _Compare&gt;</a>
+<span class="lineNum">     325 </span>            :     void
+<span class="lineNum">     326 </span><span class="lineNoCov">          0 :     __make_heap(_RandomAccessIterator __first, _RandomAccessIterator __last,</span>
+<span class="lineNum">     327 </span>            :                 _Compare&amp; __comp)
+<span class="lineNum">     328 </span>            :     {
+<span class="lineNum">     329 </span>            :       typedef typename iterator_traits&lt;_RandomAccessIterator&gt;::value_type
+<span class="lineNum">     330 </span>            :           _ValueType;
+<span class="lineNum">     331 </span>            :       typedef typename iterator_traits&lt;_RandomAccessIterator&gt;::difference_type
+<span class="lineNum">     332 </span>            :           _DistanceType;
+<span class="lineNum">     333 </span>            : 
+<span class="lineNum">     334 </span><span class="lineNoCov">          0 :       if (__last - __first &lt; 2)</span>
+<span class="lineNum">     335 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     336 </span>            : 
+<span class="lineNum">     337 </span><span class="lineNoCov">          0 :       const _DistanceType __len = __last - __first;</span>
+<span class="lineNum">     338 </span><span class="lineNoCov">          0 :       _DistanceType __parent = (__len - 2) / 2;</span>
+<span class="lineNum">     339 </span><span class="lineNoCov">          0 :       while (true)</span>
+<span class="lineNum">     340 </span>            :         {
+<span class="lineNum">     341 </span><span class="lineNoCov">          0 :           _ValueType __value = _GLIBCXX_MOVE(*(__first + __parent));</span>
+<span class="lineNum">     342 </span><span class="lineNoCov">          0 :           std::__adjust_heap(__first, __parent, __len, _GLIBCXX_MOVE(__value),</span>
+<span class="lineNum">     343 </span>            :                              __comp);
+<span class="lineNum">     344 </span><span class="lineNoCov">          0 :           if (__parent == 0)</span>
+<span class="lineNum">     345 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">     346 </span><span class="lineNoCov">          0 :           __parent--;</span>
+<span class="lineNum">     347 </span>            :         }
+<span class="lineNum">     348 </span>            :     }
+<span class="lineNum">     349 </span>            :   
+<span class="lineNum">     350 </span>            :   /**
+<span class="lineNum">     351 </span>            :    *  @brief  Construct a heap over a range.
+<span class="lineNum">     352 </span>            :    *  @param  __first  Start of heap.
+<span class="lineNum">     353 </span>            :    *  @param  __last   End of heap.
+<span class="lineNum">     354 </span>            :    *  @ingroup heap_algorithms
+<span class="lineNum">     355 </span>            :    *
+<span class="lineNum">     356 </span>            :    *  This operation makes the elements in [__first,__last) into a heap.
+<span class="lineNum">     357 </span>            :   */
+<span class="lineNum">     358 </span>            :   template&lt;typename _RandomAccessIterator&gt;
+<span class="lineNum">     359 </span>            :     inline void
+<span class="lineNum">     360 </span>            :     make_heap(_RandomAccessIterator __first, _RandomAccessIterator __last)
+<span class="lineNum">     361 </span>            :     {
+<span class="lineNum">     362 </span>            :       // concept requirements
+<span class="lineNum">     363 </span>            :       __glibcxx_function_requires(_Mutable_RandomAccessIteratorConcept&lt;
+<span class="lineNum">     364 </span>            :             _RandomAccessIterator&gt;)
+<span class="lineNum">     365 </span>            :       __glibcxx_function_requires(_LessThanComparableConcept&lt;
+<span class="lineNum">     366 </span>            :             typename iterator_traits&lt;_RandomAccessIterator&gt;::value_type&gt;)
+<span class="lineNum">     367 </span>            :       __glibcxx_requires_valid_range(__first, __last);
+<span class="lineNum">     368 </span>            :       __glibcxx_requires_irreflexive(__first, __last);
+<span class="lineNum">     369 </span>            : 
+<span class="lineNum">     370 </span>            :       __gnu_cxx::__ops::_Iter_less_iter __comp;
+<span class="lineNum">     371 </span>            :       std::__make_heap(__first, __last, __comp);
+<span class="lineNum">     372 </span>            :     }
+<span class="lineNum">     373 </span>            : 
+<span class="lineNum">     374 </span>            :   /**
+<span class="lineNum">     375 </span>            :    *  @brief  Construct a heap over a range using comparison functor.
+<span class="lineNum">     376 </span>            :    *  @param  __first  Start of heap.
+<span class="lineNum">     377 </span>            :    *  @param  __last   End of heap.
+<span class="lineNum">     378 </span>            :    *  @param  __comp   Comparison functor to use.
+<span class="lineNum">     379 </span>            :    *  @ingroup heap_algorithms
+<span class="lineNum">     380 </span>            :    *
+<span class="lineNum">     381 </span>            :    *  This operation makes the elements in [__first,__last) into a heap.
+<span class="lineNum">     382 </span>            :    *  Comparisons are made using __comp.
+<span class="lineNum">     383 </span>            :   */
+<span class="lineNum">     384 </span>            :   template&lt;typename _RandomAccessIterator, typename _Compare&gt;
+<span class="lineNum">     385 </span>            :     inline void
+<span class="lineNum">     386 </span>            :     make_heap(_RandomAccessIterator __first, _RandomAccessIterator __last,
+<span class="lineNum">     387 </span>            :               _Compare __comp)
+<span class="lineNum">     388 </span>            :     {
+<span class="lineNum">     389 </span>            :       // concept requirements
+<span class="lineNum">     390 </span>            :       __glibcxx_function_requires(_Mutable_RandomAccessIteratorConcept&lt;
+<span class="lineNum">     391 </span>            :             _RandomAccessIterator&gt;)
+<span class="lineNum">     392 </span>            :       __glibcxx_requires_valid_range(__first, __last);
+<span class="lineNum">     393 </span>            :       __glibcxx_requires_irreflexive_pred(__first, __last, __comp);
+<span class="lineNum">     394 </span>            : 
+<span class="lineNum">     395 </span>            :       typedef __decltype(__comp) _Cmp;
+<span class="lineNum">     396 </span>            :       __gnu_cxx::__ops::_Iter_comp_iter&lt;_Cmp&gt; __cmp(_GLIBCXX_MOVE(__comp));
+<span class="lineNum">     397 </span>            :       std::__make_heap(__first, __last, __cmp);
+<span class="lineNum">     398 </span>            :     }
+<span class="lineNum">     399 </span>            : 
+<a name="400"><span class="lineNum">     400 </span>            :   template&lt;typename _RandomAccessIterator, typename _Compare&gt;</a>
+<span class="lineNum">     401 </span>            :     void
+<span class="lineNum">     402 </span><span class="lineNoCov">          0 :     __sort_heap(_RandomAccessIterator __first, _RandomAccessIterator __last,</span>
+<span class="lineNum">     403 </span>            :                 _Compare&amp; __comp)
+<span class="lineNum">     404 </span>            :     {
+<span class="lineNum">     405 </span><span class="lineNoCov">          0 :       while (__last - __first &gt; 1)</span>
+<span class="lineNum">     406 </span>            :         {
+<span class="lineNum">     407 </span><span class="lineNoCov">          0 :           --__last;</span>
+<span class="lineNum">     408 </span><span class="lineNoCov">          0 :           std::__pop_heap(__first, __last, __last, __comp);</span>
+<span class="lineNum">     409 </span>            :         }
+<span class="lineNum">     410 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">     411 </span>            : 
+<span class="lineNum">     412 </span>            :   /**
+<span class="lineNum">     413 </span>            :    *  @brief  Sort a heap.
+<span class="lineNum">     414 </span>            :    *  @param  __first  Start of heap.
+<span class="lineNum">     415 </span>            :    *  @param  __last   End of heap.
+<span class="lineNum">     416 </span>            :    *  @ingroup heap_algorithms
+<span class="lineNum">     417 </span>            :    *
+<span class="lineNum">     418 </span>            :    *  This operation sorts the valid heap in the range [__first,__last).
+<span class="lineNum">     419 </span>            :   */
+<span class="lineNum">     420 </span>            :   template&lt;typename _RandomAccessIterator&gt;
+<span class="lineNum">     421 </span>            :     inline void
+<span class="lineNum">     422 </span>            :     sort_heap(_RandomAccessIterator __first, _RandomAccessIterator __last)
+<span class="lineNum">     423 </span>            :     {
+<span class="lineNum">     424 </span>            :       // concept requirements
+<span class="lineNum">     425 </span>            :       __glibcxx_function_requires(_Mutable_RandomAccessIteratorConcept&lt;
+<span class="lineNum">     426 </span>            :             _RandomAccessIterator&gt;)
+<span class="lineNum">     427 </span>            :       __glibcxx_function_requires(_LessThanComparableConcept&lt;
+<span class="lineNum">     428 </span>            :             typename iterator_traits&lt;_RandomAccessIterator&gt;::value_type&gt;)
+<span class="lineNum">     429 </span>            :       __glibcxx_requires_valid_range(__first, __last);
+<span class="lineNum">     430 </span>            :       __glibcxx_requires_irreflexive(__first, __last);
+<span class="lineNum">     431 </span>            :       __glibcxx_requires_heap(__first, __last);
+<span class="lineNum">     432 </span>            : 
+<span class="lineNum">     433 </span>            :       __gnu_cxx::__ops::_Iter_less_iter __comp;
+<span class="lineNum">     434 </span>            :       std::__sort_heap(__first, __last, __comp);
+<span class="lineNum">     435 </span>            :     }
+<span class="lineNum">     436 </span>            : 
+<span class="lineNum">     437 </span>            :   /**
+<span class="lineNum">     438 </span>            :    *  @brief  Sort a heap using comparison functor.
+<span class="lineNum">     439 </span>            :    *  @param  __first  Start of heap.
+<span class="lineNum">     440 </span>            :    *  @param  __last   End of heap.
+<span class="lineNum">     441 </span>            :    *  @param  __comp   Comparison functor to use.
+<span class="lineNum">     442 </span>            :    *  @ingroup heap_algorithms
+<span class="lineNum">     443 </span>            :    *
+<span class="lineNum">     444 </span>            :    *  This operation sorts the valid heap in the range [__first,__last).
+<span class="lineNum">     445 </span>            :    *  Comparisons are made using __comp.
+<span class="lineNum">     446 </span>            :   */
+<span class="lineNum">     447 </span>            :   template&lt;typename _RandomAccessIterator, typename _Compare&gt;
+<span class="lineNum">     448 </span>            :     inline void
+<span class="lineNum">     449 </span>            :     sort_heap(_RandomAccessIterator __first, _RandomAccessIterator __last,
+<span class="lineNum">     450 </span>            :               _Compare __comp)
+<span class="lineNum">     451 </span>            :     {
+<span class="lineNum">     452 </span>            :       // concept requirements
+<span class="lineNum">     453 </span>            :       __glibcxx_function_requires(_Mutable_RandomAccessIteratorConcept&lt;
+<span class="lineNum">     454 </span>            :             _RandomAccessIterator&gt;)
+<span class="lineNum">     455 </span>            :       __glibcxx_requires_valid_range(__first, __last);
+<span class="lineNum">     456 </span>            :       __glibcxx_requires_irreflexive_pred(__first, __last, __comp);
+<span class="lineNum">     457 </span>            :       __glibcxx_requires_heap_pred(__first, __last, __comp);
+<span class="lineNum">     458 </span>            : 
+<span class="lineNum">     459 </span>            :       typedef __decltype(__comp) _Cmp;
+<span class="lineNum">     460 </span>            :       __gnu_cxx::__ops::_Iter_comp_iter&lt;_Cmp&gt; __cmp(_GLIBCXX_MOVE(__comp));
+<span class="lineNum">     461 </span>            :       std::__sort_heap(__first, __last, __cmp);
+<span class="lineNum">     462 </span>            :     }
+<span class="lineNum">     463 </span>            : 
+<span class="lineNum">     464 </span>            : #if __cplusplus &gt;= 201103L
+<span class="lineNum">     465 </span>            :   /**
+<span class="lineNum">     466 </span>            :    *  @brief  Search the end of a heap.
+<span class="lineNum">     467 </span>            :    *  @param  __first  Start of range.
+<span class="lineNum">     468 </span>            :    *  @param  __last   End of range.
+<span class="lineNum">     469 </span>            :    *  @return  An iterator pointing to the first element not in the heap.
+<span class="lineNum">     470 </span>            :    *  @ingroup heap_algorithms
+<span class="lineNum">     471 </span>            :    *
+<span class="lineNum">     472 </span>            :    *  This operation returns the last iterator i in [__first, __last) for which
+<span class="lineNum">     473 </span>            :    *  the range [__first, i) is a heap.
+<span class="lineNum">     474 </span>            :   */
+<span class="lineNum">     475 </span>            :   template&lt;typename _RandomAccessIterator&gt;
+<span class="lineNum">     476 </span>            :     inline _RandomAccessIterator
+<span class="lineNum">     477 </span>            :     is_heap_until(_RandomAccessIterator __first, _RandomAccessIterator __last)
+<span class="lineNum">     478 </span>            :     {
+<span class="lineNum">     479 </span>            :       // concept requirements
+<span class="lineNum">     480 </span>            :       __glibcxx_function_requires(_RandomAccessIteratorConcept&lt;
+<span class="lineNum">     481 </span>            :             _RandomAccessIterator&gt;)
+<span class="lineNum">     482 </span>            :       __glibcxx_function_requires(_LessThanComparableConcept&lt;
+<span class="lineNum">     483 </span>            :             typename iterator_traits&lt;_RandomAccessIterator&gt;::value_type&gt;)
+<span class="lineNum">     484 </span>            :       __glibcxx_requires_valid_range(__first, __last);
+<span class="lineNum">     485 </span>            :       __glibcxx_requires_irreflexive(__first, __last);
+<span class="lineNum">     486 </span>            : 
+<span class="lineNum">     487 </span>            :       __gnu_cxx::__ops::_Iter_less_iter __comp;
+<span class="lineNum">     488 </span>            :       return __first + 
+<span class="lineNum">     489 </span>            :         std::__is_heap_until(__first, std::distance(__first, __last), __comp);
+<span class="lineNum">     490 </span>            :     }
+<span class="lineNum">     491 </span>            : 
+<span class="lineNum">     492 </span>            :   /**
+<span class="lineNum">     493 </span>            :    *  @brief  Search the end of a heap using comparison functor.
+<span class="lineNum">     494 </span>            :    *  @param  __first  Start of range.
+<span class="lineNum">     495 </span>            :    *  @param  __last   End of range.
+<span class="lineNum">     496 </span>            :    *  @param  __comp   Comparison functor to use.
+<span class="lineNum">     497 </span>            :    *  @return  An iterator pointing to the first element not in the heap.
+<span class="lineNum">     498 </span>            :    *  @ingroup heap_algorithms
+<span class="lineNum">     499 </span>            :    *
+<span class="lineNum">     500 </span>            :    *  This operation returns the last iterator i in [__first, __last) for which
+<span class="lineNum">     501 </span>            :    *  the range [__first, i) is a heap.  Comparisons are made using __comp.
+<span class="lineNum">     502 </span>            :   */
+<span class="lineNum">     503 </span>            :   template&lt;typename _RandomAccessIterator, typename _Compare&gt;
+<span class="lineNum">     504 </span>            :     inline _RandomAccessIterator
+<span class="lineNum">     505 </span>            :     is_heap_until(_RandomAccessIterator __first, _RandomAccessIterator __last,
+<span class="lineNum">     506 </span>            :                   _Compare __comp)
+<span class="lineNum">     507 </span>            :     {
+<span class="lineNum">     508 </span>            :       // concept requirements
+<span class="lineNum">     509 </span>            :       __glibcxx_function_requires(_RandomAccessIteratorConcept&lt;
+<span class="lineNum">     510 </span>            :             _RandomAccessIterator&gt;)
+<span class="lineNum">     511 </span>            :       __glibcxx_requires_valid_range(__first, __last);
+<span class="lineNum">     512 </span>            :       __glibcxx_requires_irreflexive_pred(__first, __last, __comp);
+<span class="lineNum">     513 </span>            : 
+<span class="lineNum">     514 </span>            :       typedef __decltype(__comp) _Cmp;
+<span class="lineNum">     515 </span>            :       __gnu_cxx::__ops::_Iter_comp_iter&lt;_Cmp&gt; __cmp(_GLIBCXX_MOVE(__comp));
+<span class="lineNum">     516 </span>            :       return __first
+<span class="lineNum">     517 </span>            :         + std::__is_heap_until(__first, std::distance(__first, __last), __cmp);
+<span class="lineNum">     518 </span>            :     }
+<span class="lineNum">     519 </span>            : 
+<span class="lineNum">     520 </span>            :   /**
+<span class="lineNum">     521 </span>            :    *  @brief  Determines whether a range is a heap.
+<span class="lineNum">     522 </span>            :    *  @param  __first  Start of range.
+<span class="lineNum">     523 </span>            :    *  @param  __last   End of range.
+<span class="lineNum">     524 </span>            :    *  @return  True if range is a heap, false otherwise.
+<span class="lineNum">     525 </span>            :    *  @ingroup heap_algorithms
+<span class="lineNum">     526 </span>            :   */
+<span class="lineNum">     527 </span>            :   template&lt;typename _RandomAccessIterator&gt;
+<span class="lineNum">     528 </span>            :     inline bool
+<span class="lineNum">     529 </span>            :     is_heap(_RandomAccessIterator __first, _RandomAccessIterator __last)
+<span class="lineNum">     530 </span>            :     { return std::is_heap_until(__first, __last) == __last; }
+<span class="lineNum">     531 </span>            : 
+<span class="lineNum">     532 </span>            :   /**
+<span class="lineNum">     533 </span>            :    *  @brief  Determines whether a range is a heap using comparison functor.
+<span class="lineNum">     534 </span>            :    *  @param  __first  Start of range.
+<span class="lineNum">     535 </span>            :    *  @param  __last   End of range.
+<span class="lineNum">     536 </span>            :    *  @param  __comp   Comparison functor to use.
+<span class="lineNum">     537 </span>            :    *  @return  True if range is a heap, false otherwise.
+<span class="lineNum">     538 </span>            :    *  @ingroup heap_algorithms
+<span class="lineNum">     539 </span>            :   */
+<span class="lineNum">     540 </span>            :   template&lt;typename _RandomAccessIterator, typename _Compare&gt;
+<span class="lineNum">     541 </span>            :     inline bool
+<span class="lineNum">     542 </span>            :     is_heap(_RandomAccessIterator __first, _RandomAccessIterator __last,
+<span class="lineNum">     543 </span>            :             _Compare __comp)
+<span class="lineNum">     544 </span>            :     {
+<span class="lineNum">     545 </span>            :       // concept requirements
+<span class="lineNum">     546 </span>            :       __glibcxx_function_requires(_RandomAccessIteratorConcept&lt;
+<span class="lineNum">     547 </span>            :             _RandomAccessIterator&gt;)
+<span class="lineNum">     548 </span>            :       __glibcxx_requires_valid_range(__first, __last);
+<span class="lineNum">     549 </span>            :       __glibcxx_requires_irreflexive_pred(__first, __last, __comp);
+<span class="lineNum">     550 </span>            : 
+<span class="lineNum">     551 </span>            :       const auto __dist = std::distance(__first, __last);
+<span class="lineNum">     552 </span>            :       typedef __decltype(__comp) _Cmp;
+<span class="lineNum">     553 </span>            :       __gnu_cxx::__ops::_Iter_comp_iter&lt;_Cmp&gt; __cmp(_GLIBCXX_MOVE(__comp));
+<span class="lineNum">     554 </span>            :       return std::__is_heap_until(__first, __dist, __cmp) == __dist;
+<span class="lineNum">     555 </span>            :     }
+<span class="lineNum">     556 </span>            : #endif
+<span class="lineNum">     557 </span>            : 
+<span class="lineNum">     558 </span>            : _GLIBCXX_END_NAMESPACE_VERSION
+<span class="lineNum">     559 </span>            : } // namespace
+<span class="lineNum">     560 </span>            : 
+<span class="lineNum">     561 </span>            : #endif /* _STL_HEAP_H */
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

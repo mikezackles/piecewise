@@ -1,0 +1,276 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Code coverage - /home/travis/build/mikezackles/piecewise/subprojects/catch/include/internal/catch_console_colour_impl.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../../../../../index.html">top level</a> - <a href="index.html">home/travis/build/mikezackles/piecewise/subprojects/catch/include/internal</a> - catch_console_colour_impl.hpp<span style="font-size: 80%;"> (source / <a href="catch_console_colour_impl.hpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Code coverage</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">22</td>
+            <td class="headerCovTableEntry">45</td>
+            <td class="headerCovTableEntryLo">48.9 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2018-02-19 01:04:17</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">8</td>
+            <td class="headerCovTableEntry">15</td>
+            <td class="headerCovTableEntryLo">53.3 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Legend:</td>
+            <td class="headerValueLeg">            Lines:
+            <span class="coverLegendCov">hit</span>
+            <span class="coverLegendNoCov">not hit</span>
+</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<span class="lineNum">       2 </span>            :  *  Created by Phil on 25/2/2012.
+<span class="lineNum">       3 </span>            :  *  Copyright 2012 Two Blue Cubes Ltd. All rights reserved.
+<span class="lineNum">       4 </span>            :  *
+<span class="lineNum">       5 </span>            :  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
+<span class="lineNum">       6 </span>            :  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+<span class="lineNum">       7 </span>            :  */
+<span class="lineNum">       8 </span>            : #ifndef TWOBLUECUBES_CATCH_CONSOLE_COLOUR_IMPL_HPP_INCLUDED
+<span class="lineNum">       9 </span>            : #define TWOBLUECUBES_CATCH_CONSOLE_COLOUR_IMPL_HPP_INCLUDED
+<span class="lineNum">      10 </span>            : 
+<span class="lineNum">      11 </span>            : #include &quot;catch_console_colour.hpp&quot;
+<span class="lineNum">      12 </span>            : #include &quot;catch_errno_guard.hpp&quot;
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            : namespace Catch {
+<span class="lineNum">      15 </span>            :     namespace {
+<a name="16"><span class="lineNum">      16 </span>            : </a>
+<span class="lineNum">      17 </span>            :         struct IColourImpl {
+<span class="lineNum">      18 </span><span class="lineCov">          2 :             virtual ~IColourImpl() {}</span>
+<span class="lineNum">      19 </span>            :             virtual void use( Colour::Code _colourCode ) = 0;
+<a name="20"><span class="lineNum">      20 </span>            :         };</a>
+<a name="21"><span class="lineNum">      21 </span>            : </a>
+<span class="lineNum">      22 </span><span class="lineCov">          2 :         struct NoColourImpl : IColourImpl {</span>
+<a name="23"><span class="lineNum">      23 </span><span class="lineCov">       8252 :             void use( Colour::Code ) {}</span></a>
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span><span class="lineCov">          2 :             static IColourImpl* instance() {</span>
+<span class="lineNum">      26 </span><span class="lineCov">          2 :                 static NoColourImpl s_instance;</span>
+<span class="lineNum">      27 </span><span class="lineCov">          2 :                 return &amp;s_instance;</span>
+<span class="lineNum">      28 </span>            :             }
+<span class="lineNum">      29 </span>            :         };
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            :     } // anon namespace
+<span class="lineNum">      32 </span>            : } // namespace Catch
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span>            : #if !defined( CATCH_CONFIG_COLOUR_NONE ) &amp;&amp; !defined( CATCH_CONFIG_COLOUR_WINDOWS ) &amp;&amp; !defined( CATCH_CONFIG_COLOUR_ANSI )
+<span class="lineNum">      35 </span>            : #   ifdef CATCH_PLATFORM_WINDOWS
+<span class="lineNum">      36 </span>            : #       define CATCH_CONFIG_COLOUR_WINDOWS
+<span class="lineNum">      37 </span>            : #   else
+<span class="lineNum">      38 </span>            : #       define CATCH_CONFIG_COLOUR_ANSI
+<span class="lineNum">      39 </span>            : #   endif
+<span class="lineNum">      40 </span>            : #endif
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span>            : 
+<span class="lineNum">      43 </span>            : #if defined ( CATCH_CONFIG_COLOUR_WINDOWS ) /////////////////////////////////////////
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span>            : #include &quot;catch_windows_h_proxy.h&quot;
+<span class="lineNum">      46 </span>            : 
+<span class="lineNum">      47 </span>            : namespace Catch {
+<span class="lineNum">      48 </span>            : namespace {
+<span class="lineNum">      49 </span>            : 
+<span class="lineNum">      50 </span>            :     class Win32ColourImpl : public IColourImpl {
+<span class="lineNum">      51 </span>            :     public:
+<span class="lineNum">      52 </span>            :         Win32ColourImpl() : stdoutHandle( GetStdHandle(STD_OUTPUT_HANDLE) )
+<span class="lineNum">      53 </span>            :         {
+<span class="lineNum">      54 </span>            :             CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
+<span class="lineNum">      55 </span>            :             GetConsoleScreenBufferInfo( stdoutHandle, &amp;csbiInfo );
+<span class="lineNum">      56 </span>            :             originalForegroundAttributes = csbiInfo.wAttributes &amp; ~( BACKGROUND_GREEN | BACKGROUND_RED | BACKGROUND_BLUE | BACKGROUND_INTENSITY );
+<span class="lineNum">      57 </span>            :             originalBackgroundAttributes = csbiInfo.wAttributes &amp; ~( FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY );
+<span class="lineNum">      58 </span>            :         }
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span>            :         virtual void use( Colour::Code _colourCode ) {
+<span class="lineNum">      61 </span>            :             switch( _colourCode ) {
+<span class="lineNum">      62 </span>            :                 case Colour::None:      return setTextAttribute( originalForegroundAttributes );
+<span class="lineNum">      63 </span>            :                 case Colour::White:     return setTextAttribute( FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE );
+<span class="lineNum">      64 </span>            :                 case Colour::Red:       return setTextAttribute( FOREGROUND_RED );
+<span class="lineNum">      65 </span>            :                 case Colour::Green:     return setTextAttribute( FOREGROUND_GREEN );
+<span class="lineNum">      66 </span>            :                 case Colour::Blue:      return setTextAttribute( FOREGROUND_BLUE );
+<span class="lineNum">      67 </span>            :                 case Colour::Cyan:      return setTextAttribute( FOREGROUND_BLUE | FOREGROUND_GREEN );
+<span class="lineNum">      68 </span>            :                 case Colour::Yellow:    return setTextAttribute( FOREGROUND_RED | FOREGROUND_GREEN );
+<span class="lineNum">      69 </span>            :                 case Colour::Grey:      return setTextAttribute( 0 );
+<span class="lineNum">      70 </span>            : 
+<span class="lineNum">      71 </span>            :                 case Colour::LightGrey:     return setTextAttribute( FOREGROUND_INTENSITY );
+<span class="lineNum">      72 </span>            :                 case Colour::BrightRed:     return setTextAttribute( FOREGROUND_INTENSITY | FOREGROUND_RED );
+<span class="lineNum">      73 </span>            :                 case Colour::BrightGreen:   return setTextAttribute( FOREGROUND_INTENSITY | FOREGROUND_GREEN );
+<span class="lineNum">      74 </span>            :                 case Colour::BrightWhite:   return setTextAttribute( FOREGROUND_INTENSITY | FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE );
+<span class="lineNum">      75 </span>            : 
+<span class="lineNum">      76 </span>            :                 case Colour::Bright: throw std::logic_error( &quot;not a colour&quot; );
+<span class="lineNum">      77 </span>            :             }
+<span class="lineNum">      78 </span>            :         }
+<span class="lineNum">      79 </span>            : 
+<span class="lineNum">      80 </span>            :     private:
+<span class="lineNum">      81 </span>            :         void setTextAttribute( WORD _textAttribute ) {
+<span class="lineNum">      82 </span>            :             SetConsoleTextAttribute( stdoutHandle, _textAttribute | originalBackgroundAttributes );
+<span class="lineNum">      83 </span>            :         }
+<span class="lineNum">      84 </span>            :         HANDLE stdoutHandle;
+<span class="lineNum">      85 </span>            :         WORD originalForegroundAttributes;
+<span class="lineNum">      86 </span>            :         WORD originalBackgroundAttributes;
+<span class="lineNum">      87 </span>            :     };
+<span class="lineNum">      88 </span>            : 
+<span class="lineNum">      89 </span>            :     IColourImpl* platformColourInstance() {
+<span class="lineNum">      90 </span>            :         static Win32ColourImpl s_instance;
+<span class="lineNum">      91 </span>            : 
+<span class="lineNum">      92 </span>            :         Ptr&lt;IConfig const&gt; config = getCurrentContext().getConfig();
+<span class="lineNum">      93 </span>            :         UseColour::YesOrNo colourMode = config
+<span class="lineNum">      94 </span>            :             ? config-&gt;useColour()
+<span class="lineNum">      95 </span>            :             : UseColour::Auto;
+<span class="lineNum">      96 </span>            :         if( colourMode == UseColour::Auto )
+<span class="lineNum">      97 </span>            :             colourMode = !isDebuggerActive()
+<span class="lineNum">      98 </span>            :                 ? UseColour::Yes
+<span class="lineNum">      99 </span>            :                 : UseColour::No;
+<span class="lineNum">     100 </span>            :         return colourMode == UseColour::Yes
+<span class="lineNum">     101 </span>            :             ? &amp;s_instance
+<span class="lineNum">     102 </span>            :             : NoColourImpl::instance();
+<span class="lineNum">     103 </span>            :     }
+<span class="lineNum">     104 </span>            : 
+<span class="lineNum">     105 </span>            : } // end anon namespace
+<span class="lineNum">     106 </span>            : } // end namespace Catch
+<span class="lineNum">     107 </span>            : 
+<span class="lineNum">     108 </span>            : #elif defined( CATCH_CONFIG_COLOUR_ANSI ) //////////////////////////////////////
+<span class="lineNum">     109 </span>            : 
+<span class="lineNum">     110 </span>            : #include &lt;unistd.h&gt;
+<span class="lineNum">     111 </span>            : 
+<span class="lineNum">     112 </span>            : namespace Catch {
+<span class="lineNum">     113 </span>            : namespace {
+<span class="lineNum">     114 </span>            : 
+<span class="lineNum">     115 </span>            :     // use POSIX/ ANSI console terminal codes
+<span class="lineNum">     116 </span>            :     // Thanks to Adam Strzelecki for original contribution
+<a name="117"><span class="lineNum">     117 </span>            :     // (http://github.com/nanoant)</a>
+<span class="lineNum">     118 </span>            :     // https://github.com/philsquared/Catch/pull/131
+<a name="119"><span class="lineNum">     119 </span><span class="lineNoCov">          0 :     class PosixColourImpl : public IColourImpl {</span></a>
+<span class="lineNum">     120 </span>            :     public:
+<span class="lineNum">     121 </span><span class="lineNoCov">          0 :         virtual void use( Colour::Code _colourCode ) {</span>
+<span class="lineNum">     122 </span><span class="lineNoCov">          0 :             switch( _colourCode ) {</span>
+<span class="lineNum">     123 </span><span class="lineNoCov">          0 :                 case Colour::None:</span>
+<span class="lineNum">     124 </span><span class="lineNoCov">          0 :                 case Colour::White:     return setColour( &quot;[0m&quot; );</span>
+<span class="lineNum">     125 </span><span class="lineNoCov">          0 :                 case Colour::Red:       return setColour( &quot;[0;31m&quot; );</span>
+<span class="lineNum">     126 </span><span class="lineNoCov">          0 :                 case Colour::Green:     return setColour( &quot;[0;32m&quot; );</span>
+<span class="lineNum">     127 </span><span class="lineNoCov">          0 :                 case Colour::Blue:      return setColour( &quot;[0;34m&quot; );</span>
+<span class="lineNum">     128 </span><span class="lineNoCov">          0 :                 case Colour::Cyan:      return setColour( &quot;[0;36m&quot; );</span>
+<span class="lineNum">     129 </span><span class="lineNoCov">          0 :                 case Colour::Yellow:    return setColour( &quot;[0;33m&quot; );</span>
+<span class="lineNum">     130 </span><span class="lineNoCov">          0 :                 case Colour::Grey:      return setColour( &quot;[1;30m&quot; );</span>
+<span class="lineNum">     131 </span>            : 
+<span class="lineNum">     132 </span><span class="lineNoCov">          0 :                 case Colour::LightGrey:     return setColour( &quot;[0;37m&quot; );</span>
+<span class="lineNum">     133 </span><span class="lineNoCov">          0 :                 case Colour::BrightRed:     return setColour( &quot;[1;31m&quot; );</span>
+<span class="lineNum">     134 </span><span class="lineNoCov">          0 :                 case Colour::BrightGreen:   return setColour( &quot;[1;32m&quot; );</span>
+<span class="lineNum">     135 </span><span class="lineNoCov">          0 :                 case Colour::BrightWhite:   return setColour( &quot;[1;37m&quot; );</span>
+<span class="lineNum">     136 </span>            : 
+<span class="lineNum">     137 </span><span class="lineNoCov">          0 :                 case Colour::Bright: throw std::logic_error( &quot;not a colour&quot; );</span>
+<a name="138"><span class="lineNum">     138 </span>            :             }</a>
+<span class="lineNum">     139 </span>            :         }
+<span class="lineNum">     140 </span><span class="lineNoCov">          0 :         static IColourImpl* instance() {</span>
+<span class="lineNum">     141 </span><span class="lineNoCov">          0 :             static PosixColourImpl s_instance;</span>
+<span class="lineNum">     142 </span><span class="lineNoCov">          0 :             return &amp;s_instance;</span>
+<span class="lineNum">     143 </span>            :         }
+<a name="144"><span class="lineNum">     144 </span>            : </a>
+<span class="lineNum">     145 </span>            :     private:
+<span class="lineNum">     146 </span><span class="lineNoCov">          0 :         void setColour( const char* _escapeCode ) {</span>
+<span class="lineNum">     147 </span><span class="lineNoCov">          0 :             Catch::cout() &lt;&lt; '\033' &lt;&lt; _escapeCode;</span>
+<span class="lineNum">     148 </span><span class="lineNoCov">          0 :         }</span>
+<a name="149"><span class="lineNum">     149 </span>            :     };</a>
+<span class="lineNum">     150 </span>            : 
+<span class="lineNum">     151 </span><span class="lineCov">          2 :     IColourImpl* platformColourInstance() {</span>
+<span class="lineNum">     152 </span><span class="lineCov">          4 :         ErrnoGuard guard;</span>
+<span class="lineNum">     153 </span><span class="lineCov">          4 :         Ptr&lt;IConfig const&gt; config = getCurrentContext().getConfig();</span>
+<span class="lineNum">     154 </span>            :         UseColour::YesOrNo colourMode = config
+<span class="lineNum">     155 </span><span class="lineCov">          2 :             ? config-&gt;useColour()</span>
+<span class="lineNum">     156 </span><span class="lineCov">          4 :             : UseColour::Auto;</span>
+<span class="lineNum">     157 </span><span class="lineCov">          2 :         if( colourMode == UseColour::Auto )</span>
+<span class="lineNum">     158 </span><span class="lineCov">          6 :             colourMode = (!isDebuggerActive() &amp;&amp; isatty(STDOUT_FILENO) )</span>
+<span class="lineNum">     159 </span><span class="lineCov">          2 :                 ? UseColour::Yes</span>
+<span class="lineNum">     160 </span>            :                 : UseColour::No;
+<span class="lineNum">     161 </span>            :         return colourMode == UseColour::Yes
+<span class="lineNum">     162 </span><span class="lineCov">          2 :             ? PosixColourImpl::instance()</span>
+<span class="lineNum">     163 </span><span class="lineCov">          4 :             : NoColourImpl::instance();</span>
+<span class="lineNum">     164 </span>            :     }
+<span class="lineNum">     165 </span>            : 
+<span class="lineNum">     166 </span>            : } // end anon namespace
+<span class="lineNum">     167 </span>            : } // end namespace Catch
+<span class="lineNum">     168 </span>            : 
+<span class="lineNum">     169 </span>            : #else  // not Windows or ANSI ///////////////////////////////////////////////
+<span class="lineNum">     170 </span>            : 
+<span class="lineNum">     171 </span>            : namespace Catch {
+<span class="lineNum">     172 </span>            : 
+<span class="lineNum">     173 </span>            :     static IColourImpl* platformColourInstance() { return NoColourImpl::instance(); }
+<span class="lineNum">     174 </span>            : 
+<span class="lineNum">     175 </span>            : } // end namespace Catch
+<span class="lineNum">     176 </span>            : 
+<span class="lineNum">     177 </span>            : #endif // Windows/ ANSI/ None
+<span class="lineNum">     178 </span>            : 
+<a name="179"><span class="lineNum">     179 </span>            : namespace Catch {</a>
+<a name="180"><span class="lineNum">     180 </span>            : </a>
+<a name="181"><span class="lineNum">     181 </span><span class="lineCov">       4126 :     Colour::Colour( Code _colourCode ) : m_moved( false ) { use( _colourCode ); }</span></a>
+<span class="lineNum">     182 </span><span class="lineNoCov">          0 :     Colour::Colour( Colour const&amp; _other ) : m_moved( false ) { const_cast&lt;Colour&amp;&gt;( _other ).m_moved = true; }</span>
+<a name="183"><span class="lineNum">     183 </span><span class="lineCov">       4126 :     Colour::~Colour(){ if( !m_moved ) use( None ); }</span></a>
+<span class="lineNum">     184 </span>            : 
+<span class="lineNum">     185 </span><span class="lineCov">       8252 :     void Colour::use( Code _colourCode ) {</span>
+<span class="lineNum">     186 </span><span class="lineCov">       8252 :         static IColourImpl* impl = platformColourInstance();</span>
+<span class="lineNum">     187 </span><span class="lineCov">       8252 :         impl-&gt;use( _colourCode );</span>
+<span class="lineNum">     188 </span><span class="lineCov">       8252 :     }</span>
+<span class="lineNum">     189 </span>            : 
+<span class="lineNum">     190 </span>            : } // end namespace Catch
+<span class="lineNum">     191 </span>            : 
+<span class="lineNum">     192 </span>            : #endif // TWOBLUECUBES_CATCH_CONSOLE_COLOUR_IMPL_HPP_INCLUDED
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

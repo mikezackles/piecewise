@@ -1,0 +1,1138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Code coverage - /home/travis/build/mikezackles/piecewise/subprojects/catch/include/external/clara.h</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../../../../../index.html">top level</a> - <a href="index.html">home/travis/build/mikezackles/piecewise/subprojects/catch/include/external</a> - clara.h<span style="font-size: 80%;"> (source / <a href="clara.h.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Code coverage</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">264</td>
+            <td class="headerCovTableEntry">385</td>
+            <td class="headerCovTableEntryLo">68.6 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2018-02-19 01:04:17</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">107</td>
+            <td class="headerCovTableEntry">130</td>
+            <td class="headerCovTableEntryMed">82.3 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Legend:</td>
+            <td class="headerValueLeg">            Lines:
+            <span class="coverLegendCov">hit</span>
+            <span class="coverLegendNoCov">not hit</span>
+</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<span class="lineNum">       2 </span>            :  *  Created by Phil on 25/05/2013.
+<span class="lineNum">       3 </span>            :  *  Copyright 2013 Two Blue Cubes Ltd. All rights reserved.
+<span class="lineNum">       4 </span>            :  *
+<span class="lineNum">       5 </span>            :  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
+<span class="lineNum">       6 </span>            :  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+<span class="lineNum">       7 </span>            :  */
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : // Version 0.0.2.4
+<span class="lineNum">      10 </span>            : 
+<span class="lineNum">      11 </span>            : // Only use header guard if we are not using an outer namespace
+<span class="lineNum">      12 </span>            : #if !defined(TWOBLUECUBES_CLARA_H_INCLUDED) || defined(STITCH_CLARA_OPEN_NAMESPACE)
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            : #ifndef STITCH_CLARA_OPEN_NAMESPACE
+<span class="lineNum">      15 </span>            : #define TWOBLUECUBES_CLARA_H_INCLUDED
+<span class="lineNum">      16 </span>            : #define STITCH_CLARA_OPEN_NAMESPACE
+<span class="lineNum">      17 </span>            : #define STITCH_CLARA_CLOSE_NAMESPACE
+<span class="lineNum">      18 </span>            : #else
+<span class="lineNum">      19 </span>            : #define STITCH_CLARA_CLOSE_NAMESPACE }
+<span class="lineNum">      20 </span>            : #endif
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            : #define STITCH_TBC_TEXT_FORMAT_OPEN_NAMESPACE STITCH_CLARA_OPEN_NAMESPACE
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            : // ----------- #included from tbc_text_format.h -----------
+<span class="lineNum">      26 </span>            : 
+<span class="lineNum">      27 </span>            : /*
+<span class="lineNum">      28 </span>            :  *  Created by Phil on 18/4/2013.
+<span class="lineNum">      29 </span>            :  *  Copyright 2013 Two Blue Cubes Ltd. All rights reserved.
+<span class="lineNum">      30 </span>            :  *
+<span class="lineNum">      31 </span>            :  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
+<span class="lineNum">      32 </span>            :  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+<span class="lineNum">      33 </span>            :  */
+<span class="lineNum">      34 </span>            : // Only use header guard if we are not using an outer namespace
+<span class="lineNum">      35 </span>            : #if !defined(TBC_TEXT_FORMAT_H_INCLUDED) || defined(STITCH_TBC_TEXT_FORMAT_OUTER_NAMESPACE)
+<span class="lineNum">      36 </span>            : #ifndef STITCH_TBC_TEXT_FORMAT_OUTER_NAMESPACE
+<span class="lineNum">      37 </span>            : #define TBC_TEXT_FORMAT_H_INCLUDED
+<span class="lineNum">      38 </span>            : #endif
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span>            : #include &lt;string&gt;
+<span class="lineNum">      41 </span>            : #include &lt;vector&gt;
+<span class="lineNum">      42 </span>            : #include &lt;sstream&gt;
+<span class="lineNum">      43 </span>            : #include &lt;algorithm&gt;
+<span class="lineNum">      44 </span>            : #include &lt;cctype&gt;
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span>            : // Use optional outer namespace
+<span class="lineNum">      47 </span>            : #ifdef STITCH_TBC_TEXT_FORMAT_OUTER_NAMESPACE
+<span class="lineNum">      48 </span>            : namespace STITCH_TBC_TEXT_FORMAT_OUTER_NAMESPACE {
+<span class="lineNum">      49 </span>            : #endif
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span>            : namespace Tbc {
+<span class="lineNum">      52 </span>            : 
+<span class="lineNum">      53 </span>            : #ifdef TBC_TEXT_FORMAT_CONSOLE_WIDTH
+<span class="lineNum">      54 </span>            :     const unsigned int consoleWidth = TBC_TEXT_FORMAT_CONSOLE_WIDTH;
+<span class="lineNum">      55 </span>            : #else
+<span class="lineNum">      56 </span>            :     const unsigned int consoleWidth = 80;
+<span class="lineNum">      57 </span>            : #endif
+<a name="58"><span class="lineNum">      58 </span>            : </a>
+<span class="lineNum">      59 </span>            :     struct TextAttributes {
+<span class="lineNum">      60 </span><span class="lineNoCov">          0 :         TextAttributes()</span>
+<span class="lineNum">      61 </span><span class="lineNoCov">          0 :         :   initialIndent( std::string::npos ),</span>
+<span class="lineNum">      62 </span>            :             indent( 0 ),
+<span class="lineNum">      63 </span>            :             width( consoleWidth-1 ),
+<span class="lineNum">      64 </span><span class="lineNoCov">          0 :             tabChar( '\t' )</span>
+<span class="lineNum">      65 </span><span class="lineNoCov">          0 :         {}</span>
+<a name="66"><span class="lineNum">      66 </span>            : </a>
+<a name="67"><span class="lineNum">      67 </span>            :         TextAttributes&amp; setInitialIndent( std::size_t _value )  { initialIndent = _value; return *this; }</a>
+<span class="lineNum">      68 </span><span class="lineNoCov">          0 :         TextAttributes&amp; setIndent( std::size_t _value )         { indent = _value; return *this; }</span>
+<span class="lineNum">      69 </span><span class="lineNoCov">          0 :         TextAttributes&amp; setWidth( std::size_t _value )          { width = _value; return *this; }</span>
+<span class="lineNum">      70 </span>            :         TextAttributes&amp; setTabChar( char _value )               { tabChar = _value; return *this; }
+<span class="lineNum">      71 </span>            : 
+<span class="lineNum">      72 </span>            :         std::size_t initialIndent;  // indent of first line, or npos
+<span class="lineNum">      73 </span>            :         std::size_t indent;         // indent of subsequent lines, or all if initialIndent is npos
+<span class="lineNum">      74 </span>            :         std::size_t width;          // maximum width of text, including indent. Longer text will wrap
+<span class="lineNum">      75 </span>            :         char tabChar;               // If this char is seen the indent is changed to current pos
+<a name="76"><span class="lineNum">      76 </span>            :     };</a>
+<span class="lineNum">      77 </span>            : 
+<a name="78"><span class="lineNum">      78 </span><span class="lineNoCov">          0 :     class Text {</span></a>
+<span class="lineNum">      79 </span>            :     public:
+<span class="lineNum">      80 </span><span class="lineNoCov">          0 :         Text( std::string const&amp; _str, TextAttributes const&amp; _attr = TextAttributes() )</span>
+<span class="lineNum">      81 </span><span class="lineNoCov">          0 :         : attr( _attr )</span>
+<span class="lineNum">      82 </span>            :         {
+<span class="lineNum">      83 </span><span class="lineNoCov">          0 :             std::string wrappableChars = &quot; [({.,/|\\-&quot;;</span>
+<span class="lineNum">      84 </span><span class="lineNoCov">          0 :             std::size_t indent = _attr.initialIndent != std::string::npos</span>
+<span class="lineNum">      85 </span><span class="lineNoCov">          0 :                 ? _attr.initialIndent</span>
+<span class="lineNum">      86 </span>            :                 : _attr.indent;
+<span class="lineNum">      87 </span><span class="lineNoCov">          0 :             std::string remainder = _str;</span>
+<span class="lineNum">      88 </span>            : 
+<span class="lineNum">      89 </span><span class="lineNoCov">          0 :             while( !remainder.empty() ) {</span>
+<span class="lineNum">      90 </span><span class="lineNoCov">          0 :                 if( lines.size() &gt;= 1000 ) {</span>
+<span class="lineNum">      91 </span><span class="lineNoCov">          0 :                     lines.push_back( &quot;... message truncated due to excessive size&quot; );</span>
+<span class="lineNum">      92 </span><span class="lineNoCov">          0 :                     return;</span>
+<span class="lineNum">      93 </span>            :                 }
+<span class="lineNum">      94 </span><span class="lineNoCov">          0 :                 std::size_t tabPos = std::string::npos;</span>
+<span class="lineNum">      95 </span><span class="lineNoCov">          0 :                 std::size_t width = (std::min)( remainder.size(), _attr.width - indent );</span>
+<span class="lineNum">      96 </span><span class="lineNoCov">          0 :                 std::size_t pos = remainder.find_first_of( '\n' );</span>
+<span class="lineNum">      97 </span><span class="lineNoCov">          0 :                 if( pos &lt;= width ) {</span>
+<span class="lineNum">      98 </span><span class="lineNoCov">          0 :                     width = pos;</span>
+<span class="lineNum">      99 </span>            :                 }
+<span class="lineNum">     100 </span><span class="lineNoCov">          0 :                 pos = remainder.find_last_of( _attr.tabChar, width );</span>
+<span class="lineNum">     101 </span><span class="lineNoCov">          0 :                 if( pos != std::string::npos ) {</span>
+<span class="lineNum">     102 </span><span class="lineNoCov">          0 :                     tabPos = pos;</span>
+<span class="lineNum">     103 </span><span class="lineNoCov">          0 :                     if( remainder[width] == '\n' )</span>
+<span class="lineNum">     104 </span><span class="lineNoCov">          0 :                         width--;</span>
+<span class="lineNum">     105 </span><span class="lineNoCov">          0 :                     remainder = remainder.substr( 0, tabPos ) + remainder.substr( tabPos+1 );</span>
+<span class="lineNum">     106 </span>            :                 }
+<span class="lineNum">     107 </span>            : 
+<span class="lineNum">     108 </span><span class="lineNoCov">          0 :                 if( width == remainder.size() ) {</span>
+<span class="lineNum">     109 </span><span class="lineNoCov">          0 :                     spliceLine( indent, remainder, width );</span>
+<span class="lineNum">     110 </span>            :                 }
+<span class="lineNum">     111 </span><span class="lineNoCov">          0 :                 else if( remainder[width] == '\n' ) {</span>
+<span class="lineNum">     112 </span><span class="lineNoCov">          0 :                     spliceLine( indent, remainder, width );</span>
+<span class="lineNum">     113 </span><span class="lineNoCov">          0 :                     if( width &lt;= 1 || remainder.size() != 1 )</span>
+<span class="lineNum">     114 </span><span class="lineNoCov">          0 :                         remainder = remainder.substr( 1 );</span>
+<span class="lineNum">     115 </span><span class="lineNoCov">          0 :                     indent = _attr.indent;</span>
+<span class="lineNum">     116 </span>            :                 }
+<span class="lineNum">     117 </span>            :                 else {
+<span class="lineNum">     118 </span><span class="lineNoCov">          0 :                     pos = remainder.find_last_of( wrappableChars, width );</span>
+<span class="lineNum">     119 </span><span class="lineNoCov">          0 :                     if( pos != std::string::npos &amp;&amp; pos &gt; 0 ) {</span>
+<span class="lineNum">     120 </span><span class="lineNoCov">          0 :                         spliceLine( indent, remainder, pos );</span>
+<span class="lineNum">     121 </span><span class="lineNoCov">          0 :                         if( remainder[0] == ' ' )</span>
+<span class="lineNum">     122 </span><span class="lineNoCov">          0 :                             remainder = remainder.substr( 1 );</span>
+<span class="lineNum">     123 </span>            :                     }
+<span class="lineNum">     124 </span>            :                     else {
+<span class="lineNum">     125 </span><span class="lineNoCov">          0 :                         spliceLine( indent, remainder, width-1 );</span>
+<span class="lineNum">     126 </span><span class="lineNoCov">          0 :                         lines.back() += &quot;-&quot;;</span>
+<span class="lineNum">     127 </span>            :                     }
+<span class="lineNum">     128 </span><span class="lineNoCov">          0 :                     if( lines.size() == 1 )</span>
+<span class="lineNum">     129 </span><span class="lineNoCov">          0 :                         indent = _attr.indent;</span>
+<span class="lineNum">     130 </span><span class="lineNoCov">          0 :                     if( tabPos != std::string::npos )</span>
+<span class="lineNum">     131 </span><span class="lineNoCov">          0 :                         indent += tabPos;</span>
+<span class="lineNum">     132 </span>            :                 }
+<span class="lineNum">     133 </span>            :             }
+<a name="134"><span class="lineNum">     134 </span>            :         }</a>
+<span class="lineNum">     135 </span>            : 
+<span class="lineNum">     136 </span><span class="lineNoCov">          0 :         void spliceLine( std::size_t _indent, std::string&amp; _remainder, std::size_t _pos ) {</span>
+<span class="lineNum">     137 </span><span class="lineNoCov">          0 :             lines.push_back( std::string( _indent, ' ' ) + _remainder.substr( 0, _pos ) );</span>
+<span class="lineNum">     138 </span><span class="lineNoCov">          0 :             _remainder = _remainder.substr( _pos );</span>
+<span class="lineNum">     139 </span><span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">     140 </span>            : 
+<span class="lineNum">     141 </span>            :         typedef std::vector&lt;std::string&gt;::const_iterator const_iterator;
+<span class="lineNum">     142 </span>            : 
+<span class="lineNum">     143 </span>            :         const_iterator begin() const { return lines.begin(); }
+<a name="144"><span class="lineNum">     144 </span>            :         const_iterator end() const { return lines.end(); }</a>
+<a name="145"><span class="lineNum">     145 </span>            :         std::string const&amp; last() const { return lines.back(); }</a>
+<span class="lineNum">     146 </span><span class="lineNoCov">          0 :         std::size_t size() const { return lines.size(); }</span>
+<span class="lineNum">     147 </span><span class="lineNoCov">          0 :         std::string const&amp; operator[]( std::size_t _index ) const { return lines[_index]; }</span>
+<span class="lineNum">     148 </span>            :         std::string toString() const {
+<span class="lineNum">     149 </span>            :             std::ostringstream oss;
+<span class="lineNum">     150 </span>            :             oss &lt;&lt; *this;
+<span class="lineNum">     151 </span>            :             return oss.str();
+<span class="lineNum">     152 </span>            :         }
+<span class="lineNum">     153 </span>            : 
+<span class="lineNum">     154 </span>            :         friend std::ostream&amp; operator &lt;&lt; ( std::ostream&amp; _stream, Text const&amp; _text ) {
+<span class="lineNum">     155 </span>            :             for( Text::const_iterator it = _text.begin(), itEnd = _text.end();
+<span class="lineNum">     156 </span>            :                 it != itEnd; ++it ) {
+<span class="lineNum">     157 </span>            :                 if( it != _text.begin() )
+<span class="lineNum">     158 </span>            :                     _stream &lt;&lt; &quot;\n&quot;;
+<span class="lineNum">     159 </span>            :                 _stream &lt;&lt; *it;
+<span class="lineNum">     160 </span>            :             }
+<span class="lineNum">     161 </span>            :             return _stream;
+<span class="lineNum">     162 </span>            :         }
+<span class="lineNum">     163 </span>            : 
+<span class="lineNum">     164 </span>            :     private:
+<span class="lineNum">     165 </span>            :         std::string str;
+<span class="lineNum">     166 </span>            :         TextAttributes attr;
+<span class="lineNum">     167 </span>            :         std::vector&lt;std::string&gt; lines;
+<span class="lineNum">     168 </span>            :     };
+<span class="lineNum">     169 </span>            : 
+<span class="lineNum">     170 </span>            : } // end namespace Tbc
+<span class="lineNum">     171 </span>            : 
+<span class="lineNum">     172 </span>            : #ifdef STITCH_TBC_TEXT_FORMAT_OUTER_NAMESPACE
+<span class="lineNum">     173 </span>            : } // end outer namespace
+<span class="lineNum">     174 </span>            : #endif
+<span class="lineNum">     175 </span>            : 
+<span class="lineNum">     176 </span>            : #endif // TBC_TEXT_FORMAT_H_INCLUDED
+<span class="lineNum">     177 </span>            : 
+<span class="lineNum">     178 </span>            : // ----------- end of #include from tbc_text_format.h -----------
+<span class="lineNum">     179 </span>            : // ........... back in clara.h
+<span class="lineNum">     180 </span>            : 
+<span class="lineNum">     181 </span>            : #undef STITCH_TBC_TEXT_FORMAT_OPEN_NAMESPACE
+<span class="lineNum">     182 </span>            : 
+<span class="lineNum">     183 </span>            : 
+<span class="lineNum">     184 </span>            : // ----------- #included from clara_compilers.h -----------
+<span class="lineNum">     185 </span>            : 
+<span class="lineNum">     186 </span>            : /*
+<span class="lineNum">     187 </span>            :  *  Created by Phil on 10/02/2016.
+<span class="lineNum">     188 </span>            :  *  Copyright 2016 Two Blue Cubes Ltd. All rights reserved.
+<span class="lineNum">     189 </span>            :  *
+<span class="lineNum">     190 </span>            :  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
+<span class="lineNum">     191 </span>            :  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+<span class="lineNum">     192 </span>            :  */
+<span class="lineNum">     193 </span>            : #ifndef TWOBLUECUBES_CLARA_COMPILERS_H_INCLUDED
+<span class="lineNum">     194 </span>            : #define TWOBLUECUBES_CLARA_COMPILERS_H_INCLUDED
+<span class="lineNum">     195 </span>            : 
+<span class="lineNum">     196 </span>            : // Detect a number of compiler features - mostly C++11/14 conformance - by compiler
+<span class="lineNum">     197 </span>            : // The following features are defined:
+<span class="lineNum">     198 </span>            : //
+<span class="lineNum">     199 </span>            : // CLARA_CONFIG_CPP11_NULLPTR : is nullptr supported?
+<span class="lineNum">     200 </span>            : // CLARA_CONFIG_CPP11_NOEXCEPT : is noexcept supported?
+<span class="lineNum">     201 </span>            : // CLARA_CONFIG_CPP11_GENERATED_METHODS : The delete and default keywords for compiler generated methods
+<span class="lineNum">     202 </span>            : // CLARA_CONFIG_CPP11_OVERRIDE : is override supported?
+<span class="lineNum">     203 </span>            : // CLARA_CONFIG_CPP11_UNIQUE_PTR : is unique_ptr supported (otherwise use auto_ptr)
+<span class="lineNum">     204 </span>            : 
+<span class="lineNum">     205 </span>            : // CLARA_CONFIG_CPP11_OR_GREATER : Is C++11 supported?
+<span class="lineNum">     206 </span>            : 
+<span class="lineNum">     207 </span>            : // CLARA_CONFIG_VARIADIC_MACROS : are variadic macros supported?
+<span class="lineNum">     208 </span>            : 
+<span class="lineNum">     209 </span>            : // In general each macro has a _NO_&lt;feature name&gt; form
+<span class="lineNum">     210 </span>            : // (e.g. CLARA_CONFIG_CPP11_NO_NULLPTR) which disables the feature.
+<span class="lineNum">     211 </span>            : // Many features, at point of detection, define an _INTERNAL_ macro, so they
+<span class="lineNum">     212 </span>            : // can be combined, en-mass, with the _NO_ forms later.
+<span class="lineNum">     213 </span>            : 
+<span class="lineNum">     214 </span>            : // All the C++11 features can be disabled with CLARA_CONFIG_NO_CPP11
+<span class="lineNum">     215 </span>            : 
+<span class="lineNum">     216 </span>            : #ifdef __clang__
+<span class="lineNum">     217 </span>            : 
+<span class="lineNum">     218 </span>            : #if __has_feature(cxx_nullptr)
+<span class="lineNum">     219 </span>            : #define CLARA_INTERNAL_CONFIG_CPP11_NULLPTR
+<span class="lineNum">     220 </span>            : #endif
+<span class="lineNum">     221 </span>            : 
+<span class="lineNum">     222 </span>            : #if __has_feature(cxx_noexcept)
+<span class="lineNum">     223 </span>            : #define CLARA_INTERNAL_CONFIG_CPP11_NOEXCEPT
+<span class="lineNum">     224 </span>            : #endif
+<span class="lineNum">     225 </span>            : 
+<span class="lineNum">     226 </span>            : #endif // __clang__
+<span class="lineNum">     227 </span>            : 
+<span class="lineNum">     228 </span>            : ////////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     229 </span>            : // GCC
+<span class="lineNum">     230 </span>            : #ifdef __GNUC__
+<span class="lineNum">     231 </span>            : 
+<span class="lineNum">     232 </span>            : #if __GNUC__ == 4 &amp;&amp; __GNUC_MINOR__ &gt;= 6 &amp;&amp; defined(__GXX_EXPERIMENTAL_CXX0X__)
+<span class="lineNum">     233 </span>            : #define CLARA_INTERNAL_CONFIG_CPP11_NULLPTR
+<span class="lineNum">     234 </span>            : #endif
+<span class="lineNum">     235 </span>            : 
+<span class="lineNum">     236 </span>            : // - otherwise more recent versions define __cplusplus &gt;= 201103L
+<span class="lineNum">     237 </span>            : // and will get picked up below
+<span class="lineNum">     238 </span>            : 
+<span class="lineNum">     239 </span>            : #endif // __GNUC__
+<span class="lineNum">     240 </span>            : 
+<span class="lineNum">     241 </span>            : ////////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     242 </span>            : // Visual C++
+<span class="lineNum">     243 </span>            : #ifdef _MSC_VER
+<span class="lineNum">     244 </span>            : 
+<span class="lineNum">     245 </span>            : #if (_MSC_VER &gt;= 1600)
+<span class="lineNum">     246 </span>            : #define CLARA_INTERNAL_CONFIG_CPP11_NULLPTR
+<span class="lineNum">     247 </span>            : #define CLARA_INTERNAL_CONFIG_CPP11_UNIQUE_PTR
+<span class="lineNum">     248 </span>            : #endif
+<span class="lineNum">     249 </span>            : 
+<span class="lineNum">     250 </span>            : #if (_MSC_VER &gt;= 1900 ) // (VC++ 13 (VS2015))
+<span class="lineNum">     251 </span>            : #define CLARA_INTERNAL_CONFIG_CPP11_NOEXCEPT
+<span class="lineNum">     252 </span>            : #define CLARA_INTERNAL_CONFIG_CPP11_GENERATED_METHODS
+<span class="lineNum">     253 </span>            : #endif
+<span class="lineNum">     254 </span>            : 
+<span class="lineNum">     255 </span>            : #endif // _MSC_VER
+<span class="lineNum">     256 </span>            : 
+<span class="lineNum">     257 </span>            : 
+<span class="lineNum">     258 </span>            : ////////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     259 </span>            : // C++ language feature support
+<span class="lineNum">     260 </span>            : 
+<span class="lineNum">     261 </span>            : // catch all support for C++11
+<span class="lineNum">     262 </span>            : #if defined(__cplusplus) &amp;&amp; __cplusplus &gt;= 201103L
+<span class="lineNum">     263 </span>            : 
+<span class="lineNum">     264 </span>            : #define CLARA_CPP11_OR_GREATER
+<span class="lineNum">     265 </span>            : 
+<span class="lineNum">     266 </span>            : #if !defined(CLARA_INTERNAL_CONFIG_CPP11_NULLPTR)
+<span class="lineNum">     267 </span>            : #define CLARA_INTERNAL_CONFIG_CPP11_NULLPTR
+<span class="lineNum">     268 </span>            : #endif
+<span class="lineNum">     269 </span>            : 
+<span class="lineNum">     270 </span>            : #ifndef CLARA_INTERNAL_CONFIG_CPP11_NOEXCEPT
+<span class="lineNum">     271 </span>            : #define CLARA_INTERNAL_CONFIG_CPP11_NOEXCEPT
+<span class="lineNum">     272 </span>            : #endif
+<span class="lineNum">     273 </span>            : 
+<span class="lineNum">     274 </span>            : #ifndef CLARA_INTERNAL_CONFIG_CPP11_GENERATED_METHODS
+<span class="lineNum">     275 </span>            : #define CLARA_INTERNAL_CONFIG_CPP11_GENERATED_METHODS
+<span class="lineNum">     276 </span>            : #endif
+<span class="lineNum">     277 </span>            : 
+<span class="lineNum">     278 </span>            : #if !defined(CLARA_INTERNAL_CONFIG_CPP11_OVERRIDE)
+<span class="lineNum">     279 </span>            : #define CLARA_INTERNAL_CONFIG_CPP11_OVERRIDE
+<span class="lineNum">     280 </span>            : #endif
+<span class="lineNum">     281 </span>            : #if !defined(CLARA_INTERNAL_CONFIG_CPP11_UNIQUE_PTR)
+<span class="lineNum">     282 </span>            : #define CLARA_INTERNAL_CONFIG_CPP11_UNIQUE_PTR
+<span class="lineNum">     283 </span>            : #endif
+<span class="lineNum">     284 </span>            : 
+<span class="lineNum">     285 </span>            : 
+<span class="lineNum">     286 </span>            : #endif // __cplusplus &gt;= 201103L
+<span class="lineNum">     287 </span>            : 
+<span class="lineNum">     288 </span>            : // Now set the actual defines based on the above + anything the user has configured
+<span class="lineNum">     289 </span>            : #if defined(CLARA_INTERNAL_CONFIG_CPP11_NULLPTR) &amp;&amp; !defined(CLARA_CONFIG_CPP11_NO_NULLPTR) &amp;&amp; !defined(CLARA_CONFIG_CPP11_NULLPTR) &amp;&amp; !defined(CLARA_CONFIG_NO_CPP11)
+<span class="lineNum">     290 </span>            : #define CLARA_CONFIG_CPP11_NULLPTR
+<span class="lineNum">     291 </span>            : #endif
+<span class="lineNum">     292 </span>            : #if defined(CLARA_INTERNAL_CONFIG_CPP11_NOEXCEPT) &amp;&amp; !defined(CLARA_CONFIG_CPP11_NO_NOEXCEPT) &amp;&amp; !defined(CLARA_CONFIG_CPP11_NOEXCEPT) &amp;&amp; !defined(CLARA_CONFIG_NO_CPP11)
+<span class="lineNum">     293 </span>            : #define CLARA_CONFIG_CPP11_NOEXCEPT
+<span class="lineNum">     294 </span>            : #endif
+<span class="lineNum">     295 </span>            : #if defined(CLARA_INTERNAL_CONFIG_CPP11_GENERATED_METHODS) &amp;&amp; !defined(CLARA_CONFIG_CPP11_NO_GENERATED_METHODS) &amp;&amp; !defined(CLARA_CONFIG_CPP11_GENERATED_METHODS) &amp;&amp; !defined(CLARA_CONFIG_NO_CPP11)
+<span class="lineNum">     296 </span>            : #define CLARA_CONFIG_CPP11_GENERATED_METHODS
+<span class="lineNum">     297 </span>            : #endif
+<span class="lineNum">     298 </span>            : #if defined(CLARA_INTERNAL_CONFIG_CPP11_OVERRIDE) &amp;&amp; !defined(CLARA_CONFIG_NO_OVERRIDE) &amp;&amp; !defined(CLARA_CONFIG_CPP11_OVERRIDE) &amp;&amp; !defined(CLARA_CONFIG_NO_CPP11)
+<span class="lineNum">     299 </span>            : #define CLARA_CONFIG_CPP11_OVERRIDE
+<span class="lineNum">     300 </span>            : #endif
+<span class="lineNum">     301 </span>            : #if defined(CLARA_INTERNAL_CONFIG_CPP11_UNIQUE_PTR) &amp;&amp; !defined(CLARA_CONFIG_NO_UNIQUE_PTR) &amp;&amp; !defined(CLARA_CONFIG_CPP11_UNIQUE_PTR) &amp;&amp; !defined(CLARA_CONFIG_NO_CPP11)
+<span class="lineNum">     302 </span>            : #define CLARA_CONFIG_CPP11_UNIQUE_PTR
+<span class="lineNum">     303 </span>            : #endif
+<span class="lineNum">     304 </span>            : 
+<span class="lineNum">     305 </span>            : 
+<span class="lineNum">     306 </span>            : // noexcept support:
+<span class="lineNum">     307 </span>            : #if defined(CLARA_CONFIG_CPP11_NOEXCEPT) &amp;&amp; !defined(CLARA_NOEXCEPT)
+<span class="lineNum">     308 </span>            : #define CLARA_NOEXCEPT noexcept
+<span class="lineNum">     309 </span>            : #  define CLARA_NOEXCEPT_IS(x) noexcept(x)
+<span class="lineNum">     310 </span>            : #else
+<span class="lineNum">     311 </span>            : #define CLARA_NOEXCEPT throw()
+<span class="lineNum">     312 </span>            : #  define CLARA_NOEXCEPT_IS(x)
+<span class="lineNum">     313 </span>            : #endif
+<span class="lineNum">     314 </span>            : 
+<span class="lineNum">     315 </span>            : // nullptr support
+<span class="lineNum">     316 </span>            : #ifdef CLARA_CONFIG_CPP11_NULLPTR
+<span class="lineNum">     317 </span>            : #define CLARA_NULL nullptr
+<span class="lineNum">     318 </span>            : #else
+<span class="lineNum">     319 </span>            : #define CLARA_NULL NULL
+<span class="lineNum">     320 </span>            : #endif
+<span class="lineNum">     321 </span>            : 
+<span class="lineNum">     322 </span>            : // override support
+<span class="lineNum">     323 </span>            : #ifdef CLARA_CONFIG_CPP11_OVERRIDE
+<span class="lineNum">     324 </span>            : #define CLARA_OVERRIDE override
+<span class="lineNum">     325 </span>            : #else
+<span class="lineNum">     326 </span>            : #define CLARA_OVERRIDE
+<span class="lineNum">     327 </span>            : #endif
+<span class="lineNum">     328 </span>            : 
+<span class="lineNum">     329 </span>            : // unique_ptr support
+<span class="lineNum">     330 </span>            : #ifdef CLARA_CONFIG_CPP11_UNIQUE_PTR
+<span class="lineNum">     331 </span>            : #   define CLARA_AUTO_PTR( T ) std::unique_ptr&lt;T&gt;
+<span class="lineNum">     332 </span>            : #else
+<span class="lineNum">     333 </span>            : #   define CLARA_AUTO_PTR( T ) std::auto_ptr&lt;T&gt;
+<span class="lineNum">     334 </span>            : #endif
+<span class="lineNum">     335 </span>            : 
+<span class="lineNum">     336 </span>            : #endif // TWOBLUECUBES_CLARA_COMPILERS_H_INCLUDED
+<span class="lineNum">     337 </span>            : 
+<span class="lineNum">     338 </span>            : 
+<span class="lineNum">     339 </span>            : // ----------- end of #include from clara_compilers.h -----------
+<span class="lineNum">     340 </span>            : // ........... back in clara.h
+<span class="lineNum">     341 </span>            : 
+<span class="lineNum">     342 </span>            : 
+<span class="lineNum">     343 </span>            : #include &lt;map&gt;
+<span class="lineNum">     344 </span>            : #include &lt;stdexcept&gt;
+<span class="lineNum">     345 </span>            : #include &lt;memory&gt;
+<span class="lineNum">     346 </span>            : 
+<span class="lineNum">     347 </span>            : #if defined(WIN32) || defined(__WIN32__) || defined(_WIN32) || defined(_MSC_VER)
+<span class="lineNum">     348 </span>            : #define CLARA_PLATFORM_WINDOWS
+<span class="lineNum">     349 </span>            : #endif
+<span class="lineNum">     350 </span>            : 
+<span class="lineNum">     351 </span>            : 
+<span class="lineNum">     352 </span>            : // Use optional outer namespace
+<span class="lineNum">     353 </span>            : #ifdef STITCH_CLARA_OPEN_NAMESPACE
+<span class="lineNum">     354 </span>            : STITCH_CLARA_OPEN_NAMESPACE
+<span class="lineNum">     355 </span>            : #endif
+<span class="lineNum">     356 </span>            : 
+<span class="lineNum">     357 </span>            : namespace Clara {
+<span class="lineNum">     358 </span>            : 
+<span class="lineNum">     359 </span>            :     struct UnpositionalTag {};
+<span class="lineNum">     360 </span>            : 
+<span class="lineNum">     361 </span>            :     extern UnpositionalTag _;
+<span class="lineNum">     362 </span>            : 
+<span class="lineNum">     363 </span>            : #ifdef CLARA_CONFIG_MAIN
+<span class="lineNum">     364 </span>            :     UnpositionalTag _;
+<span class="lineNum">     365 </span>            : #endif
+<span class="lineNum">     366 </span>            : 
+<span class="lineNum">     367 </span>            :     namespace Detail {
+<span class="lineNum">     368 </span>            : 
+<span class="lineNum">     369 </span>            : #ifdef CLARA_CONSOLE_WIDTH
+<span class="lineNum">     370 </span>            :     const unsigned int consoleWidth = CLARA_CONFIG_CONSOLE_WIDTH;
+<span class="lineNum">     371 </span>            : #else
+<span class="lineNum">     372 </span>            :     const unsigned int consoleWidth = 80;
+<span class="lineNum">     373 </span>            : #endif
+<span class="lineNum">     374 </span>            : 
+<a name="375"><span class="lineNum">     375 </span>            :         using namespace Tbc;</a>
+<span class="lineNum">     376 </span>            : 
+<span class="lineNum">     377 </span><span class="lineCov">       1701 :         inline bool startsWith( std::string const&amp; str, std::string const&amp; prefix ) {</span>
+<span class="lineNum">     378 </span><span class="lineCov">       1701 :             return str.size() &gt;= prefix.size() &amp;&amp; str.substr( 0, prefix.size() ) == prefix;</span>
+<span class="lineNum">     379 </span>            :         }
+<span class="lineNum">     380 </span>            : 
+<span class="lineNum">     381 </span>            :         template&lt;typename T&gt; struct RemoveConstRef{ typedef T type; };
+<span class="lineNum">     382 </span>            :         template&lt;typename T&gt; struct RemoveConstRef&lt;T&amp;&gt;{ typedef T type; };
+<span class="lineNum">     383 </span>            :         template&lt;typename T&gt; struct RemoveConstRef&lt;T const&amp;&gt;{ typedef T type; };
+<span class="lineNum">     384 </span>            :         template&lt;typename T&gt; struct RemoveConstRef&lt;T const&gt;{ typedef T type; };
+<span class="lineNum">     385 </span>            : 
+<span class="lineNum">     386 </span>            :         template&lt;typename T&gt;    struct IsBool       { static const bool value = false; };
+<span class="lineNum">     387 </span>            :         template&lt;&gt;              struct IsBool&lt;bool&gt; { static const bool value = true; };
+<a name="388"><span class="lineNum">     388 </span>            : </a>
+<span class="lineNum">     389 </span>            :         template&lt;typename T&gt;
+<span class="lineNum">     390 </span><span class="lineCov">          3 :         void convertInto( std::string const&amp; _source, T&amp; _dest ) {</span>
+<span class="lineNum">     391 </span><span class="lineCov">          6 :             std::stringstream ss;</span>
+<span class="lineNum">     392 </span><span class="lineCov">          3 :             ss &lt;&lt; _source;</span>
+<span class="lineNum">     393 </span><span class="lineCov">          3 :             ss &gt;&gt; _dest;</span>
+<span class="lineNum">     394 </span><span class="lineCov">          3 :             if( ss.fail() )</span>
+<a name="395"><span class="lineNum">     395 </span><span class="lineCov">          1 :                 throw std::runtime_error( &quot;Unable to convert &quot; + _source + &quot; to destination type&quot; );</span></a>
+<span class="lineNum">     396 </span><span class="lineCov">          2 :         }</span>
+<span class="lineNum">     397 </span><span class="lineCov">         41 :         inline void convertInto( std::string const&amp; _source, std::string&amp; _dest ) {</span>
+<a name="398"><span class="lineNum">     398 </span><span class="lineCov">         41 :             _dest = _source;</span></a>
+<span class="lineNum">     399 </span><span class="lineCov">         41 :         }</span>
+<span class="lineNum">     400 </span><span class="lineCov">         36 :         char toLowerCh(char c) {</span>
+<a name="401"><span class="lineNum">     401 </span><span class="lineCov">         36 :             return static_cast&lt;char&gt;( std::tolower( c ) );</span></a>
+<span class="lineNum">     402 </span>            :         }
+<span class="lineNum">     403 </span><span class="lineCov">          9 :         inline void convertInto( std::string const&amp; _source, bool&amp; _dest ) {</span>
+<span class="lineNum">     404 </span><span class="lineCov">         18 :             std::string sourceLC = _source;</span>
+<span class="lineNum">     405 </span><span class="lineCov">          9 :             std::transform( sourceLC.begin(), sourceLC.end(), sourceLC.begin(), toLowerCh );</span>
+<span class="lineNum">     406 </span><span class="lineCov">          9 :             if( sourceLC == &quot;y&quot; || sourceLC == &quot;1&quot; || sourceLC == &quot;true&quot; || sourceLC == &quot;yes&quot; || sourceLC == &quot;on&quot; )</span>
+<span class="lineNum">     407 </span><span class="lineCov">          9 :                 _dest = true;</span>
+<span class="lineNum">     408 </span><span class="lineNoCov">          0 :             else if( sourceLC == &quot;n&quot; || sourceLC == &quot;0&quot; || sourceLC == &quot;false&quot; || sourceLC == &quot;no&quot; || sourceLC == &quot;off&quot; )</span>
+<span class="lineNum">     409 </span><span class="lineNoCov">          0 :                 _dest = false;</span>
+<span class="lineNum">     410 </span>            :             else
+<span class="lineNum">     411 </span><span class="lineNoCov">          0 :                 throw std::runtime_error( &quot;Expected a boolean value but did not recognise:\n  '&quot; + _source + &quot;'&quot; );</span>
+<span class="lineNum">     412 </span><span class="lineCov">          9 :         }</span>
+<span class="lineNum">     413 </span>            : 
+<span class="lineNum">     414 </span>            : 
+<a name="415"><span class="lineNum">     415 </span>            :         template&lt;typename ConfigT&gt;</a>
+<span class="lineNum">     416 </span>            :         struct IArgFunction {
+<a name="417"><span class="lineNum">     417 </span><span class="lineCov">       2430 :             virtual ~IArgFunction() {}</span></a>
+<a name="418"><span class="lineNum">     418 </span>            : #ifdef CLARA_CONFIG_CPP11_GENERATED_METHODS</a>
+<span class="lineNum">     419 </span><span class="lineCov">        810 :             IArgFunction()                      = default;</span>
+<span class="lineNum">     420 </span><span class="lineCov">       1620 :             IArgFunction( IArgFunction const&amp; ) = default;</span>
+<span class="lineNum">     421 </span>            : #endif
+<span class="lineNum">     422 </span>            :             virtual void set( ConfigT&amp; config, std::string const&amp; value ) const = 0;
+<span class="lineNum">     423 </span>            :             virtual bool takesArg() const = 0;
+<span class="lineNum">     424 </span>            :             virtual IArgFunction* clone() const = 0;
+<span class="lineNum">     425 </span>            :         };
+<span class="lineNum">     426 </span>            : 
+<span class="lineNum">     427 </span>            :         template&lt;typename ConfigT&gt;
+<a name="428"><span class="lineNum">     428 </span>            :         class BoundArgFunction {</a>
+<a name="429"><span class="lineNum">     429 </span>            :         public:</a>
+<a name="430"><span class="lineNum">     430 </span><span class="lineCov">        756 :             BoundArgFunction() : functionObj( CLARA_NULL ) {}</span></a>
+<a name="431"><span class="lineNum">     431 </span><span class="lineCov">        810 :             BoundArgFunction( IArgFunction&lt;ConfigT&gt;* _functionObj ) : functionObj( _functionObj ) {}</span></a>
+<span class="lineNum">     432 </span><span class="lineCov">       1566 :             BoundArgFunction( BoundArgFunction const&amp; other ) : functionObj( other.functionObj ? other.functionObj-&gt;clone() : CLARA_NULL ) {}</span>
+<span class="lineNum">     433 </span><span class="lineCov">        783 :             BoundArgFunction&amp; operator = ( BoundArgFunction const&amp; other ) {</span>
+<span class="lineNum">     434 </span><span class="lineCov">        783 :                 IArgFunction&lt;ConfigT&gt;* newFunctionObj = other.functionObj ? other.functionObj-&gt;clone() : CLARA_NULL;</span>
+<span class="lineNum">     435 </span><span class="lineCov">        783 :                 delete functionObj;</span>
+<span class="lineNum">     436 </span><span class="lineCov">        783 :                 functionObj = newFunctionObj;</span>
+<a name="437"><span class="lineNum">     437 </span><span class="lineCov">        783 :                 return *this;</span></a>
+<span class="lineNum">     438 </span>            :             }
+<a name="439"><span class="lineNum">     439 </span><span class="lineCov">       3132 :             ~BoundArgFunction() { delete functionObj; }</span></a>
+<span class="lineNum">     440 </span>            : 
+<span class="lineNum">     441 </span><span class="lineCov">         53 :             void set( ConfigT&amp; config, std::string const&amp; value ) const {</span>
+<span class="lineNum">     442 </span><span class="lineCov">         53 :                 functionObj-&gt;set( config, value );</span>
+<span class="lineNum">     443 </span><span class="lineCov">         50 :             }</span>
+<a name="444"><span class="lineNum">     444 </span>            :             bool takesArg() const { return functionObj-&gt;takesArg(); }</a>
+<span class="lineNum">     445 </span>            : 
+<span class="lineNum">     446 </span><span class="lineCov">        729 :             bool isSet() const {</span>
+<span class="lineNum">     447 </span><span class="lineCov">        729 :                 return functionObj != CLARA_NULL;</span>
+<span class="lineNum">     448 </span>            :             }
+<span class="lineNum">     449 </span>            :         private:
+<span class="lineNum">     450 </span>            :             IArgFunction&lt;ConfigT&gt;* functionObj;
+<span class="lineNum">     451 </span>            :         };
+<span class="lineNum">     452 </span>            : 
+<a name="453"><span class="lineNum">     453 </span>            : </a>
+<a name="454"><span class="lineNum">     454 </span>            :         template&lt;typename C&gt;</a>
+<a name="455"><span class="lineNum">     455 </span><span class="lineCov">         81 :         struct NullBinder : IArgFunction&lt;C&gt;{</span></a>
+<a name="456"><span class="lineNum">     456 </span><span class="lineNoCov">          0 :             virtual void set( C&amp;, std::string const&amp; ) const {}</span></a>
+<span class="lineNum">     457 </span><span class="lineNoCov">          0 :             virtual bool takesArg() const { return true; }</span>
+<span class="lineNum">     458 </span><span class="lineNoCov">          0 :             virtual IArgFunction&lt;C&gt;* clone() const { return new NullBinder( *this ); }</span>
+<span class="lineNum">     459 </span>            :         };
+<a name="460"><span class="lineNum">     460 </span>            : </a>
+<a name="461"><span class="lineNum">     461 </span>            :         template&lt;typename C, typename M&gt;</a>
+<a name="462"><span class="lineNum">     462 </span><span class="lineCov">       4050 :         struct BoundDataMember : IArgFunction&lt;C&gt;{</span></a>
+<span class="lineNum">     463 </span><span class="lineCov">        405 :             BoundDataMember( M C::* _member ) : member( _member ) {}</span>
+<span class="lineNum">     464 </span><span class="lineCov">         36 :             virtual void set( C&amp; p, std::string const&amp; stringValue ) const {</span>
+<a name="465"><span class="lineNum">     465 </span><span class="lineCov">         36 :                 convertInto( stringValue, p.*member );</span></a>
+<a name="466"><span class="lineNum">     466 </span><span class="lineCov">         36 :             }</span></a>
+<span class="lineNum">     467 </span><span class="lineNoCov">          0 :             virtual bool takesArg() const { return !IsBool&lt;M&gt;::value; }</span>
+<span class="lineNum">     468 </span><span class="lineCov">       1080 :             virtual IArgFunction&lt;C&gt;* clone() const { return new BoundDataMember( *this ); }</span>
+<span class="lineNum">     469 </span>            :             M C::* member;
+<span class="lineNum">     470 </span>            :         };
+<span class="lineNum">     471 </span>            :         template&lt;typename C, typename M&gt;
+<span class="lineNum">     472 </span>            :         struct BoundUnaryMethod : IArgFunction&lt;C&gt;{
+<span class="lineNum">     473 </span>            :             BoundUnaryMethod( void (C::*_member)( M ) ) : member( _member ) {}
+<span class="lineNum">     474 </span>            :             virtual void set( C&amp; p, std::string const&amp; stringValue ) const {
+<span class="lineNum">     475 </span>            :                 typename RemoveConstRef&lt;M&gt;::type value;
+<span class="lineNum">     476 </span>            :                 convertInto( stringValue, value );
+<span class="lineNum">     477 </span>            :                 (p.*member)( value );
+<span class="lineNum">     478 </span>            :             }
+<span class="lineNum">     479 </span>            :             virtual bool takesArg() const { return !IsBool&lt;M&gt;::value; }
+<span class="lineNum">     480 </span>            :             virtual IArgFunction&lt;C&gt;* clone() const { return new BoundUnaryMethod( *this ); }
+<span class="lineNum">     481 </span>            :             void (C::*member)( M );
+<span class="lineNum">     482 </span>            :         };
+<span class="lineNum">     483 </span>            :         template&lt;typename C&gt;
+<span class="lineNum">     484 </span>            :         struct BoundNullaryMethod : IArgFunction&lt;C&gt;{
+<span class="lineNum">     485 </span>            :             BoundNullaryMethod( void (C::*_member)() ) : member( _member ) {}
+<span class="lineNum">     486 </span>            :             virtual void set( C&amp; p, std::string const&amp; stringValue ) const {
+<span class="lineNum">     487 </span>            :                 bool value;
+<span class="lineNum">     488 </span>            :                 convertInto( stringValue, value );
+<span class="lineNum">     489 </span>            :                 if( value )
+<span class="lineNum">     490 </span>            :                     (p.*member)();
+<span class="lineNum">     491 </span>            :             }
+<span class="lineNum">     492 </span>            :             virtual bool takesArg() const { return false; }
+<span class="lineNum">     493 </span>            :             virtual IArgFunction&lt;C&gt;* clone() const { return new BoundNullaryMethod( *this ); }
+<span class="lineNum">     494 </span>            :             void (C::*member)();
+<span class="lineNum">     495 </span>            :         };
+<a name="496"><span class="lineNum">     496 </span>            : </a>
+<a name="497"><span class="lineNum">     497 </span>            :         template&lt;typename C&gt;</a>
+<a name="498"><span class="lineNum">     498 </span><span class="lineCov">        351 :         struct BoundUnaryFunction : IArgFunction&lt;C&gt;{</span></a>
+<span class="lineNum">     499 </span><span class="lineCov">         54 :             BoundUnaryFunction( void (*_function)( C&amp; ) ) : function( _function ) {}</span>
+<span class="lineNum">     500 </span><span class="lineCov">          2 :             virtual void set( C&amp; obj, std::string const&amp; stringValue ) const {</span>
+<span class="lineNum">     501 </span>            :                 bool value;
+<span class="lineNum">     502 </span><span class="lineCov">          2 :                 convertInto( stringValue, value );</span>
+<span class="lineNum">     503 </span><span class="lineCov">          2 :                 if( value )</span>
+<a name="504"><span class="lineNum">     504 </span><span class="lineCov">          2 :                     function( obj );</span></a>
+<a name="505"><span class="lineNum">     505 </span><span class="lineCov">          2 :             }</span></a>
+<span class="lineNum">     506 </span><span class="lineNoCov">          0 :             virtual bool takesArg() const { return false; }</span>
+<span class="lineNum">     507 </span><span class="lineCov">         81 :             virtual IArgFunction&lt;C&gt;* clone() const { return new BoundUnaryFunction( *this ); }</span>
+<span class="lineNum">     508 </span>            :             void (*function)( C&amp; );
+<span class="lineNum">     509 </span>            :         };
+<a name="510"><span class="lineNum">     510 </span>            : </a>
+<a name="511"><span class="lineNum">     511 </span>            :         template&lt;typename C, typename T&gt;</a>
+<a name="512"><span class="lineNum">     512 </span><span class="lineCov">       2025 :         struct BoundBinaryFunction : IArgFunction&lt;C&gt;{</span></a>
+<span class="lineNum">     513 </span><span class="lineCov">        324 :             BoundBinaryFunction( void (*_function)( C&amp;, T ) ) : function( _function ) {}</span>
+<span class="lineNum">     514 </span><span class="lineCov">         15 :             virtual void set( C&amp; obj, std::string const&amp; stringValue ) const {</span>
+<span class="lineNum">     515 </span><span class="lineCov">         24 :                 typename RemoveConstRef&lt;T&gt;::type value;</span>
+<span class="lineNum">     516 </span><span class="lineCov">         15 :                 convertInto( stringValue, value );</span>
+<a name="517"><span class="lineNum">     517 </span><span class="lineCov">         14 :                 function( obj, value );</span></a>
+<a name="518"><span class="lineNum">     518 </span><span class="lineCov">         12 :             }</span></a>
+<span class="lineNum">     519 </span><span class="lineNoCov">          0 :             virtual bool takesArg() const { return !IsBool&lt;T&gt;::value; }</span>
+<span class="lineNum">     520 </span><span class="lineCov">        459 :             virtual IArgFunction&lt;C&gt;* clone() const { return new BoundBinaryFunction( *this ); }</span>
+<span class="lineNum">     521 </span>            :             void (*function)( C&amp;, T );
+<span class="lineNum">     522 </span>            :         };
+<span class="lineNum">     523 </span>            : 
+<a name="524"><span class="lineNum">     524 </span>            :     } // namespace Detail</a>
+<span class="lineNum">     525 </span>            : 
+<span class="lineNum">     526 </span><span class="lineCov">         26 :     inline std::vector&lt;std::string&gt; argsToVector( int argc, char const* const* const argv ) {</span>
+<span class="lineNum">     527 </span><span class="lineCov">         26 :         std::vector&lt;std::string&gt; args( static_cast&lt;std::size_t&gt;( argc ) );</span>
+<span class="lineNum">     528 </span><span class="lineCov">         90 :         for( std::size_t i = 0; i &lt; static_cast&lt;std::size_t&gt;( argc ); ++i )</span>
+<span class="lineNum">     529 </span><span class="lineCov">         64 :             args[i] = argv[i];</span>
+<span class="lineNum">     530 </span>            : 
+<span class="lineNum">     531 </span><span class="lineCov">         26 :         return args;</span>
+<span class="lineNum">     532 </span>            :     }
+<span class="lineNum">     533 </span>            : 
+<span class="lineNum">     534 </span>            :     class Parser {
+<span class="lineNum">     535 </span>            :         enum Mode { None, MaybeShortOpt, SlashOpt, ShortOpt, LongOpt, Positional };
+<span class="lineNum">     536 </span>            :         Mode mode;
+<span class="lineNum">     537 </span>            :         std::size_t from;
+<span class="lineNum">     538 </span>            :         bool inQuotes;
+<a name="539"><span class="lineNum">     539 </span>            :     public:</a>
+<span class="lineNum">     540 </span>            : 
+<a name="541"><span class="lineNum">     541 </span><span class="lineCov">        172 :         struct Token {</span></a>
+<span class="lineNum">     542 </span>            :             enum Type { Positional, ShortOpt, LongOpt };
+<span class="lineNum">     543 </span><span class="lineCov">         40 :             Token( Type _type, std::string const&amp; _data ) : type( _type ), data( _data ) {}</span>
+<span class="lineNum">     544 </span>            :             Type type;
+<span class="lineNum">     545 </span>            :             std::string data;
+<a name="546"><span class="lineNum">     546 </span>            :         };</a>
+<span class="lineNum">     547 </span>            : 
+<a name="548"><span class="lineNum">     548 </span><span class="lineCov">         27 :         Parser() : mode( None ), from( 0 ), inQuotes( false ){}</span></a>
+<span class="lineNum">     549 </span>            : 
+<span class="lineNum">     550 </span><span class="lineCov">         27 :         void parseIntoTokens( std::vector&lt;std::string&gt; const&amp; args, std::vector&lt;Token&gt;&amp; tokens ) {</span>
+<span class="lineNum">     551 </span><span class="lineCov">         54 :             const std::string doubleDash = &quot;--&quot;;</span>
+<span class="lineNum">     552 </span><span class="lineCov">         65 :             for( std::size_t i = 1; i &lt; args.size() &amp;&amp; args[i] != doubleDash; ++i )</span>
+<span class="lineNum">     553 </span><span class="lineCov">         38 :                 parseIntoTokens( args[i], tokens);</span>
+<a name="554"><span class="lineNum">     554 </span><span class="lineCov">         27 :         }</span></a>
+<span class="lineNum">     555 </span>            : 
+<span class="lineNum">     556 </span><span class="lineCov">         38 :         void parseIntoTokens( std::string const&amp; arg, std::vector&lt;Token&gt;&amp; tokens ) {</span>
+<span class="lineNum">     557 </span><span class="lineCov">        236 :             for( std::size_t i = 0; i &lt; arg.size(); ++i ) {</span>
+<span class="lineNum">     558 </span><span class="lineCov">        198 :                 char c = arg[i];</span>
+<span class="lineNum">     559 </span><span class="lineCov">        198 :                 if( c == '&quot;' )</span>
+<span class="lineNum">     560 </span><span class="lineNoCov">          0 :                     inQuotes = !inQuotes;</span>
+<span class="lineNum">     561 </span><span class="lineCov">        198 :                 mode = handleMode( i, c, arg, tokens );</span>
+<span class="lineNum">     562 </span>            :             }
+<a name="563"><span class="lineNum">     563 </span><span class="lineCov">         38 :             mode = handleMode( arg.size(), '\0', arg, tokens );</span></a>
+<span class="lineNum">     564 </span><span class="lineCov">         38 :         }</span>
+<span class="lineNum">     565 </span><span class="lineCov">        236 :         Mode handleMode( std::size_t i, char c, std::string const&amp; arg, std::vector&lt;Token&gt;&amp; tokens ) {</span>
+<span class="lineNum">     566 </span><span class="lineCov">        236 :             switch( mode ) {</span>
+<span class="lineNum">     567 </span><span class="lineCov">         38 :                 case None: return handleNone( i, c );</span>
+<span class="lineNum">     568 </span><span class="lineCov">         21 :                 case MaybeShortOpt: return handleMaybeShortOpt( i, c );</span>
+<span class="lineNum">     569 </span><span class="lineCov">         86 :                 case ShortOpt:</span>
+<span class="lineNum">     570 </span>            :                 case LongOpt:
+<span class="lineNum">     571 </span><span class="lineCov">         86 :                 case SlashOpt: return handleOpt( i, c, arg, tokens );</span>
+<span class="lineNum">     572 </span><span class="lineCov">         91 :                 case Positional: return handlePositional( i, c, arg, tokens );</span>
+<span class="lineNum">     573 </span><span class="lineNoCov">          0 :                 default: throw std::logic_error( &quot;Unknown mode&quot; );</span>
+<span class="lineNum">     574 </span>            :             }
+<a name="575"><span class="lineNum">     575 </span>            :         }</a>
+<span class="lineNum">     576 </span>            : 
+<span class="lineNum">     577 </span><span class="lineCov">         38 :         Mode handleNone( std::size_t i, char c ) {</span>
+<span class="lineNum">     578 </span><span class="lineCov">         38 :             if( inQuotes ) {</span>
+<span class="lineNum">     579 </span><span class="lineNoCov">          0 :                 from = i;</span>
+<span class="lineNum">     580 </span><span class="lineNoCov">          0 :                 return Positional;</span>
+<span class="lineNum">     581 </span>            :             }
+<span class="lineNum">     582 </span><span class="lineCov">         38 :             switch( c ) {</span>
+<span class="lineNum">     583 </span><span class="lineCov">         21 :                 case '-': return MaybeShortOpt;</span>
+<span class="lineNum">     584 </span>            : #ifdef CLARA_PLATFORM_WINDOWS
+<span class="lineNum">     585 </span>            :                 case '/': from = i+1; return SlashOpt;
+<span class="lineNum">     586 </span>            : #endif
+<span class="lineNum">     587 </span><span class="lineCov">         17 :                 default: from = i; return Positional;</span>
+<a name="588"><span class="lineNum">     588 </span>            :             }</a>
+<span class="lineNum">     589 </span>            :         }
+<span class="lineNum">     590 </span><span class="lineCov">         21 :         Mode handleMaybeShortOpt( std::size_t i, char c ) {</span>
+<span class="lineNum">     591 </span><span class="lineCov">         21 :             switch( c ) {</span>
+<span class="lineNum">     592 </span><span class="lineCov">          8 :                 case '-': from = i+1; return LongOpt;</span>
+<span class="lineNum">     593 </span><span class="lineCov">         13 :                 default: from = i; return ShortOpt;</span>
+<span class="lineNum">     594 </span>            :             }
+<a name="595"><span class="lineNum">     595 </span>            :         }</a>
+<span class="lineNum">     596 </span>            : 
+<span class="lineNum">     597 </span><span class="lineCov">         86 :         Mode handleOpt( std::size_t i, char c, std::string const&amp; arg, std::vector&lt;Token&gt;&amp; tokens ) {</span>
+<span class="lineNum">     598 </span><span class="lineCov">         86 :             if( std::string( &quot;:=\0&quot;, 3 ).find( c ) == std::string::npos )</span>
+<span class="lineNum">     599 </span><span class="lineCov">         65 :                 return mode;</span>
+<span class="lineNum">     600 </span>            : 
+<span class="lineNum">     601 </span><span class="lineCov">         42 :             std::string optName = arg.substr( from, i-from );</span>
+<span class="lineNum">     602 </span><span class="lineCov">         21 :             if( mode == ShortOpt )</span>
+<span class="lineNum">     603 </span><span class="lineCov">         28 :                 for( std::size_t j = 0; j &lt; optName.size(); ++j )</span>
+<span class="lineNum">     604 </span><span class="lineCov">         15 :                     tokens.push_back( Token( Token::ShortOpt, optName.substr( j, 1 ) ) );</span>
+<span class="lineNum">     605 </span><span class="lineCov">          8 :             else if( mode == SlashOpt &amp;&amp; optName.size() == 1 )</span>
+<span class="lineNum">     606 </span><span class="lineNoCov">          0 :                 tokens.push_back( Token( Token::ShortOpt, optName ) );</span>
+<span class="lineNum">     607 </span>            :             else
+<span class="lineNum">     608 </span><span class="lineCov">          8 :                 tokens.push_back( Token( Token::LongOpt, optName ) );</span>
+<a name="609"><span class="lineNum">     609 </span><span class="lineCov">         21 :             return None;</span></a>
+<span class="lineNum">     610 </span>            :         }
+<span class="lineNum">     611 </span><span class="lineCov">         91 :         Mode handlePositional( std::size_t i, char c, std::string const&amp; arg, std::vector&lt;Token&gt;&amp; tokens ) {</span>
+<span class="lineNum">     612 </span><span class="lineCov">         91 :             if( inQuotes || std::string( &quot;\0&quot;, 1 ).find( c ) == std::string::npos )</span>
+<span class="lineNum">     613 </span><span class="lineCov">         74 :                 return mode;</span>
+<span class="lineNum">     614 </span>            : 
+<span class="lineNum">     615 </span><span class="lineCov">         34 :             std::string data = arg.substr( from, i-from );</span>
+<span class="lineNum">     616 </span><span class="lineCov">         17 :             tokens.push_back( Token( Token::Positional, data ) );</span>
+<span class="lineNum">     617 </span><span class="lineCov">         17 :             return None;</span>
+<span class="lineNum">     618 </span>            :         }
+<span class="lineNum">     619 </span>            :     };
+<a name="620"><span class="lineNum">     620 </span>            : </a>
+<a name="621"><span class="lineNum">     621 </span>            :     template&lt;typename ConfigT&gt;</a>
+<span class="lineNum">     622 </span><span class="lineCov">       3888 :     struct CommonArgProperties {</span>
+<span class="lineNum">     623 </span><span class="lineCov">        756 :         CommonArgProperties() {}</span>
+<span class="lineNum">     624 </span>            :         CommonArgProperties( Detail::BoundArgFunction&lt;ConfigT&gt; const&amp; _boundField ) : boundField( _boundField ) {}
+<span class="lineNum">     625 </span>            : 
+<span class="lineNum">     626 </span>            :         Detail::BoundArgFunction&lt;ConfigT&gt; boundField;
+<span class="lineNum">     627 </span>            :         std::string description;
+<span class="lineNum">     628 </span>            :         std::string detail;
+<a name="629"><span class="lineNum">     629 </span>            :         std::string placeholder; // Only value if boundField takes an arg</a>
+<span class="lineNum">     630 </span>            : 
+<span class="lineNum">     631 </span><span class="lineCov">         24 :         bool takesArg() const {</span>
+<a name="632"><span class="lineNum">     632 </span><span class="lineCov">         24 :             return !placeholder.empty();</span></a>
+<span class="lineNum">     633 </span>            :         }
+<span class="lineNum">     634 </span><span class="lineCov">        729 :         void validate() const {</span>
+<span class="lineNum">     635 </span><span class="lineCov">        729 :             if( !boundField.isSet() )</span>
+<span class="lineNum">     636 </span><span class="lineNoCov">          0 :                 throw std::logic_error( &quot;option not bound&quot; );</span>
+<a name="637"><span class="lineNum">     637 </span><span class="lineCov">        729 :         }</span></a>
+<span class="lineNum">     638 </span>            :     };
+<span class="lineNum">     639 </span><span class="lineCov">       4644 :     struct OptionArgProperties {</span>
+<span class="lineNum">     640 </span>            :         std::vector&lt;std::string&gt; shortNames;
+<a name="641"><span class="lineNum">     641 </span>            :         std::string longName;</a>
+<span class="lineNum">     642 </span>            : 
+<span class="lineNum">     643 </span><span class="lineCov">        158 :         bool hasShortName( std::string const&amp; shortName ) const {</span>
+<a name="644"><span class="lineNum">     644 </span><span class="lineCov">        158 :             return std::find( shortNames.begin(), shortNames.end(), shortName ) != shortNames.end();</span></a>
+<span class="lineNum">     645 </span>            :         }
+<span class="lineNum">     646 </span><span class="lineCov">        125 :         bool hasLongName( std::string const&amp; _longName ) const {</span>
+<span class="lineNum">     647 </span><span class="lineCov">        125 :             return _longName == longName;</span>
+<span class="lineNum">     648 </span>            :         }
+<a name="649"><span class="lineNum">     649 </span>            :     };</a>
+<span class="lineNum">     650 </span>            :     struct PositionalArgProperties {
+<span class="lineNum">     651 </span><span class="lineCov">        756 :         PositionalArgProperties() : position( -1 ) {}</span>
+<span class="lineNum">     652 </span>            :         int position; // -1 means non-positional (floating)
+<span class="lineNum">     653 </span>            : 
+<span class="lineNum">     654 </span>            :         bool isFixedPositional() const {
+<span class="lineNum">     655 </span>            :             return position != -1;
+<span class="lineNum">     656 </span>            :         }
+<span class="lineNum">     657 </span>            :     };
+<a name="658"><span class="lineNum">     658 </span>            : </a>
+<span class="lineNum">     659 </span>            :     template&lt;typename ConfigT&gt;
+<a name="660"><span class="lineNum">     660 </span><span class="lineCov">         27 :     class CommandLine {</span></a>
+<a name="661"><span class="lineNum">     661 </span>            : </a>
+<span class="lineNum">     662 </span><span class="lineCov">       3888 :         struct Arg : CommonArgProperties&lt;ConfigT&gt;, OptionArgProperties, PositionalArgProperties {</span>
+<span class="lineNum">     663 </span><span class="lineCov">        756 :             Arg() {}</span>
+<span class="lineNum">     664 </span>            :             Arg( Detail::BoundArgFunction&lt;ConfigT&gt; const&amp; _boundField ) : CommonArgProperties&lt;ConfigT&gt;( _boundField ) {}
+<span class="lineNum">     665 </span>            : 
+<span class="lineNum">     666 </span>            :             using CommonArgProperties&lt;ConfigT&gt;::placeholder; // !TBD
+<span class="lineNum">     667 </span>            : 
+<span class="lineNum">     668 </span>            :             std::string dbgName() const {
+<span class="lineNum">     669 </span>            :                 if( !longName.empty() )
+<span class="lineNum">     670 </span>            :                     return &quot;--&quot; + longName;
+<span class="lineNum">     671 </span>            :                 if( !shortNames.empty() )
+<span class="lineNum">     672 </span>            :                     return &quot;-&quot; + shortNames[0];
+<a name="673"><span class="lineNum">     673 </span>            :                 return &quot;positional args&quot;;</a>
+<span class="lineNum">     674 </span>            :             }
+<span class="lineNum">     675 </span><span class="lineCov">          3 :             std::string commands() const {</span>
+<span class="lineNum">     676 </span><span class="lineCov">          6 :                 std::ostringstream oss;</span>
+<span class="lineNum">     677 </span><span class="lineCov">          3 :                 bool first = true;</span>
+<span class="lineNum">     678 </span><span class="lineCov">          3 :                 std::vector&lt;std::string&gt;::const_iterator it = shortNames.begin(), itEnd = shortNames.end();</span>
+<span class="lineNum">     679 </span><span class="lineCov">          7 :                 for(; it != itEnd; ++it ) {</span>
+<span class="lineNum">     680 </span><span class="lineCov">          2 :                     if( first )</span>
+<span class="lineNum">     681 </span><span class="lineCov">          2 :                         first = false;</span>
+<span class="lineNum">     682 </span>            :                     else
+<span class="lineNum">     683 </span><span class="lineNoCov">          0 :                         oss &lt;&lt; &quot;, &quot;;</span>
+<span class="lineNum">     684 </span><span class="lineCov">          2 :                     oss &lt;&lt; &quot;-&quot; &lt;&lt; *it;</span>
+<span class="lineNum">     685 </span>            :                 }
+<span class="lineNum">     686 </span><span class="lineCov">          3 :                 if( !longName.empty() ) {</span>
+<span class="lineNum">     687 </span><span class="lineCov">          3 :                     if( !first )</span>
+<span class="lineNum">     688 </span><span class="lineCov">          2 :                         oss &lt;&lt; &quot;, &quot;;</span>
+<span class="lineNum">     689 </span><span class="lineCov">          3 :                     oss &lt;&lt; &quot;--&quot; &lt;&lt; longName;</span>
+<span class="lineNum">     690 </span>            :                 }
+<span class="lineNum">     691 </span><span class="lineCov">          3 :                 if( !placeholder.empty() )</span>
+<span class="lineNum">     692 </span><span class="lineCov">          3 :                     oss &lt;&lt; &quot; &lt;&quot; &lt;&lt; placeholder &lt;&lt; &quot;&gt;&quot;;</span>
+<span class="lineNum">     693 </span><span class="lineCov">          6 :                 return oss.str();</span>
+<span class="lineNum">     694 </span>            :             }
+<span class="lineNum">     695 </span>            :         };
+<span class="lineNum">     696 </span>            : 
+<a name="697"><span class="lineNum">     697 </span>            :         typedef CLARA_AUTO_PTR( Arg ) ArgAutoPtr;</a>
+<span class="lineNum">     698 </span>            : 
+<span class="lineNum">     699 </span><span class="lineCov">       1215 :         friend void addOptName( Arg&amp; arg, std::string const&amp; optName )</span>
+<span class="lineNum">     700 </span>            :         {
+<span class="lineNum">     701 </span><span class="lineCov">       1215 :             if( optName.empty() )</span>
+<span class="lineNum">     702 </span><span class="lineNoCov">          0 :                 return;</span>
+<span class="lineNum">     703 </span><span class="lineCov">       1215 :             if( Detail::startsWith( optName, &quot;--&quot; ) ) {</span>
+<span class="lineNum">     704 </span><span class="lineCov">        729 :                 if( !arg.longName.empty() )</span>
+<span class="lineNum">     705 </span>            :                     throw std::logic_error( &quot;Only one long opt may be specified. '&quot;
+<span class="lineNum">     706 </span>            :                         + arg.longName
+<span class="lineNum">     707 </span>            :                         + &quot;' already specified, now attempting to add '&quot;
+<span class="lineNum">     708 </span><span class="lineNoCov">          0 :                         + optName + &quot;'&quot; );</span>
+<span class="lineNum">     709 </span><span class="lineCov">        729 :                 arg.longName = optName.substr( 2 );</span>
+<span class="lineNum">     710 </span>            :             }
+<span class="lineNum">     711 </span><span class="lineCov">        486 :             else if( Detail::startsWith( optName, &quot;-&quot; ) )</span>
+<span class="lineNum">     712 </span><span class="lineCov">        486 :                 arg.shortNames.push_back( optName.substr( 1 ) );</span>
+<span class="lineNum">     713 </span>            :             else
+<span class="lineNum">     714 </span><span class="lineNoCov">          0 :                 throw std::logic_error( &quot;option must begin with - or --. Option was: '&quot; + optName + &quot;'&quot; );</span>
+<span class="lineNum">     715 </span>            :         }
+<span class="lineNum">     716 </span>            :         friend void setPositionalArg( Arg&amp; arg, int position )
+<span class="lineNum">     717 </span>            :         {
+<span class="lineNum">     718 </span>            :             arg.position = position;
+<span class="lineNum">     719 </span>            :         }
+<span class="lineNum">     720 </span>            : 
+<span class="lineNum">     721 </span>            : 
+<a name="722"><span class="lineNum">     722 </span>            :         class ArgBuilder {</a>
+<span class="lineNum">     723 </span>            :         public:
+<span class="lineNum">     724 </span><span class="lineCov">        756 :             ArgBuilder( Arg* arg ) : m_arg( arg ) {}</span>
+<span class="lineNum">     725 </span>            : 
+<a name="726"><span class="lineNum">     726 </span>            :             // Bind a non-boolean data member (requires placeholder string)</a>
+<span class="lineNum">     727 </span>            :             template&lt;typename C, typename M&gt;
+<span class="lineNum">     728 </span><span class="lineCov">         54 :             void bind( M C::* field, std::string const&amp; placeholder ) {</span>
+<span class="lineNum">     729 </span><span class="lineCov">         54 :                 m_arg-&gt;boundField = new Detail::BoundDataMember&lt;C,M&gt;( field );</span>
+<span class="lineNum">     730 </span><span class="lineCov">         54 :                 m_arg-&gt;placeholder = placeholder;</span>
+<span class="lineNum">     731 </span><span class="lineCov">         54 :             }</span>
+<a name="732"><span class="lineNum">     732 </span>            :             // Bind a boolean data member (no placeholder required)</a>
+<span class="lineNum">     733 </span>            :             template&lt;typename C&gt;
+<span class="lineNum">     734 </span><span class="lineCov">        324 :             void bind( bool C::* field ) {</span>
+<span class="lineNum">     735 </span><span class="lineCov">        324 :                 m_arg-&gt;boundField = new Detail::BoundDataMember&lt;C,bool&gt;( field );</span>
+<span class="lineNum">     736 </span><span class="lineCov">        324 :             }</span>
+<span class="lineNum">     737 </span>            : 
+<span class="lineNum">     738 </span>            :             // Bind a method taking a single, non-boolean argument (requires a placeholder string)
+<span class="lineNum">     739 </span>            :             template&lt;typename C, typename M&gt;
+<span class="lineNum">     740 </span>            :             void bind( void (C::* unaryMethod)( M ), std::string const&amp; placeholder ) {
+<span class="lineNum">     741 </span>            :                 m_arg-&gt;boundField = new Detail::BoundUnaryMethod&lt;C,M&gt;( unaryMethod );
+<span class="lineNum">     742 </span>            :                 m_arg-&gt;placeholder = placeholder;
+<span class="lineNum">     743 </span>            :             }
+<span class="lineNum">     744 </span>            : 
+<span class="lineNum">     745 </span>            :             // Bind a method taking a single, boolean argument (no placeholder string required)
+<span class="lineNum">     746 </span>            :             template&lt;typename C&gt;
+<span class="lineNum">     747 </span>            :             void bind( void (C::* unaryMethod)( bool ) ) {
+<span class="lineNum">     748 </span>            :                 m_arg-&gt;boundField = new Detail::BoundUnaryMethod&lt;C,bool&gt;( unaryMethod );
+<span class="lineNum">     749 </span>            :             }
+<span class="lineNum">     750 </span>            : 
+<span class="lineNum">     751 </span>            :             // Bind a method that takes no arguments (will be called if opt is present)
+<span class="lineNum">     752 </span>            :             template&lt;typename C&gt;
+<span class="lineNum">     753 </span>            :             void bind( void (C::* nullaryMethod)() ) {
+<span class="lineNum">     754 </span>            :                 m_arg-&gt;boundField = new Detail::BoundNullaryMethod&lt;C&gt;( nullaryMethod );
+<span class="lineNum">     755 </span>            :             }
+<span class="lineNum">     756 </span>            : 
+<a name="757"><span class="lineNum">     757 </span>            :             // Bind a free function taking a single argument - the object to operate on (no placeholder string required)</a>
+<span class="lineNum">     758 </span>            :             template&lt;typename C&gt;
+<span class="lineNum">     759 </span><span class="lineCov">         54 :             void bind( void (* unaryFunction)( C&amp; ) ) {</span>
+<span class="lineNum">     760 </span><span class="lineCov">         54 :                 m_arg-&gt;boundField = new Detail::BoundUnaryFunction&lt;C&gt;( unaryFunction );</span>
+<span class="lineNum">     761 </span><span class="lineCov">         54 :             }</span>
+<span class="lineNum">     762 </span>            : 
+<a name="763"><span class="lineNum">     763 </span>            :             // Bind a free function taking a single argument - the object to operate on (requires a placeholder string)</a>
+<span class="lineNum">     764 </span>            :             template&lt;typename C, typename T&gt;
+<span class="lineNum">     765 </span><span class="lineCov">        324 :             void bind( void (* binaryFunction)( C&amp;, T ), std::string const&amp; placeholder ) {</span>
+<span class="lineNum">     766 </span><span class="lineCov">        324 :                 m_arg-&gt;boundField = new Detail::BoundBinaryFunction&lt;C, T&gt;( binaryFunction );</span>
+<span class="lineNum">     767 </span><span class="lineCov">        324 :                 m_arg-&gt;placeholder = placeholder;</span>
+<a name="768"><span class="lineNum">     768 </span><span class="lineCov">        324 :             }</span></a>
+<span class="lineNum">     769 </span>            : 
+<span class="lineNum">     770 </span><span class="lineCov">        756 :             ArgBuilder&amp; describe( std::string const&amp; description ) {</span>
+<span class="lineNum">     771 </span><span class="lineCov">        756 :                 m_arg-&gt;description = description;</span>
+<span class="lineNum">     772 </span><span class="lineCov">        756 :                 return *this;</span>
+<span class="lineNum">     773 </span>            :             }
+<span class="lineNum">     774 </span>            :             ArgBuilder&amp; detail( std::string const&amp; detail ) {
+<span class="lineNum">     775 </span>            :                 m_arg-&gt;detail = detail;
+<span class="lineNum">     776 </span>            :                 return *this;
+<span class="lineNum">     777 </span>            :             }
+<span class="lineNum">     778 </span>            : 
+<span class="lineNum">     779 </span>            :         protected:
+<span class="lineNum">     780 </span>            :             Arg* m_arg;
+<span class="lineNum">     781 </span>            :         };
+<span class="lineNum">     782 </span>            : 
+<a name="783"><span class="lineNum">     783 </span>            :         class OptBuilder : public ArgBuilder {</a>
+<span class="lineNum">     784 </span>            :         public:
+<span class="lineNum">     785 </span><span class="lineCov">        729 :             OptBuilder( Arg* arg ) : ArgBuilder( arg ) {}</span>
+<a name="786"><span class="lineNum">     786 </span>            :             OptBuilder( OptBuilder&amp; other ) : ArgBuilder( other ) {}</a>
+<span class="lineNum">     787 </span>            : 
+<span class="lineNum">     788 </span><span class="lineCov">        486 :             OptBuilder&amp; operator[]( std::string const&amp; optName ) {</span>
+<span class="lineNum">     789 </span><span class="lineCov">        486 :                 addOptName( *ArgBuilder::m_arg, optName );</span>
+<span class="lineNum">     790 </span><span class="lineCov">        486 :                 return *this;</span>
+<span class="lineNum">     791 </span>            :             }
+<span class="lineNum">     792 </span>            :         };
+<span class="lineNum">     793 </span>            : 
+<a name="794"><span class="lineNum">     794 </span>            :     public:</a>
+<span class="lineNum">     795 </span>            : 
+<span class="lineNum">     796 </span><span class="lineCov">         27 :         CommandLine()</span>
+<span class="lineNum">     797 </span><span class="lineCov">         27 :         :   m_boundProcessName( new Detail::NullBinder&lt;ConfigT&gt;() ),</span>
+<span class="lineNum">     798 </span>            :             m_highestSpecifiedArgPosition( 0 ),
+<span class="lineNum">     799 </span><span class="lineCov">         54 :             m_throwOnUnrecognisedTokens( false )</span>
+<span class="lineNum">     800 </span><span class="lineCov">         27 :         {}</span>
+<span class="lineNum">     801 </span>            :         CommandLine( CommandLine const&amp; other )
+<span class="lineNum">     802 </span>            :         :   m_boundProcessName( other.m_boundProcessName ),
+<span class="lineNum">     803 </span>            :             m_options ( other.m_options ),
+<span class="lineNum">     804 </span>            :             m_positionalArgs( other.m_positionalArgs ),
+<span class="lineNum">     805 </span>            :             m_highestSpecifiedArgPosition( other.m_highestSpecifiedArgPosition ),
+<span class="lineNum">     806 </span>            :             m_throwOnUnrecognisedTokens( other.m_throwOnUnrecognisedTokens )
+<span class="lineNum">     807 </span>            :         {
+<span class="lineNum">     808 </span>            :             if( other.m_floatingArg.get() )
+<span class="lineNum">     809 </span>            :                 m_floatingArg.reset( new Arg( *other.m_floatingArg ) );
+<a name="810"><span class="lineNum">     810 </span>            :         }</a>
+<span class="lineNum">     811 </span>            : 
+<span class="lineNum">     812 </span><span class="lineCov">          2 :         CommandLine&amp; setThrowOnUnrecognisedTokens( bool shouldThrow = true ) {</span>
+<span class="lineNum">     813 </span><span class="lineCov">          2 :             m_throwOnUnrecognisedTokens = shouldThrow;</span>
+<span class="lineNum">     814 </span><span class="lineCov">          2 :             return *this;</span>
+<span class="lineNum">     815 </span>            :         }
+<a name="816"><span class="lineNum">     816 </span>            : </a>
+<span class="lineNum">     817 </span>            : 
+<span class="lineNum">     818 </span><span class="lineCov">        729 :         OptBuilder operator[]( std::string const&amp; optName ) {</span>
+<span class="lineNum">     819 </span><span class="lineCov">        729 :             m_options.push_back( Arg() );</span>
+<span class="lineNum">     820 </span><span class="lineCov">        729 :             addOptName( m_options.back(), optName );</span>
+<span class="lineNum">     821 </span><span class="lineCov">        729 :             OptBuilder builder( &amp;m_options.back() );</span>
+<span class="lineNum">     822 </span><span class="lineCov">        729 :             return builder;</span>
+<span class="lineNum">     823 </span>            :         }
+<span class="lineNum">     824 </span>            : 
+<span class="lineNum">     825 </span>            :         ArgBuilder operator[]( int position ) {
+<span class="lineNum">     826 </span>            :             m_positionalArgs.insert( std::make_pair( position, Arg() ) );
+<span class="lineNum">     827 </span>            :             if( position &gt; m_highestSpecifiedArgPosition )
+<span class="lineNum">     828 </span>            :                 m_highestSpecifiedArgPosition = position;
+<span class="lineNum">     829 </span>            :             setPositionalArg( m_positionalArgs[position], position );
+<span class="lineNum">     830 </span>            :             ArgBuilder builder( &amp;m_positionalArgs[position] );
+<span class="lineNum">     831 </span>            :             return builder;
+<span class="lineNum">     832 </span>            :         }
+<a name="833"><span class="lineNum">     833 </span>            : </a>
+<span class="lineNum">     834 </span>            :         // Invoke this with the _ instance
+<span class="lineNum">     835 </span><span class="lineCov">         27 :         ArgBuilder operator[]( UnpositionalTag ) {</span>
+<span class="lineNum">     836 </span><span class="lineCov">         27 :             if( m_floatingArg.get() )</span>
+<span class="lineNum">     837 </span><span class="lineNoCov">          0 :                 throw std::logic_error( &quot;Only one unpositional argument can be added&quot; );</span>
+<span class="lineNum">     838 </span><span class="lineCov">         27 :             m_floatingArg.reset( new Arg() );</span>
+<span class="lineNum">     839 </span><span class="lineCov">         27 :             ArgBuilder builder( m_floatingArg.get() );</span>
+<span class="lineNum">     840 </span><span class="lineCov">         27 :             return builder;</span>
+<span class="lineNum">     841 </span>            :         }
+<a name="842"><span class="lineNum">     842 </span>            : </a>
+<span class="lineNum">     843 </span>            :         template&lt;typename C, typename M&gt;
+<span class="lineNum">     844 </span><span class="lineCov">         27 :         void bindProcessName( M C::* field ) {</span>
+<span class="lineNum">     845 </span><span class="lineCov">         27 :             m_boundProcessName = new Detail::BoundDataMember&lt;C,M&gt;( field );</span>
+<span class="lineNum">     846 </span><span class="lineCov">         27 :         }</span>
+<span class="lineNum">     847 </span>            :         template&lt;typename C, typename M&gt;
+<span class="lineNum">     848 </span>            :         void bindProcessName( void (C::*_unaryMethod)( M ) ) {
+<span class="lineNum">     849 </span>            :             m_boundProcessName = new Detail::BoundUnaryMethod&lt;C,M&gt;( _unaryMethod );
+<a name="850"><span class="lineNum">     850 </span>            :         }</a>
+<span class="lineNum">     851 </span>            : 
+<span class="lineNum">     852 </span><span class="lineNoCov">          0 :         void optUsage( std::ostream&amp; os, std::size_t indent = 0, std::size_t width = Detail::consoleWidth ) const {</span>
+<span class="lineNum">     853 </span><span class="lineNoCov">          0 :             typename std::vector&lt;Arg&gt;::const_iterator itBegin = m_options.begin(), itEnd = m_options.end(), it;</span>
+<span class="lineNum">     854 </span><span class="lineNoCov">          0 :             std::size_t maxWidth = 0;</span>
+<span class="lineNum">     855 </span><span class="lineNoCov">          0 :             for( it = itBegin; it != itEnd; ++it )</span>
+<span class="lineNum">     856 </span><span class="lineNoCov">          0 :                 maxWidth = (std::max)( maxWidth, it-&gt;commands().size() );</span>
+<span class="lineNum">     857 </span>            : 
+<span class="lineNum">     858 </span><span class="lineNoCov">          0 :             for( it = itBegin; it != itEnd; ++it ) {</span>
+<span class="lineNum">     859 </span><span class="lineNoCov">          0 :                 Detail::Text usage( it-&gt;commands(), Detail::TextAttributes()</span>
+<span class="lineNum">     860 </span><span class="lineNoCov">          0 :                                                         .setWidth( maxWidth+indent )</span>
+<span class="lineNum">     861 </span><span class="lineNoCov">          0 :                                                         .setIndent( indent ) );</span>
+<span class="lineNum">     862 </span><span class="lineNoCov">          0 :                 Detail::Text desc( it-&gt;description, Detail::TextAttributes()</span>
+<span class="lineNum">     863 </span><span class="lineNoCov">          0 :                                                         .setWidth( width - maxWidth - 3 ) );</span>
+<span class="lineNum">     864 </span>            : 
+<span class="lineNum">     865 </span><span class="lineNoCov">          0 :                 for( std::size_t i = 0; i &lt; (std::max)( usage.size(), desc.size() ); ++i ) {</span>
+<span class="lineNum">     866 </span><span class="lineNoCov">          0 :                     std::string usageCol = i &lt; usage.size() ? usage[i] : &quot;&quot;;</span>
+<span class="lineNum">     867 </span><span class="lineNoCov">          0 :                     os &lt;&lt; usageCol;</span>
+<span class="lineNum">     868 </span>            : 
+<span class="lineNum">     869 </span><span class="lineNoCov">          0 :                     if( i &lt; desc.size() &amp;&amp; !desc[i].empty() )</span>
+<span class="lineNum">     870 </span><span class="lineNoCov">          0 :                         os  &lt;&lt; std::string( indent + 2 + maxWidth - usageCol.size(), ' ' )</span>
+<span class="lineNum">     871 </span><span class="lineNoCov">          0 :                             &lt;&lt; desc[i];</span>
+<span class="lineNum">     872 </span><span class="lineNoCov">          0 :                     os &lt;&lt; &quot;\n&quot;;</span>
+<span class="lineNum">     873 </span>            :                 }
+<span class="lineNum">     874 </span>            :             }
+<span class="lineNum">     875 </span><span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">     876 </span>            :         std::string optUsage() const {
+<span class="lineNum">     877 </span>            :             std::ostringstream oss;
+<span class="lineNum">     878 </span>            :             optUsage( oss );
+<span class="lineNum">     879 </span>            :             return oss.str();
+<a name="880"><span class="lineNum">     880 </span>            :         }</a>
+<span class="lineNum">     881 </span>            : 
+<span class="lineNum">     882 </span><span class="lineNoCov">          0 :         void argSynopsis( std::ostream&amp; os ) const {</span>
+<span class="lineNum">     883 </span><span class="lineNoCov">          0 :             for( int i = 1; i &lt;= m_highestSpecifiedArgPosition; ++i ) {</span>
+<span class="lineNum">     884 </span><span class="lineNoCov">          0 :                 if( i &gt; 1 )</span>
+<span class="lineNum">     885 </span><span class="lineNoCov">          0 :                     os &lt;&lt; &quot; &quot;;</span>
+<span class="lineNum">     886 </span><span class="lineNoCov">          0 :                 typename std::map&lt;int, Arg&gt;::const_iterator it = m_positionalArgs.find( i );</span>
+<span class="lineNum">     887 </span><span class="lineNoCov">          0 :                 if( it != m_positionalArgs.end() )</span>
+<span class="lineNum">     888 </span><span class="lineNoCov">          0 :                     os &lt;&lt; &quot;&lt;&quot; &lt;&lt; it-&gt;second.placeholder &lt;&lt; &quot;&gt;&quot;;</span>
+<span class="lineNum">     889 </span><span class="lineNoCov">          0 :                 else if( m_floatingArg.get() )</span>
+<span class="lineNum">     890 </span><span class="lineNoCov">          0 :                     os &lt;&lt; &quot;&lt;&quot; &lt;&lt; m_floatingArg-&gt;placeholder &lt;&lt; &quot;&gt;&quot;;</span>
+<span class="lineNum">     891 </span>            :                 else
+<span class="lineNum">     892 </span><span class="lineNoCov">          0 :                     throw std::logic_error( &quot;non consecutive positional arguments with no floating args&quot; );</span>
+<span class="lineNum">     893 </span>            :             }
+<span class="lineNum">     894 </span>            :             // !TBD No indication of mandatory args
+<span class="lineNum">     895 </span><span class="lineNoCov">          0 :             if( m_floatingArg.get() ) {</span>
+<span class="lineNum">     896 </span><span class="lineNoCov">          0 :                 if( m_highestSpecifiedArgPosition &gt; 1 )</span>
+<span class="lineNum">     897 </span><span class="lineNoCov">          0 :                     os &lt;&lt; &quot; &quot;;</span>
+<span class="lineNum">     898 </span><span class="lineNoCov">          0 :                 os &lt;&lt; &quot;[&lt;&quot; &lt;&lt; m_floatingArg-&gt;placeholder &lt;&lt; &quot;&gt; ...]&quot;;</span>
+<span class="lineNum">     899 </span>            :             }
+<span class="lineNum">     900 </span><span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">     901 </span>            :         std::string argSynopsis() const {
+<span class="lineNum">     902 </span>            :             std::ostringstream oss;
+<span class="lineNum">     903 </span>            :             argSynopsis( oss );
+<span class="lineNum">     904 </span>            :             return oss.str();
+<a name="905"><span class="lineNum">     905 </span>            :         }</a>
+<span class="lineNum">     906 </span>            : 
+<span class="lineNum">     907 </span><span class="lineNoCov">          0 :         void usage( std::ostream&amp; os, std::string const&amp; procName ) const {</span>
+<span class="lineNum">     908 </span><span class="lineNoCov">          0 :             validate();</span>
+<span class="lineNum">     909 </span><span class="lineNoCov">          0 :             os &lt;&lt; &quot;usage:\n  &quot; &lt;&lt; procName &lt;&lt; &quot; &quot;;</span>
+<span class="lineNum">     910 </span><span class="lineNoCov">          0 :             argSynopsis( os );</span>
+<span class="lineNum">     911 </span><span class="lineNoCov">          0 :             if( !m_options.empty() ) {</span>
+<span class="lineNum">     912 </span><span class="lineNoCov">          0 :                 os &lt;&lt; &quot; [options]\n\nwhere options are: \n&quot;;</span>
+<span class="lineNum">     913 </span><span class="lineNoCov">          0 :                 optUsage( os, 2 );</span>
+<span class="lineNum">     914 </span>            :             }
+<span class="lineNum">     915 </span><span class="lineNoCov">          0 :             os &lt;&lt; &quot;\n&quot;;</span>
+<span class="lineNum">     916 </span><span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">     917 </span>            :         std::string usage( std::string const&amp; procName ) const {
+<span class="lineNum">     918 </span>            :             std::ostringstream oss;
+<span class="lineNum">     919 </span>            :             usage( oss, procName );
+<span class="lineNum">     920 </span>            :             return oss.str();
+<span class="lineNum">     921 </span>            :         }
+<span class="lineNum">     922 </span>            : 
+<span class="lineNum">     923 </span>            :         ConfigT parse( std::vector&lt;std::string&gt; const&amp; args ) const {
+<span class="lineNum">     924 </span>            :             ConfigT config;
+<span class="lineNum">     925 </span>            :             parseInto( args, config );
+<span class="lineNum">     926 </span>            :             return config;
+<a name="927"><span class="lineNum">     927 </span>            :         }</a>
+<span class="lineNum">     928 </span>            : 
+<span class="lineNum">     929 </span><span class="lineCov">         27 :         std::vector&lt;Parser::Token&gt; parseInto( std::vector&lt;std::string&gt; const&amp; args, ConfigT&amp; config ) const {</span>
+<span class="lineNum">     930 </span><span class="lineCov">         54 :             std::string processName = args.empty() ? std::string() : args[0];</span>
+<span class="lineNum">     931 </span><span class="lineCov">         27 :             std::size_t lastSlash = processName.find_last_of( &quot;/\\&quot; );</span>
+<span class="lineNum">     932 </span><span class="lineCov">         27 :             if( lastSlash != std::string::npos )</span>
+<span class="lineNum">     933 </span><span class="lineCov">          2 :                 processName = processName.substr( lastSlash+1 );</span>
+<span class="lineNum">     934 </span><span class="lineCov">         27 :             m_boundProcessName.set( config, processName );</span>
+<span class="lineNum">     935 </span><span class="lineCov">         54 :             std::vector&lt;Parser::Token&gt; tokens;</span>
+<span class="lineNum">     936 </span><span class="lineCov">         27 :             Parser parser;</span>
+<span class="lineNum">     937 </span><span class="lineCov">         27 :             parser.parseIntoTokens( args, tokens );</span>
+<span class="lineNum">     938 </span><span class="lineCov">         51 :             return populate( tokens, config );</span>
+<a name="939"><span class="lineNum">     939 </span>            :         }</a>
+<span class="lineNum">     940 </span>            : 
+<span class="lineNum">     941 </span><span class="lineCov">         27 :         std::vector&lt;Parser::Token&gt; populate( std::vector&lt;Parser::Token&gt; const&amp; tokens, ConfigT&amp; config ) const {</span>
+<span class="lineNum">     942 </span><span class="lineCov">         27 :             validate();</span>
+<span class="lineNum">     943 </span><span class="lineCov">         27 :             std::vector&lt;Parser::Token&gt; unusedTokens = populateOptions( tokens, config );</span>
+<span class="lineNum">     944 </span><span class="lineCov">         24 :             unusedTokens = populateFixedArgs( unusedTokens, config );</span>
+<span class="lineNum">     945 </span><span class="lineCov">         24 :             unusedTokens = populateFloatingArgs( unusedTokens, config );</span>
+<span class="lineNum">     946 </span><span class="lineCov">         24 :             return unusedTokens;</span>
+<a name="947"><span class="lineNum">     947 </span>            :         }</a>
+<span class="lineNum">     948 </span>            : 
+<span class="lineNum">     949 </span><span class="lineCov">         27 :         std::vector&lt;Parser::Token&gt; populateOptions( std::vector&lt;Parser::Token&gt; const&amp; tokens, ConfigT&amp; config ) const {</span>
+<span class="lineNum">     950 </span><span class="lineCov">         27 :             std::vector&lt;Parser::Token&gt; unusedTokens;</span>
+<span class="lineNum">     951 </span><span class="lineCov">         54 :             std::vector&lt;std::string&gt; errors;</span>
+<span class="lineNum">     952 </span><span class="lineCov">         53 :             for( std::size_t i = 0; i &lt; tokens.size(); ++i ) {</span>
+<span class="lineNum">     953 </span><span class="lineCov">         26 :                 Parser::Token const&amp; token = tokens[i];</span>
+<span class="lineNum">     954 </span><span class="lineCov">         26 :                 typename std::vector&lt;Arg&gt;::const_iterator it = m_options.begin(), itEnd = m_options.end();</span>
+<span class="lineNum">     955 </span><span class="lineCov">        712 :                 for(; it != itEnd; ++it ) {</span>
+<span class="lineNum">     956 </span><span class="lineCov">        364 :                     Arg const&amp; arg = *it;</span>
+<span class="lineNum">     957 </span>            : 
+<span class="lineNum">     958 </span>            :                     try {
+<span class="lineNum">     959 </span><span class="lineCov">        737 :                         if( ( token.type == Parser::Token::ShortOpt &amp;&amp; arg.hasShortName( token.data ) ) ||</span>
+<span class="lineNum">     960 </span><span class="lineCov">        474 :                             ( token.type == Parser::Token::LongOpt &amp;&amp; arg.hasLongName( token.data ) ) ) {</span>
+<span class="lineNum">     961 </span><span class="lineCov">         24 :                             if( arg.takesArg() ) {</span>
+<span class="lineNum">     962 </span><span class="lineCov">         15 :                                 if( i == tokens.size()-1 || tokens[i+1].type != Parser::Token::Positional )</span>
+<span class="lineNum">     963 </span><span class="lineCov">          1 :                                     errors.push_back( &quot;Expected argument to option: &quot; + token.data );</span>
+<span class="lineNum">     964 </span>            :                                 else
+<span class="lineNum">     965 </span><span class="lineCov">         14 :                                     arg.boundField.set( config, tokens[++i].data );</span>
+<span class="lineNum">     966 </span>            :                             }
+<span class="lineNum">     967 </span>            :                             else {
+<span class="lineNum">     968 </span><span class="lineCov">          9 :                                 arg.boundField.set( config, &quot;true&quot; );</span>
+<span class="lineNum">     969 </span>            :                             }
+<span class="lineNum">     970 </span><span class="lineCov">         21 :                             break;</span>
+<span class="lineNum">     971 </span>            :                         }
+<span class="lineNum">     972 </span>            :                     }
+<span class="lineNum">     973 </span><span class="lineCov">          6 :                     catch( std::exception&amp; ex ) {</span>
+<span class="lineNum">     974 </span><span class="lineCov">          3 :                         errors.push_back( std::string( ex.what() ) + &quot;\n- while parsing: (&quot; + arg.commands() + &quot;)&quot; );</span>
+<span class="lineNum">     975 </span>            :                     }
+<span class="lineNum">     976 </span>            :                 }
+<span class="lineNum">     977 </span><span class="lineCov">         26 :                 if( it == itEnd ) {</span>
+<span class="lineNum">     978 </span><span class="lineCov">          5 :                     if( token.type == Parser::Token::Positional || !m_throwOnUnrecognisedTokens )</span>
+<span class="lineNum">     979 </span><span class="lineCov">          5 :                         unusedTokens.push_back( token );</span>
+<span class="lineNum">     980 </span><span class="lineNoCov">          0 :                     else if( errors.empty() &amp;&amp; m_throwOnUnrecognisedTokens )</span>
+<span class="lineNum">     981 </span><span class="lineNoCov">          0 :                         errors.push_back( &quot;unrecognised option: &quot; + token.data );</span>
+<span class="lineNum">     982 </span>            :                 }
+<span class="lineNum">     983 </span>            :             }
+<span class="lineNum">     984 </span><span class="lineCov">         27 :             if( !errors.empty() ) {</span>
+<span class="lineNum">     985 </span><span class="lineCov">          6 :                 std::ostringstream oss;</span>
+<span class="lineNum">     986 </span><span class="lineCov">          7 :                 for( std::vector&lt;std::string&gt;::const_iterator it = errors.begin(), itEnd = errors.end();</span>
+<span class="lineNum">     987 </span><span class="lineCov">          7 :                         it != itEnd;</span>
+<span class="lineNum">     988 </span>            :                         ++it ) {
+<span class="lineNum">     989 </span><span class="lineCov">          4 :                     if( it != errors.begin() )</span>
+<span class="lineNum">     990 </span><span class="lineCov">          1 :                         oss &lt;&lt; &quot;\n&quot;;</span>
+<span class="lineNum">     991 </span><span class="lineCov">          4 :                     oss &lt;&lt; *it;</span>
+<span class="lineNum">     992 </span>            :                 }
+<span class="lineNum">     993 </span><span class="lineCov">          3 :                 throw std::runtime_error( oss.str() );</span>
+<span class="lineNum">     994 </span>            :             }
+<a name="995"><span class="lineNum">     995 </span><span class="lineCov">         48 :             return unusedTokens;</span></a>
+<span class="lineNum">     996 </span>            :         }
+<span class="lineNum">     997 </span><span class="lineCov">         24 :         std::vector&lt;Parser::Token&gt; populateFixedArgs( std::vector&lt;Parser::Token&gt; const&amp; tokens, ConfigT&amp; config ) const {</span>
+<span class="lineNum">     998 </span><span class="lineCov">         24 :             std::vector&lt;Parser::Token&gt; unusedTokens;</span>
+<span class="lineNum">     999 </span><span class="lineCov">         24 :             int position = 1;</span>
+<span class="lineNum">    1000 </span><span class="lineCov">         27 :             for( std::size_t i = 0; i &lt; tokens.size(); ++i ) {</span>
+<span class="lineNum">    1001 </span><span class="lineCov">          3 :                 Parser::Token const&amp; token = tokens[i];</span>
+<span class="lineNum">    1002 </span><span class="lineCov">          3 :                 typename std::map&lt;int, Arg&gt;::const_iterator it = m_positionalArgs.find( position );</span>
+<span class="lineNum">    1003 </span><span class="lineCov">          3 :                 if( it != m_positionalArgs.end() )</span>
+<span class="lineNum">    1004 </span><span class="lineNoCov">          0 :                     it-&gt;second.boundField.set( config, token.data );</span>
+<span class="lineNum">    1005 </span>            :                 else
+<span class="lineNum">    1006 </span><span class="lineCov">          3 :                     unusedTokens.push_back( token );</span>
+<span class="lineNum">    1007 </span><span class="lineCov">          3 :                 if( token.type == Parser::Token::Positional )</span>
+<span class="lineNum">    1008 </span><span class="lineCov">          3 :                     position++;</span>
+<span class="lineNum">    1009 </span>            :             }
+<a name="1010"><span class="lineNum">    1010 </span><span class="lineCov">         24 :             return unusedTokens;</span></a>
+<span class="lineNum">    1011 </span>            :         }
+<span class="lineNum">    1012 </span><span class="lineCov">         24 :         std::vector&lt;Parser::Token&gt; populateFloatingArgs( std::vector&lt;Parser::Token&gt; const&amp; tokens, ConfigT&amp; config ) const {</span>
+<span class="lineNum">    1013 </span><span class="lineCov">         24 :             if( !m_floatingArg.get() )</span>
+<span class="lineNum">    1014 </span><span class="lineNoCov">          0 :                 return tokens;</span>
+<span class="lineNum">    1015 </span><span class="lineCov">         48 :             std::vector&lt;Parser::Token&gt; unusedTokens;</span>
+<span class="lineNum">    1016 </span><span class="lineCov">         27 :             for( std::size_t i = 0; i &lt; tokens.size(); ++i ) {</span>
+<span class="lineNum">    1017 </span><span class="lineCov">          3 :                 Parser::Token const&amp; token = tokens[i];</span>
+<span class="lineNum">    1018 </span><span class="lineCov">          3 :                 if( token.type == Parser::Token::Positional )</span>
+<span class="lineNum">    1019 </span><span class="lineCov">          3 :                     m_floatingArg-&gt;boundField.set( config, token.data );</span>
+<span class="lineNum">    1020 </span>            :                 else
+<span class="lineNum">    1021 </span><span class="lineNoCov">          0 :                     unusedTokens.push_back( token );</span>
+<span class="lineNum">    1022 </span>            :             }
+<span class="lineNum">    1023 </span><span class="lineCov">         24 :             return unusedTokens;</span>
+<a name="1024"><span class="lineNum">    1024 </span>            :         }</a>
+<span class="lineNum">    1025 </span>            : 
+<span class="lineNum">    1026 </span><span class="lineCov">         27 :         void validate() const</span>
+<span class="lineNum">    1027 </span>            :         {
+<span class="lineNum">    1028 </span><span class="lineCov">         27 :             if( m_options.empty() &amp;&amp; m_positionalArgs.empty() &amp;&amp; !m_floatingArg.get() )</span>
+<span class="lineNum">    1029 </span><span class="lineNoCov">          0 :                 throw std::logic_error( &quot;No options or arguments specified&quot; );</span>
+<span class="lineNum">    1030 </span>            : 
+<span class="lineNum">    1031 </span><span class="lineCov">        756 :             for( typename std::vector&lt;Arg&gt;::const_iterator  it = m_options.begin(),</span>
+<span class="lineNum">    1032 </span><span class="lineCov">         27 :                                                             itEnd = m_options.end();</span>
+<span class="lineNum">    1033 </span><span class="lineCov">        756 :                     it != itEnd; ++it )</span>
+<span class="lineNum">    1034 </span><span class="lineCov">        729 :                 it-&gt;validate();</span>
+<span class="lineNum">    1035 </span><span class="lineCov">         27 :         }</span>
+<span class="lineNum">    1036 </span>            : 
+<span class="lineNum">    1037 </span>            :     private:
+<span class="lineNum">    1038 </span>            :         Detail::BoundArgFunction&lt;ConfigT&gt; m_boundProcessName;
+<span class="lineNum">    1039 </span>            :         std::vector&lt;Arg&gt; m_options;
+<span class="lineNum">    1040 </span>            :         std::map&lt;int, Arg&gt; m_positionalArgs;
+<span class="lineNum">    1041 </span>            :         ArgAutoPtr m_floatingArg;
+<span class="lineNum">    1042 </span>            :         int m_highestSpecifiedArgPosition;
+<span class="lineNum">    1043 </span>            :         bool m_throwOnUnrecognisedTokens;
+<span class="lineNum">    1044 </span>            :     };
+<span class="lineNum">    1045 </span>            : 
+<span class="lineNum">    1046 </span>            : } // end namespace Clara
+<span class="lineNum">    1047 </span>            : 
+<span class="lineNum">    1048 </span>            : 
+<span class="lineNum">    1049 </span>            : STITCH_CLARA_CLOSE_NAMESPACE
+<span class="lineNum">    1050 </span>            : #undef STITCH_CLARA_OPEN_NAMESPACE
+<span class="lineNum">    1051 </span>            : #undef STITCH_CLARA_CLOSE_NAMESPACE
+<span class="lineNum">    1052 </span>            : 
+<span class="lineNum">    1053 </span>            : 
+<span class="lineNum">    1054 </span>            : #endif // TWOBLUECUBES_CLARA_H_INCLUDED
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

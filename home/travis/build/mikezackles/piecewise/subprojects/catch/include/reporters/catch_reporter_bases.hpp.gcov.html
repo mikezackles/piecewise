@@ -1,0 +1,372 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Code coverage - /home/travis/build/mikezackles/piecewise/subprojects/catch/include/reporters/catch_reporter_bases.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../../../../../index.html">top level</a> - <a href="index.html">home/travis/build/mikezackles/piecewise/subprojects/catch/include/reporters</a> - catch_reporter_bases.hpp<span style="font-size: 80%;"> (source / <a href="catch_reporter_bases.hpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Code coverage</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">40</td>
+            <td class="headerCovTableEntry">121</td>
+            <td class="headerCovTableEntryLo">33.1 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2018-02-19 01:04:17</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">14</td>
+            <td class="headerCovTableEntry">43</td>
+            <td class="headerCovTableEntryLo">32.6 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Legend:</td>
+            <td class="headerValueLeg">            Lines:
+            <span class="coverLegendCov">hit</span>
+            <span class="coverLegendNoCov">not hit</span>
+</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<span class="lineNum">       2 </span>            :  *  Created by Phil on 27/11/2013.
+<span class="lineNum">       3 </span>            :  *  Copyright 2013 Two Blue Cubes Ltd. All rights reserved.
+<span class="lineNum">       4 </span>            :  *
+<span class="lineNum">       5 </span>            :  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
+<span class="lineNum">       6 </span>            :  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+<span class="lineNum">       7 </span>            :  */
+<span class="lineNum">       8 </span>            : #ifndef TWOBLUECUBES_CATCH_REPORTER_BASES_HPP_INCLUDED
+<span class="lineNum">       9 </span>            : #define TWOBLUECUBES_CATCH_REPORTER_BASES_HPP_INCLUDED
+<span class="lineNum">      10 </span>            : 
+<span class="lineNum">      11 </span>            : #include &quot;../internal/catch_interfaces_reporter.h&quot;
+<span class="lineNum">      12 </span>            : #include &quot;../internal/catch_errno_guard.hpp&quot;
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            : #include &lt;cstring&gt;
+<span class="lineNum">      15 </span>            : #include &lt;cfloat&gt;
+<span class="lineNum">      16 </span>            : #include &lt;cstdio&gt;
+<span class="lineNum">      17 </span>            : #include &lt;assert.h&gt;
+<span class="lineNum">      18 </span>            : 
+<span class="lineNum">      19 </span>            : namespace Catch {
+<span class="lineNum">      20 </span>            : 
+<span class="lineNum">      21 </span>            :     namespace {
+<a name="22"><span class="lineNum">      22 </span>            :         // Because formatting using c++ streams is stateful, drop down to C is required</a>
+<span class="lineNum">      23 </span>            :         // Alternatively we could use stringstream, but its performance is... not good.
+<span class="lineNum">      24 </span><span class="lineNoCov">          0 :         std::string getFormattedDuration( double duration ) {</span>
+<span class="lineNum">      25 </span>            :             // Max exponent + 1 is required to represent the whole part
+<span class="lineNum">      26 </span>            :             // + 1 for decimal point
+<span class="lineNum">      27 </span>            :             // + 3 for the 3 decimal places
+<span class="lineNum">      28 </span>            :             // + 1 for null terminator
+<span class="lineNum">      29 </span><span class="lineNoCov">          0 :             const size_t maxDoubleSize = DBL_MAX_10_EXP + 1 + 1 + 3 + 1;</span>
+<span class="lineNum">      30 </span>            :             char buffer[maxDoubleSize];
+<span class="lineNum">      31 </span>            : 
+<span class="lineNum">      32 </span>            :             // Save previous errno, to prevent sprintf from overwriting it
+<span class="lineNum">      33 </span><span class="lineNoCov">          0 :             ErrnoGuard guard;</span>
+<span class="lineNum">      34 </span>            : #ifdef _MSC_VER
+<span class="lineNum">      35 </span>            :             sprintf_s(buffer, &quot;%.3f&quot;, duration);
+<span class="lineNum">      36 </span>            : #else
+<span class="lineNum">      37 </span><span class="lineNoCov">          0 :             sprintf(buffer, &quot;%.3f&quot;, duration);</span>
+<span class="lineNum">      38 </span>            : #endif
+<span class="lineNum">      39 </span><span class="lineNoCov">          0 :             return std::string(buffer);</span>
+<span class="lineNum">      40 </span>            :         }
+<span class="lineNum">      41 </span>            :     }
+<span class="lineNum">      42 </span>            : 
+<span class="lineNum">      43 </span>            : 
+<a name="44"><span class="lineNum">      44 </span>            :     struct StreamingReporterBase : SharedImpl&lt;IStreamingReporter&gt; {</a>
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span><span class="lineCov">          2 :         StreamingReporterBase( ReporterConfig const&amp; _config )</span>
+<span class="lineNum">      47 </span><span class="lineCov">          2 :         :   m_config( _config.fullConfig() ),</span>
+<span class="lineNum">      48 </span><span class="lineCov">          2 :             stream( _config.stream() )</span>
+<span class="lineNum">      49 </span>            :         {
+<span class="lineNum">      50 </span><span class="lineCov">          2 :             m_reporterPrefs.shouldRedirectStdOut = false;</span>
+<a name="51"><span class="lineNum">      51 </span><span class="lineCov">          2 :         }</span></a>
+<span class="lineNum">      52 </span>            : 
+<span class="lineNum">      53 </span><span class="lineCov">        304 :         virtual ReporterPreferences getPreferences() const CATCH_OVERRIDE {</span>
+<span class="lineNum">      54 </span><span class="lineCov">        304 :             return m_reporterPrefs;</span>
+<span class="lineNum">      55 </span>            :         }
+<span class="lineNum">      56 </span>            : 
+<a name="57"><span class="lineNum">      57 </span>            :         virtual ~StreamingReporterBase() CATCH_OVERRIDE;</a>
+<span class="lineNum">      58 </span>            : 
+<a name="59"><span class="lineNum">      59 </span><span class="lineNoCov">          0 :         virtual void noMatchingTestCases( std::string const&amp; ) CATCH_OVERRIDE {}</span></a>
+<span class="lineNum">      60 </span>            : 
+<span class="lineNum">      61 </span><span class="lineCov">          2 :         virtual void testRunStarting( TestRunInfo const&amp; _testRunInfo ) CATCH_OVERRIDE {</span>
+<a name="62"><span class="lineNum">      62 </span><span class="lineCov">          2 :             currentTestRunInfo = _testRunInfo;</span></a>
+<span class="lineNum">      63 </span><span class="lineCov">          2 :         }</span>
+<span class="lineNum">      64 </span><span class="lineCov">          2 :         virtual void testGroupStarting( GroupInfo const&amp; _groupInfo ) CATCH_OVERRIDE {</span>
+<span class="lineNum">      65 </span><span class="lineCov">          2 :             currentGroupInfo = _groupInfo;</span>
+<a name="66"><span class="lineNum">      66 </span><span class="lineCov">          2 :         }</span></a>
+<span class="lineNum">      67 </span>            : 
+<span class="lineNum">      68 </span><span class="lineCov">        113 :         virtual void testCaseStarting( TestCaseInfo const&amp; _testInfo ) CATCH_OVERRIDE {</span>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">        113 :             currentTestCaseInfo = _testInfo;</span></a>
+<span class="lineNum">      70 </span><span class="lineCov">        113 :         }</span>
+<span class="lineNum">      71 </span><span class="lineCov">        523 :         virtual void sectionStarting( SectionInfo const&amp; _sectionInfo ) CATCH_OVERRIDE {</span>
+<span class="lineNum">      72 </span><span class="lineCov">        523 :             m_sectionStack.push_back( _sectionInfo );</span>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">        523 :         }</span></a>
+<span class="lineNum">      74 </span>            : 
+<span class="lineNum">      75 </span><span class="lineCov">        523 :         virtual void sectionEnded( SectionStats const&amp; /* _sectionStats */ ) CATCH_OVERRIDE {</span>
+<a name="76"><span class="lineNum">      76 </span><span class="lineCov">        523 :             m_sectionStack.pop_back();</span></a>
+<span class="lineNum">      77 </span><span class="lineCov">        523 :         }</span>
+<span class="lineNum">      78 </span><span class="lineCov">        113 :         virtual void testCaseEnded( TestCaseStats const&amp; /* _testCaseStats */ ) CATCH_OVERRIDE {</span>
+<a name="79"><span class="lineNum">      79 </span><span class="lineCov">        113 :             currentTestCaseInfo.reset();</span></a>
+<span class="lineNum">      80 </span><span class="lineCov">        113 :         }</span>
+<span class="lineNum">      81 </span><span class="lineCov">          2 :         virtual void testGroupEnded( TestGroupStats const&amp; /* _testGroupStats */ ) CATCH_OVERRIDE {</span>
+<a name="82"><span class="lineNum">      82 </span><span class="lineCov">          2 :             currentGroupInfo.reset();</span></a>
+<span class="lineNum">      83 </span><span class="lineCov">          2 :         }</span>
+<span class="lineNum">      84 </span><span class="lineCov">          2 :         virtual void testRunEnded( TestRunStats const&amp; /* _testRunStats */ ) CATCH_OVERRIDE {</span>
+<span class="lineNum">      85 </span><span class="lineCov">          2 :             currentTestCaseInfo.reset();</span>
+<span class="lineNum">      86 </span><span class="lineCov">          2 :             currentGroupInfo.reset();</span>
+<span class="lineNum">      87 </span><span class="lineCov">          2 :             currentTestRunInfo.reset();</span>
+<a name="88"><span class="lineNum">      88 </span><span class="lineCov">          2 :         }</span></a>
+<span class="lineNum">      89 </span>            : 
+<span class="lineNum">      90 </span><span class="lineCov">         76 :         virtual void skipTest( TestCaseInfo const&amp; ) CATCH_OVERRIDE {</span>
+<span class="lineNum">      91 </span>            :             // Don't do anything with this by default.
+<span class="lineNum">      92 </span>            :             // It can optionally be overridden in the derived class.
+<span class="lineNum">      93 </span><span class="lineCov">         76 :         }</span>
+<span class="lineNum">      94 </span>            : 
+<span class="lineNum">      95 </span>            :         Ptr&lt;IConfig const&gt; m_config;
+<span class="lineNum">      96 </span>            :         std::ostream&amp; stream;
+<span class="lineNum">      97 </span>            : 
+<span class="lineNum">      98 </span>            :         LazyStat&lt;TestRunInfo&gt; currentTestRunInfo;
+<span class="lineNum">      99 </span>            :         LazyStat&lt;GroupInfo&gt; currentGroupInfo;
+<span class="lineNum">     100 </span>            :         LazyStat&lt;TestCaseInfo&gt; currentTestCaseInfo;
+<span class="lineNum">     101 </span>            : 
+<span class="lineNum">     102 </span>            :         std::vector&lt;SectionInfo&gt; m_sectionStack;
+<span class="lineNum">     103 </span>            :         ReporterPreferences m_reporterPrefs;
+<span class="lineNum">     104 </span>            :     };
+<span class="lineNum">     105 </span>            : 
+<span class="lineNum">     106 </span>            :     struct CumulativeReporterBase : SharedImpl&lt;IStreamingReporter&gt; {
+<a name="107"><span class="lineNum">     107 </span>            :         template&lt;typename T, typename ChildNodeT&gt;</a>
+<a name="108"><span class="lineNum">     108 </span>            :         struct Node : SharedImpl&lt;&gt; {</a>
+<span class="lineNum">     109 </span><span class="lineNoCov">          0 :             explicit Node( T const&amp; _value ) : value( _value ) {}</span>
+<span class="lineNum">     110 </span><span class="lineNoCov">          0 :             virtual ~Node() {}</span>
+<span class="lineNum">     111 </span>            : 
+<span class="lineNum">     112 </span>            :             typedef std::vector&lt;Ptr&lt;ChildNodeT&gt; &gt; ChildNodes;
+<span class="lineNum">     113 </span>            :             T value;
+<span class="lineNum">     114 </span>            :             ChildNodes children;
+<a name="115"><span class="lineNum">     115 </span>            :         };</a>
+<span class="lineNum">     116 </span>            :         struct SectionNode : SharedImpl&lt;&gt; {
+<span class="lineNum">     117 </span><span class="lineNoCov">          0 :             explicit SectionNode( SectionStats const&amp; _stats ) : stats( _stats ) {}</span>
+<span class="lineNum">     118 </span>            :             virtual ~SectionNode();
+<span class="lineNum">     119 </span>            : 
+<span class="lineNum">     120 </span>            :             bool operator == ( SectionNode const&amp; other ) const {
+<span class="lineNum">     121 </span>            :                 return stats.sectionInfo.lineInfo == other.stats.sectionInfo.lineInfo;
+<span class="lineNum">     122 </span>            :             }
+<span class="lineNum">     123 </span>            :             bool operator == ( Ptr&lt;SectionNode&gt; const&amp; other ) const {
+<span class="lineNum">     124 </span>            :                 return operator==( *other );
+<span class="lineNum">     125 </span>            :             }
+<span class="lineNum">     126 </span>            : 
+<span class="lineNum">     127 </span>            :             SectionStats stats;
+<span class="lineNum">     128 </span>            :             typedef std::vector&lt;Ptr&lt;SectionNode&gt; &gt; ChildSections;
+<span class="lineNum">     129 </span>            :             typedef std::vector&lt;AssertionStats&gt; Assertions;
+<span class="lineNum">     130 </span>            :             ChildSections childSections;
+<span class="lineNum">     131 </span>            :             Assertions assertions;
+<span class="lineNum">     132 </span>            :             std::string stdOut;
+<span class="lineNum">     133 </span>            :             std::string stdErr;
+<span class="lineNum">     134 </span>            :         };
+<a name="135"><span class="lineNum">     135 </span>            : </a>
+<a name="136"><span class="lineNum">     136 </span>            :         struct BySectionInfo {</a>
+<a name="137"><span class="lineNum">     137 </span><span class="lineNoCov">          0 :             BySectionInfo( SectionInfo const&amp; other ) : m_other( other ) {}</span></a>
+<span class="lineNum">     138 </span><span class="lineNoCov">          0 :             BySectionInfo( BySectionInfo const&amp; other ) : m_other( other.m_other ) {}</span>
+<span class="lineNum">     139 </span><span class="lineNoCov">          0 :             bool operator() ( Ptr&lt;SectionNode&gt; const&amp; node ) const {</span>
+<span class="lineNum">     140 </span><span class="lineNoCov">          0 :                 return ((node-&gt;stats.sectionInfo.name == m_other.name) &amp;&amp;</span>
+<span class="lineNum">     141 </span><span class="lineNoCov">          0 :                         (node-&gt;stats.sectionInfo.lineInfo == m_other.lineInfo));</span>
+<span class="lineNum">     142 </span>            :             }
+<span class="lineNum">     143 </span>            :         private:
+<span class="lineNum">     144 </span>            :             void operator=( BySectionInfo const&amp; );
+<span class="lineNum">     145 </span>            :             SectionInfo const&amp; m_other;
+<span class="lineNum">     146 </span>            :         };
+<span class="lineNum">     147 </span>            : 
+<span class="lineNum">     148 </span>            : 
+<span class="lineNum">     149 </span>            :         typedef Node&lt;TestCaseStats, SectionNode&gt; TestCaseNode;
+<span class="lineNum">     150 </span>            :         typedef Node&lt;TestGroupStats, TestCaseNode&gt; TestGroupNode;
+<a name="151"><span class="lineNum">     151 </span>            :         typedef Node&lt;TestRunStats, TestGroupNode&gt; TestRunNode;</a>
+<span class="lineNum">     152 </span>            : 
+<span class="lineNum">     153 </span><span class="lineNoCov">          0 :         CumulativeReporterBase( ReporterConfig const&amp; _config )</span>
+<span class="lineNum">     154 </span><span class="lineNoCov">          0 :         :   m_config( _config.fullConfig() ),</span>
+<span class="lineNum">     155 </span><span class="lineNoCov">          0 :             stream( _config.stream() )</span>
+<span class="lineNum">     156 </span>            :         {
+<span class="lineNum">     157 </span><span class="lineNoCov">          0 :             m_reporterPrefs.shouldRedirectStdOut = false;</span>
+<span class="lineNum">     158 </span><span class="lineNoCov">          0 :         }</span>
+<a name="159"><span class="lineNum">     159 </span>            :         ~CumulativeReporterBase();</a>
+<span class="lineNum">     160 </span>            : 
+<span class="lineNum">     161 </span><span class="lineNoCov">          0 :         virtual ReporterPreferences getPreferences() const CATCH_OVERRIDE {</span>
+<span class="lineNum">     162 </span><span class="lineNoCov">          0 :             return m_reporterPrefs;</span>
+<a name="163"><span class="lineNum">     163 </span>            :         }</a>
+<a name="164"><span class="lineNum">     164 </span>            : </a>
+<span class="lineNum">     165 </span><span class="lineNoCov">          0 :         virtual void testRunStarting( TestRunInfo const&amp; ) CATCH_OVERRIDE {}</span>
+<a name="166"><span class="lineNum">     166 </span><span class="lineNoCov">          0 :         virtual void testGroupStarting( GroupInfo const&amp; ) CATCH_OVERRIDE {}</span></a>
+<span class="lineNum">     167 </span>            : 
+<a name="168"><span class="lineNum">     168 </span><span class="lineNoCov">          0 :         virtual void testCaseStarting( TestCaseInfo const&amp; ) CATCH_OVERRIDE {}</span></a>
+<span class="lineNum">     169 </span>            : 
+<span class="lineNum">     170 </span><span class="lineNoCov">          0 :         virtual void sectionStarting( SectionInfo const&amp; sectionInfo ) CATCH_OVERRIDE {</span>
+<span class="lineNum">     171 </span><span class="lineNoCov">          0 :             SectionStats incompleteStats( sectionInfo, Counts(), 0, false );</span>
+<span class="lineNum">     172 </span><span class="lineNoCov">          0 :             Ptr&lt;SectionNode&gt; node;</span>
+<span class="lineNum">     173 </span><span class="lineNoCov">          0 :             if( m_sectionStack.empty() ) {</span>
+<span class="lineNum">     174 </span><span class="lineNoCov">          0 :                 if( !m_rootSection )</span>
+<span class="lineNum">     175 </span><span class="lineNoCov">          0 :                     m_rootSection = new SectionNode( incompleteStats );</span>
+<span class="lineNum">     176 </span><span class="lineNoCov">          0 :                 node = m_rootSection;</span>
+<span class="lineNum">     177 </span>            :             }
+<span class="lineNum">     178 </span>            :             else {
+<span class="lineNum">     179 </span><span class="lineNoCov">          0 :                 SectionNode&amp; parentNode = *m_sectionStack.back();</span>
+<span class="lineNum">     180 </span>            :                 SectionNode::ChildSections::const_iterator it =
+<span class="lineNum">     181 </span><span class="lineNoCov">          0 :                     std::find_if(   parentNode.childSections.begin(),</span>
+<span class="lineNum">     182 </span>            :                                     parentNode.childSections.end(),
+<span class="lineNum">     183 </span><span class="lineNoCov">          0 :                                     BySectionInfo( sectionInfo ) );</span>
+<span class="lineNum">     184 </span><span class="lineNoCov">          0 :                 if( it == parentNode.childSections.end() ) {</span>
+<span class="lineNum">     185 </span><span class="lineNoCov">          0 :                     node = new SectionNode( incompleteStats );</span>
+<span class="lineNum">     186 </span><span class="lineNoCov">          0 :                     parentNode.childSections.push_back( node );</span>
+<span class="lineNum">     187 </span>            :                 }
+<span class="lineNum">     188 </span>            :                 else
+<span class="lineNum">     189 </span><span class="lineNoCov">          0 :                     node = *it;</span>
+<span class="lineNum">     190 </span>            :             }
+<span class="lineNum">     191 </span><span class="lineNoCov">          0 :             m_sectionStack.push_back( node );</span>
+<span class="lineNum">     192 </span><span class="lineNoCov">          0 :             m_deepestSection = node;</span>
+<a name="193"><span class="lineNum">     193 </span><span class="lineNoCov">          0 :         }</span></a>
+<span class="lineNum">     194 </span>            : 
+<a name="195"><span class="lineNum">     195 </span><span class="lineNoCov">          0 :         virtual void assertionStarting( AssertionInfo const&amp; ) CATCH_OVERRIDE {}</span></a>
+<span class="lineNum">     196 </span>            : 
+<span class="lineNum">     197 </span><span class="lineNoCov">          0 :         virtual bool assertionEnded( AssertionStats const&amp; assertionStats ) CATCH_OVERRIDE {</span>
+<span class="lineNum">     198 </span><span class="lineNoCov">          0 :             assert( !m_sectionStack.empty() );</span>
+<span class="lineNum">     199 </span><span class="lineNoCov">          0 :             SectionNode&amp; sectionNode = *m_sectionStack.back();</span>
+<span class="lineNum">     200 </span><span class="lineNoCov">          0 :             sectionNode.assertions.push_back( assertionStats );</span>
+<span class="lineNum">     201 </span>            :             // AssertionResult holds a pointer to a temporary DecomposedExpression,
+<span class="lineNum">     202 </span>            :             // which getExpandedExpression() calls to build the expression string.
+<span class="lineNum">     203 </span>            :             // Our section stack copy of the assertionResult will likely outlive the
+<span class="lineNum">     204 </span>            :             // temporary, so it must be expanded or discarded now to avoid calling
+<span class="lineNum">     205 </span>            :             // a destroyed object later.
+<span class="lineNum">     206 </span><span class="lineNoCov">          0 :             prepareExpandedExpression( sectionNode.assertions.back().assertionResult );</span>
+<a name="207"><span class="lineNum">     207 </span><span class="lineNoCov">          0 :             return true;</span></a>
+<span class="lineNum">     208 </span>            :         }
+<span class="lineNum">     209 </span><span class="lineNoCov">          0 :         virtual void sectionEnded( SectionStats const&amp; sectionStats ) CATCH_OVERRIDE {</span>
+<span class="lineNum">     210 </span><span class="lineNoCov">          0 :             assert( !m_sectionStack.empty() );</span>
+<span class="lineNum">     211 </span><span class="lineNoCov">          0 :             SectionNode&amp; node = *m_sectionStack.back();</span>
+<span class="lineNum">     212 </span><span class="lineNoCov">          0 :             node.stats = sectionStats;</span>
+<a name="213"><span class="lineNum">     213 </span><span class="lineNoCov">          0 :             m_sectionStack.pop_back();</span></a>
+<span class="lineNum">     214 </span><span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">     215 </span><span class="lineNoCov">          0 :         virtual void testCaseEnded( TestCaseStats const&amp; testCaseStats ) CATCH_OVERRIDE {</span>
+<span class="lineNum">     216 </span><span class="lineNoCov">          0 :             Ptr&lt;TestCaseNode&gt; node = new TestCaseNode( testCaseStats );</span>
+<span class="lineNum">     217 </span><span class="lineNoCov">          0 :             assert( m_sectionStack.size() == 0 );</span>
+<span class="lineNum">     218 </span><span class="lineNoCov">          0 :             node-&gt;children.push_back( m_rootSection );</span>
+<span class="lineNum">     219 </span><span class="lineNoCov">          0 :             m_testCases.push_back( node );</span>
+<span class="lineNum">     220 </span><span class="lineNoCov">          0 :             m_rootSection.reset();</span>
+<span class="lineNum">     221 </span>            : 
+<span class="lineNum">     222 </span><span class="lineNoCov">          0 :             assert( m_deepestSection );</span>
+<span class="lineNum">     223 </span><span class="lineNoCov">          0 :             m_deepestSection-&gt;stdOut = testCaseStats.stdOut;</span>
+<a name="224"><span class="lineNum">     224 </span><span class="lineNoCov">          0 :             m_deepestSection-&gt;stdErr = testCaseStats.stdErr;</span></a>
+<span class="lineNum">     225 </span><span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">     226 </span><span class="lineNoCov">          0 :         virtual void testGroupEnded( TestGroupStats const&amp; testGroupStats ) CATCH_OVERRIDE {</span>
+<span class="lineNum">     227 </span><span class="lineNoCov">          0 :             Ptr&lt;TestGroupNode&gt; node = new TestGroupNode( testGroupStats );</span>
+<span class="lineNum">     228 </span><span class="lineNoCov">          0 :             node-&gt;children.swap( m_testCases );</span>
+<a name="229"><span class="lineNum">     229 </span><span class="lineNoCov">          0 :             m_testGroups.push_back( node );</span></a>
+<span class="lineNum">     230 </span><span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">     231 </span><span class="lineNoCov">          0 :         virtual void testRunEnded( TestRunStats const&amp; testRunStats ) CATCH_OVERRIDE {</span>
+<span class="lineNum">     232 </span><span class="lineNoCov">          0 :             Ptr&lt;TestRunNode&gt; node = new TestRunNode( testRunStats );</span>
+<span class="lineNum">     233 </span><span class="lineNoCov">          0 :             node-&gt;children.swap( m_testGroups );</span>
+<span class="lineNum">     234 </span><span class="lineNoCov">          0 :             m_testRuns.push_back( node );</span>
+<span class="lineNum">     235 </span><span class="lineNoCov">          0 :             testRunEndedCumulative();</span>
+<span class="lineNum">     236 </span><span class="lineNoCov">          0 :         }</span>
+<a name="237"><span class="lineNum">     237 </span>            :         virtual void testRunEndedCumulative() = 0;</a>
+<span class="lineNum">     238 </span>            : 
+<a name="239"><span class="lineNum">     239 </span><span class="lineNoCov">          0 :         virtual void skipTest( TestCaseInfo const&amp; ) CATCH_OVERRIDE {}</span></a>
+<span class="lineNum">     240 </span>            : 
+<span class="lineNum">     241 </span><span class="lineNoCov">          0 :         virtual void prepareExpandedExpression( AssertionResult&amp; result ) const {</span>
+<span class="lineNum">     242 </span><span class="lineNoCov">          0 :             if( result.isOk() )</span>
+<span class="lineNum">     243 </span><span class="lineNoCov">          0 :                 result.discardDecomposedExpression();</span>
+<span class="lineNum">     244 </span>            :             else
+<span class="lineNum">     245 </span><span class="lineNoCov">          0 :                 result.expandDecomposedExpression();</span>
+<span class="lineNum">     246 </span><span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">     247 </span>            : 
+<span class="lineNum">     248 </span>            :         Ptr&lt;IConfig const&gt; m_config;
+<span class="lineNum">     249 </span>            :         std::ostream&amp; stream;
+<span class="lineNum">     250 </span>            :         std::vector&lt;AssertionStats&gt; m_assertions;
+<span class="lineNum">     251 </span>            :         std::vector&lt;std::vector&lt;Ptr&lt;SectionNode&gt; &gt; &gt; m_sections;
+<span class="lineNum">     252 </span>            :         std::vector&lt;Ptr&lt;TestCaseNode&gt; &gt; m_testCases;
+<span class="lineNum">     253 </span>            :         std::vector&lt;Ptr&lt;TestGroupNode&gt; &gt; m_testGroups;
+<span class="lineNum">     254 </span>            : 
+<span class="lineNum">     255 </span>            :         std::vector&lt;Ptr&lt;TestRunNode&gt; &gt; m_testRuns;
+<span class="lineNum">     256 </span>            : 
+<span class="lineNum">     257 </span>            :         Ptr&lt;SectionNode&gt; m_rootSection;
+<span class="lineNum">     258 </span>            :         Ptr&lt;SectionNode&gt; m_deepestSection;
+<span class="lineNum">     259 </span>            :         std::vector&lt;Ptr&lt;SectionNode&gt; &gt; m_sectionStack;
+<span class="lineNum">     260 </span>            :         ReporterPreferences m_reporterPrefs;
+<span class="lineNum">     261 </span>            : 
+<span class="lineNum">     262 </span>            :     };
+<a name="263"><span class="lineNum">     263 </span>            : </a>
+<span class="lineNum">     264 </span>            :     template&lt;char C&gt;
+<span class="lineNum">     265 </span><span class="lineCov">        964 :     char const* getLineOfChars() {</span>
+<span class="lineNum">     266 </span>            :         static char line[CATCH_CONFIG_CONSOLE_WIDTH] = {0};
+<span class="lineNum">     267 </span><span class="lineCov">        964 :         if( !*line ) {</span>
+<span class="lineNum">     268 </span><span class="lineCov">          3 :             std::memset( line, C, CATCH_CONFIG_CONSOLE_WIDTH-1 );</span>
+<span class="lineNum">     269 </span><span class="lineCov">          3 :             line[CATCH_CONFIG_CONSOLE_WIDTH-1] = 0;</span>
+<span class="lineNum">     270 </span>            :         }
+<span class="lineNum">     271 </span><span class="lineCov">        964 :         return line;</span>
+<span class="lineNum">     272 </span>            :     }
+<span class="lineNum">     273 </span>            : 
+<span class="lineNum">     274 </span>            : 
+<span class="lineNum">     275 </span>            :     struct TestEventListenerBase : StreamingReporterBase {
+<span class="lineNum">     276 </span>            :         TestEventListenerBase( ReporterConfig const&amp; _config )
+<span class="lineNum">     277 </span>            :         :   StreamingReporterBase( _config )
+<span class="lineNum">     278 </span>            :         {}
+<span class="lineNum">     279 </span>            : 
+<span class="lineNum">     280 </span>            :         virtual void assertionStarting( AssertionInfo const&amp; ) CATCH_OVERRIDE {}
+<span class="lineNum">     281 </span>            :         virtual bool assertionEnded( AssertionStats const&amp; ) CATCH_OVERRIDE {
+<span class="lineNum">     282 </span>            :             return false;
+<span class="lineNum">     283 </span>            :         }
+<span class="lineNum">     284 </span>            :     };
+<span class="lineNum">     285 </span>            : 
+<span class="lineNum">     286 </span>            : } // end namespace Catch
+<span class="lineNum">     287 </span>            : 
+<span class="lineNum">     288 </span>            : #endif // TWOBLUECUBES_CATCH_REPORTER_BASES_HPP_INCLUDED
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

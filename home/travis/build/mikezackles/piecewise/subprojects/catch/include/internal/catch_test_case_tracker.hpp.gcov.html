@@ -1,0 +1,455 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Code coverage - /home/travis/build/mikezackles/piecewise/subprojects/catch/include/internal/catch_test_case_tracker.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../../../../../index.html">top level</a> - <a href="index.html">home/travis/build/mikezackles/piecewise/subprojects/catch/include/internal</a> - catch_test_case_tracker.hpp<span style="font-size: 80%;"> (source / <a href="catch_test_case_tracker.hpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Code coverage</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">164</td>
+            <td class="headerCovTableEntry">175</td>
+            <td class="headerCovTableEntryHi">93.7 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2018-02-19 01:04:17</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">46</td>
+            <td class="headerCovTableEntry">48</td>
+            <td class="headerCovTableEntryHi">95.8 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Legend:</td>
+            <td class="headerValueLeg">            Lines:
+            <span class="coverLegendCov">hit</span>
+            <span class="coverLegendNoCov">not hit</span>
+</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<span class="lineNum">       2 </span>            :  *  Created by Phil Nash on 23/7/2013
+<span class="lineNum">       3 </span>            :  *  Copyright 2013 Two Blue Cubes Ltd. All rights reserved.
+<span class="lineNum">       4 </span>            :  *
+<span class="lineNum">       5 </span>            :  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
+<span class="lineNum">       6 </span>            :  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+<span class="lineNum">       7 </span>            :  */
+<span class="lineNum">       8 </span>            : #ifndef TWOBLUECUBES_CATCH_TEST_CASE_TRACKER_HPP_INCLUDED
+<span class="lineNum">       9 </span>            : #define TWOBLUECUBES_CATCH_TEST_CASE_TRACKER_HPP_INCLUDED
+<span class="lineNum">      10 </span>            : 
+<span class="lineNum">      11 </span>            : #include &quot;catch_compiler_capabilities.h&quot;
+<span class="lineNum">      12 </span>            : #include &quot;catch_ptr.hpp&quot;
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            : #include &lt;algorithm&gt;
+<span class="lineNum">      15 </span>            : #include &lt;string&gt;
+<span class="lineNum">      16 </span>            : #include &lt;assert.h&gt;
+<span class="lineNum">      17 </span>            : #include &lt;vector&gt;
+<span class="lineNum">      18 </span>            : #include &lt;stdexcept&gt;
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : CATCH_INTERNAL_SUPPRESS_ETD_WARNINGS
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            : namespace Catch {
+<a name="23"><span class="lineNum">      23 </span>            : namespace TestCaseTracking {</a>
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span><span class="lineCov">      24969 :     struct NameAndLocation {</span>
+<span class="lineNum">      26 </span>            :         std::string name;
+<a name="27"><span class="lineNum">      27 </span>            :         SourceLineInfo location;</a>
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span><span class="lineCov">       2339 :         NameAndLocation( std::string const&amp; _name, SourceLineInfo const&amp; _location )</span>
+<span class="lineNum">      30 </span><span class="lineCov">       2339 :         :   name( _name ),</span>
+<span class="lineNum">      31 </span><span class="lineCov">       2339 :             location( _location )</span>
+<span class="lineNum">      32 </span><span class="lineCov">       2339 :         {}</span>
+<a name="33"><span class="lineNum">      33 </span>            :     };</a>
+<span class="lineNum">      34 </span>            : 
+<span class="lineNum">      35 </span><span class="lineCov">        590 :     struct ITracker : SharedImpl&lt;&gt; {</span>
+<span class="lineNum">      36 </span>            :         virtual ~ITracker();
+<span class="lineNum">      37 </span>            : 
+<span class="lineNum">      38 </span>            :         // static queries
+<span class="lineNum">      39 </span>            :         virtual NameAndLocation const&amp; nameAndLocation() const = 0;
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span>            :         // dynamic queries
+<span class="lineNum">      42 </span>            :         virtual bool isComplete() const = 0; // Successfully completed or failed
+<span class="lineNum">      43 </span>            :         virtual bool isSuccessfullyCompleted() const = 0;
+<span class="lineNum">      44 </span>            :         virtual bool isOpen() const = 0; // Started but not complete
+<span class="lineNum">      45 </span>            :         virtual bool hasChildren() const = 0;
+<span class="lineNum">      46 </span>            : 
+<span class="lineNum">      47 </span>            :         virtual ITracker&amp; parent() = 0;
+<span class="lineNum">      48 </span>            : 
+<span class="lineNum">      49 </span>            :         // actions
+<span class="lineNum">      50 </span>            :         virtual void close() = 0; // Successfully complete
+<span class="lineNum">      51 </span>            :         virtual void fail() = 0;
+<span class="lineNum">      52 </span>            :         virtual void markAsNeedingAnotherRun() = 0;
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span>            :         virtual void addChild( Ptr&lt;ITracker&gt; const&amp; child ) = 0;
+<span class="lineNum">      55 </span>            :         virtual ITracker* findChild( NameAndLocation const&amp; nameAndLocation ) = 0;
+<span class="lineNum">      56 </span>            :         virtual void openChild() = 0;
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span>            :         // Debug/ checking
+<span class="lineNum">      59 </span>            :         virtual bool isSectionTracker() const = 0;
+<span class="lineNum">      60 </span>            :         virtual bool isIndexTracker() const = 0;
+<a name="61"><span class="lineNum">      61 </span>            :     };</a>
+<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      63 </span><span class="lineCov">         11 :     class  TrackerContext {</span>
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span>            :         enum RunState {
+<span class="lineNum">      66 </span>            :             NotStarted,
+<span class="lineNum">      67 </span>            :             Executing,
+<span class="lineNum">      68 </span>            :             CompletedCycle
+<span class="lineNum">      69 </span>            :         };
+<span class="lineNum">      70 </span>            : 
+<span class="lineNum">      71 </span>            :         Ptr&lt;ITracker&gt; m_rootTracker;
+<span class="lineNum">      72 </span>            :         ITracker* m_currentTracker;
+<span class="lineNum">      73 </span>            :         RunState m_runState;
+<span class="lineNum">      74 </span>            : 
+<span class="lineNum">      75 </span>            :     public:
+<span class="lineNum">      76 </span>            : 
+<span class="lineNum">      77 </span>            :         static TrackerContext&amp; instance() {
+<span class="lineNum">      78 </span>            :             static TrackerContext s_instance;
+<span class="lineNum">      79 </span>            :             return s_instance;
+<a name="80"><span class="lineNum">      80 </span>            :         }</a>
+<span class="lineNum">      81 </span>            : 
+<span class="lineNum">      82 </span><span class="lineCov">         11 :         TrackerContext()</span>
+<span class="lineNum">      83 </span><span class="lineCov">         11 :         :   m_currentTracker( CATCH_NULL ),</span>
+<span class="lineNum">      84 </span><span class="lineCov">         11 :             m_runState( NotStarted )</span>
+<span class="lineNum">      85 </span><span class="lineCov">         11 :         {}</span>
+<span class="lineNum">      86 </span>            : 
+<span class="lineNum">      87 </span>            : 
+<span class="lineNum">      88 </span>            :         ITracker&amp; startRun();
+<span class="lineNum">      89 </span>            : 
+<span class="lineNum">      90 </span>            :         void endRun() {
+<span class="lineNum">      91 </span>            :             m_rootTracker.reset();
+<span class="lineNum">      92 </span>            :             m_currentTracker = CATCH_NULL;
+<span class="lineNum">      93 </span>            :             m_runState = NotStarted;
+<a name="94"><span class="lineNum">      94 </span>            :         }</a>
+<span class="lineNum">      95 </span>            : 
+<span class="lineNum">      96 </span><span class="lineCov">        322 :         void startCycle() {</span>
+<span class="lineNum">      97 </span><span class="lineCov">        322 :             m_currentTracker = m_rootTracker.get();</span>
+<a name="98"><span class="lineNum">      98 </span><span class="lineCov">        322 :             m_runState = Executing;</span></a>
+<span class="lineNum">      99 </span><span class="lineCov">        322 :         }</span>
+<span class="lineNum">     100 </span><span class="lineCov">        569 :         void completeCycle() {</span>
+<span class="lineNum">     101 </span><span class="lineCov">        569 :             m_runState = CompletedCycle;</span>
+<a name="102"><span class="lineNum">     102 </span><span class="lineCov">        569 :         }</span></a>
+<span class="lineNum">     103 </span>            : 
+<span class="lineNum">     104 </span><span class="lineCov">       2154 :         bool completedCycle() const {</span>
+<a name="105"><span class="lineNum">     105 </span><span class="lineCov">       2154 :             return m_runState == CompletedCycle;</span></a>
+<span class="lineNum">     106 </span>            :         }
+<span class="lineNum">     107 </span><span class="lineCov">       2722 :         ITracker&amp; currentTracker() {</span>
+<a name="108"><span class="lineNum">     108 </span><span class="lineCov">       2722 :             return *m_currentTracker;</span></a>
+<span class="lineNum">     109 </span>            :         }
+<span class="lineNum">     110 </span><span class="lineCov">       1138 :         void setCurrentTracker( ITracker* tracker ) {</span>
+<span class="lineNum">     111 </span><span class="lineCov">       1138 :             m_currentTracker = tracker;</span>
+<span class="lineNum">     112 </span><span class="lineCov">       1138 :         }</span>
+<span class="lineNum">     113 </span>            :     };
+<span class="lineNum">     114 </span>            : 
+<span class="lineNum">     115 </span>            :     class TrackerBase : public ITracker {
+<span class="lineNum">     116 </span>            :     protected:
+<span class="lineNum">     117 </span>            :         enum CycleState {
+<span class="lineNum">     118 </span>            :             NotStarted,
+<span class="lineNum">     119 </span>            :             Executing,
+<span class="lineNum">     120 </span>            :             ExecutingChildren,
+<span class="lineNum">     121 </span>            :             NeedsAnotherRun,
+<span class="lineNum">     122 </span>            :             CompletedSuccessfully,
+<a name="123"><span class="lineNum">     123 </span>            :             Failed</a>
+<span class="lineNum">     124 </span>            :         };
+<span class="lineNum">     125 </span><span class="lineCov">      19305 :         class TrackerHasName {</span>
+<a name="126"><span class="lineNum">     126 </span>            :             NameAndLocation m_nameAndLocation;</a>
+<a name="127"><span class="lineNum">     127 </span>            :         public:</a>
+<span class="lineNum">     128 </span><span class="lineCov">       2145 :             TrackerHasName( NameAndLocation const&amp; nameAndLocation ) : m_nameAndLocation( nameAndLocation ) {}</span>
+<span class="lineNum">     129 </span><span class="lineCov">      18403 :             bool operator ()( Ptr&lt;ITracker&gt; const&amp; tracker ) {</span>
+<span class="lineNum">     130 </span>            :                 return
+<span class="lineNum">     131 </span><span class="lineCov">      20183 :                     tracker-&gt;nameAndLocation().name == m_nameAndLocation.name &amp;&amp;</span>
+<span class="lineNum">     132 </span><span class="lineCov">      20183 :                     tracker-&gt;nameAndLocation().location == m_nameAndLocation.location;</span>
+<span class="lineNum">     133 </span>            :             }
+<span class="lineNum">     134 </span>            :         };
+<span class="lineNum">     135 </span>            :         typedef std::vector&lt;Ptr&lt;ITracker&gt; &gt; Children;
+<span class="lineNum">     136 </span>            :         NameAndLocation m_nameAndLocation;
+<span class="lineNum">     137 </span>            :         TrackerContext&amp; m_ctx;
+<span class="lineNum">     138 </span>            :         ITracker* m_parent;
+<span class="lineNum">     139 </span>            :         Children m_children;
+<a name="140"><span class="lineNum">     140 </span>            :         CycleState m_runState;</a>
+<span class="lineNum">     141 </span>            :     public:
+<span class="lineNum">     142 </span><span class="lineCov">        590 :         TrackerBase( NameAndLocation const&amp; nameAndLocation, TrackerContext&amp; ctx, ITracker* parent )</span>
+<span class="lineNum">     143 </span><span class="lineCov">        590 :         :   m_nameAndLocation( nameAndLocation ),</span>
+<span class="lineNum">     144 </span>            :             m_ctx( ctx ),
+<span class="lineNum">     145 </span>            :             m_parent( parent ),
+<span class="lineNum">     146 </span><span class="lineCov">        590 :             m_runState( NotStarted )</span>
+<span class="lineNum">     147 </span><span class="lineCov">        590 :         {}</span>
+<a name="148"><span class="lineNum">     148 </span>            :         virtual ~TrackerBase();</a>
+<span class="lineNum">     149 </span>            : 
+<span class="lineNum">     150 </span><span class="lineCov">      20183 :         virtual NameAndLocation const&amp; nameAndLocation() const CATCH_OVERRIDE {</span>
+<a name="151"><span class="lineNum">     151 </span><span class="lineCov">      20183 :             return m_nameAndLocation;</span></a>
+<span class="lineNum">     152 </span>            :         }
+<span class="lineNum">     153 </span><span class="lineCov">       2725 :         virtual bool isComplete() const CATCH_OVERRIDE {</span>
+<a name="154"><span class="lineNum">     154 </span><span class="lineCov">       2725 :             return m_runState == CompletedSuccessfully || m_runState == Failed;</span></a>
+<span class="lineNum">     155 </span>            :         }
+<span class="lineNum">     156 </span><span class="lineCov">        319 :         virtual bool isSuccessfullyCompleted() const CATCH_OVERRIDE {</span>
+<a name="157"><span class="lineNum">     157 </span><span class="lineCov">        319 :             return m_runState == CompletedSuccessfully;</span></a>
+<span class="lineNum">     158 </span>            :         }
+<span class="lineNum">     159 </span><span class="lineCov">       1841 :         virtual bool isOpen() const CATCH_OVERRIDE {</span>
+<a name="160"><span class="lineNum">     160 </span><span class="lineCov">       1841 :             return m_runState != NotStarted &amp;&amp; !isComplete();</span></a>
+<span class="lineNum">     161 </span>            :         }
+<span class="lineNum">     162 </span><span class="lineNoCov">          0 :         virtual bool hasChildren() const CATCH_OVERRIDE {</span>
+<span class="lineNum">     163 </span><span class="lineNoCov">          0 :             return !m_children.empty();</span>
+<span class="lineNum">     164 </span>            :         }
+<a name="165"><span class="lineNum">     165 </span>            : </a>
+<span class="lineNum">     166 </span>            : 
+<span class="lineNum">     167 </span><span class="lineCov">        396 :         virtual void addChild( Ptr&lt;ITracker&gt; const&amp; child ) CATCH_OVERRIDE {</span>
+<span class="lineNum">     168 </span><span class="lineCov">        396 :             m_children.push_back( child );</span>
+<a name="169"><span class="lineNum">     169 </span><span class="lineCov">        396 :         }</span></a>
+<span class="lineNum">     170 </span>            : 
+<span class="lineNum">     171 </span><span class="lineCov">       2145 :         virtual ITracker* findChild( NameAndLocation const&amp; nameAndLocation ) CATCH_OVERRIDE {</span>
+<span class="lineNum">     172 </span><span class="lineCov">       2145 :             Children::const_iterator it = std::find_if( m_children.begin(), m_children.end(), TrackerHasName( nameAndLocation ) );</span>
+<span class="lineNum">     173 </span><span class="lineCov">       4290 :             return( it != m_children.end() )</span>
+<span class="lineNum">     174 </span><span class="lineCov">       2145 :                 ? it-&gt;get()</span>
+<a name="175"><span class="lineNum">     175 </span><span class="lineCov">       4290 :                 : CATCH_NULL;</span></a>
+<span class="lineNum">     176 </span>            :         }
+<span class="lineNum">     177 </span><span class="lineCov">          4 :         virtual ITracker&amp; parent() CATCH_OVERRIDE {</span>
+<span class="lineNum">     178 </span><span class="lineCov">          4 :             assert( m_parent ); // Should always be non-null except for root</span>
+<span class="lineNum">     179 </span><span class="lineCov">          4 :             return *m_parent;</span>
+<a name="180"><span class="lineNum">     180 </span>            :         }</a>
+<span class="lineNum">     181 </span>            : 
+<span class="lineNum">     182 </span><span class="lineCov">        816 :         virtual void openChild() CATCH_OVERRIDE {</span>
+<span class="lineNum">     183 </span><span class="lineCov">        816 :             if( m_runState != ExecutingChildren ) {</span>
+<span class="lineNum">     184 </span><span class="lineCov">        441 :                 m_runState = ExecutingChildren;</span>
+<span class="lineNum">     185 </span><span class="lineCov">        441 :                 if( m_parent )</span>
+<span class="lineNum">     186 </span><span class="lineCov">        247 :                     m_parent-&gt;openChild();</span>
+<span class="lineNum">     187 </span>            :             }
+<a name="188"><span class="lineNum">     188 </span><span class="lineCov">        816 :         }</span></a>
+<a name="189"><span class="lineNum">     189 </span>            : </a>
+<span class="lineNum">     190 </span><span class="lineCov">          4 :         virtual bool isSectionTracker() const CATCH_OVERRIDE { return false; }</span>
+<a name="191"><span class="lineNum">     191 </span><span class="lineNoCov">          0 :         virtual bool isIndexTracker() const CATCH_OVERRIDE { return false; }</span></a>
+<span class="lineNum">     192 </span>            : 
+<span class="lineNum">     193 </span><span class="lineCov">        569 :         void open() {</span>
+<span class="lineNum">     194 </span><span class="lineCov">        569 :             m_runState = Executing;</span>
+<span class="lineNum">     195 </span><span class="lineCov">        569 :             moveToThis();</span>
+<span class="lineNum">     196 </span><span class="lineCov">        569 :             if( m_parent )</span>
+<span class="lineNum">     197 </span><span class="lineCov">        569 :                 m_parent-&gt;openChild();</span>
+<a name="198"><span class="lineNum">     198 </span><span class="lineCov">        569 :         }</span></a>
+<span class="lineNum">     199 </span>            : 
+<span class="lineNum">     200 </span><span class="lineCov">        570 :         virtual void close() CATCH_OVERRIDE {</span>
+<span class="lineNum">     201 </span>            : 
+<span class="lineNum">     202 </span>            :             // Close any still open children (e.g. generators)
+<span class="lineNum">     203 </span><span class="lineCov">        577 :             while( &amp;m_ctx.currentTracker() != this )</span>
+<span class="lineNum">     204 </span><span class="lineCov">          7 :                 m_ctx.currentTracker().close();</span>
+<span class="lineNum">     205 </span>            : 
+<span class="lineNum">     206 </span><span class="lineCov">        563 :             switch( m_runState ) {</span>
+<span class="lineNum">     207 </span><span class="lineNoCov">          0 :                 case NotStarted:</span>
+<span class="lineNum">     208 </span>            :                 case CompletedSuccessfully:
+<span class="lineNum">     209 </span>            :                 case Failed:
+<span class="lineNum">     210 </span><span class="lineNoCov">          0 :                     throw std::logic_error( &quot;Illogical state&quot; );</span>
+<span class="lineNum">     211 </span>            : 
+<span class="lineNum">     212 </span><span class="lineCov">          6 :                 case NeedsAnotherRun:</span>
+<span class="lineNum">     213 </span><span class="lineCov">          6 :                     break;;</span>
+<span class="lineNum">     214 </span>            : 
+<span class="lineNum">     215 </span><span class="lineCov">        316 :                 case Executing:</span>
+<span class="lineNum">     216 </span><span class="lineCov">        316 :                     m_runState = CompletedSuccessfully;</span>
+<span class="lineNum">     217 </span><span class="lineCov">        316 :                     break;</span>
+<span class="lineNum">     218 </span><span class="lineCov">        241 :                 case ExecutingChildren:</span>
+<span class="lineNum">     219 </span><span class="lineCov">        241 :                     if( m_children.empty() || m_children.back()-&gt;isComplete() )</span>
+<span class="lineNum">     220 </span><span class="lineCov">         77 :                         m_runState = CompletedSuccessfully;</span>
+<span class="lineNum">     221 </span><span class="lineCov">        241 :                     break;</span>
+<span class="lineNum">     222 </span>            : 
+<span class="lineNum">     223 </span><span class="lineNoCov">          0 :                 default:</span>
+<span class="lineNum">     224 </span><span class="lineNoCov">          0 :                     throw std::logic_error( &quot;Unexpected state&quot; );</span>
+<span class="lineNum">     225 </span>            :             }
+<span class="lineNum">     226 </span><span class="lineCov">        563 :             moveToParent();</span>
+<a name="227"><span class="lineNum">     227 </span><span class="lineCov">        563 :             m_ctx.completeCycle();</span></a>
+<span class="lineNum">     228 </span><span class="lineCov">        563 :         }</span>
+<span class="lineNum">     229 </span><span class="lineCov">          6 :         virtual void fail() CATCH_OVERRIDE {</span>
+<span class="lineNum">     230 </span><span class="lineCov">          6 :             m_runState = Failed;</span>
+<span class="lineNum">     231 </span><span class="lineCov">          6 :             if( m_parent )</span>
+<span class="lineNum">     232 </span><span class="lineCov">          6 :                 m_parent-&gt;markAsNeedingAnotherRun();</span>
+<span class="lineNum">     233 </span><span class="lineCov">          6 :             moveToParent();</span>
+<a name="234"><span class="lineNum">     234 </span><span class="lineCov">          6 :             m_ctx.completeCycle();</span></a>
+<span class="lineNum">     235 </span><span class="lineCov">          6 :         }</span>
+<span class="lineNum">     236 </span><span class="lineCov">          6 :         virtual void markAsNeedingAnotherRun() CATCH_OVERRIDE {</span>
+<span class="lineNum">     237 </span><span class="lineCov">          6 :             m_runState = NeedsAnotherRun;</span>
+<a name="238"><span class="lineNum">     238 </span><span class="lineCov">          6 :         }</span></a>
+<span class="lineNum">     239 </span>            :     private:
+<span class="lineNum">     240 </span><span class="lineCov">        569 :         void moveToParent() {</span>
+<span class="lineNum">     241 </span><span class="lineCov">        569 :             assert( m_parent );</span>
+<a name="242"><span class="lineNum">     242 </span><span class="lineCov">        569 :             m_ctx.setCurrentTracker( m_parent );</span></a>
+<span class="lineNum">     243 </span><span class="lineCov">        569 :         }</span>
+<span class="lineNum">     244 </span><span class="lineCov">        569 :         void moveToThis() {</span>
+<span class="lineNum">     245 </span><span class="lineCov">        569 :             m_ctx.setCurrentTracker( this );</span>
+<span class="lineNum">     246 </span><span class="lineCov">        569 :         }</span>
+<span class="lineNum">     247 </span>            :     };
+<span class="lineNum">     248 </span>            : 
+<span class="lineNum">     249 </span>            :     class SectionTracker : public TrackerBase {
+<a name="250"><span class="lineNum">     250 </span>            :         std::vector&lt;std::string&gt; m_filters;</a>
+<span class="lineNum">     251 </span>            :     public:
+<span class="lineNum">     252 </span><span class="lineCov">        587 :         SectionTracker( NameAndLocation const&amp; nameAndLocation, TrackerContext&amp; ctx, ITracker* parent )</span>
+<span class="lineNum">     253 </span><span class="lineCov">        587 :         :   TrackerBase( nameAndLocation, ctx, parent )</span>
+<span class="lineNum">     254 </span>            :         {
+<span class="lineNum">     255 </span><span class="lineCov">        587 :             if( parent ) {</span>
+<span class="lineNum">     256 </span><span class="lineCov">        401 :                 while( !parent-&gt;isSectionTracker() )</span>
+<span class="lineNum">     257 </span><span class="lineCov">          4 :                     parent = &amp;parent-&gt;parent();</span>
+<span class="lineNum">     258 </span>            : 
+<span class="lineNum">     259 </span><span class="lineCov">        393 :                 SectionTracker&amp; parentSection = static_cast&lt;SectionTracker&amp;&gt;( *parent );</span>
+<span class="lineNum">     260 </span><span class="lineCov">        393 :                 addNextFilters( parentSection.m_filters );</span>
+<span class="lineNum">     261 </span>            :             }
+<span class="lineNum">     262 </span><span class="lineCov">        587 :         }</span>
+<a name="263"><span class="lineNum">     263 </span>            :         virtual ~SectionTracker();</a>
+<span class="lineNum">     264 </span>            : 
+<a name="265"><span class="lineNum">     265 </span><span class="lineCov">       2323 :         virtual bool isSectionTracker() const CATCH_OVERRIDE { return true; }</span></a>
+<span class="lineNum">     266 </span>            : 
+<span class="lineNum">     267 </span><span class="lineCov">       2138 :         static SectionTracker&amp; acquire( TrackerContext&amp; ctx, NameAndLocation const&amp; nameAndLocation ) {</span>
+<span class="lineNum">     268 </span><span class="lineCov">       2138 :             SectionTracker* section = CATCH_NULL;</span>
+<span class="lineNum">     269 </span>            : 
+<span class="lineNum">     270 </span><span class="lineCov">       2138 :             ITracker&amp; currentTracker = ctx.currentTracker();</span>
+<span class="lineNum">     271 </span><span class="lineCov">       2138 :             if( ITracker* childTracker = currentTracker.findChild( nameAndLocation ) ) {</span>
+<span class="lineNum">     272 </span><span class="lineCov">       1745 :                 assert( childTracker );</span>
+<span class="lineNum">     273 </span><span class="lineCov">       1745 :                 assert( childTracker-&gt;isSectionTracker() );</span>
+<span class="lineNum">     274 </span><span class="lineCov">       1745 :                 section = static_cast&lt;SectionTracker*&gt;( childTracker );</span>
+<span class="lineNum">     275 </span>            :             }
+<span class="lineNum">     276 </span>            :             else {
+<span class="lineNum">     277 </span><span class="lineCov">        393 :                 section = new SectionTracker( nameAndLocation, ctx, &amp;currentTracker );</span>
+<span class="lineNum">     278 </span><span class="lineCov">        393 :                 currentTracker.addChild( section );</span>
+<span class="lineNum">     279 </span>            :             }
+<span class="lineNum">     280 </span><span class="lineCov">       2138 :             if( !ctx.completedCycle() )</span>
+<span class="lineNum">     281 </span><span class="lineCov">       1365 :                 section-&gt;tryOpen();</span>
+<span class="lineNum">     282 </span><span class="lineCov">       2138 :             return *section;</span>
+<a name="283"><span class="lineNum">     283 </span>            :         }</a>
+<span class="lineNum">     284 </span>            : 
+<span class="lineNum">     285 </span><span class="lineCov">       1365 :         void tryOpen() {</span>
+<span class="lineNum">     286 </span><span class="lineCov">       1365 :             if( !isComplete() &amp;&amp; (m_filters.empty() || m_filters[0].empty() ||  m_filters[0] == m_nameAndLocation.name ) )</span>
+<span class="lineNum">     287 </span><span class="lineCov">        562 :                 open();</span>
+<a name="288"><span class="lineNum">     288 </span><span class="lineCov">       1365 :         }</span></a>
+<span class="lineNum">     289 </span>            : 
+<span class="lineNum">     290 </span><span class="lineCov">        185 :         void addInitialFilters( std::vector&lt;std::string&gt; const&amp; filters ) {</span>
+<span class="lineNum">     291 </span><span class="lineCov">        185 :             if( !filters.empty() ) {</span>
+<span class="lineNum">     292 </span><span class="lineNoCov">          0 :                 m_filters.push_back(&quot;&quot;); // Root - should never be consulted</span>
+<span class="lineNum">     293 </span><span class="lineNoCov">          0 :                 m_filters.push_back(&quot;&quot;); // Test Case - not a section filter</span>
+<span class="lineNum">     294 </span><span class="lineNoCov">          0 :                 m_filters.insert( m_filters.end(), filters.begin(), filters.end() );</span>
+<a name="295"><span class="lineNum">     295 </span>            :             }</a>
+<span class="lineNum">     296 </span><span class="lineCov">        185 :         }</span>
+<span class="lineNum">     297 </span><span class="lineCov">        393 :         void addNextFilters( std::vector&lt;std::string&gt; const&amp; filters ) {</span>
+<span class="lineNum">     298 </span><span class="lineCov">        393 :             if( filters.size() &gt; 1 )</span>
+<span class="lineNum">     299 </span><span class="lineNoCov">          0 :                 m_filters.insert( m_filters.end(), ++filters.begin(), filters.end() );</span>
+<span class="lineNum">     300 </span><span class="lineCov">        393 :         }</span>
+<span class="lineNum">     301 </span>            :     };
+<span class="lineNum">     302 </span>            : 
+<span class="lineNum">     303 </span>            :     class IndexTracker : public TrackerBase {
+<span class="lineNum">     304 </span>            :         int m_size;
+<a name="305"><span class="lineNum">     305 </span>            :         int m_index;</a>
+<span class="lineNum">     306 </span>            :     public:
+<span class="lineNum">     307 </span><span class="lineCov">          3 :         IndexTracker( NameAndLocation const&amp; nameAndLocation, TrackerContext&amp; ctx, ITracker* parent, int size )</span>
+<span class="lineNum">     308 </span><span class="lineCov">          3 :         :   TrackerBase( nameAndLocation, ctx, parent ),</span>
+<span class="lineNum">     309 </span>            :             m_size( size ),
+<span class="lineNum">     310 </span><span class="lineCov">          3 :             m_index( -1 )</span>
+<span class="lineNum">     311 </span><span class="lineCov">          3 :         {}</span>
+<a name="312"><span class="lineNum">     312 </span>            :         virtual ~IndexTracker();</a>
+<span class="lineNum">     313 </span>            : 
+<a name="314"><span class="lineNum">     314 </span><span class="lineCov">          4 :         virtual bool isIndexTracker() const CATCH_OVERRIDE { return true; }</span></a>
+<span class="lineNum">     315 </span>            : 
+<span class="lineNum">     316 </span><span class="lineCov">          7 :         static IndexTracker&amp; acquire( TrackerContext&amp; ctx, NameAndLocation const&amp; nameAndLocation, int size ) {</span>
+<span class="lineNum">     317 </span><span class="lineCov">          7 :             IndexTracker* tracker = CATCH_NULL;</span>
+<span class="lineNum">     318 </span>            : 
+<span class="lineNum">     319 </span><span class="lineCov">          7 :             ITracker&amp; currentTracker = ctx.currentTracker();</span>
+<span class="lineNum">     320 </span><span class="lineCov">          7 :             if( ITracker* childTracker = currentTracker.findChild( nameAndLocation ) ) {</span>
+<span class="lineNum">     321 </span><span class="lineCov">          4 :                 assert( childTracker );</span>
+<span class="lineNum">     322 </span><span class="lineCov">          4 :                 assert( childTracker-&gt;isIndexTracker() );</span>
+<span class="lineNum">     323 </span><span class="lineCov">          4 :                 tracker = static_cast&lt;IndexTracker*&gt;( childTracker );</span>
+<span class="lineNum">     324 </span>            :             }
+<span class="lineNum">     325 </span>            :             else {
+<span class="lineNum">     326 </span><span class="lineCov">          3 :                 tracker = new IndexTracker( nameAndLocation, ctx, &amp;currentTracker, size );</span>
+<span class="lineNum">     327 </span><span class="lineCov">          3 :                 currentTracker.addChild( tracker );</span>
+<span class="lineNum">     328 </span>            :             }
+<span class="lineNum">     329 </span>            : 
+<span class="lineNum">     330 </span><span class="lineCov">          7 :             if( !ctx.completedCycle() &amp;&amp; !tracker-&gt;isComplete() ) {</span>
+<span class="lineNum">     331 </span><span class="lineCov">          7 :                 if( tracker-&gt;m_runState != ExecutingChildren &amp;&amp; tracker-&gt;m_runState != NeedsAnotherRun )</span>
+<span class="lineNum">     332 </span><span class="lineCov">          6 :                     tracker-&gt;moveNext();</span>
+<span class="lineNum">     333 </span><span class="lineCov">          7 :                 tracker-&gt;open();</span>
+<span class="lineNum">     334 </span>            :             }
+<span class="lineNum">     335 </span>            : 
+<span class="lineNum">     336 </span><span class="lineCov">          7 :             return *tracker;</span>
+<a name="337"><span class="lineNum">     337 </span>            :         }</a>
+<span class="lineNum">     338 </span>            : 
+<a name="339"><span class="lineNum">     339 </span><span class="lineCov">          7 :         int index() const { return m_index; }</span></a>
+<span class="lineNum">     340 </span>            : 
+<span class="lineNum">     341 </span><span class="lineCov">          6 :         void moveNext() {</span>
+<span class="lineNum">     342 </span><span class="lineCov">          6 :             m_index++;</span>
+<span class="lineNum">     343 </span><span class="lineCov">          6 :             m_children.clear();</span>
+<a name="344"><span class="lineNum">     344 </span><span class="lineCov">          6 :         }</span></a>
+<span class="lineNum">     345 </span>            : 
+<span class="lineNum">     346 </span><span class="lineCov">          7 :         virtual void close() CATCH_OVERRIDE {</span>
+<span class="lineNum">     347 </span><span class="lineCov">          7 :             TrackerBase::close();</span>
+<span class="lineNum">     348 </span><span class="lineCov">          7 :             if( m_runState == CompletedSuccessfully &amp;&amp; m_index &lt; m_size-1 )</span>
+<span class="lineNum">     349 </span><span class="lineCov">          3 :                 m_runState = Executing;</span>
+<span class="lineNum">     350 </span><span class="lineCov">          7 :         }</span>
+<a name="351"><span class="lineNum">     351 </span>            :     };</a>
+<span class="lineNum">     352 </span>            : 
+<span class="lineNum">     353 </span><span class="lineCov">        194 :     inline ITracker&amp; TrackerContext::startRun() {</span>
+<span class="lineNum">     354 </span><span class="lineCov">        194 :         m_rootTracker = new SectionTracker( NameAndLocation( &quot;{root}&quot;, CATCH_INTERNAL_LINEINFO ), *this, CATCH_NULL );</span>
+<span class="lineNum">     355 </span><span class="lineCov">        194 :         m_currentTracker = CATCH_NULL;</span>
+<span class="lineNum">     356 </span><span class="lineCov">        194 :         m_runState = Executing;</span>
+<span class="lineNum">     357 </span><span class="lineCov">        194 :         return *m_rootTracker;</span>
+<span class="lineNum">     358 </span>            :     }
+<span class="lineNum">     359 </span>            : 
+<span class="lineNum">     360 </span>            : } // namespace TestCaseTracking
+<span class="lineNum">     361 </span>            : 
+<span class="lineNum">     362 </span>            : using TestCaseTracking::ITracker;
+<span class="lineNum">     363 </span>            : using TestCaseTracking::TrackerContext;
+<span class="lineNum">     364 </span>            : using TestCaseTracking::SectionTracker;
+<span class="lineNum">     365 </span>            : using TestCaseTracking::IndexTracker;
+<span class="lineNum">     366 </span>            : 
+<span class="lineNum">     367 </span>            : } // namespace Catch
+<span class="lineNum">     368 </span>            : 
+<span class="lineNum">     369 </span>            : CATCH_INTERNAL_UNSUPPRESS_ETD_WARNINGS
+<span class="lineNum">     370 </span>            : 
+<span class="lineNum">     371 </span>            : #endif // TWOBLUECUBES_CATCH_TEST_CASE_TRACKER_HPP_INCLUDED
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

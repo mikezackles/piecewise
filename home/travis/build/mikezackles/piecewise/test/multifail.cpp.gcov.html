@@ -1,0 +1,424 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Code coverage - /home/travis/build/mikezackles/piecewise/test/multifail.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../../index.html">top level</a> - <a href="index.html">home/travis/build/mikezackles/piecewise/test</a> - multifail.cpp<span style="font-size: 80%;"> (source / <a href="multifail.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Code coverage</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">132</td>
+            <td class="headerCovTableEntry">143</td>
+            <td class="headerCovTableEntryHi">92.3 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2018-02-19 01:04:17</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">39</td>
+            <td class="headerCovTableEntry">55</td>
+            <td class="headerCovTableEntryLo">70.9 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Legend:</td>
+            <td class="headerValueLeg">            Lines:
+            <span class="coverLegendCov">hit</span>
+            <span class="coverLegendNoCov">not hit</span>
+</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : #if defined(_MSC_VER)</a>
+<span class="lineNum">       2 </span>            :   #pragma warning( push )
+<span class="lineNum">       3 </span>            :   #pragma warning( disable : 4244 )
+<span class="lineNum">       4 </span>            : #endif
+<span class="lineNum">       5 </span>            : #include &lt;catch.hpp&gt;
+<span class="lineNum">       6 </span>            : #if defined(_MSC_VER)
+<span class="lineNum">       7 </span>            :   #pragma warning( pop )
+<span class="lineNum">       8 </span>            : #endif
+<span class="lineNum">       9 </span>            : #include &lt;mz/piecewise/builder.hpp&gt;
+<span class="lineNum">      10 </span>            : #include &lt;mz/piecewise/callable_overload.hpp&gt;
+<span class="lineNum">      11 </span>            : #include &lt;mz/piecewise/factory.hpp&gt;
+<span class="lineNum">      12 </span>            : #include &lt;mz/piecewise/helpers.hpp&gt;
+<span class="lineNum">      13 </span>            : #include &lt;mz/piecewise/multifail.hpp&gt;
+<span class="lineNum">      14 </span>            : 
+<span class="lineNum">      15 </span>            : #include &lt;string&gt;
+<span class="lineNum">      16 </span>            : 
+<span class="lineNum">      17 </span>            : #if __cplusplus &gt;= 201703L
+<span class="lineNum">      18 </span>            :   #define CONSTEXPR constexpr
+<span class="lineNum">      19 </span>            : #else
+<span class="lineNum">      20 </span>            :   #define CONSTEXPR
+<span class="lineNum">      21 </span>            : #endif
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            : namespace mp = mz::piecewise;
+<span class="lineNum">      24 </span>            : 
+<a name="25"><span class="lineNum">      25 </span>            : namespace {</a>
+<span class="lineNum">      26 </span>            :   // `A` simulates a type that could fail during creation.
+<span class="lineNum">      27 </span><span class="lineCov">          8 :   class A final : public mp::Helpers&lt;A&gt;</span>
+<span class="lineNum">      28 </span>            :   {
+<span class="lineNum">      29 </span>            :   private:
+<span class="lineNum">      30 </span>            :     std::string a_string;
+<span class="lineNum">      31 </span>            :     int an_int;
+<span class="lineNum">      32 </span>            : 
+<span class="lineNum">      33 </span>            :   public:
+<span class="lineNum">      34 </span>            :     // Two error types are used to distinguish separate error conditions. Below
+<span class="lineNum">      35 </span>            :     // there are examples of handling both errors generically and of handling
+<span class="lineNum">      36 </span>            :     // them individually.
+<span class="lineNum">      37 </span>            :     struct StringEmptyError {
+<span class="lineNum">      38 </span>            :       // It's a good idea to give errors a static description so that generic
+<span class="lineNum">      39 </span>            :       // error handlers can print it.
+<span class="lineNum">      40 </span>            :       static constexpr auto description = &quot;String is empty&quot;;
+<span class="lineNum">      41 </span>            :     };
+<span class="lineNum">      42 </span>            : 
+<span class="lineNum">      43 </span>            :     struct IntNegativeError {
+<span class="lineNum">      44 </span>            :       static constexpr auto description = &quot;Int is negative&quot;;
+<a name="45"><span class="lineNum">      45 </span>            :     };</a>
+<a name="46"><span class="lineNum">      46 </span>            : </a>
+<span class="lineNum">      47 </span><span class="lineCov">          6 :     std::string const &amp;get_a_string() const { return a_string; }</span>
+<span class="lineNum">      48 </span><span class="lineCov">          6 :     int get_an_int() const { return an_int; }</span>
+<span class="lineNum">      49 </span>            : 
+<span class="lineNum">      50 </span>            :   private:
+<span class="lineNum">      51 </span>            :     // Give BuilderHelper permission to call the private constructor and the
+<span class="lineNum">      52 </span>            :     // factory member function.
+<span class="lineNum">      53 </span>            :     friend class mp::Helpers&lt;A&gt;;
+<span class="lineNum">      54 </span>            : 
+<span class="lineNum">      55 </span>            :     // The true logic for construction of `A` lives here. Error cases in this
+<span class="lineNum">      56 </span>            :     // function result in calls to the `on_fail` callback, and successful
+<span class="lineNum">      57 </span>            :     // construction results in the forwarding of what we will call a &quot;builder&quot;
+<span class="lineNum">      58 </span>            :     // to the `on_success` callback via `mz::piecewise::forward`. A builder is
+<a name="59"><span class="lineNum">      59 </span>            :     // basically a construction callback paired with a group of perfectly</a>
+<span class="lineNum">      60 </span>            :     // forwarded references to arguments.
+<span class="lineNum">      61 </span><span class="lineCov">         14 :     static CONSTEXPR auto factory() {</span>
+<span class="lineNum">      62 </span>            :       return [](
+<span class="lineNum">      63 </span>            :         auto constructor
+<a name="64"><span class="lineNum">      64 </span>            :       , auto&amp;&amp; on_success, auto&amp;&amp; on_fail</a>
+<span class="lineNum">      65 </span>            :       , std::string a_string, int an_int
+<span class="lineNum">      66 </span><span class="lineCov">         14 :       ) {</span>
+<span class="lineNum">      67 </span>            :         // Validate arguments
+<span class="lineNum">      68 </span><span class="lineCov">         14 :         if (a_string.empty()) return on_fail(A::StringEmptyError{});</span>
+<span class="lineNum">      69 </span><span class="lineCov">         12 :         if (an_int &lt; 0) return on_fail(A::IntNegativeError{});</span>
+<span class="lineNum">      70 </span>            :         // Now the success callback gets a builder which creates a *valid*
+<span class="lineNum">      71 </span>            :         // instance of `A`. We can now always assume that every instance of `A`
+<span class="lineNum">      72 </span>            :         // satisfies these preconditions. (This doesn't necessarily hold for a
+<span class="lineNum">      73 </span>            :         // moved-from instance of `A`, so it is up to the programmer to avoid
+<span class="lineNum">      74 </span>            :         // such usage.)
+<span class="lineNum">      75 </span><span class="lineCov">          5 :         return on_success(</span>
+<span class="lineNum">      76 </span>            :           // Create a builder
+<span class="lineNum">      77 </span>            :           mp::builder(
+<span class="lineNum">      78 </span>            :             // This is the actual creation callback.
+<span class="lineNum">      79 </span>            :             constructor
+<span class="lineNum">      80 </span>            :           , // The arguments to be passed to `A`'s constructor
+<span class="lineNum">      81 </span><span class="lineCov">         10 :             std::move(a_string), an_int</span>
+<span class="lineNum">      82 </span>            :           )
+<span class="lineNum">      83 </span><span class="lineCov">         10 :         );</span>
+<span class="lineNum">      84 </span><span class="lineCov">         14 :       };</span>
+<span class="lineNum">      85 </span>            :     }
+<span class="lineNum">      86 </span>            : 
+<span class="lineNum">      87 </span>            :   public:
+<a name="88"><span class="lineNum">      88 </span>            :     // The private constructor is the final step of construction an object of</a>
+<span class="lineNum">      89 </span>            :     // type `A`, and it is only called if `A`'s factory function has succeeded.
+<span class="lineNum">      90 </span><span class="lineCov">          8 :     A(Private, std::string a_string_, int an_int_)</span>
+<span class="lineNum">      91 </span><span class="lineCov">          8 :       : a_string{std::move(a_string_)}, an_int{an_int_}</span>
+<span class="lineNum">      92 </span><span class="lineCov">          8 :     {}</span>
+<span class="lineNum">      93 </span>            :   };
+<span class="lineNum">      94 </span>            : 
+<span class="lineNum">      95 </span>            :   // `B` can be constructed normally, so it needs no explicit factory function
+<span class="lineNum">      96 </span>            :   // to be compatible with `mz::piecewise::factory`.
+<span class="lineNum">      97 </span>            :   struct B {
+<span class="lineNum">      98 </span>            :     int int_a;
+<span class="lineNum">      99 </span>            :     int int_b;
+<span class="lineNum">     100 </span>            :   };
+<span class="lineNum">     101 </span>            : 
+<span class="lineNum">     102 </span>            :   // `Aggregate` demonstrates an aggregate type whose private members can all be
+<span class="lineNum">     103 </span>            :   // injected as template parameters. If any of these members fail to be
+<span class="lineNum">     104 </span>            :   // created, the failure callback will be called, and the aggregate will not be
+<a name="105"><span class="lineNum">     105 </span>            :   // created.</a>
+<span class="lineNum">     106 </span>            :   template &lt;typename T, typename U, typename V&gt;
+<a name="107"><span class="lineNum">     107 </span><span class="lineCov">          4 :   class Aggregate final : public mp::Helpers&lt;Aggregate&lt;T, U, V&gt;&gt; {</span></a>
+<a name="108"><span class="lineNum">     108 </span>            :   public:</a>
+<a name="109"><span class="lineNum">     109 </span><span class="lineCov">          6 :     T const &amp;get_t() const { return t; }</span></a>
+<a name="110"><span class="lineNum">     110 </span><span class="lineCov">          6 :     U const &amp;get_u() const { return u; }</span></a>
+<span class="lineNum">     111 </span><span class="lineCov">          6 :     V const &amp;get_v() const { return v; }</span>
+<span class="lineNum">     112 </span><span class="lineCov">          3 :     int get_int() const { return an_int; }</span>
+<span class="lineNum">     113 </span>            : 
+<span class="lineNum">     114 </span>            :   private:
+<span class="lineNum">     115 </span>            :     // Give the helpers permission to call the private constructor and the
+<span class="lineNum">     116 </span>            :     // factory member function.
+<a name="117"><span class="lineNum">     117 </span>            :     friend class mp::Helpers&lt;Aggregate&gt;;</a>
+<span class="lineNum">     118 </span>            : 
+<span class="lineNum">     119 </span><span class="lineCov">          8 :     static CONSTEXPR auto factory() {</span>
+<span class="lineNum">     120 </span>            :       return [](
+<span class="lineNum">     121 </span>            :         auto constructor
+<span class="lineNum">     122 </span>            :       , auto&amp;&amp; on_success, auto&amp;&amp; on_fail
+<a name="123"><span class="lineNum">     123 </span>            :       , auto t_builder, auto u_builder, auto v_builder</a>
+<span class="lineNum">     124 </span>            :       , int an_int_
+<span class="lineNum">     125 </span><span class="lineCov">          8 :       ) {</span>
+<span class="lineNum">     126 </span><span class="lineCov">         16 :         return mp::multifail(</span>
+<span class="lineNum">     127 </span>            :           constructor
+<span class="lineNum">     128 </span>            :         , on_success
+<span class="lineNum">     129 </span>            :         , on_fail
+<span class="lineNum">     130 </span>            :         , mp::builders(
+<span class="lineNum">     131 </span><span class="lineCov">         24 :             std::move(t_builder), std::move(u_builder), std::move(v_builder)</span>
+<span class="lineNum">     132 </span>            :           )
+<span class="lineNum">     133 </span>            :         , mp::arguments(an_int_)
+<span class="lineNum">     134 </span>            :         );
+<span class="lineNum">     135 </span><span class="lineCov">         28 :       };</span>
+<span class="lineNum">     136 </span>            :     }
+<span class="lineNum">     137 </span>            : 
+<a name="138"><span class="lineNum">     138 </span>            :   public:</a>
+<span class="lineNum">     139 </span>            :     template &lt;typename TBuilder, typename UBuilder, typename VBuilder&gt;
+<span class="lineNum">     140 </span><span class="lineCov">          4 :     Aggregate(</span>
+<span class="lineNum">     141 </span>            :       typename mp::Helpers&lt;Aggregate&gt;::Private
+<span class="lineNum">     142 </span>            :     , int an_int_
+<span class="lineNum">     143 </span>            :     , TBuilder t_builder, UBuilder u_builder, VBuilder v_builder
+<span class="lineNum">     144 </span><span class="lineCov">          4 :     ) : t{std::move(t_builder).construct()}</span>
+<span class="lineNum">     145 </span>            :       , an_int{an_int_}
+<span class="lineNum">     146 </span><span class="lineCov">          4 :       , u{std::move(u_builder).construct()}</span>
+<span class="lineNum">     147 </span><span class="lineCov">          8 :       , v{std::move(v_builder).construct()}</span>
+<span class="lineNum">     148 </span><span class="lineCov">          4 :     {}</span>
+<span class="lineNum">     149 </span>            : 
+<span class="lineNum">     150 </span>            :   private:
+<span class="lineNum">     151 </span>            :     T t;
+<span class="lineNum">     152 </span>            :     int an_int;
+<span class="lineNum">     153 </span>            :     U u;
+<span class="lineNum">     154 </span>            :     V v;
+<span class="lineNum">     155 </span>            :   };
+<a name="156"><span class="lineNum">     156 </span>            : }</a>
+<span class="lineNum">     157 </span>            : 
+<span class="lineNum">     158 </span><span class="lineCov">          9 : SCENARIO(&quot;multifail aggregate&quot;) {</span>
+<span class="lineNum">     159 </span><span class="lineCov">          8 :   bool success = false;</span>
+<span class="lineNum">     160 </span><span class="lineCov">          8 :   bool failure1 = false;</span>
+<span class="lineNum">     161 </span><span class="lineCov">          8 :   bool failure2 = false;</span>
+<span class="lineNum">     162 </span>            : 
+<span class="lineNum">     163 </span><span class="lineCov">         16 :   WHEN(&quot;the first nested construction fails&quot;) {</span>
+<span class="lineNum">     164 </span>            :     // Here we specify all the information necessary to construct an
+<span class="lineNum">     165 </span>            :     // `Aggregate&lt;A, A, B&gt;`.
+<span class="lineNum">     166 </span><span class="lineCov">          4 :     Aggregate&lt;A, A, B&gt;::builder(</span>
+<span class="lineNum">     167 </span>            :       // Here we specify the arguments to construct each of the aggregate's
+<span class="lineNum">     168 </span>            :       // nested types. Notice that in this case, the first call should fail
+<span class="lineNum">     169 </span>            :       // validation.
+<span class="lineNum">     170 </span><span class="lineCov">          2 :       A::builder(&quot;abc&quot;, -42)</span>
+<span class="lineNum">     171 </span><span class="lineCov">          2 :     , A::builder(&quot;def&quot;, 123)</span>
+<span class="lineNum">     172 </span><span class="lineCov">          2 :     , mp::wrapper&lt;B&gt;(5, 6)</span>
+<span class="lineNum">     173 </span>            :     , 3
+<span class="lineNum">     174 </span>            :     )
+<span class="lineNum">     175 </span>            :     // Here we pass one lambda to be invoked if the instance is successfully
+<span class="lineNum">     176 </span>            :     // created and one lambda to be invoked if instantiation fails. In this
+<a name="177"><span class="lineNum">     177 </span>            :     // case, the failure callback will receive an error type as an argument.</a>
+<span class="lineNum">     178 </span><span class="lineCov">          1 :     .construct(</span>
+<span class="lineNum">     179 </span><span class="lineNoCov">          0 :       [&amp;](auto) { success = true; }</span>
+<span class="lineNum">     180 </span>            :     , // Here we construct a failure callback out of lambdas that pattern
+<a name="181"><span class="lineNum">     181 </span>            :       // matches based on error type. Notice that order makes no difference.</a>
+<a name="182"><span class="lineNum">     182 </span><span class="lineCov">          2 :       mp::handler(</span></a>
+<span class="lineNum">     183 </span><span class="lineCov">          1 :         [&amp;](A::IntNegativeError) { failure2 = true; }</span>
+<span class="lineNum">     184 </span><span class="lineNoCov">          0 :       , [&amp;](A::StringEmptyError) { failure1 = true; }</span>
+<span class="lineNum">     185 </span><span class="lineCov">          2 :       )</span>
+<span class="lineNum">     186 </span>            :     );
+<span class="lineNum">     187 </span>            : 
+<span class="lineNum">     188 </span><span class="lineCov">          2 :     THEN(&quot;the failure callback is called&quot;) {</span>
+<span class="lineNum">     189 </span><span class="lineCov">          1 :       REQUIRE(!success);</span>
+<span class="lineNum">     190 </span><span class="lineCov">          1 :       REQUIRE(!failure1);</span>
+<span class="lineNum">     191 </span><span class="lineCov">          1 :       REQUIRE(failure2);</span>
+<span class="lineNum">     192 </span>            :     }
+<span class="lineNum">     193 </span>            :   }
+<span class="lineNum">     194 </span>            : 
+<span class="lineNum">     195 </span><span class="lineCov">         16 :   WHEN(&quot;the second nested construction fails&quot;) {</span>
+<span class="lineNum">     196 </span><span class="lineCov">          4 :     Aggregate&lt;A, A, B&gt;::builder(</span>
+<span class="lineNum">     197 </span><span class="lineCov">          2 :       A::builder(&quot;abc&quot;, 42)</span>
+<span class="lineNum">     198 </span>            :     , // Should fail validation
+<span class="lineNum">     199 </span><span class="lineCov">          2 :       A::builder(&quot;&quot;, 123)</span>
+<span class="lineNum">     200 </span><span class="lineCov">          2 :     , mp::wrapper&lt;B&gt;(5, 6)</span>
+<a name="201"><span class="lineNum">     201 </span>            :     , 3</a>
+<span class="lineNum">     202 </span><span class="lineCov">          1 :     ).construct(</span>
+<a name="203"><span class="lineNum">     203 </span><span class="lineNoCov">          0 :       [&amp;](auto) { success = true; }</span></a>
+<a name="204"><span class="lineNum">     204 </span><span class="lineCov">          2 :     , mp::handler(</span></a>
+<span class="lineNum">     205 </span><span class="lineCov">          1 :         [&amp;](A::StringEmptyError) { failure1 = true; }</span>
+<span class="lineNum">     206 </span><span class="lineNoCov">          0 :       , [&amp;](A::IntNegativeError) { failure2 = true; }</span>
+<span class="lineNum">     207 </span><span class="lineCov">          2 :       )</span>
+<span class="lineNum">     208 </span>            :     );
+<span class="lineNum">     209 </span>            : 
+<span class="lineNum">     210 </span><span class="lineCov">          2 :     THEN(&quot;the failure callback is called&quot;) {</span>
+<span class="lineNum">     211 </span><span class="lineCov">          1 :       REQUIRE(!success);</span>
+<span class="lineNum">     212 </span><span class="lineCov">          1 :       REQUIRE(failure1);</span>
+<span class="lineNum">     213 </span><span class="lineCov">          1 :       REQUIRE(!failure2);</span>
+<span class="lineNum">     214 </span>            :     }
+<span class="lineNum">     215 </span>            :   }
+<span class="lineNum">     216 </span>            : 
+<span class="lineNum">     217 </span><span class="lineCov">         16 :   WHEN(&quot;construction succeeds&quot;) {</span>
+<span class="lineNum">     218 </span><span class="lineCov">          8 :     Aggregate&lt;A, A, B&gt;::builder(</span>
+<span class="lineNum">     219 </span><span class="lineCov">          4 :       A::builder(&quot;abc&quot;, 42)</span>
+<span class="lineNum">     220 </span><span class="lineCov">          4 :     , A::builder(&quot;def&quot;, 123)</span>
+<span class="lineNum">     221 </span><span class="lineCov">          4 :     , mp::wrapper&lt;B&gt;(5, 6)</span>
+<a name="222"><span class="lineNum">     222 </span>            :     , 3</a>
+<span class="lineNum">     223 </span><span class="lineCov">          2 :     ).construct(</span>
+<span class="lineNum">     224 </span><span class="lineCov">          2 :       [&amp;](auto builder) {</span>
+<span class="lineNum">     225 </span><span class="lineCov">          2 :         success = true;</span>
+<span class="lineNum">     226 </span><span class="lineCov">          4 :         auto res = std::move(builder).construct();</span>
+<span class="lineNum">     227 </span><span class="lineCov">          4 :         THEN(&quot;the nested types contain the correct values&quot;) {</span>
+<span class="lineNum">     228 </span><span class="lineCov">          1 :           REQUIRE(res.get_t().get_a_string() == &quot;abc&quot;);</span>
+<span class="lineNum">     229 </span><span class="lineCov">          1 :           REQUIRE(res.get_t().get_an_int() == 42);</span>
+<span class="lineNum">     230 </span><span class="lineCov">          1 :           REQUIRE(res.get_u().get_a_string() == &quot;def&quot;);</span>
+<span class="lineNum">     231 </span><span class="lineCov">          1 :           REQUIRE(res.get_u().get_an_int() == 123);</span>
+<span class="lineNum">     232 </span><span class="lineCov">          1 :           REQUIRE(res.get_v().int_a == 5);</span>
+<span class="lineNum">     233 </span><span class="lineCov">          1 :           REQUIRE(res.get_v().int_b == 6);</span>
+<span class="lineNum">     234 </span><span class="lineCov">          1 :           REQUIRE(res.get_int() == 3);</span>
+<a name="235"><span class="lineNum">     235 </span>            :         }</a>
+<span class="lineNum">     236 </span><span class="lineCov">          2 :       }</span>
+<span class="lineNum">     237 </span><span class="lineNoCov">          0 :     , [&amp;](auto /* e */) {</span>
+<span class="lineNum">     238 </span>            :         // We could print the error generically here:
+<span class="lineNum">     239 </span>            :         // ```
+<span class="lineNum">     240 </span>            :         // std::cerr &lt;&lt; &quot;Error: &quot; &lt;&lt; decltype(e)::description &lt;&lt; std::endl;
+<span class="lineNum">     241 </span>            :         // ```
+<span class="lineNum">     242 </span><span class="lineNoCov">          0 :       }</span>
+<span class="lineNum">     243 </span>            :     );
+<span class="lineNum">     244 </span>            : 
+<span class="lineNum">     245 </span><span class="lineCov">          4 :     THEN(&quot;the success callback is called&quot;) {</span>
+<span class="lineNum">     246 </span><span class="lineCov">          1 :       REQUIRE(success);</span>
+<span class="lineNum">     247 </span>            :     }
+<span class="lineNum">     248 </span>            :   }
+<span class="lineNum">     249 </span>            : 
+<span class="lineNum">     250 </span>            : #if __cplusplus &gt;= 201703L
+<span class="lineNum">     251 </span><span class="lineCov">         16 :   WHEN(&quot;variant&quot;) {</span>
+<span class="lineNum">     252 </span>            :     // Doesn't work with clang as of version 5.0.0 due to bug
+<span class="lineNum">     253 </span>            :     // https://bugs.llvm.org//show_bug.cgi?id=33222
+<span class="lineNum">     254 </span>            :     auto variant = Aggregate&lt;A, A, B&gt;::variant&lt;
+<span class="lineNum">     255 </span>            :       A::StringEmptyError
+<span class="lineNum">     256 </span>            :     , A::IntNegativeError
+<span class="lineNum">     257 </span>            :     &gt;(
+<span class="lineNum">     258 </span><span class="lineCov">          2 :       A::builder(&quot;abc&quot;, 42)</span>
+<span class="lineNum">     259 </span><span class="lineCov">          2 :     , A::builder(&quot;def&quot;, 123)</span>
+<span class="lineNum">     260 </span><span class="lineCov">          2 :     , mp::wrapper&lt;B&gt;(5, 6)</span>
+<span class="lineNum">     261 </span>            :     , 3
+<span class="lineNum">     262 </span><span class="lineCov">          4 :     );</span>
+<a name="263"><span class="lineNum">     263 </span><span class="lineCov">          1 :     std::visit(</span></a>
+<span class="lineNum">     264 </span><span class="lineCov">          1 :       mp::handler(</span>
+<span class="lineNum">     265 </span><span class="lineCov">          1 :         [](Aggregate&lt;A, A, B&gt; const &amp;result) {</span>
+<span class="lineNum">     266 </span><span class="lineCov">          1 :           REQUIRE(result.get_t().get_a_string() == &quot;abc&quot;);</span>
+<span class="lineNum">     267 </span><span class="lineCov">          1 :           REQUIRE(result.get_t().get_an_int() == 42);</span>
+<span class="lineNum">     268 </span><span class="lineCov">          1 :           REQUIRE(result.get_u().get_a_string() == &quot;def&quot;);</span>
+<span class="lineNum">     269 </span><span class="lineCov">          1 :           REQUIRE(result.get_u().get_an_int() == 123);</span>
+<span class="lineNum">     270 </span><span class="lineCov">          1 :           REQUIRE(result.get_v().int_a == 5);</span>
+<span class="lineNum">     271 </span><span class="lineCov">          1 :           REQUIRE(result.get_v().int_b == 6);</span>
+<a name="272"><span class="lineNum">     272 </span><span class="lineCov">          1 :           REQUIRE(result.get_int() == 3);</span></a>
+<span class="lineNum">     273 </span><span class="lineCov">          1 :         }</span>
+<span class="lineNum">     274 </span><span class="lineNoCov">          0 :       , [](auto) { REQUIRE(false); }</span>
+<span class="lineNum">     275 </span><span class="lineCov">          2 :       )</span>
+<span class="lineNum">     276 </span>            :     , variant
+<span class="lineNum">     277 </span>            :     );
+<span class="lineNum">     278 </span>            :   }
+<span class="lineNum">     279 </span>            : 
+<span class="lineNum">     280 </span><span class="lineCov">         16 :   WHEN(&quot;invalid variant&quot;) {</span>
+<span class="lineNum">     281 </span>            :     // Doesn't work with clang as of version 5.0.0 due to bug
+<span class="lineNum">     282 </span>            :     // https://bugs.llvm.org//show_bug.cgi?id=33222
+<span class="lineNum">     283 </span>            :     auto variant = Aggregate&lt;A, A, B&gt;::variant&lt;
+<span class="lineNum">     284 </span>            :       A::StringEmptyError
+<span class="lineNum">     285 </span>            :     , A::IntNegativeError
+<span class="lineNum">     286 </span>            :     &gt;(
+<span class="lineNum">     287 </span><span class="lineCov">          2 :       A::builder(&quot;abc&quot;, 42)</span>
+<span class="lineNum">     288 </span><span class="lineCov">          2 :     , A::builder(&quot;def&quot;, -123)</span>
+<span class="lineNum">     289 </span><span class="lineCov">          2 :     , mp::wrapper&lt;B&gt;(5, 6)</span>
+<span class="lineNum">     290 </span>            :     , 3
+<span class="lineNum">     291 </span><span class="lineCov">          4 :     );</span>
+<span class="lineNum">     292 </span><span class="lineCov">          1 :     bool failed = false;</span>
+<a name="293"><span class="lineNum">     293 </span><span class="lineCov">          1 :     std::visit(</span></a>
+<span class="lineNum">     294 </span><span class="lineCov">          2 :       mp::handler(</span>
+<span class="lineNum">     295 </span><span class="lineNoCov">          0 :         [](Aggregate&lt;A, A, B&gt; const &amp;) {</span>
+<a name="296"><span class="lineNum">     296 </span><span class="lineNoCov">          0 :           REQUIRE(false);</span></a>
+<span class="lineNum">     297 </span><span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">     298 </span><span class="lineCov">          1 :       , [&amp;](auto) { failed = true; }</span>
+<span class="lineNum">     299 </span><span class="lineCov">          2 :       )</span>
+<span class="lineNum">     300 </span>            :     , variant
+<span class="lineNum">     301 </span>            :     );
+<span class="lineNum">     302 </span><span class="lineCov">          1 :     REQUIRE(failed);</span>
+<span class="lineNum">     303 </span>            :   }
+<span class="lineNum">     304 </span>            : 
+<span class="lineNum">     305 </span><span class="lineCov">         16 :   WHEN(&quot;optional&quot;) {</span>
+<span class="lineNum">     306 </span><span class="lineCov">          4 :     auto optional = Aggregate&lt;A, A, B&gt;::optional(</span>
+<span class="lineNum">     307 </span><span class="lineCov">          2 :       A::builder(&quot;abc&quot;, 42)</span>
+<span class="lineNum">     308 </span><span class="lineCov">          2 :     , A::builder(&quot;def&quot;, 123)</span>
+<span class="lineNum">     309 </span><span class="lineCov">          2 :     , mp::wrapper&lt;B&gt;(5, 6)</span>
+<a name="310"><span class="lineNum">     310 </span>            :     , 3</a>
+<span class="lineNum">     311 </span>            :     ).construct(
+<span class="lineNum">     312 </span><span class="lineNoCov">          0 :       [](auto) { REQUIRE(false); }</span>
+<span class="lineNum">     313 </span><span class="lineCov">          2 :     );</span>
+<span class="lineNum">     314 </span>            : 
+<span class="lineNum">     315 </span><span class="lineCov">          1 :     REQUIRE(optional);</span>
+<span class="lineNum">     316 </span><span class="lineCov">          1 :     REQUIRE(optional-&gt;get_t().get_a_string() == &quot;abc&quot;);</span>
+<span class="lineNum">     317 </span><span class="lineCov">          1 :     REQUIRE(optional-&gt;get_t().get_an_int() == 42);</span>
+<span class="lineNum">     318 </span><span class="lineCov">          1 :     REQUIRE(optional-&gt;get_u().get_a_string() == &quot;def&quot;);</span>
+<span class="lineNum">     319 </span><span class="lineCov">          1 :     REQUIRE(optional-&gt;get_u().get_an_int() == 123);</span>
+<span class="lineNum">     320 </span><span class="lineCov">          1 :     REQUIRE(optional-&gt;get_v().int_a == 5);</span>
+<span class="lineNum">     321 </span><span class="lineCov">          1 :     REQUIRE(optional-&gt;get_v().int_b == 6);</span>
+<span class="lineNum">     322 </span><span class="lineCov">          1 :     REQUIRE(optional-&gt;get_int() == 3);</span>
+<span class="lineNum">     323 </span>            :   }
+<span class="lineNum">     324 </span>            : 
+<span class="lineNum">     325 </span><span class="lineCov">         16 :   WHEN(&quot;invalid optional&quot;) {</span>
+<span class="lineNum">     326 </span><span class="lineCov">          1 :     bool failed = false;</span>
+<span class="lineNum">     327 </span><span class="lineCov">          4 :     auto optional = Aggregate&lt;A, A, B&gt;::optional(</span>
+<span class="lineNum">     328 </span><span class="lineCov">          2 :       A::builder(&quot;&quot;, 42)</span>
+<span class="lineNum">     329 </span><span class="lineCov">          2 :     , A::builder(&quot;def&quot;, 123)</span>
+<span class="lineNum">     330 </span><span class="lineCov">          2 :     , mp::wrapper&lt;B&gt;(5, 6)</span>
+<a name="331"><span class="lineNum">     331 </span>            :     , 3</a>
+<span class="lineNum">     332 </span>            :     ).construct(
+<span class="lineNum">     333 </span><span class="lineCov">          1 :       [&amp;](auto) { failed = true; }</span>
+<span class="lineNum">     334 </span><span class="lineCov">          2 :     );</span>
+<span class="lineNum">     335 </span>            : 
+<span class="lineNum">     336 </span><span class="lineCov">          1 :     REQUIRE(failed);</span>
+<span class="lineNum">     337 </span><span class="lineCov">          1 :     REQUIRE(!optional);</span>
+<a name="338"><span class="lineNum">     338 </span>            :   }</a>
+<span class="lineNum">     339 </span>            : #endif
+<span class="lineNum">     340 </span><span class="lineCov">         11 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

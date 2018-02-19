@@ -1,0 +1,689 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Code coverage - /usr/include/c++/7.3.0/bits/alloc_traits.h</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../index.html">top level</a> - <a href="index.html">usr/include/c++/7.3.0/bits</a> - alloc_traits.h<span style="font-size: 80%;"> (source / <a href="alloc_traits.h.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Code coverage</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">22</td>
+            <td class="headerCovTableEntry">43</td>
+            <td class="headerCovTableEntryLo">51.2 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2018-02-19 01:04:17</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">137</td>
+            <td class="headerCovTableEntry">240</td>
+            <td class="headerCovTableEntryLo">57.1 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Legend:</td>
+            <td class="headerValueLeg">            Lines:
+            <span class="coverLegendCov">hit</span>
+            <span class="coverLegendNoCov">not hit</span>
+</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : // Allocator traits -*- C++ -*-</a>
+<span class="lineNum">       2 </span>            : 
+<span class="lineNum">       3 </span>            : // Copyright (C) 2011-2017 Free Software Foundation, Inc.
+<span class="lineNum">       4 </span>            : //
+<span class="lineNum">       5 </span>            : // This file is part of the GNU ISO C++ Library.  This library is free
+<span class="lineNum">       6 </span>            : // software; you can redistribute it and/or modify it under the
+<span class="lineNum">       7 </span>            : // terms of the GNU General Public License as published by the
+<span class="lineNum">       8 </span>            : // Free Software Foundation; either version 3, or (at your option)
+<span class="lineNum">       9 </span>            : // any later version.
+<span class="lineNum">      10 </span>            : 
+<span class="lineNum">      11 </span>            : // This library is distributed in the hope that it will be useful,
+<span class="lineNum">      12 </span>            : // but WITHOUT ANY WARRANTY; without even the implied warranty of
+<span class="lineNum">      13 </span>            : // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<span class="lineNum">      14 </span>            : // GNU General Public License for more details.
+<span class="lineNum">      15 </span>            : 
+<span class="lineNum">      16 </span>            : // Under Section 7 of GPL version 3, you are granted additional
+<span class="lineNum">      17 </span>            : // permissions described in the GCC Runtime Library Exception, version
+<span class="lineNum">      18 </span>            : // 3.1, as published by the Free Software Foundation.
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : // You should have received a copy of the GNU General Public License and
+<span class="lineNum">      21 </span>            : // a copy of the GCC Runtime Library Exception along with this program;
+<span class="lineNum">      22 </span>            : // see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<span class="lineNum">      23 </span>            : // &lt;http://www.gnu.org/licenses/&gt;.
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            : /** @file bits/alloc_traits.h
+<span class="lineNum">      26 </span>            :  *  This is an internal header file, included by other library headers.
+<span class="lineNum">      27 </span>            :  *  Do not attempt to use it directly. @headername{memory}
+<span class="lineNum">      28 </span>            :  */
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span>            : #ifndef _ALLOC_TRAITS_H
+<span class="lineNum">      31 </span>            : #define _ALLOC_TRAITS_H 1
+<span class="lineNum">      32 </span>            : 
+<span class="lineNum">      33 </span>            : #if __cplusplus &gt;= 201103L
+<span class="lineNum">      34 </span>            : 
+<span class="lineNum">      35 </span>            : #include &lt;bits/memoryfwd.h&gt;
+<span class="lineNum">      36 </span>            : #include &lt;bits/ptr_traits.h&gt;
+<span class="lineNum">      37 </span>            : #include &lt;ext/numeric_traits.h&gt;
+<span class="lineNum">      38 </span>            : 
+<span class="lineNum">      39 </span>            : #define __cpp_lib_allocator_traits_is_always_equal 201411
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span>            : namespace std _GLIBCXX_VISIBILITY(default)
+<span class="lineNum">      42 </span>            : {
+<span class="lineNum">      43 </span>            : _GLIBCXX_BEGIN_NAMESPACE_VERSION
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span>            :   struct __allocator_traits_base
+<span class="lineNum">      46 </span>            :   {
+<span class="lineNum">      47 </span>            :     template&lt;typename _Tp, typename _Up, typename = void&gt;
+<span class="lineNum">      48 </span>            :       struct __rebind : __replace_first_arg&lt;_Tp, _Up&gt; { };
+<span class="lineNum">      49 </span>            : 
+<span class="lineNum">      50 </span>            :     template&lt;typename _Tp, typename _Up&gt;
+<span class="lineNum">      51 </span>            :       struct __rebind&lt;_Tp, _Up,
+<span class="lineNum">      52 </span>            :                       __void_t&lt;typename _Tp::template rebind&lt;_Up&gt;::other&gt;&gt;
+<span class="lineNum">      53 </span>            :       { using type = typename _Tp::template rebind&lt;_Up&gt;::other; };
+<span class="lineNum">      54 </span>            : 
+<span class="lineNum">      55 </span>            :   protected:
+<span class="lineNum">      56 </span>            :     template&lt;typename _Tp&gt;
+<span class="lineNum">      57 </span>            :       using __pointer = typename _Tp::pointer;
+<span class="lineNum">      58 </span>            :     template&lt;typename _Tp&gt;
+<span class="lineNum">      59 </span>            :       using __c_pointer = typename _Tp::const_pointer;
+<span class="lineNum">      60 </span>            :     template&lt;typename _Tp&gt;
+<span class="lineNum">      61 </span>            :       using __v_pointer = typename _Tp::void_pointer;
+<span class="lineNum">      62 </span>            :     template&lt;typename _Tp&gt;
+<span class="lineNum">      63 </span>            :       using __cv_pointer = typename _Tp::const_void_pointer;
+<span class="lineNum">      64 </span>            :     template&lt;typename _Tp&gt;
+<span class="lineNum">      65 </span>            :       using __pocca = typename _Tp::propagate_on_container_copy_assignment;
+<span class="lineNum">      66 </span>            :     template&lt;typename _Tp&gt;
+<span class="lineNum">      67 </span>            :       using __pocma = typename _Tp::propagate_on_container_move_assignment;
+<span class="lineNum">      68 </span>            :     template&lt;typename _Tp&gt;
+<span class="lineNum">      69 </span>            :       using __pocs = typename _Tp::propagate_on_container_swap;
+<span class="lineNum">      70 </span>            :     template&lt;typename _Tp&gt;
+<span class="lineNum">      71 </span>            :       using __equal = typename _Tp::is_always_equal;
+<span class="lineNum">      72 </span>            :   };
+<span class="lineNum">      73 </span>            : 
+<span class="lineNum">      74 </span>            :   template&lt;typename _Alloc, typename _Up&gt;
+<span class="lineNum">      75 </span>            :     using __alloc_rebind
+<span class="lineNum">      76 </span>            :       = typename __allocator_traits_base::template __rebind&lt;_Alloc, _Up&gt;::type;
+<span class="lineNum">      77 </span>            : 
+<span class="lineNum">      78 </span>            :   /**
+<span class="lineNum">      79 </span>            :    * @brief  Uniform interface to all allocator types.
+<span class="lineNum">      80 </span>            :    * @ingroup allocators
+<span class="lineNum">      81 </span>            :   */
+<span class="lineNum">      82 </span>            :   template&lt;typename _Alloc&gt;
+<span class="lineNum">      83 </span>            :     struct allocator_traits : __allocator_traits_base
+<span class="lineNum">      84 </span>            :     {
+<span class="lineNum">      85 </span>            :       /// The allocator type
+<span class="lineNum">      86 </span>            :       typedef _Alloc allocator_type;
+<span class="lineNum">      87 </span>            :       /// The allocated type
+<span class="lineNum">      88 </span>            :       typedef typename _Alloc::value_type value_type;
+<span class="lineNum">      89 </span>            : 
+<span class="lineNum">      90 </span>            :       /**
+<span class="lineNum">      91 </span>            :        * @brief   The allocator's pointer type.
+<span class="lineNum">      92 </span>            :        *
+<span class="lineNum">      93 </span>            :        * @c Alloc::pointer if that type exists, otherwise @c value_type*
+<span class="lineNum">      94 </span>            :       */
+<span class="lineNum">      95 </span>            :       using pointer = __detected_or_t&lt;value_type*, __pointer, _Alloc&gt;;
+<span class="lineNum">      96 </span>            : 
+<span class="lineNum">      97 </span>            :     private:
+<span class="lineNum">      98 </span>            :       // Select _Func&lt;_Alloc&gt; or pointer_traits&lt;pointer&gt;::rebind&lt;_Tp&gt;
+<span class="lineNum">      99 </span>            :       template&lt;template&lt;typename&gt; class _Func, typename _Tp, typename = void&gt;
+<span class="lineNum">     100 </span>            :         struct _Ptr
+<span class="lineNum">     101 </span>            :         {
+<span class="lineNum">     102 </span>            :           using type = typename pointer_traits&lt;pointer&gt;::template rebind&lt;_Tp&gt;;
+<span class="lineNum">     103 </span>            :         };
+<span class="lineNum">     104 </span>            : 
+<span class="lineNum">     105 </span>            :       template&lt;template&lt;typename&gt; class _Func, typename _Tp&gt;
+<span class="lineNum">     106 </span>            :         struct _Ptr&lt;_Func, _Tp, __void_t&lt;_Func&lt;_Alloc&gt;&gt;&gt;
+<span class="lineNum">     107 </span>            :         {
+<span class="lineNum">     108 </span>            :           using type = _Func&lt;_Alloc&gt;;
+<span class="lineNum">     109 </span>            :         };
+<span class="lineNum">     110 </span>            : 
+<span class="lineNum">     111 </span>            :       // Select _A2::difference_type or pointer_traits&lt;_Ptr&gt;::difference_type
+<span class="lineNum">     112 </span>            :       template&lt;typename _A2, typename _PtrT, typename = void&gt;
+<span class="lineNum">     113 </span>            :         struct _Diff
+<span class="lineNum">     114 </span>            :         { using type = typename pointer_traits&lt;_PtrT&gt;::difference_type; };
+<span class="lineNum">     115 </span>            : 
+<span class="lineNum">     116 </span>            :       template&lt;typename _A2, typename _PtrT&gt;
+<span class="lineNum">     117 </span>            :         struct _Diff&lt;_A2, _PtrT, __void_t&lt;typename _A2::difference_type&gt;&gt;
+<span class="lineNum">     118 </span>            :         { using type = typename _A2::difference_type; };
+<span class="lineNum">     119 </span>            : 
+<span class="lineNum">     120 </span>            :       // Select _A2::size_type or make_unsigned&lt;_DiffT&gt;::type
+<span class="lineNum">     121 </span>            :       template&lt;typename _A2, typename _DiffT, typename = void&gt;
+<span class="lineNum">     122 </span>            :         struct _Size : make_unsigned&lt;_DiffT&gt; { };
+<span class="lineNum">     123 </span>            : 
+<span class="lineNum">     124 </span>            :       template&lt;typename _A2, typename _DiffT&gt;
+<span class="lineNum">     125 </span>            :         struct _Size&lt;_A2, _DiffT, __void_t&lt;typename _A2::size_type&gt;&gt;
+<span class="lineNum">     126 </span>            :         { using type = typename _A2::size_type; };
+<span class="lineNum">     127 </span>            : 
+<span class="lineNum">     128 </span>            :     public:
+<span class="lineNum">     129 </span>            :       /**
+<span class="lineNum">     130 </span>            :        * @brief   The allocator's const pointer type.
+<span class="lineNum">     131 </span>            :        *
+<span class="lineNum">     132 </span>            :        * @c Alloc::const_pointer if that type exists, otherwise
+<span class="lineNum">     133 </span>            :        * &lt;tt&gt; pointer_traits&lt;pointer&gt;::rebind&lt;const value_type&gt; &lt;/tt&gt;
+<span class="lineNum">     134 </span>            :       */
+<span class="lineNum">     135 </span>            :       using const_pointer = typename _Ptr&lt;__c_pointer, const value_type&gt;::type;
+<span class="lineNum">     136 </span>            : 
+<span class="lineNum">     137 </span>            :       /**
+<span class="lineNum">     138 </span>            :        * @brief   The allocator's void pointer type.
+<span class="lineNum">     139 </span>            :        *
+<span class="lineNum">     140 </span>            :        * @c Alloc::void_pointer if that type exists, otherwise
+<span class="lineNum">     141 </span>            :        * &lt;tt&gt; pointer_traits&lt;pointer&gt;::rebind&lt;void&gt; &lt;/tt&gt;
+<span class="lineNum">     142 </span>            :       */
+<span class="lineNum">     143 </span>            :       using void_pointer = typename _Ptr&lt;__v_pointer, void&gt;::type;
+<span class="lineNum">     144 </span>            : 
+<span class="lineNum">     145 </span>            :       /**
+<span class="lineNum">     146 </span>            :        * @brief   The allocator's const void pointer type.
+<span class="lineNum">     147 </span>            :        *
+<span class="lineNum">     148 </span>            :        * @c Alloc::const_void_pointer if that type exists, otherwise
+<span class="lineNum">     149 </span>            :        * &lt;tt&gt; pointer_traits&lt;pointer&gt;::rebind&lt;const void&gt; &lt;/tt&gt;
+<span class="lineNum">     150 </span>            :       */
+<span class="lineNum">     151 </span>            :       using const_void_pointer = typename _Ptr&lt;__cv_pointer, const void&gt;::type;
+<span class="lineNum">     152 </span>            : 
+<span class="lineNum">     153 </span>            :       /**
+<span class="lineNum">     154 </span>            :        * @brief   The allocator's difference type
+<span class="lineNum">     155 </span>            :        *
+<span class="lineNum">     156 </span>            :        * @c Alloc::difference_type if that type exists, otherwise
+<span class="lineNum">     157 </span>            :        * &lt;tt&gt; pointer_traits&lt;pointer&gt;::difference_type &lt;/tt&gt;
+<span class="lineNum">     158 </span>            :       */
+<span class="lineNum">     159 </span>            :       using difference_type = typename _Diff&lt;_Alloc, pointer&gt;::type;
+<span class="lineNum">     160 </span>            : 
+<span class="lineNum">     161 </span>            :       /**
+<span class="lineNum">     162 </span>            :        * @brief   The allocator's size type
+<span class="lineNum">     163 </span>            :        *
+<span class="lineNum">     164 </span>            :        * @c Alloc::size_type if that type exists, otherwise
+<span class="lineNum">     165 </span>            :        * &lt;tt&gt; make_unsigned&lt;difference_type&gt;::type &lt;/tt&gt;
+<span class="lineNum">     166 </span>            :       */
+<span class="lineNum">     167 </span>            :       using size_type = typename _Size&lt;_Alloc, difference_type&gt;::type;
+<span class="lineNum">     168 </span>            : 
+<span class="lineNum">     169 </span>            :       /**
+<span class="lineNum">     170 </span>            :        * @brief   How the allocator is propagated on copy assignment
+<span class="lineNum">     171 </span>            :        *
+<span class="lineNum">     172 </span>            :        * @c Alloc::propagate_on_container_copy_assignment if that type exists,
+<span class="lineNum">     173 </span>            :        * otherwise @c false_type
+<span class="lineNum">     174 </span>            :       */
+<span class="lineNum">     175 </span>            :       using propagate_on_container_copy_assignment
+<span class="lineNum">     176 </span>            :         = __detected_or_t&lt;false_type, __pocca, _Alloc&gt;;
+<span class="lineNum">     177 </span>            : 
+<span class="lineNum">     178 </span>            :       /**
+<span class="lineNum">     179 </span>            :        * @brief   How the allocator is propagated on move assignment
+<span class="lineNum">     180 </span>            :        *
+<span class="lineNum">     181 </span>            :        * @c Alloc::propagate_on_container_move_assignment if that type exists,
+<span class="lineNum">     182 </span>            :        * otherwise @c false_type
+<span class="lineNum">     183 </span>            :       */
+<span class="lineNum">     184 </span>            :       using propagate_on_container_move_assignment
+<span class="lineNum">     185 </span>            :         = __detected_or_t&lt;false_type, __pocma, _Alloc&gt;;
+<span class="lineNum">     186 </span>            : 
+<span class="lineNum">     187 </span>            :       /**
+<span class="lineNum">     188 </span>            :        * @brief   How the allocator is propagated on swap
+<span class="lineNum">     189 </span>            :        *
+<span class="lineNum">     190 </span>            :        * @c Alloc::propagate_on_container_swap if that type exists,
+<span class="lineNum">     191 </span>            :        * otherwise @c false_type
+<span class="lineNum">     192 </span>            :       */
+<span class="lineNum">     193 </span>            :       using propagate_on_container_swap
+<span class="lineNum">     194 </span>            :         = __detected_or_t&lt;false_type, __pocs, _Alloc&gt;;
+<span class="lineNum">     195 </span>            : 
+<span class="lineNum">     196 </span>            :       /**
+<span class="lineNum">     197 </span>            :        * @brief   Whether all instances of the allocator type compare equal.
+<span class="lineNum">     198 </span>            :        *
+<span class="lineNum">     199 </span>            :        * @c Alloc::is_always_equal if that type exists,
+<span class="lineNum">     200 </span>            :        * otherwise @c is_empty&lt;Alloc&gt;::type
+<span class="lineNum">     201 </span>            :       */
+<span class="lineNum">     202 </span>            :       using is_always_equal
+<span class="lineNum">     203 </span>            :         = __detected_or_t&lt;typename is_empty&lt;_Alloc&gt;::type, __equal, _Alloc&gt;;
+<span class="lineNum">     204 </span>            : 
+<span class="lineNum">     205 </span>            :       template&lt;typename _Tp&gt;
+<span class="lineNum">     206 </span>            :         using rebind_alloc = __alloc_rebind&lt;_Alloc, _Tp&gt;;
+<span class="lineNum">     207 </span>            :       template&lt;typename _Tp&gt;
+<span class="lineNum">     208 </span>            :         using rebind_traits = allocator_traits&lt;rebind_alloc&lt;_Tp&gt;&gt;;
+<span class="lineNum">     209 </span>            : 
+<span class="lineNum">     210 </span>            :     private:
+<span class="lineNum">     211 </span>            :       template&lt;typename _Alloc2&gt;
+<span class="lineNum">     212 </span>            :         static auto
+<span class="lineNum">     213 </span>            :         _S_allocate(_Alloc2&amp; __a, size_type __n, const_void_pointer __hint, int)
+<span class="lineNum">     214 </span>            :         -&gt; decltype(__a.allocate(__n, __hint))
+<span class="lineNum">     215 </span>            :         { return __a.allocate(__n, __hint); }
+<span class="lineNum">     216 </span>            : 
+<span class="lineNum">     217 </span>            :       template&lt;typename _Alloc2&gt;
+<span class="lineNum">     218 </span>            :         static pointer
+<span class="lineNum">     219 </span>            :         _S_allocate(_Alloc2&amp; __a, size_type __n, const_void_pointer, ...)
+<span class="lineNum">     220 </span>            :         { return __a.allocate(__n); }
+<span class="lineNum">     221 </span>            : 
+<span class="lineNum">     222 </span>            :       template&lt;typename _Tp, typename... _Args&gt;
+<span class="lineNum">     223 </span>            :         struct __construct_helper
+<span class="lineNum">     224 </span>            :         {
+<span class="lineNum">     225 </span>            :           template&lt;typename _Alloc2,
+<span class="lineNum">     226 </span>            :             typename = decltype(std::declval&lt;_Alloc2*&gt;()-&gt;construct(
+<span class="lineNum">     227 </span>            :                   std::declval&lt;_Tp*&gt;(), std::declval&lt;_Args&gt;()...))&gt;
+<span class="lineNum">     228 </span>            :             static true_type __test(int);
+<span class="lineNum">     229 </span>            : 
+<span class="lineNum">     230 </span>            :           template&lt;typename&gt;
+<span class="lineNum">     231 </span>            :             static false_type __test(...);
+<span class="lineNum">     232 </span>            : 
+<span class="lineNum">     233 </span>            :           using type = decltype(__test&lt;_Alloc&gt;(0));
+<span class="lineNum">     234 </span>            :         };
+<span class="lineNum">     235 </span>            : 
+<span class="lineNum">     236 </span>            :       template&lt;typename _Tp, typename... _Args&gt;
+<span class="lineNum">     237 </span>            :         using __has_construct
+<span class="lineNum">     238 </span>            :           = typename __construct_helper&lt;_Tp, _Args...&gt;::type;
+<span class="lineNum">     239 </span>            : 
+<span class="lineNum">     240 </span>            :       template&lt;typename _Tp, typename... _Args&gt;
+<span class="lineNum">     241 </span>            :         static _Require&lt;__has_construct&lt;_Tp, _Args...&gt;&gt;
+<span class="lineNum">     242 </span>            :         _S_construct(_Alloc&amp; __a, _Tp* __p, _Args&amp;&amp;... __args)
+<span class="lineNum">     243 </span>            :         { __a.construct(__p, std::forward&lt;_Args&gt;(__args)...); }
+<span class="lineNum">     244 </span>            : 
+<span class="lineNum">     245 </span>            :       template&lt;typename _Tp, typename... _Args&gt;
+<span class="lineNum">     246 </span>            :         static
+<a name="247"><span class="lineNum">     247 </span>            :         _Require&lt;__and_&lt;__not_&lt;__has_construct&lt;_Tp, _Args...&gt;&gt;,</a>
+<span class="lineNum">     248 </span>            :                                is_constructible&lt;_Tp, _Args...&gt;&gt;&gt;
+<span class="lineNum">     249 </span><span class="lineNoCov">          0 :         _S_construct(_Alloc&amp;, _Tp* __p, _Args&amp;&amp;... __args)</span>
+<span class="lineNum">     250 </span><span class="lineNoCov">          0 :         { ::new((void*)__p) _Tp(std::forward&lt;_Args&gt;(__args)...); }</span>
+<span class="lineNum">     251 </span>            : 
+<span class="lineNum">     252 </span>            :       template&lt;typename _Alloc2, typename _Tp&gt;
+<span class="lineNum">     253 </span>            :         static auto
+<span class="lineNum">     254 </span>            :         _S_destroy(_Alloc2&amp; __a, _Tp* __p, int)
+<span class="lineNum">     255 </span>            :         -&gt; decltype(__a.destroy(__p))
+<span class="lineNum">     256 </span>            :         { __a.destroy(__p); }
+<span class="lineNum">     257 </span>            : 
+<a name="258"><span class="lineNum">     258 </span>            :       template&lt;typename _Alloc2, typename _Tp&gt;</a>
+<span class="lineNum">     259 </span>            :         static void
+<span class="lineNum">     260 </span><span class="lineNoCov">          0 :         _S_destroy(_Alloc2&amp;, _Tp* __p, ...)</span>
+<span class="lineNum">     261 </span><span class="lineNoCov">          0 :         { __p-&gt;~_Tp(); }</span>
+<span class="lineNum">     262 </span>            : 
+<span class="lineNum">     263 </span>            :       template&lt;typename _Alloc2&gt;
+<span class="lineNum">     264 </span>            :         static auto
+<span class="lineNum">     265 </span>            :         _S_max_size(_Alloc2&amp; __a, int)
+<span class="lineNum">     266 </span>            :         -&gt; decltype(__a.max_size())
+<span class="lineNum">     267 </span>            :         { return __a.max_size(); }
+<span class="lineNum">     268 </span>            : 
+<a name="269"><span class="lineNum">     269 </span>            :       template&lt;typename _Alloc2&gt;</a>
+<span class="lineNum">     270 </span>            :         static size_type
+<span class="lineNum">     271 </span><span class="lineNoCov">          0 :         _S_max_size(_Alloc2&amp;, ...)</span>
+<span class="lineNum">     272 </span>            :         {
+<span class="lineNum">     273 </span>            :           // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<span class="lineNum">     274 </span>            :           // 2466. allocator_traits::max_size() default behavior is incorrect
+<span class="lineNum">     275 </span>            :           return __gnu_cxx::__numeric_traits&lt;size_type&gt;::__max
+<span class="lineNum">     276 </span><span class="lineNoCov">          0 :             / sizeof(value_type);</span>
+<span class="lineNum">     277 </span>            :         }
+<span class="lineNum">     278 </span>            : 
+<span class="lineNum">     279 </span>            :       template&lt;typename _Alloc2&gt;
+<span class="lineNum">     280 </span>            :         static auto
+<span class="lineNum">     281 </span>            :         _S_select(_Alloc2&amp; __a, int)
+<span class="lineNum">     282 </span>            :         -&gt; decltype(__a.select_on_container_copy_construction())
+<span class="lineNum">     283 </span>            :         { return __a.select_on_container_copy_construction(); }
+<span class="lineNum">     284 </span>            : 
+<span class="lineNum">     285 </span>            :       template&lt;typename _Alloc2&gt;
+<span class="lineNum">     286 </span>            :         static _Alloc2
+<span class="lineNum">     287 </span>            :         _S_select(_Alloc2&amp; __a, ...)
+<span class="lineNum">     288 </span>            :         { return __a; }
+<span class="lineNum">     289 </span>            : 
+<span class="lineNum">     290 </span>            :     public:
+<span class="lineNum">     291 </span>            : 
+<span class="lineNum">     292 </span>            :       /**
+<span class="lineNum">     293 </span>            :        *  @brief  Allocate memory.
+<span class="lineNum">     294 </span>            :        *  @param  __a  An allocator.
+<span class="lineNum">     295 </span>            :        *  @param  __n  The number of objects to allocate space for.
+<span class="lineNum">     296 </span>            :        *
+<span class="lineNum">     297 </span>            :        *  Calls @c a.allocate(n)
+<a name="298"><span class="lineNum">     298 </span>            :       */</a>
+<span class="lineNum">     299 </span>            :       static pointer
+<span class="lineNum">     300 </span><span class="lineNoCov">          0 :       allocate(_Alloc&amp; __a, size_type __n)</span>
+<span class="lineNum">     301 </span><span class="lineNoCov">          0 :       { return __a.allocate(__n); }</span>
+<span class="lineNum">     302 </span>            : 
+<span class="lineNum">     303 </span>            :       /**
+<span class="lineNum">     304 </span>            :        *  @brief  Allocate memory.
+<span class="lineNum">     305 </span>            :        *  @param  __a  An allocator.
+<span class="lineNum">     306 </span>            :        *  @param  __n  The number of objects to allocate space for.
+<span class="lineNum">     307 </span>            :        *  @param  __hint Aid to locality.
+<span class="lineNum">     308 </span>            :        *  @return Memory of suitable size and alignment for @a n objects
+<span class="lineNum">     309 </span>            :        *          of type @c value_type
+<span class="lineNum">     310 </span>            :        *
+<span class="lineNum">     311 </span>            :        *  Returns &lt;tt&gt; a.allocate(n, hint) &lt;/tt&gt; if that expression is
+<span class="lineNum">     312 </span>            :        *  well-formed, otherwise returns @c a.allocate(n)
+<span class="lineNum">     313 </span>            :       */
+<span class="lineNum">     314 </span>            :       static pointer
+<span class="lineNum">     315 </span>            :       allocate(_Alloc&amp; __a, size_type __n, const_void_pointer __hint)
+<span class="lineNum">     316 </span>            :       { return _S_allocate(__a, __n, __hint, 0); }
+<span class="lineNum">     317 </span>            : 
+<span class="lineNum">     318 </span>            :       /**
+<span class="lineNum">     319 </span>            :        *  @brief  Deallocate memory.
+<span class="lineNum">     320 </span>            :        *  @param  __a  An allocator.
+<span class="lineNum">     321 </span>            :        *  @param  __p  Pointer to the memory to deallocate.
+<span class="lineNum">     322 </span>            :        *  @param  __n  The number of objects space was allocated for.
+<span class="lineNum">     323 </span>            :        *
+<span class="lineNum">     324 </span>            :        *  Calls &lt;tt&gt; a.deallocate(p, n) &lt;/tt&gt;
+<a name="325"><span class="lineNum">     325 </span>            :       */</a>
+<span class="lineNum">     326 </span>            :       static void
+<span class="lineNum">     327 </span><span class="lineNoCov">          0 :       deallocate(_Alloc&amp; __a, pointer __p, size_type __n)</span>
+<span class="lineNum">     328 </span><span class="lineNoCov">          0 :       { __a.deallocate(__p, __n); }</span>
+<span class="lineNum">     329 </span>            : 
+<span class="lineNum">     330 </span>            :       /**
+<span class="lineNum">     331 </span>            :        *  @brief  Construct an object of type @a _Tp
+<span class="lineNum">     332 </span>            :        *  @param  __a  An allocator.
+<span class="lineNum">     333 </span>            :        *  @param  __p  Pointer to memory of suitable size and alignment for Tp
+<span class="lineNum">     334 </span>            :        *  @param  __args Constructor arguments.
+<span class="lineNum">     335 </span>            :        *
+<span class="lineNum">     336 </span>            :        *  Calls &lt;tt&gt; __a.construct(__p, std::forward&lt;Args&gt;(__args)...) &lt;/tt&gt;
+<span class="lineNum">     337 </span>            :        *  if that expression is well-formed, otherwise uses placement-new
+<span class="lineNum">     338 </span>            :        *  to construct an object of type @a _Tp at location @a __p from the
+<span class="lineNum">     339 </span>            :        *  arguments @a __args...
+<a name="340"><span class="lineNum">     340 </span>            :       */</a>
+<span class="lineNum">     341 </span>            :       template&lt;typename _Tp, typename... _Args&gt;
+<span class="lineNum">     342 </span><span class="lineNoCov">          0 :         static auto construct(_Alloc&amp; __a, _Tp* __p, _Args&amp;&amp;... __args)</span>
+<span class="lineNum">     343 </span>            :         -&gt; decltype(_S_construct(__a, __p, std::forward&lt;_Args&gt;(__args)...))
+<span class="lineNum">     344 </span><span class="lineNoCov">          0 :         { _S_construct(__a, __p, std::forward&lt;_Args&gt;(__args)...); }</span>
+<span class="lineNum">     345 </span>            : 
+<span class="lineNum">     346 </span>            :       /**
+<span class="lineNum">     347 </span>            :        *  @brief  Destroy an object of type @a _Tp
+<span class="lineNum">     348 </span>            :        *  @param  __a  An allocator.
+<span class="lineNum">     349 </span>            :        *  @param  __p  Pointer to the object to destroy
+<span class="lineNum">     350 </span>            :        *
+<span class="lineNum">     351 </span>            :        *  Calls @c __a.destroy(__p) if that expression is well-formed,
+<span class="lineNum">     352 </span>            :        *  otherwise calls @c __p-&gt;~_Tp()
+<a name="353"><span class="lineNum">     353 </span>            :       */</a>
+<span class="lineNum">     354 </span>            :       template&lt;typename _Tp&gt;
+<span class="lineNum">     355 </span><span class="lineNoCov">          0 :         static void destroy(_Alloc&amp; __a, _Tp* __p)</span>
+<span class="lineNum">     356 </span><span class="lineNoCov">          0 :         { _S_destroy(__a, __p, 0); }</span>
+<span class="lineNum">     357 </span>            : 
+<span class="lineNum">     358 </span>            :       /**
+<span class="lineNum">     359 </span>            :        *  @brief  The maximum supported allocation size
+<span class="lineNum">     360 </span>            :        *  @param  __a  An allocator.
+<span class="lineNum">     361 </span>            :        *  @return @c __a.max_size() or @c numeric_limits&lt;size_type&gt;::max()
+<span class="lineNum">     362 </span>            :        *
+<span class="lineNum">     363 </span>            :        *  Returns @c __a.max_size() if that expression is well-formed,
+<a name="364"><span class="lineNum">     364 </span>            :        *  otherwise returns @c numeric_limits&lt;size_type&gt;::max()</a>
+<span class="lineNum">     365 </span>            :       */
+<span class="lineNum">     366 </span><span class="lineNoCov">          0 :       static size_type max_size(const _Alloc&amp; __a) noexcept</span>
+<span class="lineNum">     367 </span><span class="lineNoCov">          0 :       { return _S_max_size(__a, 0); }</span>
+<span class="lineNum">     368 </span>            : 
+<span class="lineNum">     369 </span>            :       /**
+<span class="lineNum">     370 </span>            :        *  @brief  Obtain an allocator to use when copying a container.
+<span class="lineNum">     371 </span>            :        *  @param  __rhs  An allocator.
+<span class="lineNum">     372 </span>            :        *  @return @c __rhs.select_on_container_copy_construction() or @a __rhs
+<span class="lineNum">     373 </span>            :        *
+<span class="lineNum">     374 </span>            :        *  Returns @c __rhs.select_on_container_copy_construction() if that
+<span class="lineNum">     375 </span>            :        *  expression is well-formed, otherwise returns @a __rhs
+<span class="lineNum">     376 </span>            :       */
+<span class="lineNum">     377 </span>            :       static _Alloc
+<span class="lineNum">     378 </span>            :       select_on_container_copy_construction(const _Alloc&amp; __rhs)
+<span class="lineNum">     379 </span>            :       { return _S_select(__rhs, 0); }
+<span class="lineNum">     380 </span>            :     };
+<span class="lineNum">     381 </span>            : 
+<span class="lineNum">     382 </span>            :   /// Partial specialization for std::allocator.
+<span class="lineNum">     383 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     384 </span>            :     struct allocator_traits&lt;allocator&lt;_Tp&gt;&gt;
+<span class="lineNum">     385 </span>            :     {
+<span class="lineNum">     386 </span>            :       /// The allocator type
+<span class="lineNum">     387 </span>            :       using allocator_type = allocator&lt;_Tp&gt;;
+<span class="lineNum">     388 </span>            :       /// The allocated type
+<span class="lineNum">     389 </span>            :       using value_type = _Tp;
+<span class="lineNum">     390 </span>            : 
+<span class="lineNum">     391 </span>            :       /// The allocator's pointer type.
+<span class="lineNum">     392 </span>            :       using pointer = _Tp*;
+<span class="lineNum">     393 </span>            : 
+<span class="lineNum">     394 </span>            :       /// The allocator's const pointer type.
+<span class="lineNum">     395 </span>            :       using const_pointer = const _Tp*;
+<span class="lineNum">     396 </span>            : 
+<span class="lineNum">     397 </span>            :       /// The allocator's void pointer type.
+<span class="lineNum">     398 </span>            :       using void_pointer = void*;
+<span class="lineNum">     399 </span>            : 
+<span class="lineNum">     400 </span>            :       /// The allocator's const void pointer type.
+<span class="lineNum">     401 </span>            :       using const_void_pointer = const void*;
+<span class="lineNum">     402 </span>            : 
+<span class="lineNum">     403 </span>            :       /// The allocator's difference type
+<span class="lineNum">     404 </span>            :       using difference_type = std::ptrdiff_t;
+<span class="lineNum">     405 </span>            : 
+<span class="lineNum">     406 </span>            :       /// The allocator's size type
+<span class="lineNum">     407 </span>            :       using size_type = std::size_t;
+<span class="lineNum">     408 </span>            : 
+<span class="lineNum">     409 </span>            :       /// How the allocator is propagated on copy assignment
+<span class="lineNum">     410 </span>            :       using propagate_on_container_copy_assignment = false_type;
+<span class="lineNum">     411 </span>            : 
+<span class="lineNum">     412 </span>            :       /// How the allocator is propagated on move assignment
+<span class="lineNum">     413 </span>            :       using propagate_on_container_move_assignment = true_type;
+<span class="lineNum">     414 </span>            : 
+<span class="lineNum">     415 </span>            :       /// How the allocator is propagated on swap
+<span class="lineNum">     416 </span>            :       using propagate_on_container_swap = false_type;
+<span class="lineNum">     417 </span>            : 
+<span class="lineNum">     418 </span>            :       /// Whether all instances of the allocator type compare equal.
+<span class="lineNum">     419 </span>            :       using is_always_equal = true_type;
+<span class="lineNum">     420 </span>            : 
+<span class="lineNum">     421 </span>            :       template&lt;typename _Up&gt;
+<span class="lineNum">     422 </span>            :         using rebind_alloc = allocator&lt;_Up&gt;;
+<span class="lineNum">     423 </span>            : 
+<span class="lineNum">     424 </span>            :       template&lt;typename _Up&gt;
+<span class="lineNum">     425 </span>            :         using rebind_traits = allocator_traits&lt;allocator&lt;_Up&gt;&gt;;
+<span class="lineNum">     426 </span>            : 
+<span class="lineNum">     427 </span>            :       /**
+<span class="lineNum">     428 </span>            :        *  @brief  Allocate memory.
+<span class="lineNum">     429 </span>            :        *  @param  __a  An allocator.
+<span class="lineNum">     430 </span>            :        *  @param  __n  The number of objects to allocate space for.
+<span class="lineNum">     431 </span>            :        *
+<span class="lineNum">     432 </span>            :        *  Calls @c a.allocate(n)
+<a name="433"><span class="lineNum">     433 </span>            :       */</a>
+<span class="lineNum">     434 </span>            :       static pointer
+<span class="lineNum">     435 </span><span class="lineCov">      37285 :       allocate(allocator_type&amp; __a, size_type __n)</span>
+<span class="lineNum">     436 </span><span class="lineCov">      37285 :       { return __a.allocate(__n); }</span>
+<span class="lineNum">     437 </span>            : 
+<span class="lineNum">     438 </span>            :       /**
+<span class="lineNum">     439 </span>            :        *  @brief  Allocate memory.
+<span class="lineNum">     440 </span>            :        *  @param  __a  An allocator.
+<span class="lineNum">     441 </span>            :        *  @param  __n  The number of objects to allocate space for.
+<span class="lineNum">     442 </span>            :        *  @param  __hint Aid to locality.
+<span class="lineNum">     443 </span>            :        *  @return Memory of suitable size and alignment for @a n objects
+<span class="lineNum">     444 </span>            :        *          of type @c value_type
+<span class="lineNum">     445 </span>            :        *
+<span class="lineNum">     446 </span>            :        *  Returns &lt;tt&gt; a.allocate(n, hint) &lt;/tt&gt;
+<span class="lineNum">     447 </span>            :       */
+<span class="lineNum">     448 </span>            :       static pointer
+<span class="lineNum">     449 </span>            :       allocate(allocator_type&amp; __a, size_type __n, const_void_pointer __hint)
+<span class="lineNum">     450 </span>            :       { return __a.allocate(__n, __hint); }
+<span class="lineNum">     451 </span>            : 
+<span class="lineNum">     452 </span>            :       /**
+<span class="lineNum">     453 </span>            :        *  @brief  Deallocate memory.
+<span class="lineNum">     454 </span>            :        *  @param  __a  An allocator.
+<span class="lineNum">     455 </span>            :        *  @param  __p  Pointer to the memory to deallocate.
+<span class="lineNum">     456 </span>            :        *  @param  __n  The number of objects space was allocated for.
+<span class="lineNum">     457 </span>            :        *
+<span class="lineNum">     458 </span>            :        *  Calls &lt;tt&gt; a.deallocate(p, n) &lt;/tt&gt;
+<a name="459"><span class="lineNum">     459 </span>            :       */</a>
+<span class="lineNum">     460 </span>            :       static void
+<span class="lineNum">     461 </span><span class="lineCov">      37045 :       deallocate(allocator_type&amp; __a, pointer __p, size_type __n)</span>
+<span class="lineNum">     462 </span><span class="lineCov">      37045 :       { __a.deallocate(__p, __n); }</span>
+<span class="lineNum">     463 </span>            : 
+<span class="lineNum">     464 </span>            :       /**
+<span class="lineNum">     465 </span>            :        *  @brief  Construct an object of type @a _Up
+<span class="lineNum">     466 </span>            :        *  @param  __a  An allocator.
+<span class="lineNum">     467 </span>            :        *  @param  __p  Pointer to memory of suitable size and alignment for Tp
+<span class="lineNum">     468 </span>            :        *  @param  __args Constructor arguments.
+<span class="lineNum">     469 </span>            :        *
+<span class="lineNum">     470 </span>            :        *  Calls &lt;tt&gt; __a.construct(__p, std::forward&lt;Args&gt;(__args)...) &lt;/tt&gt;
+<span class="lineNum">     471 </span>            :       */
+<a name="472"><span class="lineNum">     472 </span>            :       template&lt;typename _Up, typename... _Args&gt;</a>
+<span class="lineNum">     473 </span>            :         static void
+<span class="lineNum">     474 </span><span class="lineCov">      14773 :         construct(allocator_type&amp; __a, _Up* __p, _Args&amp;&amp;... __args)</span>
+<span class="lineNum">     475 </span><span class="lineCov">      14773 :         { __a.construct(__p, std::forward&lt;_Args&gt;(__args)...); }</span>
+<span class="lineNum">     476 </span>            : 
+<span class="lineNum">     477 </span>            :       /**
+<span class="lineNum">     478 </span>            :        *  @brief  Destroy an object of type @a _Up
+<span class="lineNum">     479 </span>            :        *  @param  __a  An allocator.
+<span class="lineNum">     480 </span>            :        *  @param  __p  Pointer to the object to destroy
+<span class="lineNum">     481 </span>            :        *
+<span class="lineNum">     482 </span>            :        *  Calls @c __a.destroy(__p).
+<span class="lineNum">     483 </span>            :       */
+<a name="484"><span class="lineNum">     484 </span>            :       template&lt;typename _Up&gt;</a>
+<span class="lineNum">     485 </span>            :         static void
+<span class="lineNum">     486 </span><span class="lineCov">       8487 :         destroy(allocator_type&amp; __a, _Up* __p)</span>
+<span class="lineNum">     487 </span><span class="lineCov">       8487 :         { __a.destroy(__p); }</span>
+<span class="lineNum">     488 </span>            : 
+<span class="lineNum">     489 </span>            :       /**
+<span class="lineNum">     490 </span>            :        *  @brief  The maximum supported allocation size
+<span class="lineNum">     491 </span>            :        *  @param  __a  An allocator.
+<span class="lineNum">     492 </span>            :        *  @return @c __a.max_size()
+<a name="493"><span class="lineNum">     493 </span>            :       */</a>
+<span class="lineNum">     494 </span>            :       static size_type
+<span class="lineNum">     495 </span><span class="lineCov">      44571 :       max_size(const allocator_type&amp; __a) noexcept</span>
+<span class="lineNum">     496 </span><span class="lineCov">      44571 :       { return __a.max_size(); }</span>
+<span class="lineNum">     497 </span>            : 
+<span class="lineNum">     498 </span>            :       /**
+<span class="lineNum">     499 </span>            :        *  @brief  Obtain an allocator to use when copying a container.
+<span class="lineNum">     500 </span>            :        *  @param  __rhs  An allocator.
+<span class="lineNum">     501 </span>            :        *  @return @c __rhs
+<a name="502"><span class="lineNum">     502 </span>            :       */</a>
+<span class="lineNum">     503 </span>            :       static allocator_type
+<span class="lineNum">     504 </span><span class="lineCov">      54091 :       select_on_container_copy_construction(const allocator_type&amp; __rhs)</span>
+<span class="lineNum">     505 </span><span class="lineCov">      54091 :       { return __rhs; }</span>
+<span class="lineNum">     506 </span>            :     };
+<span class="lineNum">     507 </span>            : 
+<span class="lineNum">     508 </span>            : 
+<span class="lineNum">     509 </span>            :   template&lt;typename _Alloc&gt;
+<span class="lineNum">     510 </span>            :     inline void
+<span class="lineNum">     511 </span>            :     __do_alloc_on_copy(_Alloc&amp; __one, const _Alloc&amp; __two, true_type)
+<span class="lineNum">     512 </span>            :     { __one = __two; }
+<span class="lineNum">     513 </span>            : 
+<a name="514"><span class="lineNum">     514 </span>            :   template&lt;typename _Alloc&gt;</a>
+<span class="lineNum">     515 </span>            :     inline void
+<span class="lineNum">     516 </span><span class="lineNoCov">          0 :     __do_alloc_on_copy(_Alloc&amp;, const _Alloc&amp;, false_type)</span>
+<span class="lineNum">     517 </span><span class="lineNoCov">          0 :     { }</span>
+<a name="518"><span class="lineNum">     518 </span>            : </a>
+<span class="lineNum">     519 </span>            :   template&lt;typename _Alloc&gt;
+<span class="lineNum">     520 </span><span class="lineNoCov">          0 :     inline void __alloc_on_copy(_Alloc&amp; __one, const _Alloc&amp; __two)</span>
+<span class="lineNum">     521 </span>            :     {
+<span class="lineNum">     522 </span>            :       typedef allocator_traits&lt;_Alloc&gt; __traits;
+<span class="lineNum">     523 </span>            :       typedef typename __traits::propagate_on_container_copy_assignment __pocca;
+<span class="lineNum">     524 </span><span class="lineNoCov">          0 :       __do_alloc_on_copy(__one, __two, __pocca());</span>
+<span class="lineNum">     525 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">     526 </span>            : 
+<span class="lineNum">     527 </span>            :   template&lt;typename _Alloc&gt;
+<span class="lineNum">     528 </span>            :     inline _Alloc __alloc_on_copy(const _Alloc&amp; __a)
+<span class="lineNum">     529 </span>            :     {
+<span class="lineNum">     530 </span>            :       typedef allocator_traits&lt;_Alloc&gt; __traits;
+<span class="lineNum">     531 </span>            :       return __traits::select_on_container_copy_construction(__a);
+<span class="lineNum">     532 </span>            :     }
+<a name="533"><span class="lineNum">     533 </span>            : </a>
+<span class="lineNum">     534 </span>            :   template&lt;typename _Alloc&gt;
+<span class="lineNum">     535 </span><span class="lineCov">       1643 :     inline void __do_alloc_on_move(_Alloc&amp; __one, _Alloc&amp; __two, true_type)</span>
+<span class="lineNum">     536 </span><span class="lineCov">       1643 :     { __one = std::move(__two); }</span>
+<span class="lineNum">     537 </span>            : 
+<span class="lineNum">     538 </span>            :   template&lt;typename _Alloc&gt;
+<span class="lineNum">     539 </span>            :     inline void __do_alloc_on_move(_Alloc&amp;, _Alloc&amp;, false_type)
+<span class="lineNum">     540 </span>            :     { }
+<a name="541"><span class="lineNum">     541 </span>            : </a>
+<span class="lineNum">     542 </span>            :   template&lt;typename _Alloc&gt;
+<span class="lineNum">     543 </span><span class="lineCov">       1643 :     inline void __alloc_on_move(_Alloc&amp; __one, _Alloc&amp; __two)</span>
+<span class="lineNum">     544 </span>            :     {
+<span class="lineNum">     545 </span>            :       typedef allocator_traits&lt;_Alloc&gt; __traits;
+<span class="lineNum">     546 </span>            :       typedef typename __traits::propagate_on_container_move_assignment __pocma;
+<span class="lineNum">     547 </span><span class="lineCov">       1643 :       __do_alloc_on_move(__one, __two, __pocma());</span>
+<span class="lineNum">     548 </span><span class="lineCov">       1643 :     }</span>
+<span class="lineNum">     549 </span>            : 
+<span class="lineNum">     550 </span>            :   template&lt;typename _Alloc&gt;
+<span class="lineNum">     551 </span>            :     inline void __do_alloc_on_swap(_Alloc&amp; __one, _Alloc&amp; __two, true_type)
+<span class="lineNum">     552 </span>            :     {
+<span class="lineNum">     553 </span>            :       using std::swap;
+<span class="lineNum">     554 </span>            :       swap(__one, __two);
+<span class="lineNum">     555 </span>            :     }
+<a name="556"><span class="lineNum">     556 </span>            : </a>
+<span class="lineNum">     557 </span>            :   template&lt;typename _Alloc&gt;
+<span class="lineNum">     558 </span><span class="lineCov">        241 :     inline void __do_alloc_on_swap(_Alloc&amp;, _Alloc&amp;, false_type)</span>
+<span class="lineNum">     559 </span><span class="lineCov">        241 :     { }</span>
+<a name="560"><span class="lineNum">     560 </span>            : </a>
+<span class="lineNum">     561 </span>            :   template&lt;typename _Alloc&gt;
+<span class="lineNum">     562 </span><span class="lineCov">        241 :     inline void __alloc_on_swap(_Alloc&amp; __one, _Alloc&amp; __two)</span>
+<span class="lineNum">     563 </span>            :     {
+<span class="lineNum">     564 </span>            :       typedef allocator_traits&lt;_Alloc&gt; __traits;
+<span class="lineNum">     565 </span>            :       typedef typename __traits::propagate_on_container_swap __pocs;
+<span class="lineNum">     566 </span><span class="lineCov">        241 :       __do_alloc_on_swap(__one, __two, __pocs());</span>
+<span class="lineNum">     567 </span><span class="lineCov">        241 :     }</span>
+<span class="lineNum">     568 </span>            : 
+<span class="lineNum">     569 </span>            :   template&lt;typename _Alloc&gt;
+<span class="lineNum">     570 </span>            :     class __is_copy_insertable_impl
+<span class="lineNum">     571 </span>            :     {
+<span class="lineNum">     572 </span>            :       typedef allocator_traits&lt;_Alloc&gt; _Traits;
+<span class="lineNum">     573 </span>            : 
+<span class="lineNum">     574 </span>            :       template&lt;typename _Up, typename
+<span class="lineNum">     575 </span>            :                = decltype(_Traits::construct(std::declval&lt;_Alloc&amp;&gt;(),
+<span class="lineNum">     576 </span>            :                                              std::declval&lt;_Up*&gt;(),
+<span class="lineNum">     577 </span>            :                                              std::declval&lt;const _Up&amp;&gt;()))&gt;
+<span class="lineNum">     578 </span>            :         static true_type
+<span class="lineNum">     579 </span>            :         _M_select(int);
+<span class="lineNum">     580 </span>            : 
+<span class="lineNum">     581 </span>            :       template&lt;typename _Up&gt;
+<span class="lineNum">     582 </span>            :         static false_type
+<span class="lineNum">     583 </span>            :         _M_select(...);
+<span class="lineNum">     584 </span>            : 
+<span class="lineNum">     585 </span>            :     public:
+<span class="lineNum">     586 </span>            :       typedef decltype(_M_select&lt;typename _Alloc::value_type&gt;(0)) type;
+<span class="lineNum">     587 </span>            :     };
+<span class="lineNum">     588 </span>            : 
+<span class="lineNum">     589 </span>            :   // true if _Alloc::value_type is CopyInsertable into containers using _Alloc
+<span class="lineNum">     590 </span>            :   template&lt;typename _Alloc&gt;
+<span class="lineNum">     591 </span>            :     struct __is_copy_insertable
+<span class="lineNum">     592 </span>            :     : __is_copy_insertable_impl&lt;_Alloc&gt;::type
+<span class="lineNum">     593 </span>            :     { };
+<span class="lineNum">     594 </span>            : 
+<span class="lineNum">     595 </span>            :   // std::allocator&lt;_Tp&gt; just requires CopyConstructible
+<span class="lineNum">     596 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     597 </span>            :     struct __is_copy_insertable&lt;allocator&lt;_Tp&gt;&gt;
+<span class="lineNum">     598 </span>            :     : is_copy_constructible&lt;_Tp&gt;
+<span class="lineNum">     599 </span>            :     { };
+<span class="lineNum">     600 </span>            : 
+<span class="lineNum">     601 </span>            : _GLIBCXX_END_NAMESPACE_VERSION
+<span class="lineNum">     602 </span>            : } // namespace std
+<span class="lineNum">     603 </span>            : 
+<span class="lineNum">     604 </span>            : #endif
+<span class="lineNum">     605 </span>            : #endif
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

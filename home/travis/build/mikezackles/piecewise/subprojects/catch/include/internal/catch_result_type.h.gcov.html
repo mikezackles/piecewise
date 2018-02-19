@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Code coverage - /home/travis/build/mikezackles/piecewise/subprojects/catch/include/internal/catch_result_type.h</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../../../../../index.html">top level</a> - <a href="index.html">home/travis/build/mikezackles/piecewise/subprojects/catch/include/internal</a> - catch_result_type.h<span style="font-size: 80%;"> (source / <a href="catch_result_type.h.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Code coverage</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2018-02-19 01:04:17</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Legend:</td>
+            <td class="headerValueLeg">            Lines:
+            <span class="coverLegendCov">hit</span>
+            <span class="coverLegendNoCov">not hit</span>
+</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<span class="lineNum">       2 </span>            :  *  Created by Phil on 07/01/2011.
+<span class="lineNum">       3 </span>            :  *  Copyright 2011 Two Blue Cubes Ltd. All rights reserved.
+<span class="lineNum">       4 </span>            :  *
+<span class="lineNum">       5 </span>            :  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
+<span class="lineNum">       6 </span>            :  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+<span class="lineNum">       7 </span>            :  */
+<span class="lineNum">       8 </span>            : #ifndef TWOBLUECUBES_CATCH_RESULT_TYPE_H_INCLUDED
+<span class="lineNum">       9 </span>            : #define TWOBLUECUBES_CATCH_RESULT_TYPE_H_INCLUDED
+<span class="lineNum">      10 </span>            : 
+<span class="lineNum">      11 </span>            : namespace Catch {
+<span class="lineNum">      12 </span>            : 
+<span class="lineNum">      13 </span>            :     // ResultWas::OfType enum
+<span class="lineNum">      14 </span>            :     struct ResultWas { enum OfType {
+<span class="lineNum">      15 </span>            :         Unknown = -1,
+<span class="lineNum">      16 </span>            :         Ok = 0,
+<span class="lineNum">      17 </span>            :         Info = 1,
+<span class="lineNum">      18 </span>            :         Warning = 2,
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            :         FailureBit = 0x10,
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            :         ExpressionFailed = FailureBit | 1,
+<span class="lineNum">      23 </span>            :         ExplicitFailure = FailureBit | 2,
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            :         Exception = 0x100 | FailureBit,
+<span class="lineNum">      26 </span>            : 
+<span class="lineNum">      27 </span>            :         ThrewException = Exception | 1,
+<span class="lineNum">      28 </span>            :         DidntThrowException = Exception | 2,
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span>            :         FatalErrorCondition = 0x200 | FailureBit
+<span class="lineNum">      31 </span>            : 
+<a name="32"><span class="lineNum">      32 </span>            :     }; };</a>
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span><span class="lineCov">       1700 :     inline bool isOk( ResultWas::OfType resultType ) {</span>
+<span class="lineNum">      35 </span><span class="lineCov">       1700 :         return ( resultType &amp; ResultWas::FailureBit ) == 0;</span>
+<span class="lineNum">      36 </span>            :     }
+<span class="lineNum">      37 </span>            :     inline bool isJustInfo( int flags ) {
+<span class="lineNum">      38 </span>            :         return flags == ResultWas::Info;
+<span class="lineNum">      39 </span>            :     }
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span>            :     // ResultDisposition::Flags enum
+<span class="lineNum">      43 </span>            :     struct ResultDisposition { enum Flags {
+<span class="lineNum">      44 </span>            :         Normal = 0x01,
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span>            :         ContinueOnFailure = 0x02,   // Failures fail test, but execution continues
+<span class="lineNum">      47 </span>            :         FalseTest = 0x04,           // Prefix expression with !
+<span class="lineNum">      48 </span>            :         SuppressFail = 0x08         // Failures are reported but do not fail the test
+<a name="49"><span class="lineNum">      49 </span>            :     }; };</a>
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span><span class="lineCov">          9 :     inline ResultDisposition::Flags operator | ( ResultDisposition::Flags lhs, ResultDisposition::Flags rhs ) {</span>
+<span class="lineNum">      52 </span><span class="lineCov">          9 :         return static_cast&lt;ResultDisposition::Flags&gt;( static_cast&lt;int&gt;( lhs ) | static_cast&lt;int&gt;( rhs ) );</span>
+<span class="lineNum">      53 </span>            :     }
+<a name="54"><span class="lineNum">      54 </span>            : </a>
+<a name="55"><span class="lineNum">      55 </span>            :     inline bool shouldContinueOnFailure( int flags )    { return ( flags &amp; ResultDisposition::ContinueOnFailure ) != 0; }</a>
+<span class="lineNum">      56 </span><span class="lineCov">       1671 :     inline bool isFalseTest( int flags )                { return ( flags &amp; ResultDisposition::FalseTest ) != 0; }</span>
+<span class="lineNum">      57 </span><span class="lineCov">         14 :     inline bool shouldSuppressFailure( int flags )      { return ( flags &amp; ResultDisposition::SuppressFail ) != 0; }</span>
+<span class="lineNum">      58 </span>            : 
+<span class="lineNum">      59 </span>            : } // end namespace Catch
+<span class="lineNum">      60 </span>            : 
+<span class="lineNum">      61 </span>            : #endif // TWOBLUECUBES_CATCH_RESULT_TYPE_H_INCLUDED
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

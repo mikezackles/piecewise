@@ -1,0 +1,179 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Code coverage - /home/travis/build/mikezackles/piecewise/subprojects/catch/include/internal/catch_registry_hub.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../../../../../index.html">top level</a> - <a href="index.html">home/travis/build/mikezackles/piecewise/subprojects/catch/include/internal</a> - catch_registry_hub.hpp<span style="font-size: 80%;"> (source / <a href="catch_registry_hub.hpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Code coverage</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">38</td>
+            <td class="headerCovTableEntry">41</td>
+            <td class="headerCovTableEntryHi">92.7 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2018-02-19 01:04:17</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">16</td>
+            <td class="headerCovTableEntry">17</td>
+            <td class="headerCovTableEntryHi">94.1 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Legend:</td>
+            <td class="headerValueLeg">            Lines:
+            <span class="coverLegendCov">hit</span>
+            <span class="coverLegendNoCov">not hit</span>
+</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<span class="lineNum">       2 </span>            :  *  Created by Phil on 5/8/2012.
+<span class="lineNum">       3 </span>            :  *  Copyright 2012 Two Blue Cubes Ltd. All rights reserved.
+<span class="lineNum">       4 </span>            :  *
+<span class="lineNum">       5 </span>            :  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
+<span class="lineNum">       6 </span>            :  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+<span class="lineNum">       7 </span>            :  */
+<span class="lineNum">       8 </span>            : #ifndef TWOBLUECUBES_CATCH_REGISTRY_HUB_HPP_INCLUDED
+<span class="lineNum">       9 </span>            : #define TWOBLUECUBES_CATCH_REGISTRY_HUB_HPP_INCLUDED
+<span class="lineNum">      10 </span>            : 
+<span class="lineNum">      11 </span>            : #include &quot;catch_interfaces_registry_hub.h&quot;
+<span class="lineNum">      12 </span>            : 
+<span class="lineNum">      13 </span>            : #include &quot;catch_test_case_registry_impl.hpp&quot;
+<span class="lineNum">      14 </span>            : #include &quot;catch_reporter_registry.hpp&quot;
+<span class="lineNum">      15 </span>            : #include &quot;catch_exception_translator_registry.hpp&quot;
+<span class="lineNum">      16 </span>            : #include &quot;catch_tag_alias_registry.h&quot;
+<span class="lineNum">      17 </span>            : 
+<span class="lineNum">      18 </span>            : namespace Catch {
+<span class="lineNum">      19 </span>            : 
+<a name="20"><span class="lineNum">      20 </span>            :     namespace {</a>
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span><span class="lineCov">          4 :         class RegistryHub : public IRegistryHub, public IMutableRegistryHub {</span>
+<span class="lineNum">      23 </span>            : 
+<span class="lineNum">      24 </span>            :             RegistryHub( RegistryHub const&amp; );
+<span class="lineNum">      25 </span>            :             void operator=( RegistryHub const&amp; );
+<a name="26"><span class="lineNum">      26 </span>            : </a>
+<span class="lineNum">      27 </span>            :         public: // IRegistryHub
+<a name="28"><span class="lineNum">      28 </span><span class="lineCov">          2 :             RegistryHub() {</span></a>
+<span class="lineNum">      29 </span><span class="lineCov">          2 :             }</span>
+<span class="lineNum">      30 </span><span class="lineCov">          4 :             virtual IReporterRegistry const&amp; getReporterRegistry() const CATCH_OVERRIDE {</span>
+<a name="31"><span class="lineNum">      31 </span><span class="lineCov">          4 :                 return m_reporterRegistry;</span></a>
+<span class="lineNum">      32 </span>            :             }
+<span class="lineNum">      33 </span><span class="lineCov">          2 :             virtual ITestCaseRegistry const&amp; getTestCaseRegistry() const CATCH_OVERRIDE {</span>
+<a name="34"><span class="lineNum">      34 </span><span class="lineCov">          2 :                 return m_testCaseRegistry;</span></a>
+<span class="lineNum">      35 </span>            :             }
+<span class="lineNum">      36 </span><span class="lineCov">         17 :             virtual IExceptionTranslatorRegistry&amp; getExceptionTranslatorRegistry() CATCH_OVERRIDE {</span>
+<a name="37"><span class="lineNum">      37 </span><span class="lineCov">         17 :                 return m_exceptionTranslatorRegistry;</span></a>
+<span class="lineNum">      38 </span>            :             }
+<span class="lineNum">      39 </span><span class="lineCov">         38 :             virtual ITagAliasRegistry const&amp; getTagAliasRegistry() const CATCH_OVERRIDE {</span>
+<span class="lineNum">      40 </span><span class="lineCov">         38 :                 return m_tagAliasRegistry;</span>
+<span class="lineNum">      41 </span>            :             }
+<span class="lineNum">      42 </span>            : 
+<a name="43"><span class="lineNum">      43 </span>            : </a>
+<span class="lineNum">      44 </span>            :         public: // IMutableRegistryHub
+<span class="lineNum">      45 </span><span class="lineCov">         11 :             virtual void registerReporter( std::string const&amp; name, Ptr&lt;IReporterFactory&gt; const&amp; factory ) CATCH_OVERRIDE {</span>
+<a name="46"><span class="lineNum">      46 </span><span class="lineCov">         11 :                 m_reporterRegistry.registerReporter( name, factory );</span></a>
+<span class="lineNum">      47 </span><span class="lineCov">         11 :             }</span>
+<span class="lineNum">      48 </span><span class="lineNoCov">          0 :             virtual void registerListener( Ptr&lt;IReporterFactory&gt; const&amp; factory ) CATCH_OVERRIDE {</span>
+<a name="49"><span class="lineNum">      49 </span><span class="lineNoCov">          0 :                 m_reporterRegistry.registerListener( factory );</span></a>
+<span class="lineNum">      50 </span><span class="lineNoCov">          0 :             }</span>
+<span class="lineNum">      51 </span><span class="lineCov">        189 :             virtual void registerTest( TestCase const&amp; testInfo ) CATCH_OVERRIDE {</span>
+<a name="52"><span class="lineNum">      52 </span><span class="lineCov">        189 :                 m_testCaseRegistry.registerTest( testInfo );</span></a>
+<span class="lineNum">      53 </span><span class="lineCov">        189 :             }</span>
+<span class="lineNum">      54 </span><span class="lineCov">          3 :             virtual void registerTranslator( const IExceptionTranslator* translator ) CATCH_OVERRIDE {</span>
+<a name="55"><span class="lineNum">      55 </span><span class="lineCov">          3 :                 m_exceptionTranslatorRegistry.registerTranslator( translator );</span></a>
+<span class="lineNum">      56 </span><span class="lineCov">          3 :             }</span>
+<span class="lineNum">      57 </span><span class="lineCov">          2 :             virtual void registerTagAlias( std::string const&amp; alias, std::string const&amp; tag, SourceLineInfo const&amp; lineInfo ) CATCH_OVERRIDE {</span>
+<span class="lineNum">      58 </span><span class="lineCov">          2 :                 m_tagAliasRegistry.add( alias, tag, lineInfo );</span>
+<span class="lineNum">      59 </span><span class="lineCov">          2 :             }</span>
+<span class="lineNum">      60 </span>            : 
+<span class="lineNum">      61 </span>            :         private:
+<span class="lineNum">      62 </span>            :             TestRegistry m_testCaseRegistry;
+<span class="lineNum">      63 </span>            :             ReporterRegistry m_reporterRegistry;
+<span class="lineNum">      64 </span>            :             ExceptionTranslatorRegistry m_exceptionTranslatorRegistry;
+<span class="lineNum">      65 </span>            :             TagAliasRegistry m_tagAliasRegistry;
+<span class="lineNum">      66 </span>            :         };
+<a name="67"><span class="lineNum">      67 </span>            : </a>
+<span class="lineNum">      68 </span>            :         // Single, global, instance
+<span class="lineNum">      69 </span><span class="lineCov">        270 :         inline RegistryHub*&amp; getTheRegistryHub() {</span>
+<span class="lineNum">      70 </span>            :             static RegistryHub* theRegistryHub = CATCH_NULL;
+<span class="lineNum">      71 </span><span class="lineCov">        270 :             if( !theRegistryHub )</span>
+<span class="lineNum">      72 </span><span class="lineCov">          2 :                 theRegistryHub = new RegistryHub();</span>
+<span class="lineNum">      73 </span><span class="lineCov">        270 :             return theRegistryHub;</span>
+<span class="lineNum">      74 </span>            :         }
+<a name="75"><span class="lineNum">      75 </span>            :     }</a>
+<span class="lineNum">      76 </span>            : 
+<span class="lineNum">      77 </span><span class="lineCov">         61 :     IRegistryHub&amp; getRegistryHub() {</span>
+<a name="78"><span class="lineNum">      78 </span><span class="lineCov">         61 :         return *getTheRegistryHub();</span></a>
+<span class="lineNum">      79 </span>            :     }
+<span class="lineNum">      80 </span><span class="lineCov">        205 :     IMutableRegistryHub&amp; getMutableRegistryHub() {</span>
+<a name="81"><span class="lineNum">      81 </span><span class="lineCov">        205 :         return *getTheRegistryHub();</span></a>
+<span class="lineNum">      82 </span>            :     }
+<span class="lineNum">      83 </span><span class="lineCov">          2 :     void cleanUp() {</span>
+<span class="lineNum">      84 </span><span class="lineCov">          2 :         delete getTheRegistryHub();</span>
+<span class="lineNum">      85 </span><span class="lineCov">          2 :         getTheRegistryHub() = CATCH_NULL;</span>
+<a name="86"><span class="lineNum">      86 </span><span class="lineCov">          2 :         cleanUpContext();</span></a>
+<span class="lineNum">      87 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">      88 </span><span class="lineCov">         17 :     std::string translateActiveException() {</span>
+<span class="lineNum">      89 </span><span class="lineCov">         17 :         return getRegistryHub().getExceptionTranslatorRegistry().translateActiveException();</span>
+<span class="lineNum">      90 </span>            :     }
+<span class="lineNum">      91 </span>            : 
+<span class="lineNum">      92 </span>            : 
+<span class="lineNum">      93 </span>            : } // end namespace Catch
+<span class="lineNum">      94 </span>            : 
+<span class="lineNum">      95 </span>            : #endif // TWOBLUECUBES_CATCH_REGISTRY_HUB_HPP_INCLUDED
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

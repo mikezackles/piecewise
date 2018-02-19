@@ -1,0 +1,356 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Code coverage - /home/travis/build/mikezackles/piecewise/subprojects/catch/include/catch_session.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../../../../index.html">top level</a> - <a href="index.html">home/travis/build/mikezackles/piecewise/subprojects/catch/include</a> - catch_session.hpp<span style="font-size: 80%;"> (source / <a href="catch_session.hpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Code coverage</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">72</td>
+            <td class="headerCovTableEntry">126</td>
+            <td class="headerCovTableEntryLo">57.1 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2018-02-19 01:04:17</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">11</td>
+            <td class="headerCovTableEntry">15</td>
+            <td class="headerCovTableEntryLo">73.3 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Legend:</td>
+            <td class="headerValueLeg">            Lines:
+            <span class="coverLegendCov">hit</span>
+            <span class="coverLegendNoCov">not hit</span>
+</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<span class="lineNum">       2 </span>            :  *  Created by Phil on 31/10/2010.
+<span class="lineNum">       3 </span>            :  *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
+<span class="lineNum">       4 </span>            :  *
+<span class="lineNum">       5 </span>            :  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
+<span class="lineNum">       6 </span>            :  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+<span class="lineNum">       7 </span>            :  */
+<span class="lineNum">       8 </span>            : #ifndef TWOBLUECUBES_CATCH_RUNNER_HPP_INCLUDED
+<span class="lineNum">       9 </span>            : #define TWOBLUECUBES_CATCH_RUNNER_HPP_INCLUDED
+<span class="lineNum">      10 </span>            : 
+<span class="lineNum">      11 </span>            : #include &quot;internal/catch_commandline.hpp&quot;
+<span class="lineNum">      12 </span>            : #include &quot;internal/catch_list.hpp&quot;
+<span class="lineNum">      13 </span>            : #include &quot;internal/catch_run_context.hpp&quot;
+<span class="lineNum">      14 </span>            : #include &quot;internal/catch_test_spec.hpp&quot;
+<span class="lineNum">      15 </span>            : #include &quot;internal/catch_version.h&quot;
+<span class="lineNum">      16 </span>            : #include &quot;internal/catch_text.h&quot;
+<span class="lineNum">      17 </span>            : 
+<span class="lineNum">      18 </span>            : #include &lt;fstream&gt;
+<span class="lineNum">      19 </span>            : #include &lt;stdlib.h&gt;
+<span class="lineNum">      20 </span>            : #include &lt;limits&gt;
+<span class="lineNum">      21 </span>            : 
+<a name="22"><span class="lineNum">      22 </span>            : namespace Catch {</a>
+<span class="lineNum">      23 </span>            : 
+<span class="lineNum">      24 </span><span class="lineCov">          2 :     Ptr&lt;IStreamingReporter&gt; createReporter( std::string const&amp; reporterName, Ptr&lt;Config&gt; const&amp; config ) {</span>
+<span class="lineNum">      25 </span><span class="lineCov">          2 :         Ptr&lt;IStreamingReporter&gt; reporter = getRegistryHub().getReporterRegistry().create( reporterName, config.get() );</span>
+<span class="lineNum">      26 </span><span class="lineCov">          2 :         if( !reporter ) {</span>
+<span class="lineNum">      27 </span><span class="lineNoCov">          0 :             std::ostringstream oss;</span>
+<span class="lineNum">      28 </span><span class="lineNoCov">          0 :             oss &lt;&lt; &quot;No reporter registered with name: '&quot; &lt;&lt; reporterName &lt;&lt; &quot;'&quot;;</span>
+<span class="lineNum">      29 </span><span class="lineNoCov">          0 :             throw std::domain_error( oss.str() );</span>
+<span class="lineNum">      30 </span>            :         }
+<span class="lineNum">      31 </span><span class="lineCov">          2 :         return reporter;</span>
+<span class="lineNum">      32 </span>            :     }
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span>            : #if !defined(CATCH_CONFIG_DEFAULT_REPORTER)
+<span class="lineNum">      35 </span>            : #define CATCH_CONFIG_DEFAULT_REPORTER &quot;console&quot;
+<a name="36"><span class="lineNum">      36 </span>            : #endif</a>
+<span class="lineNum">      37 </span>            : 
+<span class="lineNum">      38 </span><span class="lineCov">          2 :     Ptr&lt;IStreamingReporter&gt; makeReporter( Ptr&lt;Config&gt; const&amp; config ) {</span>
+<span class="lineNum">      39 </span><span class="lineCov">          4 :         std::vector&lt;std::string&gt; reporters = config-&gt;getReporterNames();</span>
+<span class="lineNum">      40 </span><span class="lineCov">          2 :         if( reporters.empty() )</span>
+<span class="lineNum">      41 </span><span class="lineCov">          2 :             reporters.push_back( CATCH_CONFIG_DEFAULT_REPORTER );</span>
+<span class="lineNum">      42 </span>            : 
+<span class="lineNum">      43 </span><span class="lineCov">          2 :         Ptr&lt;IStreamingReporter&gt; reporter;</span>
+<span class="lineNum">      44 </span><span class="lineCov">          4 :         for( std::vector&lt;std::string&gt;::const_iterator it = reporters.begin(), itEnd = reporters.end();</span>
+<span class="lineNum">      45 </span><span class="lineCov">          4 :                 it != itEnd;</span>
+<span class="lineNum">      46 </span>            :                 ++it )
+<span class="lineNum">      47 </span><span class="lineCov">          2 :             reporter = addReporter( reporter, createReporter( *it, config ) );</span>
+<a name="48"><span class="lineNum">      48 </span><span class="lineCov">          4 :         return reporter;</span></a>
+<span class="lineNum">      49 </span>            :     }
+<span class="lineNum">      50 </span><span class="lineCov">          2 :     Ptr&lt;IStreamingReporter&gt; addListeners( Ptr&lt;IConfig const&gt; const&amp; config, Ptr&lt;IStreamingReporter&gt; reporters ) {</span>
+<span class="lineNum">      51 </span><span class="lineCov">          4 :         IReporterRegistry::Listeners listeners = getRegistryHub().getReporterRegistry().getListeners();</span>
+<span class="lineNum">      52 </span><span class="lineCov">          2 :         for( IReporterRegistry::Listeners::const_iterator it = listeners.begin(), itEnd = listeners.end();</span>
+<span class="lineNum">      53 </span><span class="lineCov">          2 :                 it != itEnd;</span>
+<span class="lineNum">      54 </span>            :                 ++it )
+<span class="lineNum">      55 </span><span class="lineNoCov">          0 :             reporters = addReporter(reporters, (*it)-&gt;create( ReporterConfig( config ) ) );</span>
+<span class="lineNum">      56 </span><span class="lineCov">          4 :         return reporters;</span>
+<span class="lineNum">      57 </span>            :     }
+<a name="58"><span class="lineNum">      58 </span>            : </a>
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span><span class="lineCov">          2 :     Totals runTests( Ptr&lt;Config&gt; const&amp; config ) {</span>
+<span class="lineNum">      61 </span>            : 
+<span class="lineNum">      62 </span><span class="lineCov">          4 :         Ptr&lt;IConfig const&gt; iconfig = config.get();</span>
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span><span class="lineCov">          4 :         Ptr&lt;IStreamingReporter&gt; reporter = makeReporter( config );</span>
+<span class="lineNum">      65 </span><span class="lineCov">          2 :         reporter = addListeners( iconfig, reporter );</span>
+<span class="lineNum">      66 </span>            : 
+<span class="lineNum">      67 </span><span class="lineCov">          4 :         RunContext context( iconfig, reporter );</span>
+<span class="lineNum">      68 </span>            : 
+<span class="lineNum">      69 </span><span class="lineCov">          2 :         Totals totals;</span>
+<span class="lineNum">      70 </span>            : 
+<span class="lineNum">      71 </span><span class="lineCov">          2 :         context.testGroupStarting( config-&gt;name(), 1, 1 );</span>
+<span class="lineNum">      72 </span>            : 
+<span class="lineNum">      73 </span><span class="lineCov">          4 :         TestSpec testSpec = config-&gt;testSpec();</span>
+<span class="lineNum">      74 </span><span class="lineCov">          2 :         if( !testSpec.hasFilters() )</span>
+<span class="lineNum">      75 </span><span class="lineCov">          2 :             testSpec = TestSpecParser( ITagAliasRegistry::get() ).parse( &quot;~[.]&quot; ).testSpec(); // All not hidden tests</span>
+<span class="lineNum">      76 </span>            : 
+<span class="lineNum">      77 </span><span class="lineCov">          2 :         std::vector&lt;TestCase&gt; const&amp; allTestCases = getAllTestCasesSorted( *iconfig );</span>
+<span class="lineNum">      78 </span><span class="lineCov">        191 :         for( std::vector&lt;TestCase&gt;::const_iterator it = allTestCases.begin(), itEnd = allTestCases.end();</span>
+<span class="lineNum">      79 </span><span class="lineCov">        191 :                 it != itEnd;</span>
+<span class="lineNum">      80 </span>            :                 ++it ) {
+<span class="lineNum">      81 </span><span class="lineCov">        189 :             if( !context.aborting() &amp;&amp; matchTest( *it, testSpec, *iconfig ) )</span>
+<span class="lineNum">      82 </span><span class="lineCov">        113 :                 totals += context.runTest( *it );</span>
+<span class="lineNum">      83 </span>            :             else
+<span class="lineNum">      84 </span><span class="lineCov">         76 :                 reporter-&gt;skipTest( *it );</span>
+<span class="lineNum">      85 </span>            :         }
+<span class="lineNum">      86 </span>            : 
+<span class="lineNum">      87 </span><span class="lineCov">          2 :         context.testGroupEnded( iconfig-&gt;name(), totals, 1, 1 );</span>
+<span class="lineNum">      88 </span><span class="lineCov">          4 :         return totals;</span>
+<a name="89"><span class="lineNum">      89 </span>            :     }</a>
+<span class="lineNum">      90 </span>            : 
+<span class="lineNum">      91 </span><span class="lineNoCov">          0 :     void applyFilenamesAsTags( IConfig const&amp; config ) {</span>
+<span class="lineNum">      92 </span><span class="lineNoCov">          0 :         std::vector&lt;TestCase&gt; const&amp; tests = getAllTestCasesSorted( config );</span>
+<span class="lineNum">      93 </span><span class="lineNoCov">          0 :         for(std::size_t i = 0; i &lt; tests.size(); ++i ) {</span>
+<span class="lineNum">      94 </span><span class="lineNoCov">          0 :             TestCase&amp; test = const_cast&lt;TestCase&amp;&gt;( tests[i] );</span>
+<span class="lineNum">      95 </span><span class="lineNoCov">          0 :             std::set&lt;std::string&gt; tags = test.tags;</span>
+<span class="lineNum">      96 </span>            : 
+<span class="lineNum">      97 </span><span class="lineNoCov">          0 :             std::string filename = test.lineInfo.file;</span>
+<span class="lineNum">      98 </span><span class="lineNoCov">          0 :             std::string::size_type lastSlash = filename.find_last_of( &quot;\\/&quot; );</span>
+<span class="lineNum">      99 </span><span class="lineNoCov">          0 :             if( lastSlash != std::string::npos )</span>
+<span class="lineNum">     100 </span><span class="lineNoCov">          0 :                 filename = filename.substr( lastSlash+1 );</span>
+<span class="lineNum">     101 </span>            : 
+<span class="lineNum">     102 </span><span class="lineNoCov">          0 :             std::string::size_type lastDot = filename.find_last_of( '.' );</span>
+<span class="lineNum">     103 </span><span class="lineNoCov">          0 :             if( lastDot != std::string::npos )</span>
+<span class="lineNum">     104 </span><span class="lineNoCov">          0 :                 filename = filename.substr( 0, lastDot );</span>
+<span class="lineNum">     105 </span>            : 
+<span class="lineNum">     106 </span><span class="lineNoCov">          0 :             tags.insert( '#' + filename );</span>
+<span class="lineNum">     107 </span><span class="lineNoCov">          0 :             setTags( test, tags );</span>
+<span class="lineNum">     108 </span>            :         }
+<span class="lineNum">     109 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">     110 </span>            : 
+<span class="lineNum">     111 </span>            :     class Session : NonCopyable {
+<span class="lineNum">     112 </span>            :         static bool alreadyInstantiated;
+<span class="lineNum">     113 </span>            : 
+<span class="lineNum">     114 </span>            :     public:
+<span class="lineNum">     115 </span>            : 
+<a name="116"><span class="lineNum">     116 </span>            :         struct OnUnusedOptions { enum DoWhat { Ignore, Fail }; };</a>
+<span class="lineNum">     117 </span>            : 
+<span class="lineNum">     118 </span><span class="lineCov">          2 :         Session()</span>
+<span class="lineNum">     119 </span><span class="lineCov">          2 :         : m_cli( makeCommandLineParser() ) {</span>
+<span class="lineNum">     120 </span><span class="lineCov">          2 :             if( alreadyInstantiated ) {</span>
+<span class="lineNum">     121 </span><span class="lineNoCov">          0 :                 std::string msg = &quot;Only one instance of Catch::Session can ever be used&quot;;</span>
+<span class="lineNum">     122 </span><span class="lineNoCov">          0 :                 Catch::cerr() &lt;&lt; msg &lt;&lt; std::endl;</span>
+<span class="lineNum">     123 </span><span class="lineNoCov">          0 :                 throw std::logic_error( msg );</span>
+<span class="lineNum">     124 </span>            :             }
+<a name="125"><span class="lineNum">     125 </span><span class="lineCov">          2 :             alreadyInstantiated = true;</span></a>
+<span class="lineNum">     126 </span><span class="lineCov">          2 :         }</span>
+<span class="lineNum">     127 </span><span class="lineCov">          4 :         ~Session() {</span>
+<span class="lineNum">     128 </span><span class="lineCov">          2 :             Catch::cleanUp();</span>
+<a name="129"><span class="lineNum">     129 </span><span class="lineCov">          2 :         }</span></a>
+<span class="lineNum">     130 </span>            : 
+<span class="lineNum">     131 </span><span class="lineNoCov">          0 :         void showHelp( std::string const&amp; processName ) {</span>
+<span class="lineNum">     132 </span><span class="lineNoCov">          0 :             Catch::cout() &lt;&lt; &quot;\nCatch v&quot; &lt;&lt; libraryVersion() &lt;&lt; &quot;\n&quot;;</span>
+<span class="lineNum">     133 </span>            : 
+<span class="lineNum">     134 </span><span class="lineNoCov">          0 :             m_cli.usage( Catch::cout(), processName );</span>
+<a name="135"><span class="lineNum">     135 </span><span class="lineNoCov">          0 :             Catch::cout() &lt;&lt; &quot;For more detail usage please see the project docs\n&quot; &lt;&lt; std::endl;</span></a>
+<span class="lineNum">     136 </span><span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">     137 </span><span class="lineNoCov">          0 :         void libIdentify() {</span>
+<span class="lineNum">     138 </span><span class="lineNoCov">          0 :             Catch::cout()</span>
+<span class="lineNum">     139 </span><span class="lineNoCov">          0 :                     &lt;&lt; std::left &lt;&lt; std::setw(16) &lt;&lt; &quot;description: &quot; &lt;&lt; &quot;A Catch test executable\n&quot;</span>
+<span class="lineNum">     140 </span><span class="lineNoCov">          0 :                     &lt;&lt; std::left &lt;&lt; std::setw(16) &lt;&lt; &quot;category: &quot; &lt;&lt; &quot;testframework\n&quot;</span>
+<span class="lineNum">     141 </span><span class="lineNoCov">          0 :                     &lt;&lt; std::left &lt;&lt; std::setw(16) &lt;&lt; &quot;framework: &quot; &lt;&lt; &quot;Catch Test\n&quot;</span>
+<span class="lineNum">     142 </span><span class="lineNoCov">          0 :                     &lt;&lt; std::left &lt;&lt; std::setw(16) &lt;&lt; &quot;version: &quot; &lt;&lt; libraryVersion() &lt;&lt; std::endl;</span>
+<a name="143"><span class="lineNum">     143 </span><span class="lineNoCov">          0 :         }</span></a>
+<span class="lineNum">     144 </span>            : 
+<span class="lineNum">     145 </span><span class="lineCov">          2 :         int applyCommandLine( int argc, char const* const* const argv, OnUnusedOptions::DoWhat unusedOptionBehaviour = OnUnusedOptions::Fail ) {</span>
+<span class="lineNum">     146 </span>            :             try {
+<span class="lineNum">     147 </span><span class="lineCov">          2 :                 m_cli.setThrowOnUnrecognisedTokens( unusedOptionBehaviour == OnUnusedOptions::Fail );</span>
+<span class="lineNum">     148 </span><span class="lineCov">          2 :                 m_unusedTokens = m_cli.parseInto( Clara::argsToVector( argc, argv ), m_configData );</span>
+<span class="lineNum">     149 </span><span class="lineCov">          2 :                 if( m_configData.showHelp )</span>
+<span class="lineNum">     150 </span><span class="lineNoCov">          0 :                     showHelp( m_configData.processName );</span>
+<span class="lineNum">     151 </span><span class="lineCov">          2 :                 if( m_configData.libIdentify )</span>
+<span class="lineNum">     152 </span><span class="lineNoCov">          0 :                     libIdentify();</span>
+<span class="lineNum">     153 </span><span class="lineCov">          2 :                 m_config.reset();</span>
+<span class="lineNum">     154 </span>            :             }
+<span class="lineNum">     155 </span><span class="lineNoCov">          0 :             catch( std::exception&amp; ex ) {</span>
+<span class="lineNum">     156 </span>            :                 {
+<span class="lineNum">     157 </span><span class="lineNoCov">          0 :                     Colour colourGuard( Colour::Red );</span>
+<span class="lineNum">     158 </span><span class="lineNoCov">          0 :                     Catch::cerr()</span>
+<span class="lineNum">     159 </span><span class="lineNoCov">          0 :                         &lt;&lt; &quot;\nError(s) in input:\n&quot;</span>
+<span class="lineNum">     160 </span><span class="lineNoCov">          0 :                         &lt;&lt; Text( ex.what(), TextAttributes().setIndent(2) )</span>
+<span class="lineNum">     161 </span><span class="lineNoCov">          0 :                         &lt;&lt; &quot;\n\n&quot;;</span>
+<span class="lineNum">     162 </span>            :                 }
+<span class="lineNum">     163 </span><span class="lineNoCov">          0 :                 m_cli.usage( Catch::cout(), m_configData.processName );</span>
+<span class="lineNum">     164 </span><span class="lineNoCov">          0 :                 return (std::numeric_limits&lt;int&gt;::max)();</span>
+<span class="lineNum">     165 </span>            :             }
+<span class="lineNum">     166 </span><span class="lineCov">          2 :             return 0;</span>
+<span class="lineNum">     167 </span>            :         }
+<span class="lineNum">     168 </span>            : 
+<span class="lineNum">     169 </span>            :         void useConfigData( ConfigData const&amp; _configData ) {
+<span class="lineNum">     170 </span>            :             m_configData = _configData;
+<span class="lineNum">     171 </span>            :             m_config.reset();
+<a name="172"><span class="lineNum">     172 </span>            :         }</a>
+<span class="lineNum">     173 </span>            : 
+<span class="lineNum">     174 </span><span class="lineCov">          2 :         int run( int argc, char const* const* const argv ) {</span>
+<span class="lineNum">     175 </span>            : 
+<span class="lineNum">     176 </span><span class="lineCov">          2 :             int returnCode = applyCommandLine( argc, argv );</span>
+<span class="lineNum">     177 </span><span class="lineCov">          2 :             if( returnCode == 0 )</span>
+<span class="lineNum">     178 </span><span class="lineCov">          2 :                 returnCode = run();</span>
+<span class="lineNum">     179 </span><span class="lineCov">          2 :             return returnCode;</span>
+<span class="lineNum">     180 </span>            :         }
+<span class="lineNum">     181 </span>            : 
+<span class="lineNum">     182 </span>            :     #if defined(WIN32) &amp;&amp; defined(UNICODE)
+<span class="lineNum">     183 </span>            :         int run( int argc, wchar_t const* const* const argv ) {
+<span class="lineNum">     184 </span>            : 
+<span class="lineNum">     185 </span>            :             char **utf8Argv = new char *[ argc ];
+<span class="lineNum">     186 </span>            : 
+<span class="lineNum">     187 </span>            :             for ( int i = 0; i &lt; argc; ++i ) {
+<span class="lineNum">     188 </span>            :                 int bufSize = WideCharToMultiByte( CP_UTF8, 0, argv[i], -1, NULL, 0, NULL, NULL );
+<span class="lineNum">     189 </span>            : 
+<span class="lineNum">     190 </span>            :                 utf8Argv[ i ] = new char[ bufSize ];
+<span class="lineNum">     191 </span>            : 
+<span class="lineNum">     192 </span>            :                 WideCharToMultiByte( CP_UTF8, 0, argv[i], -1, utf8Argv[i], bufSize, NULL, NULL );
+<span class="lineNum">     193 </span>            :             }
+<span class="lineNum">     194 </span>            : 
+<span class="lineNum">     195 </span>            :             int returnCode = applyCommandLine( argc, utf8Argv );
+<span class="lineNum">     196 </span>            :             if( returnCode == 0 )
+<span class="lineNum">     197 </span>            :                 returnCode = run();
+<span class="lineNum">     198 </span>            : 
+<span class="lineNum">     199 </span>            :             for ( int i = 0; i &lt; argc; ++i )
+<span class="lineNum">     200 </span>            :                 delete [] utf8Argv[ i ];
+<span class="lineNum">     201 </span>            : 
+<span class="lineNum">     202 </span>            :             delete [] utf8Argv;
+<span class="lineNum">     203 </span>            : 
+<span class="lineNum">     204 </span>            :             return returnCode;
+<span class="lineNum">     205 </span>            :         }
+<a name="206"><span class="lineNum">     206 </span>            :     #endif</a>
+<span class="lineNum">     207 </span>            : 
+<span class="lineNum">     208 </span><span class="lineCov">          2 :         int run() {</span>
+<span class="lineNum">     209 </span><span class="lineCov">          2 :             if( ( m_configData.waitForKeypress &amp; WaitForKeypress::BeforeStart ) != 0 ) {</span>
+<span class="lineNum">     210 </span><span class="lineNoCov">          0 :                 Catch::cout() &lt;&lt; &quot;...waiting for enter/ return before starting&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     211 </span><span class="lineNoCov">          0 :                 static_cast&lt;void&gt;(std::getchar());</span>
+<span class="lineNum">     212 </span>            :             }
+<span class="lineNum">     213 </span><span class="lineCov">          2 :             int exitCode = runInternal();</span>
+<span class="lineNum">     214 </span><span class="lineCov">          2 :             if( ( m_configData.waitForKeypress &amp; WaitForKeypress::BeforeExit ) != 0 ) {</span>
+<span class="lineNum">     215 </span><span class="lineNoCov">          0 :                 Catch::cout() &lt;&lt; &quot;...waiting for enter/ return before exiting, with code: &quot; &lt;&lt; exitCode &lt;&lt; std::endl;</span>
+<span class="lineNum">     216 </span><span class="lineNoCov">          0 :                 static_cast&lt;void&gt;(std::getchar());</span>
+<span class="lineNum">     217 </span>            :             }
+<span class="lineNum">     218 </span><span class="lineCov">          2 :             return exitCode;</span>
+<span class="lineNum">     219 </span>            :         }
+<span class="lineNum">     220 </span>            : 
+<span class="lineNum">     221 </span>            :         Clara::CommandLine&lt;ConfigData&gt; const&amp; cli() const {
+<span class="lineNum">     222 </span>            :             return m_cli;
+<span class="lineNum">     223 </span>            :         }
+<span class="lineNum">     224 </span>            :         std::vector&lt;Clara::Parser::Token&gt; const&amp; unusedTokens() const {
+<span class="lineNum">     225 </span>            :             return m_unusedTokens;
+<span class="lineNum">     226 </span>            :         }
+<span class="lineNum">     227 </span>            :         ConfigData&amp; configData() {
+<a name="228"><span class="lineNum">     228 </span>            :             return m_configData;</a>
+<span class="lineNum">     229 </span>            :         }
+<span class="lineNum">     230 </span><span class="lineCov">          4 :         Config&amp; config() {</span>
+<span class="lineNum">     231 </span><span class="lineCov">          4 :             if( !m_config )</span>
+<span class="lineNum">     232 </span><span class="lineCov">          2 :                 m_config = new Config( m_configData );</span>
+<span class="lineNum">     233 </span><span class="lineCov">          4 :             return *m_config;</span>
+<span class="lineNum">     234 </span>            :         }
+<a name="235"><span class="lineNum">     235 </span>            :     private:</a>
+<span class="lineNum">     236 </span>            : 
+<span class="lineNum">     237 </span><span class="lineCov">          2 :         int runInternal() {</span>
+<span class="lineNum">     238 </span><span class="lineCov">          2 :             if( m_configData.showHelp || m_configData.libIdentify )</span>
+<span class="lineNum">     239 </span><span class="lineNoCov">          0 :                 return 0;</span>
+<span class="lineNum">     240 </span>            : 
+<span class="lineNum">     241 </span>            :             try
+<span class="lineNum">     242 </span>            :             {
+<span class="lineNum">     243 </span><span class="lineCov">          2 :                 config(); // Force config to be constructed</span>
+<span class="lineNum">     244 </span>            : 
+<span class="lineNum">     245 </span><span class="lineCov">          2 :                 seedRng( *m_config );</span>
+<span class="lineNum">     246 </span>            : 
+<span class="lineNum">     247 </span><span class="lineCov">          2 :                 if( m_configData.filenamesAsTags )</span>
+<span class="lineNum">     248 </span><span class="lineNoCov">          0 :                     applyFilenamesAsTags( *m_config );</span>
+<span class="lineNum">     249 </span>            : 
+<span class="lineNum">     250 </span>            :                 // Handle list request
+<span class="lineNum">     251 </span><span class="lineCov">          4 :                 if( Option&lt;std::size_t&gt; listed = list( config() ) )</span>
+<span class="lineNum">     252 </span><span class="lineNoCov">          0 :                     return static_cast&lt;int&gt;( *listed );</span>
+<span class="lineNum">     253 </span>            : 
+<span class="lineNum">     254 </span><span class="lineCov">          2 :                 return static_cast&lt;int&gt;( runTests( m_config ).assertions.failed );</span>
+<span class="lineNum">     255 </span>            :             }
+<span class="lineNum">     256 </span><span class="lineNoCov">          0 :             catch( std::exception&amp; ex ) {</span>
+<span class="lineNum">     257 </span><span class="lineNoCov">          0 :                 Catch::cerr() &lt;&lt; ex.what() &lt;&lt; std::endl;</span>
+<span class="lineNum">     258 </span><span class="lineNoCov">          0 :                 return (std::numeric_limits&lt;int&gt;::max)();</span>
+<span class="lineNum">     259 </span>            :             }
+<span class="lineNum">     260 </span>            :         }
+<span class="lineNum">     261 </span>            : 
+<span class="lineNum">     262 </span>            :         Clara::CommandLine&lt;ConfigData&gt; m_cli;
+<span class="lineNum">     263 </span>            :         std::vector&lt;Clara::Parser::Token&gt; m_unusedTokens;
+<span class="lineNum">     264 </span>            :         ConfigData m_configData;
+<span class="lineNum">     265 </span>            :         Ptr&lt;Config&gt; m_config;
+<span class="lineNum">     266 </span>            :     };
+<span class="lineNum">     267 </span>            : 
+<span class="lineNum">     268 </span>            :     bool Session::alreadyInstantiated = false;
+<span class="lineNum">     269 </span>            : 
+<span class="lineNum">     270 </span>            : } // end namespace Catch
+<span class="lineNum">     271 </span>            : 
+<span class="lineNum">     272 </span>            : #endif // TWOBLUECUBES_CATCH_RUNNER_HPP_INCLUDED
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

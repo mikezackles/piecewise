@@ -1,0 +1,273 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Code coverage - /home/travis/build/mikezackles/piecewise/subprojects/catch/include/internal/catch_generators.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../../../../../index.html">top level</a> - <a href="index.html">home/travis/build/mikezackles/piecewise/subprojects/catch/include/internal</a> - catch_generators.hpp<span style="font-size: 80%;"> (source / <a href="catch_generators.hpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Code coverage</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">62</td>
+            <td class="headerCovTableEntry">64</td>
+            <td class="headerCovTableEntryHi">96.9 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2018-02-19 01:04:17</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">36</td>
+            <td class="headerCovTableEntry">38</td>
+            <td class="headerCovTableEntryHi">94.7 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Legend:</td>
+            <td class="headerValueLeg">            Lines:
+            <span class="coverLegendCov">hit</span>
+            <span class="coverLegendNoCov">not hit</span>
+</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<span class="lineNum">       2 </span>            :  *  Created by Phil on 27/01/2011.
+<span class="lineNum">       3 </span>            :  *  Copyright 2011 Two Blue Cubes Ltd. All rights reserved.
+<span class="lineNum">       4 </span>            :  *
+<span class="lineNum">       5 </span>            :  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
+<span class="lineNum">       6 </span>            :  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+<span class="lineNum">       7 </span>            :  */
+<span class="lineNum">       8 </span>            : #ifndef TWOBLUECUBES_CATCH_GENERATORS_HPP_INCLUDED
+<span class="lineNum">       9 </span>            : #define TWOBLUECUBES_CATCH_GENERATORS_HPP_INCLUDED
+<span class="lineNum">      10 </span>            : 
+<span class="lineNum">      11 </span>            : #include &quot;catch_context.h&quot;
+<span class="lineNum">      12 </span>            : 
+<span class="lineNum">      13 </span>            : #include &lt;vector&gt;
+<span class="lineNum">      14 </span>            : #include &lt;string&gt;
+<span class="lineNum">      15 </span>            : #include &lt;stdlib.h&gt;
+<span class="lineNum">      16 </span>            : 
+<span class="lineNum">      17 </span>            : namespace Catch {
+<a name="18"><span class="lineNum">      18 </span>            : </a>
+<a name="19"><span class="lineNum">      19 </span>            : template&lt;typename T&gt;</a>
+<span class="lineNum">      20 </span><span class="lineCov">        290 : struct IGenerator {</span>
+<span class="lineNum">      21 </span><span class="lineCov">        290 :     virtual ~IGenerator() {}</span>
+<span class="lineNum">      22 </span>            :     virtual T getValue( std::size_t index ) const = 0;
+<span class="lineNum">      23 </span>            :     virtual std::size_t size () const = 0;
+<span class="lineNum">      24 </span>            : };
+<a name="25"><span class="lineNum">      25 </span>            : </a>
+<span class="lineNum">      26 </span>            : template&lt;typename T&gt;
+<a name="27"><span class="lineNum">      27 </span><span class="lineCov">        292 : class BetweenGenerator : public IGenerator&lt;T&gt; {</span></a>
+<span class="lineNum">      28 </span>            : public:
+<a name="29"><span class="lineNum">      29 </span><span class="lineCov">        146 :     BetweenGenerator( T from, T to ) : m_from( from ), m_to( to ){}</span></a>
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span><span class="lineCov">        114 :     virtual T getValue( std::size_t index ) const {</span>
+<span class="lineNum">      32 </span><span class="lineCov">        114 :         return m_from+static_cast&lt;int&gt;( index );</span>
+<a name="33"><span class="lineNum">      33 </span>            :     }</a>
+<span class="lineNum">      34 </span>            : 
+<span class="lineNum">      35 </span><span class="lineCov">        324 :     virtual std::size_t size() const {</span>
+<span class="lineNum">      36 </span><span class="lineCov">        324 :         return static_cast&lt;std::size_t&gt;( 1+m_to-m_from );</span>
+<span class="lineNum">      37 </span>            :     }
+<span class="lineNum">      38 </span>            : 
+<span class="lineNum">      39 </span>            : private:
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span>            :     T m_from;
+<span class="lineNum">      42 </span>            :     T m_to;
+<span class="lineNum">      43 </span>            : };
+<a name="44"><span class="lineNum">      44 </span>            : </a>
+<span class="lineNum">      45 </span>            : template&lt;typename T&gt;
+<a name="46"><span class="lineNum">      46 </span><span class="lineCov">        288 : class ValuesGenerator : public IGenerator&lt;T&gt; {</span></a>
+<span class="lineNum">      47 </span>            : public:
+<a name="48"><span class="lineNum">      48 </span><span class="lineCov">        144 :     ValuesGenerator(){}</span></a>
+<span class="lineNum">      49 </span>            : 
+<span class="lineNum">      50 </span><span class="lineCov">        288 :     void add( T value ) {</span>
+<span class="lineNum">      51 </span><span class="lineCov">        288 :         m_values.push_back( value );</span>
+<a name="52"><span class="lineNum">      52 </span><span class="lineCov">        288 :     }</span></a>
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span><span class="lineCov">         32 :     virtual T getValue( std::size_t index ) const {</span>
+<span class="lineNum">      55 </span><span class="lineCov">         32 :         return m_values[index];</span>
+<a name="56"><span class="lineNum">      56 </span>            :     }</a>
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span><span class="lineCov">        192 :     virtual std::size_t size() const {</span>
+<span class="lineNum">      59 </span><span class="lineCov">        192 :         return m_values.size();</span>
+<span class="lineNum">      60 </span>            :     }
+<span class="lineNum">      61 </span>            : 
+<span class="lineNum">      62 </span>            : private:
+<span class="lineNum">      63 </span>            :     std::vector&lt;T&gt; m_values;
+<span class="lineNum">      64 </span>            : };
+<span class="lineNum">      65 </span>            : 
+<span class="lineNum">      66 </span>            : template&lt;typename T&gt;
+<a name="67"><span class="lineNum">      67 </span>            : class CompositeGenerator {</a>
+<span class="lineNum">      68 </span>            : public:
+<span class="lineNum">      69 </span><span class="lineCov">        218 :     CompositeGenerator() : m_totalSize( 0 ) {}</span>
+<span class="lineNum">      70 </span>            : 
+<span class="lineNum">      71 </span>            :     // *** Move semantics, similar to auto_ptr ***
+<span class="lineNum">      72 </span>            :     CompositeGenerator( CompositeGenerator&amp; other )
+<span class="lineNum">      73 </span>            :     :   m_fileInfo( other.m_fileInfo ),
+<span class="lineNum">      74 </span>            :         m_totalSize( 0 )
+<span class="lineNum">      75 </span>            :     {
+<span class="lineNum">      76 </span>            :         move( other );
+<a name="77"><span class="lineNum">      77 </span>            :     }</a>
+<span class="lineNum">      78 </span>            : 
+<span class="lineNum">      79 </span><span class="lineCov">        146 :     CompositeGenerator&amp; setFileInfo( const char* fileInfo ) {</span>
+<span class="lineNum">      80 </span><span class="lineCov">        146 :         m_fileInfo = fileInfo;</span>
+<span class="lineNum">      81 </span><span class="lineCov">        146 :         return *this;</span>
+<a name="82"><span class="lineNum">      82 </span>            :     }</a>
+<span class="lineNum">      83 </span>            : 
+<span class="lineNum">      84 </span><span class="lineCov">        218 :     ~CompositeGenerator() {</span>
+<span class="lineNum">      85 </span><span class="lineCov">        218 :         deleteAll( m_composed );</span>
+<a name="86"><span class="lineNum">      86 </span><span class="lineCov">        218 :     }</span></a>
+<span class="lineNum">      87 </span>            : 
+<span class="lineNum">      88 </span><span class="lineCov">        146 :     operator T () const {</span>
+<span class="lineNum">      89 </span><span class="lineCov">        146 :         size_t overallIndex = getCurrentContext().getGeneratorIndex( m_fileInfo, m_totalSize );</span>
+<span class="lineNum">      90 </span>            : 
+<span class="lineNum">      91 </span><span class="lineCov">        146 :         typename std::vector&lt;const IGenerator&lt;T&gt;*&gt;::const_iterator it = m_composed.begin();</span>
+<span class="lineNum">      92 </span><span class="lineCov">        146 :         typename std::vector&lt;const IGenerator&lt;T&gt;*&gt;::const_iterator itEnd = m_composed.end();</span>
+<span class="lineNum">      93 </span><span class="lineCov">        186 :         for( size_t index = 0; it != itEnd; ++it )</span>
+<span class="lineNum">      94 </span>            :         {
+<span class="lineNum">      95 </span><span class="lineCov">        186 :             const IGenerator&lt;T&gt;* generator = *it;</span>
+<span class="lineNum">      96 </span><span class="lineCov">        186 :             if( overallIndex &gt;= index &amp;&amp; overallIndex &lt; index + generator-&gt;size() )</span>
+<span class="lineNum">      97 </span>            :             {
+<span class="lineNum">      98 </span><span class="lineCov">        146 :                 return generator-&gt;getValue( overallIndex-index );</span>
+<span class="lineNum">      99 </span>            :             }
+<span class="lineNum">     100 </span><span class="lineCov">         40 :             index += generator-&gt;size();</span>
+<span class="lineNum">     101 </span>            :         }
+<span class="lineNum">     102 </span><span class="lineNoCov">          0 :         CATCH_INTERNAL_ERROR( &quot;Indexed past end of generated range&quot; );</span>
+<span class="lineNum">     103 </span><span class="lineNoCov">          0 :         return T(); // Suppress spurious &quot;not all control paths return a value&quot; warning in Visual Studio - if you know how to fix this please do so</span>
+<a name="104"><span class="lineNum">     104 </span>            :     }</a>
+<span class="lineNum">     105 </span>            : 
+<span class="lineNum">     106 </span><span class="lineCov">        290 :     void add( const IGenerator&lt;T&gt;* generator ) {</span>
+<span class="lineNum">     107 </span><span class="lineCov">        290 :         m_totalSize += generator-&gt;size();</span>
+<span class="lineNum">     108 </span><span class="lineCov">        290 :         m_composed.push_back( generator );</span>
+<a name="109"><span class="lineNum">     109 </span><span class="lineCov">        290 :     }</span></a>
+<span class="lineNum">     110 </span>            : 
+<span class="lineNum">     111 </span><span class="lineCov">         72 :     CompositeGenerator&amp; then( CompositeGenerator&amp; other ) {</span>
+<span class="lineNum">     112 </span><span class="lineCov">         72 :         move( other );</span>
+<span class="lineNum">     113 </span><span class="lineCov">         72 :         return *this;</span>
+<a name="114"><span class="lineNum">     114 </span>            :     }</a>
+<span class="lineNum">     115 </span>            : 
+<span class="lineNum">     116 </span><span class="lineCov">         72 :     CompositeGenerator&amp; then( T value ) {</span>
+<span class="lineNum">     117 </span><span class="lineCov">         72 :         ValuesGenerator&lt;T&gt;* valuesGen = new ValuesGenerator&lt;T&gt;();</span>
+<span class="lineNum">     118 </span><span class="lineCov">         72 :         valuesGen-&gt;add( value );</span>
+<span class="lineNum">     119 </span><span class="lineCov">         72 :         add( valuesGen );</span>
+<span class="lineNum">     120 </span><span class="lineCov">         72 :         return *this;</span>
+<span class="lineNum">     121 </span>            :     }
+<span class="lineNum">     122 </span>            : 
+<a name="123"><span class="lineNum">     123 </span>            : private:</a>
+<span class="lineNum">     124 </span>            : 
+<span class="lineNum">     125 </span><span class="lineCov">         72 :     void move( CompositeGenerator&amp; other ) {</span>
+<span class="lineNum">     126 </span><span class="lineCov">         72 :         m_composed.insert( m_composed.end(), other.m_composed.begin(), other.m_composed.end() );</span>
+<span class="lineNum">     127 </span><span class="lineCov">         72 :         m_totalSize += other.m_totalSize;</span>
+<span class="lineNum">     128 </span><span class="lineCov">         72 :         other.m_composed.clear();</span>
+<span class="lineNum">     129 </span><span class="lineCov">         72 :     }</span>
+<span class="lineNum">     130 </span>            : 
+<span class="lineNum">     131 </span>            :     std::vector&lt;const IGenerator&lt;T&gt;*&gt; m_composed;
+<span class="lineNum">     132 </span>            :     std::string m_fileInfo;
+<span class="lineNum">     133 </span>            :     size_t m_totalSize;
+<span class="lineNum">     134 </span>            : };
+<span class="lineNum">     135 </span>            : 
+<span class="lineNum">     136 </span>            : namespace Generators
+<a name="137"><span class="lineNum">     137 </span>            : {</a>
+<span class="lineNum">     138 </span>            :     template&lt;typename T&gt;
+<span class="lineNum">     139 </span><span class="lineCov">        146 :     CompositeGenerator&lt;T&gt; between( T from, T to ) {</span>
+<span class="lineNum">     140 </span><span class="lineCov">        146 :         CompositeGenerator&lt;T&gt; generators;</span>
+<span class="lineNum">     141 </span><span class="lineCov">        146 :         generators.add( new BetweenGenerator&lt;T&gt;( from, to ) );</span>
+<span class="lineNum">     142 </span><span class="lineCov">        146 :         return generators;</span>
+<span class="lineNum">     143 </span>            :     }
+<span class="lineNum">     144 </span>            : 
+<span class="lineNum">     145 </span>            :     template&lt;typename T&gt;
+<span class="lineNum">     146 </span>            :     CompositeGenerator&lt;T&gt; values( T val1, T val2 ) {
+<span class="lineNum">     147 </span>            :         CompositeGenerator&lt;T&gt; generators;
+<span class="lineNum">     148 </span>            :         ValuesGenerator&lt;T&gt;* valuesGen = new ValuesGenerator&lt;T&gt;();
+<span class="lineNum">     149 </span>            :         valuesGen-&gt;add( val1 );
+<span class="lineNum">     150 </span>            :         valuesGen-&gt;add( val2 );
+<span class="lineNum">     151 </span>            :         generators.add( valuesGen );
+<span class="lineNum">     152 </span>            :         return generators;
+<span class="lineNum">     153 </span>            :     }
+<a name="154"><span class="lineNum">     154 </span>            : </a>
+<span class="lineNum">     155 </span>            :     template&lt;typename T&gt;
+<span class="lineNum">     156 </span><span class="lineCov">         72 :     CompositeGenerator&lt;T&gt; values( T val1, T val2, T val3 ){</span>
+<span class="lineNum">     157 </span><span class="lineCov">         72 :         CompositeGenerator&lt;T&gt; generators;</span>
+<span class="lineNum">     158 </span><span class="lineCov">         72 :         ValuesGenerator&lt;T&gt;* valuesGen = new ValuesGenerator&lt;T&gt;();</span>
+<span class="lineNum">     159 </span><span class="lineCov">         72 :         valuesGen-&gt;add( val1 );</span>
+<span class="lineNum">     160 </span><span class="lineCov">         72 :         valuesGen-&gt;add( val2 );</span>
+<span class="lineNum">     161 </span><span class="lineCov">         72 :         valuesGen-&gt;add( val3 );</span>
+<span class="lineNum">     162 </span><span class="lineCov">         72 :         generators.add( valuesGen );</span>
+<span class="lineNum">     163 </span><span class="lineCov">         72 :         return generators;</span>
+<span class="lineNum">     164 </span>            :     }
+<span class="lineNum">     165 </span>            : 
+<span class="lineNum">     166 </span>            :     template&lt;typename T&gt;
+<span class="lineNum">     167 </span>            :     CompositeGenerator&lt;T&gt; values( T val1, T val2, T val3, T val4 ) {
+<span class="lineNum">     168 </span>            :         CompositeGenerator&lt;T&gt; generators;
+<span class="lineNum">     169 </span>            :         ValuesGenerator&lt;T&gt;* valuesGen = new ValuesGenerator&lt;T&gt;();
+<span class="lineNum">     170 </span>            :         valuesGen-&gt;add( val1 );
+<span class="lineNum">     171 </span>            :         valuesGen-&gt;add( val2 );
+<span class="lineNum">     172 </span>            :         valuesGen-&gt;add( val3 );
+<span class="lineNum">     173 </span>            :         valuesGen-&gt;add( val4 );
+<span class="lineNum">     174 </span>            :         generators.add( valuesGen );
+<span class="lineNum">     175 </span>            :         return generators;
+<span class="lineNum">     176 </span>            :     }
+<span class="lineNum">     177 </span>            : 
+<span class="lineNum">     178 </span>            : } // end namespace Generators
+<span class="lineNum">     179 </span>            : 
+<span class="lineNum">     180 </span>            : using namespace Generators;
+<span class="lineNum">     181 </span>            : 
+<span class="lineNum">     182 </span>            : } // end namespace Catch
+<span class="lineNum">     183 </span>            : 
+<span class="lineNum">     184 </span>            : #define INTERNAL_CATCH_LINESTR2( line ) #line
+<span class="lineNum">     185 </span>            : #define INTERNAL_CATCH_LINESTR( line ) INTERNAL_CATCH_LINESTR2( line )
+<span class="lineNum">     186 </span>            : 
+<span class="lineNum">     187 </span>            : #define INTERNAL_CATCH_GENERATE( expr ) expr.setFileInfo( __FILE__ &quot;(&quot; INTERNAL_CATCH_LINESTR( __LINE__ ) &quot;)&quot; )
+<span class="lineNum">     188 </span>            : 
+<span class="lineNum">     189 </span>            : #endif // TWOBLUECUBES_CATCH_GENERATORS_HPP_INCLUDED
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

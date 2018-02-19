@@ -1,0 +1,390 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Code coverage - /home/travis/build/mikezackles/piecewise/subprojects/catch/include/reporters/catch_reporter_compact.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../../../../../index.html">top level</a> - <a href="index.html">home/travis/build/mikezackles/piecewise/subprojects/catch/include/reporters</a> - catch_reporter_compact.hpp<span style="font-size: 80%;"> (source / <a href="catch_reporter_compact.hpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Code coverage</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">180</td>
+            <td class="headerCovTableEntryLo">0.6 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2018-02-19 01:04:17</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">24</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Legend:</td>
+            <td class="headerValueLeg">            Lines:
+            <span class="coverLegendCov">hit</span>
+            <span class="coverLegendNoCov">not hit</span>
+</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<span class="lineNum">       2 </span>            :  *  Created by Martin Moene on 2013-12-05.
+<span class="lineNum">       3 </span>            :  *  Copyright 2012 Martin Moene. All rights reserved.
+<span class="lineNum">       4 </span>            :  *
+<span class="lineNum">       5 </span>            :  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
+<span class="lineNum">       6 </span>            :  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+<span class="lineNum">       7 </span>            :  */
+<span class="lineNum">       8 </span>            : #ifndef TWOBLUECUBES_CATCH_REPORTER_COMPACT_HPP_INCLUDED
+<span class="lineNum">       9 </span>            : #define TWOBLUECUBES_CATCH_REPORTER_COMPACT_HPP_INCLUDED
+<span class="lineNum">      10 </span>            : 
+<span class="lineNum">      11 </span>            : #include &quot;catch_reporter_bases.hpp&quot;
+<span class="lineNum">      12 </span>            : 
+<span class="lineNum">      13 </span>            : #include &quot;../internal/catch_reporter_registrars.hpp&quot;
+<span class="lineNum">      14 </span>            : #include &quot;../internal/catch_console_colour.hpp&quot;
+<span class="lineNum">      15 </span>            : 
+<span class="lineNum">      16 </span>            : namespace Catch {
+<span class="lineNum">      17 </span>            : 
+<a name="18"><span class="lineNum">      18 </span>            :     struct CompactReporter : StreamingReporterBase {</a>
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span><span class="lineNoCov">          0 :         CompactReporter( ReporterConfig const&amp; _config )</span>
+<span class="lineNum">      21 </span><span class="lineNoCov">          0 :         : StreamingReporterBase( _config )</span>
+<span class="lineNum">      22 </span><span class="lineNoCov">          0 :         {}</span>
+<span class="lineNum">      23 </span>            : 
+<a name="24"><span class="lineNum">      24 </span>            :         virtual ~CompactReporter();</a>
+<span class="lineNum">      25 </span>            : 
+<span class="lineNum">      26 </span><span class="lineNoCov">          0 :         static std::string getDescription() {</span>
+<span class="lineNum">      27 </span><span class="lineNoCov">          0 :             return &quot;Reports test results on a single line, suitable for IDEs&quot;;</span>
+<a name="28"><span class="lineNum">      28 </span>            :         }</a>
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span><span class="lineNoCov">          0 :         virtual ReporterPreferences getPreferences() const {</span>
+<span class="lineNum">      31 </span><span class="lineNoCov">          0 :             ReporterPreferences prefs;</span>
+<span class="lineNum">      32 </span><span class="lineNoCov">          0 :             prefs.shouldRedirectStdOut = false;</span>
+<span class="lineNum">      33 </span><span class="lineNoCov">          0 :             return prefs;</span>
+<a name="34"><span class="lineNum">      34 </span>            :         }</a>
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span><span class="lineNoCov">          0 :         virtual void noMatchingTestCases( std::string const&amp; spec ) {</span>
+<span class="lineNum">      37 </span><span class="lineNoCov">          0 :             stream &lt;&lt; &quot;No test cases matched '&quot; &lt;&lt; spec &lt;&lt; '\'' &lt;&lt; std::endl;</span>
+<a name="38"><span class="lineNum">      38 </span><span class="lineNoCov">          0 :         }</span></a>
+<span class="lineNum">      39 </span>            : 
+<a name="40"><span class="lineNum">      40 </span><span class="lineNoCov">          0 :         virtual void assertionStarting( AssertionInfo const&amp; ) {}</span></a>
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span><span class="lineNoCov">          0 :         virtual bool assertionEnded( AssertionStats const&amp; _assertionStats ) {</span>
+<span class="lineNum">      43 </span><span class="lineNoCov">          0 :             AssertionResult const&amp; result = _assertionStats.assertionResult;</span>
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span><span class="lineNoCov">          0 :             bool printInfoMessages = true;</span>
+<span class="lineNum">      46 </span>            : 
+<span class="lineNum">      47 </span>            :             // Drop out if result was successful and we're not printing those
+<span class="lineNum">      48 </span><span class="lineNoCov">          0 :             if( !m_config-&gt;includeSuccessfulResults() &amp;&amp; result.isOk() ) {</span>
+<span class="lineNum">      49 </span><span class="lineNoCov">          0 :                 if( result.getResultType() != ResultWas::Warning )</span>
+<span class="lineNum">      50 </span><span class="lineNoCov">          0 :                     return false;</span>
+<span class="lineNum">      51 </span><span class="lineNoCov">          0 :                 printInfoMessages = false;</span>
+<span class="lineNum">      52 </span>            :             }
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span><span class="lineNoCov">          0 :             AssertionPrinter printer( stream, _assertionStats, printInfoMessages );</span>
+<span class="lineNum">      55 </span><span class="lineNoCov">          0 :             printer.print();</span>
+<span class="lineNum">      56 </span>            : 
+<span class="lineNum">      57 </span><span class="lineNoCov">          0 :             stream &lt;&lt; std::endl;</span>
+<span class="lineNum">      58 </span><span class="lineNoCov">          0 :             return true;</span>
+<a name="59"><span class="lineNum">      59 </span>            :         }</a>
+<span class="lineNum">      60 </span>            : 
+<span class="lineNum">      61 </span><span class="lineNoCov">          0 :         virtual void sectionEnded(SectionStats const&amp; _sectionStats) CATCH_OVERRIDE {</span>
+<span class="lineNum">      62 </span><span class="lineNoCov">          0 :             if (m_config-&gt;showDurations() == ShowDurations::Always) {</span>
+<span class="lineNum">      63 </span><span class="lineNoCov">          0 :                 stream &lt;&lt; getFormattedDuration(_sectionStats.durationInSeconds) &lt;&lt; &quot; s: &quot; &lt;&lt; _sectionStats.sectionInfo.name &lt;&lt; std::endl;</span>
+<span class="lineNum">      64 </span>            :             }
+<a name="65"><span class="lineNum">      65 </span><span class="lineNoCov">          0 :         }</span></a>
+<span class="lineNum">      66 </span>            : 
+<span class="lineNum">      67 </span><span class="lineNoCov">          0 :         virtual void testRunEnded( TestRunStats const&amp; _testRunStats ) {</span>
+<span class="lineNum">      68 </span><span class="lineNoCov">          0 :             printTotals( _testRunStats.totals );</span>
+<span class="lineNum">      69 </span><span class="lineNoCov">          0 :             stream &lt;&lt; '\n' &lt;&lt; std::endl;</span>
+<span class="lineNum">      70 </span><span class="lineNoCov">          0 :             StreamingReporterBase::testRunEnded( _testRunStats );</span>
+<span class="lineNum">      71 </span><span class="lineNoCov">          0 :         }</span>
+<a name="72"><span class="lineNum">      72 </span>            : </a>
+<span class="lineNum">      73 </span>            :     private:
+<span class="lineNum">      74 </span><span class="lineNoCov">          0 :         class AssertionPrinter {</span>
+<a name="75"><span class="lineNum">      75 </span>            :             void operator= ( AssertionPrinter const&amp; );</a>
+<span class="lineNum">      76 </span>            :         public:
+<span class="lineNum">      77 </span><span class="lineNoCov">          0 :             AssertionPrinter( std::ostream&amp; _stream, AssertionStats const&amp; _stats, bool _printInfoMessages )</span>
+<span class="lineNum">      78 </span><span class="lineNoCov">          0 :             : stream( _stream )</span>
+<span class="lineNum">      79 </span>            :             , stats( _stats )
+<span class="lineNum">      80 </span>            :             , result( _stats.assertionResult )
+<span class="lineNum">      81 </span>            :             , messages( _stats.infoMessages )
+<span class="lineNum">      82 </span><span class="lineNoCov">          0 :             , itMessage( _stats.infoMessages.begin() )</span>
+<span class="lineNum">      83 </span><span class="lineNoCov">          0 :             , printInfoMessages( _printInfoMessages )</span>
+<a name="84"><span class="lineNum">      84 </span><span class="lineNoCov">          0 :             {}</span></a>
+<span class="lineNum">      85 </span>            : 
+<span class="lineNum">      86 </span><span class="lineNoCov">          0 :             void print() {</span>
+<span class="lineNum">      87 </span><span class="lineNoCov">          0 :                 printSourceInfo();</span>
+<span class="lineNum">      88 </span>            : 
+<span class="lineNum">      89 </span><span class="lineNoCov">          0 :                 itMessage = messages.begin();</span>
+<span class="lineNum">      90 </span>            : 
+<span class="lineNum">      91 </span><span class="lineNoCov">          0 :                 switch( result.getResultType() ) {</span>
+<span class="lineNum">      92 </span><span class="lineNoCov">          0 :                     case ResultWas::Ok:</span>
+<span class="lineNum">      93 </span><span class="lineNoCov">          0 :                         printResultType( Colour::ResultSuccess, passedString() );</span>
+<span class="lineNum">      94 </span><span class="lineNoCov">          0 :                         printOriginalExpression();</span>
+<span class="lineNum">      95 </span><span class="lineNoCov">          0 :                         printReconstructedExpression();</span>
+<span class="lineNum">      96 </span><span class="lineNoCov">          0 :                         if ( ! result.hasExpression() )</span>
+<span class="lineNum">      97 </span><span class="lineNoCov">          0 :                             printRemainingMessages( Colour::None );</span>
+<span class="lineNum">      98 </span>            :                         else
+<span class="lineNum">      99 </span><span class="lineNoCov">          0 :                             printRemainingMessages();</span>
+<span class="lineNum">     100 </span><span class="lineNoCov">          0 :                         break;</span>
+<span class="lineNum">     101 </span><span class="lineNoCov">          0 :                     case ResultWas::ExpressionFailed:</span>
+<span class="lineNum">     102 </span><span class="lineNoCov">          0 :                         if( result.isOk() )</span>
+<span class="lineNum">     103 </span><span class="lineNoCov">          0 :                             printResultType( Colour::ResultSuccess, failedString() + std::string( &quot; - but was ok&quot; ) );</span>
+<span class="lineNum">     104 </span>            :                         else
+<span class="lineNum">     105 </span><span class="lineNoCov">          0 :                             printResultType( Colour::Error, failedString() );</span>
+<span class="lineNum">     106 </span><span class="lineNoCov">          0 :                         printOriginalExpression();</span>
+<span class="lineNum">     107 </span><span class="lineNoCov">          0 :                         printReconstructedExpression();</span>
+<span class="lineNum">     108 </span><span class="lineNoCov">          0 :                         printRemainingMessages();</span>
+<span class="lineNum">     109 </span><span class="lineNoCov">          0 :                         break;</span>
+<span class="lineNum">     110 </span><span class="lineNoCov">          0 :                     case ResultWas::ThrewException:</span>
+<span class="lineNum">     111 </span><span class="lineNoCov">          0 :                         printResultType( Colour::Error, failedString() );</span>
+<span class="lineNum">     112 </span><span class="lineNoCov">          0 :                         printIssue( &quot;unexpected exception with message:&quot; );</span>
+<span class="lineNum">     113 </span><span class="lineNoCov">          0 :                         printMessage();</span>
+<span class="lineNum">     114 </span><span class="lineNoCov">          0 :                         printExpressionWas();</span>
+<span class="lineNum">     115 </span><span class="lineNoCov">          0 :                         printRemainingMessages();</span>
+<span class="lineNum">     116 </span><span class="lineNoCov">          0 :                         break;</span>
+<span class="lineNum">     117 </span><span class="lineNoCov">          0 :                     case ResultWas::FatalErrorCondition:</span>
+<span class="lineNum">     118 </span><span class="lineNoCov">          0 :                         printResultType( Colour::Error, failedString() );</span>
+<span class="lineNum">     119 </span><span class="lineNoCov">          0 :                         printIssue( &quot;fatal error condition with message:&quot; );</span>
+<span class="lineNum">     120 </span><span class="lineNoCov">          0 :                         printMessage();</span>
+<span class="lineNum">     121 </span><span class="lineNoCov">          0 :                         printExpressionWas();</span>
+<span class="lineNum">     122 </span><span class="lineNoCov">          0 :                         printRemainingMessages();</span>
+<span class="lineNum">     123 </span><span class="lineNoCov">          0 :                         break;</span>
+<span class="lineNum">     124 </span><span class="lineNoCov">          0 :                     case ResultWas::DidntThrowException:</span>
+<span class="lineNum">     125 </span><span class="lineNoCov">          0 :                         printResultType( Colour::Error, failedString() );</span>
+<span class="lineNum">     126 </span><span class="lineNoCov">          0 :                         printIssue( &quot;expected exception, got none&quot; );</span>
+<span class="lineNum">     127 </span><span class="lineNoCov">          0 :                         printExpressionWas();</span>
+<span class="lineNum">     128 </span><span class="lineNoCov">          0 :                         printRemainingMessages();</span>
+<span class="lineNum">     129 </span><span class="lineNoCov">          0 :                         break;</span>
+<span class="lineNum">     130 </span><span class="lineNoCov">          0 :                     case ResultWas::Info:</span>
+<span class="lineNum">     131 </span><span class="lineNoCov">          0 :                         printResultType( Colour::None, &quot;info&quot; );</span>
+<span class="lineNum">     132 </span><span class="lineNoCov">          0 :                         printMessage();</span>
+<span class="lineNum">     133 </span><span class="lineNoCov">          0 :                         printRemainingMessages();</span>
+<span class="lineNum">     134 </span><span class="lineNoCov">          0 :                         break;</span>
+<span class="lineNum">     135 </span><span class="lineNoCov">          0 :                     case ResultWas::Warning:</span>
+<span class="lineNum">     136 </span><span class="lineNoCov">          0 :                         printResultType( Colour::None, &quot;warning&quot; );</span>
+<span class="lineNum">     137 </span><span class="lineNoCov">          0 :                         printMessage();</span>
+<span class="lineNum">     138 </span><span class="lineNoCov">          0 :                         printRemainingMessages();</span>
+<span class="lineNum">     139 </span><span class="lineNoCov">          0 :                         break;</span>
+<span class="lineNum">     140 </span><span class="lineNoCov">          0 :                     case ResultWas::ExplicitFailure:</span>
+<span class="lineNum">     141 </span><span class="lineNoCov">          0 :                         printResultType( Colour::Error, failedString() );</span>
+<span class="lineNum">     142 </span><span class="lineNoCov">          0 :                         printIssue( &quot;explicitly&quot; );</span>
+<span class="lineNum">     143 </span><span class="lineNoCov">          0 :                         printRemainingMessages( Colour::None );</span>
+<span class="lineNum">     144 </span><span class="lineNoCov">          0 :                         break;</span>
+<span class="lineNum">     145 </span>            :                     // These cases are here to prevent compiler warnings
+<span class="lineNum">     146 </span><span class="lineNoCov">          0 :                     case ResultWas::Unknown:</span>
+<span class="lineNum">     147 </span>            :                     case ResultWas::FailureBit:
+<span class="lineNum">     148 </span>            :                     case ResultWas::Exception:
+<span class="lineNum">     149 </span><span class="lineNoCov">          0 :                         printResultType( Colour::Error, &quot;** internal error **&quot; );</span>
+<span class="lineNum">     150 </span><span class="lineNoCov">          0 :                         break;</span>
+<span class="lineNum">     151 </span>            :                 }
+<span class="lineNum">     152 </span><span class="lineNoCov">          0 :             }</span>
+<span class="lineNum">     153 </span>            : 
+<span class="lineNum">     154 </span>            :         private:
+<a name="155"><span class="lineNum">     155 </span>            :             // Colour::LightGrey</a>
+<span class="lineNum">     156 </span>            : 
+<span class="lineNum">     157 </span><span class="lineNoCov">          0 :             static Colour::Code dimColour() { return Colour::FileName; }</span>
+<span class="lineNum">     158 </span>            : 
+<span class="lineNum">     159 </span>            : #ifdef CATCH_PLATFORM_MAC
+<span class="lineNum">     160 </span>            :             static const char* failedString() { return &quot;FAILED&quot;; }
+<a name="161"><span class="lineNum">     161 </span>            :             static const char* passedString() { return &quot;PASSED&quot;; }</a>
+<a name="162"><span class="lineNum">     162 </span>            : #else</a>
+<span class="lineNum">     163 </span><span class="lineNoCov">          0 :             static const char* failedString() { return &quot;failed&quot;; }</span>
+<span class="lineNum">     164 </span><span class="lineNoCov">          0 :             static const char* passedString() { return &quot;passed&quot;; }</span>
+<a name="165"><span class="lineNum">     165 </span>            : #endif</a>
+<span class="lineNum">     166 </span>            : 
+<span class="lineNum">     167 </span><span class="lineNoCov">          0 :             void printSourceInfo() const {</span>
+<span class="lineNum">     168 </span><span class="lineNoCov">          0 :                 Colour colourGuard( Colour::FileName );</span>
+<span class="lineNum">     169 </span><span class="lineNoCov">          0 :                 stream &lt;&lt; result.getSourceInfo() &lt;&lt; ':';</span>
+<a name="170"><span class="lineNum">     170 </span><span class="lineNoCov">          0 :             }</span></a>
+<span class="lineNum">     171 </span>            : 
+<span class="lineNum">     172 </span><span class="lineNoCov">          0 :             void printResultType( Colour::Code colour, std::string const&amp; passOrFail ) const {</span>
+<span class="lineNum">     173 </span><span class="lineNoCov">          0 :                 if( !passOrFail.empty() ) {</span>
+<span class="lineNum">     174 </span>            :                     {
+<span class="lineNum">     175 </span><span class="lineNoCov">          0 :                         Colour colourGuard( colour );</span>
+<span class="lineNum">     176 </span><span class="lineNoCov">          0 :                         stream &lt;&lt; ' ' &lt;&lt; passOrFail;</span>
+<span class="lineNum">     177 </span>            :                     }
+<span class="lineNum">     178 </span><span class="lineNoCov">          0 :                     stream &lt;&lt; ':';</span>
+<span class="lineNum">     179 </span>            :                 }
+<a name="180"><span class="lineNum">     180 </span><span class="lineNoCov">          0 :             }</span></a>
+<span class="lineNum">     181 </span>            : 
+<span class="lineNum">     182 </span><span class="lineNoCov">          0 :             void printIssue( std::string const&amp; issue ) const {</span>
+<span class="lineNum">     183 </span><span class="lineNoCov">          0 :                 stream &lt;&lt; ' ' &lt;&lt; issue;</span>
+<a name="184"><span class="lineNum">     184 </span><span class="lineNoCov">          0 :             }</span></a>
+<span class="lineNum">     185 </span>            : 
+<span class="lineNum">     186 </span><span class="lineNoCov">          0 :             void printExpressionWas() {</span>
+<span class="lineNum">     187 </span><span class="lineNoCov">          0 :                 if( result.hasExpression() ) {</span>
+<span class="lineNum">     188 </span><span class="lineNoCov">          0 :                     stream &lt;&lt; ';';</span>
+<span class="lineNum">     189 </span>            :                     {
+<span class="lineNum">     190 </span><span class="lineNoCov">          0 :                         Colour colour( dimColour() );</span>
+<span class="lineNum">     191 </span><span class="lineNoCov">          0 :                         stream &lt;&lt; &quot; expression was:&quot;;</span>
+<span class="lineNum">     192 </span>            :                     }
+<span class="lineNum">     193 </span><span class="lineNoCov">          0 :                     printOriginalExpression();</span>
+<span class="lineNum">     194 </span>            :                 }
+<a name="195"><span class="lineNum">     195 </span><span class="lineNoCov">          0 :             }</span></a>
+<span class="lineNum">     196 </span>            : 
+<span class="lineNum">     197 </span><span class="lineNoCov">          0 :             void printOriginalExpression() const {</span>
+<span class="lineNum">     198 </span><span class="lineNoCov">          0 :                 if( result.hasExpression() ) {</span>
+<span class="lineNum">     199 </span><span class="lineNoCov">          0 :                     stream &lt;&lt; ' ' &lt;&lt; result.getExpression();</span>
+<span class="lineNum">     200 </span>            :                 }
+<a name="201"><span class="lineNum">     201 </span><span class="lineNoCov">          0 :             }</span></a>
+<span class="lineNum">     202 </span>            : 
+<span class="lineNum">     203 </span><span class="lineNoCov">          0 :             void printReconstructedExpression() const {</span>
+<span class="lineNum">     204 </span><span class="lineNoCov">          0 :                 if( result.hasExpandedExpression() ) {</span>
+<span class="lineNum">     205 </span>            :                     {
+<span class="lineNum">     206 </span><span class="lineNoCov">          0 :                         Colour colour( dimColour() );</span>
+<span class="lineNum">     207 </span><span class="lineNoCov">          0 :                         stream &lt;&lt; &quot; for: &quot;;</span>
+<span class="lineNum">     208 </span>            :                     }
+<span class="lineNum">     209 </span><span class="lineNoCov">          0 :                     stream &lt;&lt; result.getExpandedExpression();</span>
+<span class="lineNum">     210 </span>            :                 }
+<a name="211"><span class="lineNum">     211 </span><span class="lineNoCov">          0 :             }</span></a>
+<span class="lineNum">     212 </span>            : 
+<span class="lineNum">     213 </span><span class="lineNoCov">          0 :             void printMessage() {</span>
+<span class="lineNum">     214 </span><span class="lineNoCov">          0 :                 if ( itMessage != messages.end() ) {</span>
+<span class="lineNum">     215 </span><span class="lineNoCov">          0 :                     stream &lt;&lt; &quot; '&quot; &lt;&lt; itMessage-&gt;message &lt;&lt; '\'';</span>
+<span class="lineNum">     216 </span><span class="lineNoCov">          0 :                     ++itMessage;</span>
+<span class="lineNum">     217 </span>            :                 }
+<a name="218"><span class="lineNum">     218 </span><span class="lineNoCov">          0 :             }</span></a>
+<span class="lineNum">     219 </span>            : 
+<span class="lineNum">     220 </span><span class="lineNoCov">          0 :             void printRemainingMessages( Colour::Code colour = dimColour() ) {</span>
+<span class="lineNum">     221 </span><span class="lineNoCov">          0 :                 if ( itMessage == messages.end() )</span>
+<span class="lineNum">     222 </span><span class="lineNoCov">          0 :                     return;</span>
+<span class="lineNum">     223 </span>            : 
+<span class="lineNum">     224 </span>            :                 // using messages.end() directly yields compilation error:
+<span class="lineNum">     225 </span><span class="lineNoCov">          0 :                 std::vector&lt;MessageInfo&gt;::const_iterator itEnd = messages.end();</span>
+<span class="lineNum">     226 </span><span class="lineNoCov">          0 :                 const std::size_t N = static_cast&lt;std::size_t&gt;( std::distance( itMessage, itEnd ) );</span>
+<span class="lineNum">     227 </span>            : 
+<span class="lineNum">     228 </span>            :                 {
+<span class="lineNum">     229 </span><span class="lineNoCov">          0 :                     Colour colourGuard( colour );</span>
+<span class="lineNum">     230 </span><span class="lineNoCov">          0 :                     stream &lt;&lt; &quot; with &quot; &lt;&lt; pluralise( N, &quot;message&quot; ) &lt;&lt; ':';</span>
+<span class="lineNum">     231 </span>            :                 }
+<span class="lineNum">     232 </span>            : 
+<span class="lineNum">     233 </span><span class="lineNoCov">          0 :                 for(; itMessage != itEnd; ) {</span>
+<span class="lineNum">     234 </span>            :                     // If this assertion is a warning ignore any INFO messages
+<span class="lineNum">     235 </span><span class="lineNoCov">          0 :                     if( printInfoMessages || itMessage-&gt;type != ResultWas::Info ) {</span>
+<span class="lineNum">     236 </span><span class="lineNoCov">          0 :                         stream &lt;&lt; &quot; '&quot; &lt;&lt; itMessage-&gt;message &lt;&lt; '\'';</span>
+<span class="lineNum">     237 </span><span class="lineNoCov">          0 :                         if ( ++itMessage != itEnd ) {</span>
+<span class="lineNum">     238 </span><span class="lineNoCov">          0 :                             Colour colourGuard( dimColour() );</span>
+<span class="lineNum">     239 </span><span class="lineNoCov">          0 :                             stream &lt;&lt; &quot; and&quot;;</span>
+<span class="lineNum">     240 </span>            :                         }
+<span class="lineNum">     241 </span>            :                     }
+<span class="lineNum">     242 </span>            :                 }
+<span class="lineNum">     243 </span>            :             }
+<span class="lineNum">     244 </span>            : 
+<span class="lineNum">     245 </span>            :         private:
+<span class="lineNum">     246 </span>            :             std::ostream&amp; stream;
+<span class="lineNum">     247 </span>            :             AssertionStats const&amp; stats;
+<span class="lineNum">     248 </span>            :             AssertionResult const&amp; result;
+<span class="lineNum">     249 </span>            :             std::vector&lt;MessageInfo&gt; messages;
+<span class="lineNum">     250 </span>            :             std::vector&lt;MessageInfo&gt;::const_iterator itMessage;
+<span class="lineNum">     251 </span>            :             bool printInfoMessages;
+<span class="lineNum">     252 </span>            :         };
+<span class="lineNum">     253 </span>            : 
+<span class="lineNum">     254 </span>            :         // Colour, message variants:
+<span class="lineNum">     255 </span>            :         // - white: No tests ran.
+<span class="lineNum">     256 </span>            :         // -   red: Failed [both/all] N test cases, failed [both/all] M assertions.
+<span class="lineNum">     257 </span>            :         // - white: Passed [both/all] N test cases (no assertions).
+<span class="lineNum">     258 </span>            :         // -   red: Failed N tests cases, failed M assertions.
+<a name="259"><span class="lineNum">     259 </span>            :         // - green: Passed [both/all] N tests cases with M assertions.</a>
+<span class="lineNum">     260 </span>            : 
+<span class="lineNum">     261 </span><span class="lineNoCov">          0 :         std::string bothOrAll( std::size_t count ) const {</span>
+<span class="lineNum">     262 </span><span class="lineNoCov">          0 :             return count == 1 ? std::string() : count == 2 ? &quot;both &quot; : &quot;all &quot; ;</span>
+<a name="263"><span class="lineNum">     263 </span>            :         }</a>
+<span class="lineNum">     264 </span>            : 
+<span class="lineNum">     265 </span><span class="lineNoCov">          0 :         void printTotals( const Totals&amp; totals ) const {</span>
+<span class="lineNum">     266 </span><span class="lineNoCov">          0 :             if( totals.testCases.total() == 0 ) {</span>
+<span class="lineNum">     267 </span><span class="lineNoCov">          0 :                 stream &lt;&lt; &quot;No tests ran.&quot;;</span>
+<span class="lineNum">     268 </span>            :             }
+<span class="lineNum">     269 </span><span class="lineNoCov">          0 :             else if( totals.testCases.failed == totals.testCases.total() ) {</span>
+<span class="lineNum">     270 </span><span class="lineNoCov">          0 :                 Colour colour( Colour::ResultError );</span>
+<span class="lineNum">     271 </span>            :                 const std::string qualify_assertions_failed =
+<span class="lineNum">     272 </span><span class="lineNoCov">          0 :                     totals.assertions.failed == totals.assertions.total() ?</span>
+<span class="lineNum">     273 </span><span class="lineNoCov">          0 :                         bothOrAll( totals.assertions.failed ) : std::string();</span>
+<span class="lineNum">     274 </span><span class="lineNoCov">          0 :                 stream &lt;&lt;</span>
+<span class="lineNum">     275 </span><span class="lineNoCov">          0 :                     &quot;Failed &quot; &lt;&lt; bothOrAll( totals.testCases.failed )</span>
+<span class="lineNum">     276 </span><span class="lineNoCov">          0 :                               &lt;&lt; pluralise( totals.testCases.failed, &quot;test case&quot;  ) &lt;&lt; &quot;, &quot;</span>
+<span class="lineNum">     277 </span><span class="lineNoCov">          0 :                     &quot;failed &quot; &lt;&lt; qualify_assertions_failed &lt;&lt;</span>
+<span class="lineNum">     278 </span><span class="lineNoCov">          0 :                                  pluralise( totals.assertions.failed, &quot;assertion&quot; ) &lt;&lt; '.';</span>
+<span class="lineNum">     279 </span>            :             }
+<span class="lineNum">     280 </span><span class="lineNoCov">          0 :             else if( totals.assertions.total() == 0 ) {</span>
+<span class="lineNum">     281 </span><span class="lineNoCov">          0 :                 stream &lt;&lt;</span>
+<span class="lineNum">     282 </span><span class="lineNoCov">          0 :                     &quot;Passed &quot; &lt;&lt; bothOrAll( totals.testCases.total() )</span>
+<span class="lineNum">     283 </span><span class="lineNoCov">          0 :                               &lt;&lt; pluralise( totals.testCases.total(), &quot;test case&quot; )</span>
+<span class="lineNum">     284 </span><span class="lineNoCov">          0 :                               &lt;&lt; &quot; (no assertions).&quot;;</span>
+<span class="lineNum">     285 </span>            :             }
+<span class="lineNum">     286 </span><span class="lineNoCov">          0 :             else if( totals.assertions.failed ) {</span>
+<span class="lineNum">     287 </span><span class="lineNoCov">          0 :                 Colour colour( Colour::ResultError );</span>
+<span class="lineNum">     288 </span><span class="lineNoCov">          0 :                 stream &lt;&lt;</span>
+<span class="lineNum">     289 </span><span class="lineNoCov">          0 :                     &quot;Failed &quot; &lt;&lt; pluralise( totals.testCases.failed, &quot;test case&quot;  ) &lt;&lt; &quot;, &quot;</span>
+<span class="lineNum">     290 </span><span class="lineNoCov">          0 :                     &quot;failed &quot; &lt;&lt; pluralise( totals.assertions.failed, &quot;assertion&quot; ) &lt;&lt; '.';</span>
+<span class="lineNum">     291 </span>            :             }
+<span class="lineNum">     292 </span>            :             else {
+<span class="lineNum">     293 </span><span class="lineNoCov">          0 :                 Colour colour( Colour::ResultSuccess );</span>
+<span class="lineNum">     294 </span><span class="lineNoCov">          0 :                 stream &lt;&lt;</span>
+<span class="lineNum">     295 </span><span class="lineNoCov">          0 :                     &quot;Passed &quot; &lt;&lt; bothOrAll( totals.testCases.passed )</span>
+<span class="lineNum">     296 </span><span class="lineNoCov">          0 :                               &lt;&lt; pluralise( totals.testCases.passed, &quot;test case&quot;  ) &lt;&lt;</span>
+<span class="lineNum">     297 </span><span class="lineNoCov">          0 :                     &quot; with &quot;  &lt;&lt; pluralise( totals.assertions.passed, &quot;assertion&quot; ) &lt;&lt; '.';</span>
+<span class="lineNum">     298 </span>            :             }
+<span class="lineNum">     299 </span><span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">     300 </span>            :     };
+<span class="lineNum">     301 </span>            : 
+<span class="lineNum">     302 </span><span class="lineCov">          2 :     INTERNAL_CATCH_REGISTER_REPORTER( &quot;compact&quot;, CompactReporter )</span>
+<span class="lineNum">     303 </span>            : 
+<span class="lineNum">     304 </span>            : } // end namespace Catch
+<span class="lineNum">     305 </span>            : 
+<span class="lineNum">     306 </span>            : #endif // TWOBLUECUBES_CATCH_REPORTER_COMPACT_HPP_INCLUDED
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

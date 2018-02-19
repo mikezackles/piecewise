@@ -1,0 +1,1393 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Code coverage - /usr/include/c++/7.3.0/variant</title>
+  <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../index.html">top level</a> - <a href="index.html">usr/include/c++/7.3.0</a> - variant<span style="font-size: 80%;"> (source / <a href="variant.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Code coverage</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">76</td>
+            <td class="headerCovTableEntry">85</td>
+            <td class="headerCovTableEntryMed">89.4 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2018-02-19 01:04:17</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">49</td>
+            <td class="headerCovTableEntry">75</td>
+            <td class="headerCovTableEntryLo">65.3 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Legend:</td>
+            <td class="headerValueLeg">            Lines:
+            <span class="coverLegendCov">hit</span>
+            <span class="coverLegendNoCov">not hit</span>
+</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : // &lt;variant&gt; -*- C++ -*-</a>
+<span class="lineNum">       2 </span>            : 
+<span class="lineNum">       3 </span>            : // Copyright (C) 2016-2017 Free Software Foundation, Inc.
+<span class="lineNum">       4 </span>            : //
+<span class="lineNum">       5 </span>            : // This file is part of the GNU ISO C++ Library.  This library is free
+<span class="lineNum">       6 </span>            : // software; you can redistribute it and/or modify it under the
+<span class="lineNum">       7 </span>            : // terms of the GNU General Public License as published by the
+<span class="lineNum">       8 </span>            : // Free Software Foundation; either version 3, or (at your option)
+<span class="lineNum">       9 </span>            : // any later version.
+<span class="lineNum">      10 </span>            : 
+<span class="lineNum">      11 </span>            : // This library is distributed in the hope that it will be useful,
+<span class="lineNum">      12 </span>            : // but WITHOUT ANY WARRANTY; without even the implied warranty of
+<span class="lineNum">      13 </span>            : // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<span class="lineNum">      14 </span>            : // GNU General Public License for more details.
+<span class="lineNum">      15 </span>            : 
+<span class="lineNum">      16 </span>            : // Under Section 7 of GPL version 3, you are granted additional
+<span class="lineNum">      17 </span>            : // permissions described in the GCC Runtime Library Exception, version
+<span class="lineNum">      18 </span>            : // 3.1, as published by the Free Software Foundation.
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : // You should have received a copy of the GNU General Public License and
+<span class="lineNum">      21 </span>            : // a copy of the GCC Runtime Library Exception along with this program;
+<span class="lineNum">      22 </span>            : // see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<span class="lineNum">      23 </span>            : // &lt;http://www.gnu.org/licenses/&gt;.
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            : /** @file variant
+<span class="lineNum">      26 </span>            :  *  This is the &lt;variant&gt; C++ Library header.
+<span class="lineNum">      27 </span>            :  */
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span>            : #ifndef _GLIBCXX_VARIANT
+<span class="lineNum">      30 </span>            : #define _GLIBCXX_VARIANT 1
+<span class="lineNum">      31 </span>            : 
+<span class="lineNum">      32 </span>            : #pragma GCC system_header
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span>            : #if __cplusplus &gt;= 201703L
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span>            : #include &lt;type_traits&gt;
+<span class="lineNum">      37 </span>            : #include &lt;utility&gt;
+<span class="lineNum">      38 </span>            : #include &lt;bits/enable_special_members.h&gt;
+<span class="lineNum">      39 </span>            : #include &lt;bits/functexcept.h&gt;
+<span class="lineNum">      40 </span>            : #include &lt;bits/move.h&gt;
+<span class="lineNum">      41 </span>            : #include &lt;bits/functional_hash.h&gt;
+<span class="lineNum">      42 </span>            : #include &lt;bits/invoke.h&gt;
+<span class="lineNum">      43 </span>            : #include &lt;ext/aligned_buffer.h&gt;
+<span class="lineNum">      44 </span>            : #include &lt;bits/parse_numbers.h&gt;
+<span class="lineNum">      45 </span>            : #include &lt;bits/stl_iterator_base_types.h&gt;
+<span class="lineNum">      46 </span>            : #include &lt;bits/stl_iterator_base_funcs.h&gt;
+<span class="lineNum">      47 </span>            : #include &lt;bits/stl_construct.h&gt;
+<span class="lineNum">      48 </span>            : 
+<span class="lineNum">      49 </span>            : namespace std _GLIBCXX_VISIBILITY(default)
+<span class="lineNum">      50 </span>            : {
+<span class="lineNum">      51 </span>            : namespace __detail
+<span class="lineNum">      52 </span>            : {
+<span class="lineNum">      53 </span>            : namespace __variant
+<span class="lineNum">      54 </span>            : {
+<span class="lineNum">      55 </span>            : _GLIBCXX_BEGIN_NAMESPACE_VERSION
+<span class="lineNum">      56 </span>            : 
+<span class="lineNum">      57 </span>            :   template&lt;size_t _Np, typename... _Types&gt;
+<span class="lineNum">      58 </span>            :     struct _Nth_type;
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span>            :   template&lt;size_t _Np, typename _First, typename... _Rest&gt;
+<span class="lineNum">      61 </span>            :     struct _Nth_type&lt;_Np, _First, _Rest...&gt;
+<span class="lineNum">      62 </span>            :     : _Nth_type&lt;_Np-1, _Rest...&gt; { };
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span>            :   template&lt;typename _First, typename... _Rest&gt;
+<span class="lineNum">      65 </span>            :     struct _Nth_type&lt;0, _First, _Rest...&gt;
+<span class="lineNum">      66 </span>            :     { using type = _First; };
+<span class="lineNum">      67 </span>            : 
+<span class="lineNum">      68 </span>            : _GLIBCXX_END_NAMESPACE_VERSION
+<span class="lineNum">      69 </span>            : } // namespace __variant
+<span class="lineNum">      70 </span>            : } // namespace __detail
+<span class="lineNum">      71 </span>            : 
+<span class="lineNum">      72 </span>            : _GLIBCXX_BEGIN_NAMESPACE_VERSION
+<span class="lineNum">      73 </span>            : 
+<span class="lineNum">      74 </span>            : #define __cpp_lib_variant 201603
+<span class="lineNum">      75 </span>            : 
+<span class="lineNum">      76 </span>            :   template&lt;typename... _Types&gt; class tuple;
+<span class="lineNum">      77 </span>            :   template&lt;typename... _Types&gt; class variant;
+<span class="lineNum">      78 </span>            :   template &lt;typename&gt; struct hash;
+<span class="lineNum">      79 </span>            : 
+<span class="lineNum">      80 </span>            :   template&lt;typename _Variant&gt;
+<span class="lineNum">      81 </span>            :     struct variant_size;
+<span class="lineNum">      82 </span>            : 
+<span class="lineNum">      83 </span>            :   template&lt;typename _Variant&gt;
+<span class="lineNum">      84 </span>            :     struct variant_size&lt;const _Variant&gt; : variant_size&lt;_Variant&gt; {};
+<span class="lineNum">      85 </span>            : 
+<span class="lineNum">      86 </span>            :   template&lt;typename _Variant&gt;
+<span class="lineNum">      87 </span>            :     struct variant_size&lt;volatile _Variant&gt; : variant_size&lt;_Variant&gt; {};
+<span class="lineNum">      88 </span>            : 
+<span class="lineNum">      89 </span>            :   template&lt;typename _Variant&gt;
+<span class="lineNum">      90 </span>            :     struct variant_size&lt;const volatile _Variant&gt; : variant_size&lt;_Variant&gt; {};
+<span class="lineNum">      91 </span>            : 
+<span class="lineNum">      92 </span>            :   template&lt;typename... _Types&gt;
+<span class="lineNum">      93 </span>            :     struct variant_size&lt;variant&lt;_Types...&gt;&gt;
+<span class="lineNum">      94 </span>            :     : std::integral_constant&lt;size_t, sizeof...(_Types)&gt; {};
+<span class="lineNum">      95 </span>            : 
+<span class="lineNum">      96 </span>            :   template&lt;typename _Variant&gt;
+<span class="lineNum">      97 </span>            :     inline constexpr size_t variant_size_v = variant_size&lt;_Variant&gt;::value;
+<span class="lineNum">      98 </span>            : 
+<span class="lineNum">      99 </span>            :   template&lt;size_t _Np, typename _Variant&gt;
+<span class="lineNum">     100 </span>            :     struct variant_alternative;
+<span class="lineNum">     101 </span>            : 
+<span class="lineNum">     102 </span>            :   template&lt;size_t _Np, typename _First, typename... _Rest&gt;
+<span class="lineNum">     103 </span>            :     struct variant_alternative&lt;_Np, variant&lt;_First, _Rest...&gt;&gt;
+<span class="lineNum">     104 </span>            :     : variant_alternative&lt;_Np-1, variant&lt;_Rest...&gt;&gt; {};
+<span class="lineNum">     105 </span>            : 
+<span class="lineNum">     106 </span>            :   template&lt;typename _First, typename... _Rest&gt;
+<span class="lineNum">     107 </span>            :     struct variant_alternative&lt;0, variant&lt;_First, _Rest...&gt;&gt;
+<span class="lineNum">     108 </span>            :     { using type = _First; };
+<span class="lineNum">     109 </span>            : 
+<span class="lineNum">     110 </span>            :   template&lt;size_t _Np, typename _Variant&gt;
+<span class="lineNum">     111 </span>            :     using variant_alternative_t =
+<span class="lineNum">     112 </span>            :       typename variant_alternative&lt;_Np, _Variant&gt;::type;
+<span class="lineNum">     113 </span>            : 
+<span class="lineNum">     114 </span>            :   template&lt;size_t _Np, typename _Variant&gt;
+<span class="lineNum">     115 </span>            :     struct variant_alternative&lt;_Np, const _Variant&gt;
+<span class="lineNum">     116 </span>            :     { using type = add_const_t&lt;variant_alternative_t&lt;_Np, _Variant&gt;&gt;; };
+<span class="lineNum">     117 </span>            : 
+<span class="lineNum">     118 </span>            :   template&lt;size_t _Np, typename _Variant&gt;
+<span class="lineNum">     119 </span>            :     struct variant_alternative&lt;_Np, volatile _Variant&gt;
+<span class="lineNum">     120 </span>            :     { using type = add_volatile_t&lt;variant_alternative_t&lt;_Np, _Variant&gt;&gt;; };
+<span class="lineNum">     121 </span>            : 
+<span class="lineNum">     122 </span>            :   template&lt;size_t _Np, typename _Variant&gt;
+<span class="lineNum">     123 </span>            :     struct variant_alternative&lt;_Np, const volatile _Variant&gt;
+<span class="lineNum">     124 </span>            :     { using type = add_cv_t&lt;variant_alternative_t&lt;_Np, _Variant&gt;&gt;; };
+<span class="lineNum">     125 </span>            : 
+<span class="lineNum">     126 </span>            :   inline constexpr size_t variant_npos = -1;
+<span class="lineNum">     127 </span>            : 
+<span class="lineNum">     128 </span>            :   template&lt;size_t _Np, typename... _Types&gt;
+<span class="lineNum">     129 </span>            :     constexpr variant_alternative_t&lt;_Np, variant&lt;_Types...&gt;&gt;&amp;
+<span class="lineNum">     130 </span>            :     get(variant&lt;_Types...&gt;&amp;);
+<span class="lineNum">     131 </span>            : 
+<span class="lineNum">     132 </span>            :   template&lt;size_t _Np, typename... _Types&gt;
+<span class="lineNum">     133 </span>            :     constexpr variant_alternative_t&lt;_Np, variant&lt;_Types...&gt;&gt;&amp;&amp;
+<span class="lineNum">     134 </span>            :     get(variant&lt;_Types...&gt;&amp;&amp;);
+<span class="lineNum">     135 </span>            : 
+<span class="lineNum">     136 </span>            :   template&lt;size_t _Np, typename... _Types&gt;
+<span class="lineNum">     137 </span>            :     constexpr variant_alternative_t&lt;_Np, variant&lt;_Types...&gt;&gt; const&amp;
+<span class="lineNum">     138 </span>            :     get(const variant&lt;_Types...&gt;&amp;);
+<span class="lineNum">     139 </span>            : 
+<span class="lineNum">     140 </span>            :   template&lt;size_t _Np, typename... _Types&gt;
+<span class="lineNum">     141 </span>            :     constexpr variant_alternative_t&lt;_Np, variant&lt;_Types...&gt;&gt; const&amp;&amp;
+<span class="lineNum">     142 </span>            :     get(const variant&lt;_Types...&gt;&amp;&amp;);
+<span class="lineNum">     143 </span>            : 
+<span class="lineNum">     144 </span>            : _GLIBCXX_END_NAMESPACE_VERSION
+<span class="lineNum">     145 </span>            : 
+<span class="lineNum">     146 </span>            : namespace __detail
+<span class="lineNum">     147 </span>            : {
+<span class="lineNum">     148 </span>            : namespace __variant
+<span class="lineNum">     149 </span>            : {
+<span class="lineNum">     150 </span>            : _GLIBCXX_BEGIN_NAMESPACE_VERSION
+<span class="lineNum">     151 </span>            :   // Returns the first apparence of _Tp in _Types.
+<span class="lineNum">     152 </span>            :   // Returns sizeof...(_Types) if _Tp is not in _Types.
+<span class="lineNum">     153 </span>            :   template&lt;typename _Tp, typename... _Types&gt;
+<span class="lineNum">     154 </span>            :     struct __index_of : std::integral_constant&lt;size_t, 0&gt; {};
+<span class="lineNum">     155 </span>            : 
+<span class="lineNum">     156 </span>            :   template&lt;typename _Tp, typename... _Types&gt;
+<span class="lineNum">     157 </span>            :     inline constexpr size_t __index_of_v = __index_of&lt;_Tp, _Types...&gt;::value;
+<span class="lineNum">     158 </span>            : 
+<span class="lineNum">     159 </span>            :   template&lt;typename _Tp, typename _First, typename... _Rest&gt;
+<span class="lineNum">     160 </span>            :     struct __index_of&lt;_Tp, _First, _Rest...&gt; :
+<span class="lineNum">     161 </span>            :       std::integral_constant&lt;size_t, is_same_v&lt;_Tp, _First&gt;
+<span class="lineNum">     162 </span>            :         ? 0 : __index_of_v&lt;_Tp, _Rest...&gt; + 1&gt; {};
+<span class="lineNum">     163 </span>            : 
+<span class="lineNum">     164 </span>            :   // _Uninitialized&lt;T&gt; is guaranteed to be a literal type, even if T is not.
+<span class="lineNum">     165 </span>            :   // We have to do this, because [basic.types]p10.5.3 (n4606) is not implemented
+<span class="lineNum">     166 </span>            :   // yet. When it's implemented, _Uninitialized&lt;T&gt; can be changed to the alias
+<span class="lineNum">     167 </span>            :   // to T, therefore equivalent to being removed entirely.
+<span class="lineNum">     168 </span>            :   //
+<span class="lineNum">     169 </span>            :   // Another reason we may not want to remove _Uninitialzied&lt;T&gt; may be that, we
+<span class="lineNum">     170 </span>            :   // want _Uninitialized&lt;T&gt; to be trivially destructible, no matter whether T
+<span class="lineNum">     171 </span>            :   // is; but we will see.
+<span class="lineNum">     172 </span>            :   template&lt;typename _Type, bool = std::is_literal_type_v&lt;_Type&gt;&gt;
+<span class="lineNum">     173 </span>            :     struct _Uninitialized;
+<span class="lineNum">     174 </span>            : 
+<span class="lineNum">     175 </span>            :   template&lt;typename _Type&gt;
+<span class="lineNum">     176 </span>            :     struct _Uninitialized&lt;_Type, true&gt;
+<a name="177"><span class="lineNum">     177 </span>            :     {</a>
+<span class="lineNum">     178 </span>            :       template&lt;typename... _Args&gt;
+<span class="lineNum">     179 </span><span class="lineCov">          1 :       constexpr _Uninitialized(in_place_index_t&lt;0&gt;, _Args&amp;&amp;... __args)</span>
+<span class="lineNum">     180 </span><span class="lineCov">          1 :       : _M_storage(std::forward&lt;_Args&gt;(__args)...)</span>
+<a name="181"><span class="lineNum">     181 </span><span class="lineCov">          1 :       { }</span></a>
+<span class="lineNum">     182 </span>            : 
+<span class="lineNum">     183 </span><span class="lineCov">          1 :       constexpr const _Type&amp; _M_get() const &amp;</span>
+<a name="184"><span class="lineNum">     184 </span><span class="lineCov">          1 :       { return _M_storage; }</span></a>
+<span class="lineNum">     185 </span>            : 
+<span class="lineNum">     186 </span><span class="lineCov">          1 :       constexpr _Type&amp; _M_get() &amp;</span>
+<span class="lineNum">     187 </span><span class="lineCov">          1 :       { return _M_storage; }</span>
+<span class="lineNum">     188 </span>            : 
+<span class="lineNum">     189 </span>            :       constexpr const _Type&amp;&amp; _M_get() const &amp;&amp;
+<span class="lineNum">     190 </span>            :       { return std::move(_M_storage); }
+<span class="lineNum">     191 </span>            : 
+<span class="lineNum">     192 </span>            :       constexpr _Type&amp;&amp; _M_get() &amp;&amp;
+<span class="lineNum">     193 </span>            :       { return std::move(_M_storage); }
+<span class="lineNum">     194 </span>            : 
+<span class="lineNum">     195 </span>            :       _Type _M_storage;
+<span class="lineNum">     196 </span>            :     };
+<span class="lineNum">     197 </span>            : 
+<span class="lineNum">     198 </span>            :   template&lt;typename _Type&gt;
+<span class="lineNum">     199 </span>            :     struct _Uninitialized&lt;_Type, false&gt;
+<a name="200"><span class="lineNum">     200 </span>            :     {</a>
+<span class="lineNum">     201 </span>            :       template&lt;typename... _Args&gt;
+<span class="lineNum">     202 </span><span class="lineCov">          1 :       constexpr _Uninitialized(in_place_index_t&lt;0&gt;, _Args&amp;&amp;... __args)</span>
+<a name="203"><span class="lineNum">     203 </span><span class="lineCov">          1 :       { ::new (&amp;_M_storage) _Type(std::forward&lt;_Args&gt;(__args)...); }</span></a>
+<span class="lineNum">     204 </span>            : 
+<span class="lineNum">     205 </span><span class="lineCov">          1 :       const _Type&amp; _M_get() const &amp;</span>
+<a name="206"><span class="lineNum">     206 </span><span class="lineCov">          1 :       { return *_M_storage._M_ptr(); }</span></a>
+<span class="lineNum">     207 </span>            : 
+<span class="lineNum">     208 </span><span class="lineCov">          1 :       _Type&amp; _M_get() &amp;</span>
+<span class="lineNum">     209 </span><span class="lineCov">          1 :       { return *_M_storage._M_ptr(); }</span>
+<span class="lineNum">     210 </span>            : 
+<span class="lineNum">     211 </span>            :       const _Type&amp;&amp; _M_get() const &amp;&amp;
+<span class="lineNum">     212 </span>            :       { return std::move(*_M_storage._M_ptr()); }
+<span class="lineNum">     213 </span>            : 
+<span class="lineNum">     214 </span>            :       _Type&amp;&amp; _M_get() &amp;&amp;
+<span class="lineNum">     215 </span>            :       { return std::move(*_M_storage._M_ptr()); }
+<span class="lineNum">     216 </span>            : 
+<span class="lineNum">     217 </span>            :       __gnu_cxx::__aligned_membuf&lt;_Type&gt; _M_storage;
+<span class="lineNum">     218 </span>            :     };
+<span class="lineNum">     219 </span>            : 
+<span class="lineNum">     220 </span>            :   template&lt;typename _Ref&gt;
+<span class="lineNum">     221 </span>            :     _Ref __ref_cast(void* __ptr)
+<span class="lineNum">     222 </span>            :     {
+<span class="lineNum">     223 </span>            :       return static_cast&lt;_Ref&gt;(*static_cast&lt;remove_reference_t&lt;_Ref&gt;*&gt;(__ptr));
+<span class="lineNum">     224 </span>            :     }
+<a name="225"><span class="lineNum">     225 </span>            : </a>
+<span class="lineNum">     226 </span>            :   template&lt;typename _Union&gt;
+<span class="lineNum">     227 </span><span class="lineCov">          4 :     constexpr decltype(auto) __get(in_place_index_t&lt;0&gt;, _Union&amp;&amp; __u)</span>
+<span class="lineNum">     228 </span><span class="lineCov">          4 :     { return std::forward&lt;_Union&gt;(__u)._M_first._M_get(); }</span>
+<a name="229"><span class="lineNum">     229 </span>            : </a>
+<span class="lineNum">     230 </span>            :   template&lt;size_t _Np, typename _Union&gt;
+<span class="lineNum">     231 </span><span class="lineCov">          4 :     constexpr decltype(auto) __get(in_place_index_t&lt;_Np&gt;, _Union&amp;&amp; __u)</span>
+<span class="lineNum">     232 </span><span class="lineCov">          4 :     { return __get(in_place_index&lt;_Np-1&gt;, std::forward&lt;_Union&gt;(__u)._M_rest); }</span>
+<span class="lineNum">     233 </span>            : 
+<a name="234"><span class="lineNum">     234 </span>            :   // Returns the typed storage for __v.</a>
+<span class="lineNum">     235 </span>            :   template&lt;size_t _Np, typename _Variant&gt;
+<span class="lineNum">     236 </span><span class="lineCov">          4 :     constexpr decltype(auto) __get(_Variant&amp;&amp; __v)</span>
+<span class="lineNum">     237 </span>            :     {
+<span class="lineNum">     238 </span><span class="lineCov">          4 :       return __get(std::in_place_index&lt;_Np&gt;, std::forward&lt;_Variant&gt;(__v)._M_u);</span>
+<span class="lineNum">     239 </span>            :     }
+<span class="lineNum">     240 </span>            : 
+<span class="lineNum">     241 </span>            :   // Various functions as &quot;vtable&quot; entries, where those vtables are used by
+<span class="lineNum">     242 </span>            :   // polymorphic operations.
+<span class="lineNum">     243 </span>            :   template&lt;typename _Lhs, typename _Rhs&gt;
+<span class="lineNum">     244 </span>            :     void
+<span class="lineNum">     245 </span>            :     __erased_ctor(void* __lhs, void* __rhs)
+<span class="lineNum">     246 </span>            :     {
+<span class="lineNum">     247 </span>            :       using _Type = remove_reference_t&lt;_Lhs&gt;;
+<span class="lineNum">     248 </span>            :       ::new (__lhs) _Type(__variant::__ref_cast&lt;_Rhs&gt;(__rhs));
+<span class="lineNum">     249 </span>            :     }
+<span class="lineNum">     250 </span>            : 
+<a name="251"><span class="lineNum">     251 </span>            :   template&lt;typename _Variant, size_t _Np&gt;</a>
+<span class="lineNum">     252 </span>            :     void
+<span class="lineNum">     253 </span><span class="lineCov">          2 :     __erased_dtor(_Variant&amp;&amp; __v)</span>
+<span class="lineNum">     254 </span><span class="lineCov">          2 :     { std::_Destroy(std::__addressof(__get&lt;_Np&gt;(__v))); }</span>
+<span class="lineNum">     255 </span>            : 
+<span class="lineNum">     256 </span>            :   template&lt;typename _Lhs, typename _Rhs&gt;
+<span class="lineNum">     257 </span>            :     void
+<span class="lineNum">     258 </span>            :     __erased_assign(void* __lhs, void* __rhs)
+<span class="lineNum">     259 </span>            :     {
+<span class="lineNum">     260 </span>            :       __variant::__ref_cast&lt;_Lhs&gt;(__lhs) = __variant::__ref_cast&lt;_Rhs&gt;(__rhs);
+<span class="lineNum">     261 </span>            :     }
+<span class="lineNum">     262 </span>            : 
+<span class="lineNum">     263 </span>            :   template&lt;typename _Lhs, typename _Rhs&gt;
+<span class="lineNum">     264 </span>            :     void
+<span class="lineNum">     265 </span>            :     __erased_swap(void* __lhs, void* __rhs)
+<span class="lineNum">     266 </span>            :     {
+<span class="lineNum">     267 </span>            :       using std::swap;
+<span class="lineNum">     268 </span>            :       swap(__variant::__ref_cast&lt;_Lhs&gt;(__lhs),
+<span class="lineNum">     269 </span>            :            __variant::__ref_cast&lt;_Rhs&gt;(__rhs));
+<span class="lineNum">     270 </span>            :     }
+<span class="lineNum">     271 </span>            : 
+<span class="lineNum">     272 </span>            : #define _VARIANT_RELATION_FUNCTION_TEMPLATE(__OP, __NAME) \
+<span class="lineNum">     273 </span>            :   template&lt;typename _Variant, size_t _Np&gt; \
+<span class="lineNum">     274 </span>            :     constexpr bool \
+<span class="lineNum">     275 </span>            :     __erased_##__NAME(const _Variant&amp; __lhs, const _Variant&amp; __rhs) \
+<span class="lineNum">     276 </span>            :     { \
+<span class="lineNum">     277 </span>            :       return __get&lt;_Np&gt;(std::forward&lt;_Variant&gt;(__lhs)) \
+<span class="lineNum">     278 </span>            :           __OP __get&lt;_Np&gt;(std::forward&lt;_Variant&gt;(__rhs)); \
+<span class="lineNum">     279 </span>            :     }
+<span class="lineNum">     280 </span>            : 
+<span class="lineNum">     281 </span>            :   _VARIANT_RELATION_FUNCTION_TEMPLATE(&lt;, less)
+<span class="lineNum">     282 </span>            :   _VARIANT_RELATION_FUNCTION_TEMPLATE(&lt;=, less_equal)
+<span class="lineNum">     283 </span>            :   _VARIANT_RELATION_FUNCTION_TEMPLATE(==, equal)
+<span class="lineNum">     284 </span>            :   _VARIANT_RELATION_FUNCTION_TEMPLATE(!=, not_equal)
+<span class="lineNum">     285 </span>            :   _VARIANT_RELATION_FUNCTION_TEMPLATE(&gt;=, greater_equal)
+<span class="lineNum">     286 </span>            :   _VARIANT_RELATION_FUNCTION_TEMPLATE(&gt;, greater)
+<span class="lineNum">     287 </span>            : 
+<span class="lineNum">     288 </span>            : #undef _VARIANT_RELATION_FUNCTION_TEMPLATE
+<span class="lineNum">     289 </span>            : 
+<span class="lineNum">     290 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     291 </span>            :     size_t
+<span class="lineNum">     292 </span>            :     __erased_hash(void* __t)
+<span class="lineNum">     293 </span>            :     {
+<span class="lineNum">     294 </span>            :       return std::hash&lt;remove_cv_t&lt;remove_reference_t&lt;_Tp&gt;&gt;&gt;{}(
+<span class="lineNum">     295 </span>            :           __variant::__ref_cast&lt;_Tp&gt;(__t));
+<span class="lineNum">     296 </span>            :     }
+<span class="lineNum">     297 </span>            : 
+<span class="lineNum">     298 </span>            :   // Defines members and ctors.
+<span class="lineNum">     299 </span>            :   template&lt;typename... _Types&gt;
+<span class="lineNum">     300 </span>            :     union _Variadic_union { };
+<span class="lineNum">     301 </span>            : 
+<span class="lineNum">     302 </span>            :   template&lt;typename _First, typename... _Rest&gt;
+<span class="lineNum">     303 </span>            :     union _Variadic_union&lt;_First, _Rest...&gt;
+<span class="lineNum">     304 </span>            :     {
+<span class="lineNum">     305 </span>            :       constexpr _Variadic_union() : _M_rest() { }
+<a name="306"><span class="lineNum">     306 </span>            : </a>
+<span class="lineNum">     307 </span>            :       template&lt;typename... _Args&gt;
+<span class="lineNum">     308 </span><span class="lineCov">          2 :         constexpr _Variadic_union(in_place_index_t&lt;0&gt;, _Args&amp;&amp;... __args)</span>
+<span class="lineNum">     309 </span><span class="lineCov">          2 :         : _M_first(in_place_index&lt;0&gt;, std::forward&lt;_Args&gt;(__args)...)</span>
+<span class="lineNum">     310 </span><span class="lineCov">          2 :         { }</span>
+<a name="311"><span class="lineNum">     311 </span>            : </a>
+<span class="lineNum">     312 </span>            :       template&lt;size_t _Np, typename... _Args&gt;
+<span class="lineNum">     313 </span><span class="lineCov">          2 :         constexpr _Variadic_union(in_place_index_t&lt;_Np&gt;, _Args&amp;&amp;... __args)</span>
+<span class="lineNum">     314 </span><span class="lineCov">          2 :         : _M_rest(in_place_index&lt;_Np-1&gt;, std::forward&lt;_Args&gt;(__args)...)</span>
+<span class="lineNum">     315 </span><span class="lineCov">          2 :         { }</span>
+<span class="lineNum">     316 </span>            : 
+<span class="lineNum">     317 </span>            :       _Uninitialized&lt;_First&gt; _M_first;
+<span class="lineNum">     318 </span>            :       _Variadic_union&lt;_Rest...&gt; _M_rest;
+<span class="lineNum">     319 </span>            :     };
+<span class="lineNum">     320 </span>            : 
+<span class="lineNum">     321 </span>            :   // Defines index and the dtor, possibly trivial.
+<span class="lineNum">     322 </span>            :   template&lt;bool __trivially_destructible, typename... _Types&gt;
+<span class="lineNum">     323 </span>            :     struct _Variant_storage;
+<span class="lineNum">     324 </span>            : 
+<span class="lineNum">     325 </span>            :   template &lt;typename... _Types&gt;
+<span class="lineNum">     326 </span>            :   using __select_index =
+<span class="lineNum">     327 </span>            :     typename __select_int::_Select_int_base&lt;sizeof...(_Types)+1,
+<span class="lineNum">     328 </span>            :                                             unsigned char,
+<span class="lineNum">     329 </span>            :                                             unsigned short&gt;
+<span class="lineNum">     330 </span>            :     ::type::value_type;
+<span class="lineNum">     331 </span>            : 
+<span class="lineNum">     332 </span>            :   template&lt;typename... _Types&gt;
+<span class="lineNum">     333 </span>            :     struct _Variant_storage&lt;false, _Types...&gt;
+<span class="lineNum">     334 </span>            :     {
+<span class="lineNum">     335 </span>            :       template&lt;size_t... __indices&gt;
+<span class="lineNum">     336 </span>            :         static constexpr void (*_S_vtable[])(const _Variant_storage&amp;) =
+<span class="lineNum">     337 </span>            :             { &amp;__erased_dtor&lt;const _Variant_storage&amp;, __indices&gt;... };
+<span class="lineNum">     338 </span>            : 
+<span class="lineNum">     339 </span>            :       constexpr _Variant_storage() : _M_index(variant_npos) { }
+<a name="340"><span class="lineNum">     340 </span>            : </a>
+<span class="lineNum">     341 </span>            :       template&lt;size_t _Np, typename... _Args&gt;
+<span class="lineNum">     342 </span><span class="lineCov">          2 :         constexpr _Variant_storage(in_place_index_t&lt;_Np&gt;, _Args&amp;&amp;... __args)</span>
+<span class="lineNum">     343 </span>            :         : _M_u(in_place_index&lt;_Np&gt;, std::forward&lt;_Args&gt;(__args)...),
+<span class="lineNum">     344 </span><span class="lineCov">          2 :         _M_index(_Np)</span>
+<span class="lineNum">     345 </span><span class="lineCov">          2 :         { }</span>
+<a name="346"><span class="lineNum">     346 </span>            : </a>
+<span class="lineNum">     347 </span>            :       template&lt;size_t... __indices&gt;
+<span class="lineNum">     348 </span><span class="lineCov">          2 :         constexpr void _M_reset_impl(std::index_sequence&lt;__indices...&gt;)</span>
+<span class="lineNum">     349 </span>            :         {
+<span class="lineNum">     350 </span><span class="lineCov">          2 :           if (_M_index != __index_type(variant_npos))</span>
+<span class="lineNum">     351 </span><span class="lineCov">          2 :             _S_vtable&lt;__indices...&gt;[_M_index](*this);</span>
+<a name="352"><span class="lineNum">     352 </span><span class="lineCov">          2 :         }</span></a>
+<span class="lineNum">     353 </span>            : 
+<span class="lineNum">     354 </span><span class="lineCov">          2 :       void _M_reset()</span>
+<span class="lineNum">     355 </span>            :       {
+<span class="lineNum">     356 </span><span class="lineCov">          2 :         _M_reset_impl(std::index_sequence_for&lt;_Types...&gt;{});</span>
+<span class="lineNum">     357 </span><span class="lineCov">          2 :         _M_index = variant_npos;</span>
+<a name="358"><span class="lineNum">     358 </span><span class="lineCov">          2 :       }</span></a>
+<span class="lineNum">     359 </span>            : 
+<span class="lineNum">     360 </span><span class="lineCov">          2 :       ~_Variant_storage()</span>
+<span class="lineNum">     361 </span><span class="lineCov">          2 :       { _M_reset(); }</span>
+<span class="lineNum">     362 </span>            : 
+<span class="lineNum">     363 </span>            :       _Variadic_union&lt;_Types...&gt; _M_u;
+<span class="lineNum">     364 </span>            :       using __index_type = __select_index&lt;_Types...&gt;;
+<span class="lineNum">     365 </span>            :       __index_type _M_index;
+<span class="lineNum">     366 </span>            :     };
+<span class="lineNum">     367 </span>            : 
+<span class="lineNum">     368 </span>            :   template&lt;typename... _Types&gt;
+<span class="lineNum">     369 </span>            :     struct _Variant_storage&lt;true, _Types...&gt;
+<span class="lineNum">     370 </span>            :     {
+<span class="lineNum">     371 </span>            :       constexpr _Variant_storage() : _M_index(variant_npos) { }
+<span class="lineNum">     372 </span>            : 
+<span class="lineNum">     373 </span>            :       template&lt;size_t _Np, typename... _Args&gt;
+<span class="lineNum">     374 </span>            :         constexpr _Variant_storage(in_place_index_t&lt;_Np&gt;, _Args&amp;&amp;... __args)
+<span class="lineNum">     375 </span>            :         : _M_u(in_place_index&lt;_Np&gt;, std::forward&lt;_Args&gt;(__args)...),
+<span class="lineNum">     376 </span>            :         _M_index(_Np)
+<span class="lineNum">     377 </span>            :         { }
+<span class="lineNum">     378 </span>            : 
+<span class="lineNum">     379 </span>            :       void _M_reset()
+<span class="lineNum">     380 </span>            :       { _M_index = variant_npos; }
+<span class="lineNum">     381 </span>            : 
+<span class="lineNum">     382 </span>            :       _Variadic_union&lt;_Types...&gt; _M_u;
+<span class="lineNum">     383 </span>            :       using __index_type = __select_index&lt;_Types...&gt;;
+<span class="lineNum">     384 </span>            :       __index_type _M_index;
+<span class="lineNum">     385 </span>            :     };
+<span class="lineNum">     386 </span>            : 
+<span class="lineNum">     387 </span>            :   // Helps SFINAE on special member functions. Otherwise it can live in variant
+<a name="388"><span class="lineNum">     388 </span>            :   // class.</a>
+<span class="lineNum">     389 </span>            :   template&lt;typename... _Types&gt;
+<span class="lineNum">     390 </span><span class="lineCov">          2 :     struct _Variant_base :</span>
+<span class="lineNum">     391 </span>            :       _Variant_storage&lt;(std::is_trivially_destructible_v&lt;_Types&gt; &amp;&amp; ...),
+<span class="lineNum">     392 </span>            :                         _Types...&gt;
+<span class="lineNum">     393 </span>            :     {
+<span class="lineNum">     394 </span>            :       using _Storage =
+<span class="lineNum">     395 </span>            :           _Variant_storage&lt;(std::is_trivially_destructible_v&lt;_Types&gt; &amp;&amp; ...),
+<span class="lineNum">     396 </span>            :                             _Types...&gt;;
+<span class="lineNum">     397 </span>            : 
+<span class="lineNum">     398 </span>            :       constexpr
+<span class="lineNum">     399 </span>            :       _Variant_base()
+<span class="lineNum">     400 </span>            :       noexcept(is_nothrow_default_constructible_v&lt;
+<span class="lineNum">     401 </span>            :                  variant_alternative_t&lt;0, variant&lt;_Types...&gt;&gt;&gt;)
+<span class="lineNum">     402 </span>            :       : _Variant_base(in_place_index&lt;0&gt;) { }
+<span class="lineNum">     403 </span>            : 
+<span class="lineNum">     404 </span>            :       _Variant_base(const _Variant_base&amp; __rhs)
+<span class="lineNum">     405 </span>            :       {
+<span class="lineNum">     406 </span>            :         if (__rhs._M_valid())
+<span class="lineNum">     407 </span>            :           {
+<span class="lineNum">     408 </span>            :             static constexpr void (*_S_vtable[])(void*, void*) =
+<span class="lineNum">     409 </span>            :               { &amp;__erased_ctor&lt;_Types&amp;, const _Types&amp;&gt;... };
+<span class="lineNum">     410 </span>            :             _S_vtable[__rhs._M_index](_M_storage(), __rhs._M_storage());
+<span class="lineNum">     411 </span>            :             this-&gt;_M_index = __rhs._M_index;
+<span class="lineNum">     412 </span>            :           }
+<span class="lineNum">     413 </span>            :       }
+<span class="lineNum">     414 </span>            : 
+<span class="lineNum">     415 </span>            :       _Variant_base(_Variant_base&amp;&amp; __rhs)
+<span class="lineNum">     416 </span>            :       noexcept((is_nothrow_move_constructible_v&lt;_Types&gt; &amp;&amp; ...))
+<span class="lineNum">     417 </span>            :       {
+<span class="lineNum">     418 </span>            :         if (__rhs._M_valid())
+<span class="lineNum">     419 </span>            :           {
+<span class="lineNum">     420 </span>            :             static constexpr void (*_S_vtable[])(void*, void*) =
+<span class="lineNum">     421 </span>            :               { &amp;__erased_ctor&lt;_Types&amp;, _Types&amp;&amp;&gt;... };
+<span class="lineNum">     422 </span>            :             _S_vtable[__rhs._M_index](_M_storage(), __rhs._M_storage());
+<span class="lineNum">     423 </span>            :             this-&gt;_M_index = __rhs._M_index;
+<span class="lineNum">     424 </span>            :           }
+<span class="lineNum">     425 </span>            :       }
+<span class="lineNum">     426 </span>            : 
+<a name="427"><span class="lineNum">     427 </span>            :       template&lt;size_t _Np, typename... _Args&gt;</a>
+<span class="lineNum">     428 </span>            :         constexpr explicit
+<span class="lineNum">     429 </span><span class="lineCov">          2 :         _Variant_base(in_place_index_t&lt;_Np&gt; __i, _Args&amp;&amp;... __args)</span>
+<span class="lineNum">     430 </span><span class="lineCov">          2 :         : _Storage(__i, std::forward&lt;_Args&gt;(__args)...)</span>
+<span class="lineNum">     431 </span><span class="lineCov">          2 :         { }</span>
+<span class="lineNum">     432 </span>            : 
+<span class="lineNum">     433 </span>            :       _Variant_base&amp;
+<span class="lineNum">     434 </span>            :       operator=(const _Variant_base&amp; __rhs)
+<span class="lineNum">     435 </span>            :       {
+<span class="lineNum">     436 </span>            :         if (this-&gt;_M_index == __rhs._M_index)
+<span class="lineNum">     437 </span>            :           {
+<span class="lineNum">     438 </span>            :             if (__rhs._M_valid())
+<span class="lineNum">     439 </span>            :               {
+<span class="lineNum">     440 </span>            :                 static constexpr void (*_S_vtable[])(void*, void*) =
+<span class="lineNum">     441 </span>            :                   { &amp;__erased_assign&lt;_Types&amp;, const _Types&amp;&gt;... };
+<span class="lineNum">     442 </span>            :                 _S_vtable[__rhs._M_index](_M_storage(), __rhs._M_storage());
+<span class="lineNum">     443 </span>            :               }
+<span class="lineNum">     444 </span>            :           }
+<span class="lineNum">     445 </span>            :         else
+<span class="lineNum">     446 </span>            :           {
+<span class="lineNum">     447 </span>            :             _Variant_base __tmp(__rhs);
+<span class="lineNum">     448 </span>            :             this-&gt;~_Variant_base();
+<span class="lineNum">     449 </span>            :             __try
+<span class="lineNum">     450 </span>            :               {
+<span class="lineNum">     451 </span>            :                 ::new (this) _Variant_base(std::move(__tmp));
+<span class="lineNum">     452 </span>            :               }
+<span class="lineNum">     453 </span>            :             __catch (...)
+<span class="lineNum">     454 </span>            :               {
+<span class="lineNum">     455 </span>            :                 this-&gt;_M_index = variant_npos;
+<span class="lineNum">     456 </span>            :                 __throw_exception_again;
+<span class="lineNum">     457 </span>            :               }
+<span class="lineNum">     458 </span>            :           }
+<span class="lineNum">     459 </span>            :         __glibcxx_assert(this-&gt;_M_index == __rhs._M_index);
+<span class="lineNum">     460 </span>            :         return *this;
+<span class="lineNum">     461 </span>            :       }
+<span class="lineNum">     462 </span>            : 
+<span class="lineNum">     463 </span>            :       void _M_destructive_move(_Variant_base&amp;&amp; __rhs)
+<span class="lineNum">     464 </span>            :       {
+<span class="lineNum">     465 </span>            :         this-&gt;~_Variant_base();
+<span class="lineNum">     466 </span>            :         __try
+<span class="lineNum">     467 </span>            :           {
+<span class="lineNum">     468 </span>            :             ::new (this) _Variant_base(std::move(__rhs));
+<span class="lineNum">     469 </span>            :           }
+<span class="lineNum">     470 </span>            :         __catch (...)
+<span class="lineNum">     471 </span>            :           {
+<span class="lineNum">     472 </span>            :             this-&gt;_M_index = variant_npos;
+<span class="lineNum">     473 </span>            :             __throw_exception_again;
+<span class="lineNum">     474 </span>            :           }
+<span class="lineNum">     475 </span>            :       }
+<span class="lineNum">     476 </span>            : 
+<span class="lineNum">     477 </span>            :       _Variant_base&amp;
+<span class="lineNum">     478 </span>            :       operator=(_Variant_base&amp;&amp; __rhs)
+<span class="lineNum">     479 </span>            :       noexcept((is_nothrow_move_constructible_v&lt;_Types&gt; &amp;&amp; ...)
+<span class="lineNum">     480 </span>            :           &amp;&amp; (is_nothrow_move_assignable_v&lt;_Types&gt; &amp;&amp; ...))
+<span class="lineNum">     481 </span>            :       {
+<span class="lineNum">     482 </span>            :         if (this-&gt;_M_index == __rhs._M_index)
+<span class="lineNum">     483 </span>            :           {
+<span class="lineNum">     484 </span>            :             if (__rhs._M_valid())
+<span class="lineNum">     485 </span>            :               {
+<span class="lineNum">     486 </span>            :                 static constexpr void (*_S_vtable[])(void*, void*) =
+<span class="lineNum">     487 </span>            :                   { &amp;__erased_assign&lt;_Types&amp;, _Types&amp;&amp;&gt;... };
+<span class="lineNum">     488 </span>            :                 _S_vtable[__rhs._M_index](_M_storage(), __rhs._M_storage());
+<span class="lineNum">     489 </span>            :               }
+<span class="lineNum">     490 </span>            :           }
+<span class="lineNum">     491 </span>            :         else
+<span class="lineNum">     492 </span>            :           {
+<span class="lineNum">     493 </span>            :             _M_destructive_move(std::move(__rhs));
+<span class="lineNum">     494 </span>            :           }
+<span class="lineNum">     495 </span>            :         return *this;
+<span class="lineNum">     496 </span>            :       }
+<span class="lineNum">     497 </span>            : 
+<span class="lineNum">     498 </span>            :       void*
+<span class="lineNum">     499 </span>            :       _M_storage() const
+<span class="lineNum">     500 </span>            :       {
+<span class="lineNum">     501 </span>            :         return const_cast&lt;void*&gt;(static_cast&lt;const void*&gt;(
+<span class="lineNum">     502 </span>            :             std::addressof(_Storage::_M_u)));
+<span class="lineNum">     503 </span>            :       }
+<a name="504"><span class="lineNum">     504 </span>            : </a>
+<span class="lineNum">     505 </span>            :       constexpr bool
+<span class="lineNum">     506 </span><span class="lineCov">          2 :       _M_valid() const noexcept</span>
+<span class="lineNum">     507 </span>            :       {
+<span class="lineNum">     508 </span><span class="lineCov">          2 :         return this-&gt;_M_index !=</span>
+<span class="lineNum">     509 </span><span class="lineCov">          2 :           typename _Storage::__index_type(variant_npos);</span>
+<span class="lineNum">     510 </span>            :       }
+<span class="lineNum">     511 </span>            :     };
+<span class="lineNum">     512 </span>            : 
+<span class="lineNum">     513 </span>            :   // For how many times does _Tp appear in _Tuple?
+<span class="lineNum">     514 </span>            :   template&lt;typename _Tp, typename _Tuple&gt;
+<span class="lineNum">     515 </span>            :     struct __tuple_count;
+<span class="lineNum">     516 </span>            : 
+<span class="lineNum">     517 </span>            :   template&lt;typename _Tp, typename _Tuple&gt;
+<span class="lineNum">     518 </span>            :     inline constexpr size_t __tuple_count_v =
+<span class="lineNum">     519 </span>            :       __tuple_count&lt;_Tp, _Tuple&gt;::value;
+<span class="lineNum">     520 </span>            : 
+<span class="lineNum">     521 </span>            :   template&lt;typename _Tp, typename... _Types&gt;
+<span class="lineNum">     522 </span>            :     struct __tuple_count&lt;_Tp, tuple&lt;_Types...&gt;&gt;
+<span class="lineNum">     523 </span>            :     : integral_constant&lt;size_t, 0&gt; { };
+<span class="lineNum">     524 </span>            : 
+<span class="lineNum">     525 </span>            :   template&lt;typename _Tp, typename _First, typename... _Rest&gt;
+<span class="lineNum">     526 </span>            :     struct __tuple_count&lt;_Tp, tuple&lt;_First, _Rest...&gt;&gt;
+<span class="lineNum">     527 </span>            :     : integral_constant&lt;
+<span class="lineNum">     528 </span>            :         size_t,
+<span class="lineNum">     529 </span>            :         __tuple_count_v&lt;_Tp, tuple&lt;_Rest...&gt;&gt; + is_same_v&lt;_Tp, _First&gt;&gt; { };
+<span class="lineNum">     530 </span>            : 
+<span class="lineNum">     531 </span>            :   // TODO: Reuse this in &lt;tuple&gt; ?
+<span class="lineNum">     532 </span>            :   template&lt;typename _Tp, typename... _Types&gt;
+<span class="lineNum">     533 </span>            :     inline constexpr bool __exactly_once =
+<span class="lineNum">     534 </span>            :       __tuple_count_v&lt;_Tp, tuple&lt;_Types...&gt;&gt; == 1;
+<span class="lineNum">     535 </span>            : 
+<span class="lineNum">     536 </span>            :   // Takes _Types and create an overloaded _S_fun for each type.
+<span class="lineNum">     537 </span>            :   // If a type appears more than once in _Types, create only one overload.
+<span class="lineNum">     538 </span>            :   template&lt;typename... _Types&gt;
+<span class="lineNum">     539 </span>            :     struct __overload_set
+<span class="lineNum">     540 </span>            :     { static void _S_fun(); };
+<span class="lineNum">     541 </span>            : 
+<span class="lineNum">     542 </span>            :   template&lt;typename _First, typename... _Rest&gt;
+<span class="lineNum">     543 </span>            :     struct __overload_set&lt;_First, _Rest...&gt; : __overload_set&lt;_Rest...&gt;
+<span class="lineNum">     544 </span>            :     {
+<span class="lineNum">     545 </span>            :       using __overload_set&lt;_Rest...&gt;::_S_fun;
+<span class="lineNum">     546 </span>            :       static integral_constant&lt;size_t, sizeof...(_Rest)&gt; _S_fun(_First);
+<span class="lineNum">     547 </span>            :     };
+<span class="lineNum">     548 </span>            : 
+<span class="lineNum">     549 </span>            :   template&lt;typename... _Rest&gt;
+<span class="lineNum">     550 </span>            :     struct __overload_set&lt;void, _Rest...&gt; : __overload_set&lt;_Rest...&gt;
+<span class="lineNum">     551 </span>            :     {
+<span class="lineNum">     552 </span>            :       using __overload_set&lt;_Rest...&gt;::_S_fun;
+<span class="lineNum">     553 </span>            :     };
+<span class="lineNum">     554 </span>            : 
+<span class="lineNum">     555 </span>            :   // Helper for variant(_Tp&amp;&amp;) and variant::operator=(_Tp&amp;&amp;).
+<span class="lineNum">     556 </span>            :   // __accepted_index maps the arbitrary _Tp to an alternative type in _Variant.
+<span class="lineNum">     557 </span>            :   template&lt;typename _Tp, typename _Variant, typename = void&gt;
+<span class="lineNum">     558 </span>            :     struct __accepted_index
+<span class="lineNum">     559 </span>            :     { static constexpr size_t value = variant_npos; };
+<span class="lineNum">     560 </span>            : 
+<span class="lineNum">     561 </span>            :   template&lt;typename _Tp, typename... _Types&gt;
+<span class="lineNum">     562 </span>            :     struct __accepted_index&lt;
+<span class="lineNum">     563 </span>            :       _Tp, variant&lt;_Types...&gt;,
+<span class="lineNum">     564 </span>            :       decltype(__overload_set&lt;_Types...&gt;::_S_fun(std::declval&lt;_Tp&gt;()),
+<span class="lineNum">     565 </span>            :                std::declval&lt;void&gt;())&gt;
+<span class="lineNum">     566 </span>            :     {
+<span class="lineNum">     567 </span>            :       static constexpr size_t value = sizeof...(_Types) - 1
+<span class="lineNum">     568 </span>            :         - decltype(__overload_set&lt;_Types...&gt;::
+<span class="lineNum">     569 </span>            :                    _S_fun(std::declval&lt;_Tp&gt;()))::value;
+<span class="lineNum">     570 </span>            :     };
+<span class="lineNum">     571 </span>            : 
+<span class="lineNum">     572 </span>            :   // Returns the raw storage for __v.
+<span class="lineNum">     573 </span>            :   template&lt;typename _Variant&gt;
+<span class="lineNum">     574 </span>            :     void* __get_storage(_Variant&amp;&amp; __v)
+<span class="lineNum">     575 </span>            :     { return __v._M_storage(); }
+<span class="lineNum">     576 </span>            : 
+<span class="lineNum">     577 </span>            :   // Used for storing multi-dimensional vtable.
+<span class="lineNum">     578 </span>            :   template&lt;typename _Tp, size_t... _Dimensions&gt;
+<span class="lineNum">     579 </span>            :     struct _Multi_array
+<a name="580"><span class="lineNum">     580 </span>            :     {</a>
+<span class="lineNum">     581 </span>            :       constexpr const _Tp&amp;
+<span class="lineNum">     582 </span><span class="lineCov">          2 :       _M_access() const</span>
+<span class="lineNum">     583 </span><span class="lineCov">          2 :       { return _M_data; }</span>
+<span class="lineNum">     584 </span>            : 
+<span class="lineNum">     585 </span>            :       _Tp _M_data;
+<span class="lineNum">     586 </span>            :     };
+<span class="lineNum">     587 </span>            : 
+<span class="lineNum">     588 </span>            :   template&lt;typename _Tp, size_t __first, size_t... __rest&gt;
+<span class="lineNum">     589 </span>            :     struct _Multi_array&lt;_Tp, __first, __rest...&gt;
+<span class="lineNum">     590 </span>            :     {
+<a name="591"><span class="lineNum">     591 </span>            :       template&lt;typename... _Args&gt;</a>
+<span class="lineNum">     592 </span>            :         constexpr const _Tp&amp;
+<span class="lineNum">     593 </span><span class="lineCov">          2 :         _M_access(size_t __first_index, _Args... __rest_indices) const</span>
+<span class="lineNum">     594 </span><span class="lineCov">          2 :         { return _M_arr[__first_index]._M_access(__rest_indices...); }</span>
+<span class="lineNum">     595 </span>            : 
+<span class="lineNum">     596 </span>            :       _Multi_array&lt;_Tp, __rest...&gt; _M_arr[__first];
+<span class="lineNum">     597 </span>            :     };
+<span class="lineNum">     598 </span>            : 
+<span class="lineNum">     599 </span>            :   // Creates a multi-dimensional vtable recursively.
+<span class="lineNum">     600 </span>            :   //
+<span class="lineNum">     601 </span>            :   // For example,
+<span class="lineNum">     602 </span>            :   // visit([](auto, auto){},
+<span class="lineNum">     603 </span>            :   //       variant&lt;int, char&gt;(),  // typedef'ed as V1
+<span class="lineNum">     604 </span>            :   //       variant&lt;float, double, long double&gt;())  // typedef'ed as V2
+<span class="lineNum">     605 </span>            :   // will trigger instantiations of:
+<span class="lineNum">     606 </span>            :   // __gen_vtable_impl&lt;_Multi_array&lt;void(*)(V1&amp;&amp;, V2&amp;&amp;), 2, 3&gt;,
+<span class="lineNum">     607 </span>            :   //                   tuple&lt;V1&amp;&amp;, V2&amp;&amp;&gt;, std::index_sequence&lt;&gt;&gt;
+<span class="lineNum">     608 </span>            :   //   __gen_vtable_impl&lt;_Multi_array&lt;void(*)(V1&amp;&amp;, V2&amp;&amp;), 3&gt;,
+<span class="lineNum">     609 </span>            :   //                     tuple&lt;V1&amp;&amp;, V2&amp;&amp;&gt;, std::index_sequence&lt;0&gt;&gt;
+<span class="lineNum">     610 </span>            :   //     __gen_vtable_impl&lt;_Multi_array&lt;void(*)(V1&amp;&amp;, V2&amp;&amp;)&gt;,
+<span class="lineNum">     611 </span>            :   //                       tuple&lt;V1&amp;&amp;, V2&amp;&amp;&gt;, std::index_sequence&lt;0, 0&gt;&gt;
+<span class="lineNum">     612 </span>            :   //     __gen_vtable_impl&lt;_Multi_array&lt;void(*)(V1&amp;&amp;, V2&amp;&amp;)&gt;,
+<span class="lineNum">     613 </span>            :   //                       tuple&lt;V1&amp;&amp;, V2&amp;&amp;&gt;, std::index_sequence&lt;0, 1&gt;&gt;
+<span class="lineNum">     614 </span>            :   //     __gen_vtable_impl&lt;_Multi_array&lt;void(*)(V1&amp;&amp;, V2&amp;&amp;)&gt;,
+<span class="lineNum">     615 </span>            :   //                       tuple&lt;V1&amp;&amp;, V2&amp;&amp;&gt;, std::index_sequence&lt;0, 2&gt;&gt;
+<span class="lineNum">     616 </span>            :   //   __gen_vtable_impl&lt;_Multi_array&lt;void(*)(V1&amp;&amp;, V2&amp;&amp;), 3&gt;,
+<span class="lineNum">     617 </span>            :   //                     tuple&lt;V1&amp;&amp;, V2&amp;&amp;&gt;, std::index_sequence&lt;1&gt;&gt;
+<span class="lineNum">     618 </span>            :   //     __gen_vtable_impl&lt;_Multi_array&lt;void(*)(V1&amp;&amp;, V2&amp;&amp;)&gt;,
+<span class="lineNum">     619 </span>            :   //                       tuple&lt;V1&amp;&amp;, V2&amp;&amp;&gt;, std::index_sequence&lt;1, 0&gt;&gt;
+<span class="lineNum">     620 </span>            :   //     __gen_vtable_impl&lt;_Multi_array&lt;void(*)(V1&amp;&amp;, V2&amp;&amp;)&gt;,
+<span class="lineNum">     621 </span>            :   //                       tuple&lt;V1&amp;&amp;, V2&amp;&amp;&gt;, std::index_sequence&lt;1, 1&gt;&gt;
+<span class="lineNum">     622 </span>            :   //     __gen_vtable_impl&lt;_Multi_array&lt;void(*)(V1&amp;&amp;, V2&amp;&amp;)&gt;,
+<span class="lineNum">     623 </span>            :   //                       tuple&lt;V1&amp;&amp;, V2&amp;&amp;&gt;, std::index_sequence&lt;1, 2&gt;&gt;
+<span class="lineNum">     624 </span>            :   // The returned multi-dimensional vtable can be fast accessed by the visitor
+<span class="lineNum">     625 </span>            :   // using index calculation.
+<span class="lineNum">     626 </span>            :   template&lt;typename _Array_type, typename _Variant_tuple, typename _Index_seq&gt;
+<span class="lineNum">     627 </span>            :     struct __gen_vtable_impl;
+<span class="lineNum">     628 </span>            : 
+<span class="lineNum">     629 </span>            :   template&lt;typename _Result_type, typename _Visitor, size_t... __dimensions,
+<span class="lineNum">     630 </span>            :            typename... _Variants, size_t... __indices&gt;
+<span class="lineNum">     631 </span>            :     struct __gen_vtable_impl&lt;
+<span class="lineNum">     632 </span>            :         _Multi_array&lt;_Result_type (*)(_Visitor, _Variants...), __dimensions...&gt;,
+<span class="lineNum">     633 </span>            :         tuple&lt;_Variants...&gt;, std::index_sequence&lt;__indices...&gt;&gt;
+<span class="lineNum">     634 </span>            :     {
+<span class="lineNum">     635 </span>            :       using _Next =
+<span class="lineNum">     636 </span>            :           remove_reference_t&lt;typename _Nth_type&lt;sizeof...(__indices),
+<span class="lineNum">     637 </span>            :                              _Variants...&gt;::type&gt;;
+<span class="lineNum">     638 </span>            :       using _Array_type =
+<span class="lineNum">     639 </span>            :           _Multi_array&lt;_Result_type (*)(_Visitor, _Variants...),
+<span class="lineNum">     640 </span>            :                        __dimensions...&gt;;
+<span class="lineNum">     641 </span>            : 
+<span class="lineNum">     642 </span>            :       static constexpr _Array_type
+<span class="lineNum">     643 </span>            :       _S_apply()
+<span class="lineNum">     644 </span>            :       {
+<span class="lineNum">     645 </span>            :         _Array_type __vtable{};
+<span class="lineNum">     646 </span>            :         _S_apply_all_alts(
+<span class="lineNum">     647 </span>            :           __vtable, make_index_sequence&lt;variant_size_v&lt;_Next&gt;&gt;());
+<span class="lineNum">     648 </span>            :         return __vtable;
+<span class="lineNum">     649 </span>            :       }
+<span class="lineNum">     650 </span>            : 
+<span class="lineNum">     651 </span>            :       template&lt;size_t... __var_indices&gt;
+<span class="lineNum">     652 </span>            :         static constexpr void
+<span class="lineNum">     653 </span>            :         _S_apply_all_alts(_Array_type&amp; __vtable,
+<span class="lineNum">     654 </span>            :                           std::index_sequence&lt;__var_indices...&gt;)
+<span class="lineNum">     655 </span>            :         {
+<span class="lineNum">     656 </span>            :           (_S_apply_single_alt&lt;__var_indices&gt;(
+<span class="lineNum">     657 </span>            :              __vtable._M_arr[__var_indices]), ...);
+<span class="lineNum">     658 </span>            :         }
+<span class="lineNum">     659 </span>            : 
+<span class="lineNum">     660 </span>            :       template&lt;size_t __index, typename _Tp&gt;
+<span class="lineNum">     661 </span>            :         static constexpr void
+<span class="lineNum">     662 </span>            :         _S_apply_single_alt(_Tp&amp; __element)
+<span class="lineNum">     663 </span>            :         {
+<span class="lineNum">     664 </span>            :           using _Alternative = variant_alternative_t&lt;__index, _Next&gt;;
+<span class="lineNum">     665 </span>            :           __element = __gen_vtable_impl&lt;
+<span class="lineNum">     666 </span>            :             remove_reference_t&lt;
+<span class="lineNum">     667 </span>            :               decltype(__element)&gt;, tuple&lt;_Variants...&gt;,
+<span class="lineNum">     668 </span>            :               std::index_sequence&lt;__indices..., __index&gt;&gt;::_S_apply();
+<span class="lineNum">     669 </span>            :         }
+<span class="lineNum">     670 </span>            :     };
+<span class="lineNum">     671 </span>            : 
+<span class="lineNum">     672 </span>            :   template&lt;typename _Result_type, typename _Visitor, typename... _Variants,
+<span class="lineNum">     673 </span>            :            size_t... __indices&gt;
+<span class="lineNum">     674 </span>            :     struct __gen_vtable_impl&lt;
+<span class="lineNum">     675 </span>            :       _Multi_array&lt;_Result_type (*)(_Visitor, _Variants...)&gt;,
+<span class="lineNum">     676 </span>            :                    tuple&lt;_Variants...&gt;, std::index_sequence&lt;__indices...&gt;&gt;
+<span class="lineNum">     677 </span>            :     {
+<span class="lineNum">     678 </span>            :       using _Array_type =
+<span class="lineNum">     679 </span>            :           _Multi_array&lt;_Result_type (*)(_Visitor&amp;&amp;, _Variants...)&gt;;
+<a name="680"><span class="lineNum">     680 </span>            : </a>
+<span class="lineNum">     681 </span>            :       decltype(auto)
+<span class="lineNum">     682 </span><span class="lineCov">          2 :       static constexpr __visit_invoke(_Visitor&amp;&amp; __visitor, _Variants... __vars)</span>
+<span class="lineNum">     683 </span>            :       {
+<span class="lineNum">     684 </span><span class="lineCov">          2 :         return __invoke(std::forward&lt;_Visitor&gt;(__visitor),</span>
+<span class="lineNum">     685 </span><span class="lineCov">          2 :                         std::get&lt;__indices&gt;(</span>
+<span class="lineNum">     686 </span><span class="lineCov">          2 :                             std::forward&lt;_Variants&gt;(__vars))...);</span>
+<span class="lineNum">     687 </span>            :       }
+<span class="lineNum">     688 </span>            : 
+<span class="lineNum">     689 </span>            :       static constexpr auto
+<span class="lineNum">     690 </span>            :       _S_apply()
+<span class="lineNum">     691 </span>            :       { return _Array_type{&amp;__visit_invoke}; }
+<span class="lineNum">     692 </span>            :     };
+<span class="lineNum">     693 </span>            : 
+<span class="lineNum">     694 </span>            :   template&lt;typename _Result_type, typename _Visitor, typename... _Variants&gt;
+<span class="lineNum">     695 </span>            :     struct __gen_vtable
+<span class="lineNum">     696 </span>            :     {
+<span class="lineNum">     697 </span>            :       using _Func_ptr = _Result_type (*)(_Visitor&amp;&amp;, _Variants...);
+<span class="lineNum">     698 </span>            :       using _Array_type =
+<span class="lineNum">     699 </span>            :           _Multi_array&lt;_Func_ptr,
+<span class="lineNum">     700 </span>            :                        variant_size_v&lt;remove_reference_t&lt;_Variants&gt;&gt;...&gt;;
+<span class="lineNum">     701 </span>            : 
+<span class="lineNum">     702 </span>            :       static constexpr _Array_type
+<span class="lineNum">     703 </span>            :       _S_apply()
+<span class="lineNum">     704 </span>            :       {
+<span class="lineNum">     705 </span>            :         return __gen_vtable_impl&lt;_Array_type, tuple&lt;_Variants...&gt;,
+<span class="lineNum">     706 </span>            :                                  std::index_sequence&lt;&gt;&gt;::_S_apply();
+<span class="lineNum">     707 </span>            :       }
+<span class="lineNum">     708 </span>            : 
+<span class="lineNum">     709 </span>            :       static constexpr auto _S_vtable = _S_apply();
+<span class="lineNum">     710 </span>            :     };
+<span class="lineNum">     711 </span>            : 
+<span class="lineNum">     712 </span>            :   template&lt;size_t _Np, typename _Tp&gt;
+<span class="lineNum">     713 </span>            :     struct _Base_dedup : public _Tp { };
+<span class="lineNum">     714 </span>            : 
+<span class="lineNum">     715 </span>            :   template&lt;typename _Variant, typename __indices&gt;
+<span class="lineNum">     716 </span>            :     struct _Variant_hash_base;
+<span class="lineNum">     717 </span>            : 
+<span class="lineNum">     718 </span>            :   template&lt;typename... _Types, size_t... __indices&gt;
+<span class="lineNum">     719 </span>            :     struct _Variant_hash_base&lt;variant&lt;_Types...&gt;,
+<span class="lineNum">     720 </span>            :                               std::index_sequence&lt;__indices...&gt;&gt;
+<span class="lineNum">     721 </span>            :     : _Base_dedup&lt;__indices, __poison_hash&lt;remove_const_t&lt;_Types&gt;&gt;&gt;... { };
+<span class="lineNum">     722 </span>            : 
+<span class="lineNum">     723 </span>            : _GLIBCXX_END_NAMESPACE_VERSION
+<span class="lineNum">     724 </span>            : } // namespace __variant
+<span class="lineNum">     725 </span>            : } // namespace __detail
+<span class="lineNum">     726 </span>            : 
+<span class="lineNum">     727 </span>            : _GLIBCXX_BEGIN_NAMESPACE_VERSION
+<span class="lineNum">     728 </span>            : 
+<span class="lineNum">     729 </span>            :   template&lt;typename _Tp, typename... _Types&gt;
+<span class="lineNum">     730 </span>            :     inline constexpr bool holds_alternative(const variant&lt;_Types...&gt;&amp; __v)
+<span class="lineNum">     731 </span>            :     noexcept
+<span class="lineNum">     732 </span>            :     {
+<span class="lineNum">     733 </span>            :       static_assert(__detail::__variant::__exactly_once&lt;_Tp, _Types...&gt;,
+<span class="lineNum">     734 </span>            :                     &quot;T should occur for exactly once in alternatives&quot;);
+<span class="lineNum">     735 </span>            :       return __v.index() == __detail::__variant::__index_of_v&lt;_Tp, _Types...&gt;;
+<span class="lineNum">     736 </span>            :     }
+<span class="lineNum">     737 </span>            : 
+<span class="lineNum">     738 </span>            :   template&lt;typename _Tp, typename... _Types&gt;
+<span class="lineNum">     739 </span>            :     constexpr inline _Tp&amp; get(variant&lt;_Types...&gt;&amp; __v)
+<span class="lineNum">     740 </span>            :     {
+<span class="lineNum">     741 </span>            :       static_assert(__detail::__variant::__exactly_once&lt;_Tp, _Types...&gt;,
+<span class="lineNum">     742 </span>            :                     &quot;T should occur for exactly once in alternatives&quot;);
+<span class="lineNum">     743 </span>            :       static_assert(!is_void_v&lt;_Tp&gt;, &quot;_Tp should not be void&quot;);
+<span class="lineNum">     744 </span>            :       return get&lt;__detail::__variant::__index_of_v&lt;_Tp, _Types...&gt;&gt;(__v);
+<span class="lineNum">     745 </span>            :     }
+<span class="lineNum">     746 </span>            : 
+<span class="lineNum">     747 </span>            :   template&lt;typename _Tp, typename... _Types&gt;
+<span class="lineNum">     748 </span>            :     constexpr inline _Tp&amp;&amp; get(variant&lt;_Types...&gt;&amp;&amp; __v)
+<span class="lineNum">     749 </span>            :     {
+<span class="lineNum">     750 </span>            :       static_assert(__detail::__variant::__exactly_once&lt;_Tp, _Types...&gt;,
+<span class="lineNum">     751 </span>            :                     &quot;T should occur for exactly once in alternatives&quot;);
+<span class="lineNum">     752 </span>            :       static_assert(!is_void_v&lt;_Tp&gt;, &quot;_Tp should not be void&quot;);
+<span class="lineNum">     753 </span>            :       return get&lt;__detail::__variant::__index_of_v&lt;_Tp, _Types...&gt;&gt;(
+<span class="lineNum">     754 </span>            :         std::move(__v));
+<span class="lineNum">     755 </span>            :     }
+<span class="lineNum">     756 </span>            : 
+<span class="lineNum">     757 </span>            :   template&lt;typename _Tp, typename... _Types&gt;
+<span class="lineNum">     758 </span>            :     constexpr inline const _Tp&amp; get(const variant&lt;_Types...&gt;&amp; __v)
+<span class="lineNum">     759 </span>            :     {
+<span class="lineNum">     760 </span>            :       static_assert(__detail::__variant::__exactly_once&lt;_Tp, _Types...&gt;,
+<span class="lineNum">     761 </span>            :                     &quot;T should occur for exactly once in alternatives&quot;);
+<span class="lineNum">     762 </span>            :       static_assert(!is_void_v&lt;_Tp&gt;, &quot;_Tp should not be void&quot;);
+<span class="lineNum">     763 </span>            :       return get&lt;__detail::__variant::__index_of_v&lt;_Tp, _Types...&gt;&gt;(__v);
+<span class="lineNum">     764 </span>            :     }
+<span class="lineNum">     765 </span>            : 
+<span class="lineNum">     766 </span>            :   template&lt;typename _Tp, typename... _Types&gt;
+<span class="lineNum">     767 </span>            :     constexpr inline const _Tp&amp;&amp; get(const variant&lt;_Types...&gt;&amp;&amp; __v)
+<span class="lineNum">     768 </span>            :     {
+<span class="lineNum">     769 </span>            :       static_assert(__detail::__variant::__exactly_once&lt;_Tp, _Types...&gt;,
+<span class="lineNum">     770 </span>            :                     &quot;T should occur for exactly once in alternatives&quot;);
+<span class="lineNum">     771 </span>            :       static_assert(!is_void_v&lt;_Tp&gt;, &quot;_Tp should not be void&quot;);
+<span class="lineNum">     772 </span>            :       return get&lt;__detail::__variant::__index_of_v&lt;_Tp, _Types...&gt;&gt;(
+<span class="lineNum">     773 </span>            :         std::move(__v));
+<span class="lineNum">     774 </span>            :     }
+<span class="lineNum">     775 </span>            : 
+<span class="lineNum">     776 </span>            :   template&lt;size_t _Np, typename... _Types&gt;
+<span class="lineNum">     777 </span>            :     constexpr inline
+<span class="lineNum">     778 </span>            :     add_pointer_t&lt;variant_alternative_t&lt;_Np, variant&lt;_Types...&gt;&gt;&gt;
+<span class="lineNum">     779 </span>            :     get_if(variant&lt;_Types...&gt;* __ptr) noexcept
+<span class="lineNum">     780 </span>            :     {
+<span class="lineNum">     781 </span>            :       using _Alternative_type = variant_alternative_t&lt;_Np, variant&lt;_Types...&gt;&gt;;
+<span class="lineNum">     782 </span>            :       static_assert(_Np &lt; sizeof...(_Types),
+<span class="lineNum">     783 </span>            :                     &quot;The index should be in [0, number of alternatives)&quot;);
+<span class="lineNum">     784 </span>            :       static_assert(!is_void_v&lt;_Alternative_type&gt;, &quot;_Tp should not be void&quot;);
+<span class="lineNum">     785 </span>            :       if (__ptr &amp;&amp; __ptr-&gt;index() == _Np)
+<span class="lineNum">     786 </span>            :         return &amp;__detail::__variant::__get&lt;_Np&gt;(*__ptr);
+<span class="lineNum">     787 </span>            :       return nullptr;
+<span class="lineNum">     788 </span>            :     }
+<span class="lineNum">     789 </span>            : 
+<span class="lineNum">     790 </span>            :   template&lt;size_t _Np, typename... _Types&gt;
+<span class="lineNum">     791 </span>            :     constexpr inline
+<span class="lineNum">     792 </span>            :     add_pointer_t&lt;const variant_alternative_t&lt;_Np, variant&lt;_Types...&gt;&gt;&gt;
+<span class="lineNum">     793 </span>            :     get_if(const variant&lt;_Types...&gt;* __ptr) noexcept
+<span class="lineNum">     794 </span>            :     {
+<span class="lineNum">     795 </span>            :       using _Alternative_type = variant_alternative_t&lt;_Np, variant&lt;_Types...&gt;&gt;;
+<span class="lineNum">     796 </span>            :       static_assert(_Np &lt; sizeof...(_Types),
+<span class="lineNum">     797 </span>            :                     &quot;The index should be in [0, number of alternatives)&quot;);
+<span class="lineNum">     798 </span>            :       static_assert(!is_void_v&lt;_Alternative_type&gt;, &quot;_Tp should not be void&quot;);
+<span class="lineNum">     799 </span>            :       if (__ptr &amp;&amp; __ptr-&gt;index() == _Np)
+<span class="lineNum">     800 </span>            :         return &amp;__detail::__variant::__get&lt;_Np&gt;(*__ptr);
+<span class="lineNum">     801 </span>            :       return nullptr;
+<span class="lineNum">     802 </span>            :     }
+<span class="lineNum">     803 </span>            : 
+<span class="lineNum">     804 </span>            :   template&lt;typename _Tp, typename... _Types&gt;
+<span class="lineNum">     805 </span>            :     constexpr inline add_pointer_t&lt;_Tp&gt;
+<span class="lineNum">     806 </span>            :     get_if(variant&lt;_Types...&gt;* __ptr) noexcept
+<span class="lineNum">     807 </span>            :     {
+<span class="lineNum">     808 </span>            :       static_assert(__detail::__variant::__exactly_once&lt;_Tp, _Types...&gt;,
+<span class="lineNum">     809 </span>            :                     &quot;T should occur for exactly once in alternatives&quot;);
+<span class="lineNum">     810 </span>            :       static_assert(!is_void_v&lt;_Tp&gt;, &quot;_Tp should not be void&quot;);
+<span class="lineNum">     811 </span>            :       return get_if&lt;__detail::__variant::__index_of_v&lt;_Tp, _Types...&gt;&gt;(__ptr);
+<span class="lineNum">     812 </span>            :     }
+<span class="lineNum">     813 </span>            : 
+<span class="lineNum">     814 </span>            :   template&lt;typename _Tp, typename... _Types&gt;
+<span class="lineNum">     815 </span>            :     constexpr inline add_pointer_t&lt;const _Tp&gt;
+<span class="lineNum">     816 </span>            :     get_if(const variant&lt;_Types...&gt;* __ptr)
+<span class="lineNum">     817 </span>            :     noexcept
+<span class="lineNum">     818 </span>            :     {
+<span class="lineNum">     819 </span>            :       static_assert(__detail::__variant::__exactly_once&lt;_Tp, _Types...&gt;,
+<span class="lineNum">     820 </span>            :                     &quot;T should occur for exactly once in alternatives&quot;);
+<span class="lineNum">     821 </span>            :       static_assert(!is_void_v&lt;_Tp&gt;, &quot;_Tp should not be void&quot;);
+<span class="lineNum">     822 </span>            :       return get_if&lt;__detail::__variant::__index_of_v&lt;_Tp, _Types...&gt;&gt;(__ptr);
+<span class="lineNum">     823 </span>            :     }
+<span class="lineNum">     824 </span>            : 
+<span class="lineNum">     825 </span>            :   struct monostate { };
+<span class="lineNum">     826 </span>            : 
+<span class="lineNum">     827 </span>            : #define _VARIANT_RELATION_FUNCTION_TEMPLATE(__OP, __NAME) \
+<span class="lineNum">     828 </span>            :   template&lt;typename... _Types&gt; \
+<span class="lineNum">     829 </span>            :     constexpr bool operator __OP(const variant&lt;_Types...&gt;&amp; __lhs, \
+<span class="lineNum">     830 </span>            :                                  const variant&lt;_Types...&gt;&amp; __rhs) \
+<span class="lineNum">     831 </span>            :     { \
+<span class="lineNum">     832 </span>            :       return __lhs._M_##__NAME(__rhs, std::index_sequence_for&lt;_Types...&gt;{}); \
+<span class="lineNum">     833 </span>            :     } \
+<span class="lineNum">     834 </span>            : \
+<span class="lineNum">     835 </span>            :   constexpr bool operator __OP(monostate, monostate) noexcept \
+<span class="lineNum">     836 </span>            :   { return 0 __OP 0; }
+<span class="lineNum">     837 </span>            : 
+<span class="lineNum">     838 </span>            :   _VARIANT_RELATION_FUNCTION_TEMPLATE(&lt;, less)
+<span class="lineNum">     839 </span>            :   _VARIANT_RELATION_FUNCTION_TEMPLATE(&lt;=, less_equal)
+<span class="lineNum">     840 </span>            :   _VARIANT_RELATION_FUNCTION_TEMPLATE(==, equal)
+<span class="lineNum">     841 </span>            :   _VARIANT_RELATION_FUNCTION_TEMPLATE(!=, not_equal)
+<span class="lineNum">     842 </span>            :   _VARIANT_RELATION_FUNCTION_TEMPLATE(&gt;=, greater_equal)
+<span class="lineNum">     843 </span>            :   _VARIANT_RELATION_FUNCTION_TEMPLATE(&gt;, greater)
+<span class="lineNum">     844 </span>            : 
+<span class="lineNum">     845 </span>            : #undef _VARIANT_RELATION_FUNCTION_TEMPLATE
+<span class="lineNum">     846 </span>            : 
+<span class="lineNum">     847 </span>            :   template&lt;typename _Visitor, typename... _Variants&gt;
+<span class="lineNum">     848 </span>            :     constexpr decltype(auto) visit(_Visitor&amp;&amp;, _Variants&amp;&amp;...);
+<span class="lineNum">     849 </span>            : 
+<span class="lineNum">     850 </span>            :   template&lt;typename... _Types&gt;
+<span class="lineNum">     851 </span>            :     inline enable_if_t&lt;(is_move_constructible_v&lt;_Types&gt; &amp;&amp; ...)
+<span class="lineNum">     852 </span>            :                         &amp;&amp; (is_swappable_v&lt;_Types&gt; &amp;&amp; ...)&gt;
+<span class="lineNum">     853 </span>            :     swap(variant&lt;_Types...&gt;&amp; __lhs, variant&lt;_Types...&gt;&amp; __rhs)
+<span class="lineNum">     854 </span>            :     noexcept(noexcept(__lhs.swap(__rhs)))
+<span class="lineNum">     855 </span>            :     { __lhs.swap(__rhs); }
+<span class="lineNum">     856 </span>            : 
+<span class="lineNum">     857 </span>            :   template&lt;typename... _Types&gt;
+<span class="lineNum">     858 </span>            :     enable_if_t&lt;!((is_move_constructible_v&lt;_Types&gt; &amp;&amp; ...)
+<span class="lineNum">     859 </span>            :                    &amp;&amp; (is_swappable_v&lt;_Types&gt; &amp;&amp; ...))&gt;
+<a name="860"><span class="lineNum">     860 </span>            :     swap(variant&lt;_Types...&gt;&amp;, variant&lt;_Types...&gt;&amp;) = delete;</a>
+<span class="lineNum">     861 </span>            : 
+<span class="lineNum">     862 </span><span class="lineNoCov">          0 :   class bad_variant_access : public exception</span>
+<span class="lineNum">     863 </span>            :   {
+<a name="864"><span class="lineNum">     864 </span>            :   public:</a>
+<span class="lineNum">     865 </span>            :     bad_variant_access() noexcept : _M_reason(&quot;Unknown reason&quot;) { }
+<span class="lineNum">     866 </span><span class="lineNoCov">          0 :     const char* what() const noexcept override</span>
+<span class="lineNum">     867 </span><span class="lineNoCov">          0 :     { return _M_reason; }</span>
+<a name="868"><span class="lineNum">     868 </span>            : </a>
+<span class="lineNum">     869 </span>            :   private:
+<span class="lineNum">     870 </span><span class="lineNoCov">          0 :     bad_variant_access(const char* __reason) : _M_reason(__reason) { }</span>
+<span class="lineNum">     871 </span>            : 
+<span class="lineNum">     872 </span>            :     const char* _M_reason;
+<span class="lineNum">     873 </span>            : 
+<span class="lineNum">     874 </span>            :     friend void __throw_bad_variant_access(const char* __what);
+<span class="lineNum">     875 </span>            :   };
+<a name="876"><span class="lineNum">     876 </span>            : </a>
+<span class="lineNum">     877 </span>            :   inline void
+<span class="lineNum">     878 </span><span class="lineNoCov">          0 :   __throw_bad_variant_access(const char* __what)</span>
+<span class="lineNum">     879 </span><span class="lineNoCov">          0 :   { _GLIBCXX_THROW_OR_ABORT(bad_variant_access(__what)); }</span>
+<span class="lineNum">     880 </span>            : 
+<span class="lineNum">     881 </span>            :   template&lt;typename... _Types&gt;
+<span class="lineNum">     882 </span>            :     class variant
+<span class="lineNum">     883 </span>            :     : private __detail::__variant::_Variant_base&lt;_Types...&gt;,
+<span class="lineNum">     884 </span>            :       private _Enable_default_constructor&lt;
+<span class="lineNum">     885 </span>            :         is_default_constructible_v&lt;
+<span class="lineNum">     886 </span>            :           variant_alternative_t&lt;0, variant&lt;_Types...&gt;&gt;&gt;, variant&lt;_Types...&gt;&gt;,
+<span class="lineNum">     887 </span>            :       private _Enable_copy_move&lt;
+<span class="lineNum">     888 </span>            :         (is_copy_constructible_v&lt;_Types&gt; &amp;&amp; ...),
+<span class="lineNum">     889 </span>            :         (is_copy_constructible_v&lt;_Types&gt; &amp;&amp; ...)
+<span class="lineNum">     890 </span>            :              &amp;&amp; (is_move_constructible_v&lt;_Types&gt; &amp;&amp; ...)
+<span class="lineNum">     891 </span>            :              &amp;&amp; (is_copy_assignable_v&lt;_Types&gt; &amp;&amp; ...),
+<span class="lineNum">     892 </span>            :         (is_move_constructible_v&lt;_Types&gt; &amp;&amp; ...),
+<span class="lineNum">     893 </span>            :         (is_move_constructible_v&lt;_Types&gt; &amp;&amp; ...)
+<span class="lineNum">     894 </span>            :              &amp;&amp; (is_move_assignable_v&lt;_Types&gt; &amp;&amp; ...),
+<span class="lineNum">     895 </span>            :         variant&lt;_Types...&gt;&gt;
+<span class="lineNum">     896 </span>            :     {
+<span class="lineNum">     897 </span>            :     private:
+<span class="lineNum">     898 </span>            :       static_assert(sizeof...(_Types) &gt; 0,
+<span class="lineNum">     899 </span>            :                     &quot;variant must have at least one alternative&quot;);
+<span class="lineNum">     900 </span>            :       static_assert(!(std::is_reference_v&lt;_Types&gt; || ...),
+<span class="lineNum">     901 </span>            :                     &quot;variant must have no reference alternative&quot;);
+<span class="lineNum">     902 </span>            :       static_assert(!(std::is_void_v&lt;_Types&gt; || ...),
+<span class="lineNum">     903 </span>            :                     &quot;variant must have no void alternative&quot;);
+<span class="lineNum">     904 </span>            : 
+<span class="lineNum">     905 </span>            :       using _Base = __detail::__variant::_Variant_base&lt;_Types...&gt;;
+<span class="lineNum">     906 </span>            :       using _Default_ctor_enabler =
+<span class="lineNum">     907 </span>            :         _Enable_default_constructor&lt;
+<span class="lineNum">     908 </span>            :           is_default_constructible_v&lt;
+<span class="lineNum">     909 </span>            :             variant_alternative_t&lt;0, variant&lt;_Types...&gt;&gt;&gt;, variant&lt;_Types...&gt;&gt;;
+<span class="lineNum">     910 </span>            : 
+<span class="lineNum">     911 </span>            :       template&lt;typename _Tp&gt;
+<span class="lineNum">     912 </span>            :         static constexpr bool
+<span class="lineNum">     913 </span>            :         __exactly_once = __detail::__variant::__exactly_once&lt;_Tp, _Types...&gt;;
+<span class="lineNum">     914 </span>            : 
+<span class="lineNum">     915 </span>            :       template&lt;typename _Tp&gt;
+<span class="lineNum">     916 </span>            :         static constexpr size_t __accepted_index =
+<span class="lineNum">     917 </span>            :           __detail::__variant::__accepted_index&lt;_Tp&amp;&amp;, variant&gt;::value;
+<span class="lineNum">     918 </span>            : 
+<span class="lineNum">     919 </span>            :       template&lt;size_t _Np, bool = _Np &lt; sizeof...(_Types)&gt;
+<span class="lineNum">     920 </span>            :         struct __to_type_impl;
+<span class="lineNum">     921 </span>            : 
+<span class="lineNum">     922 </span>            :       template&lt;size_t _Np&gt;
+<span class="lineNum">     923 </span>            :         struct __to_type_impl&lt;_Np, true&gt;
+<span class="lineNum">     924 </span>            :         { using type = variant_alternative_t&lt;_Np, variant&gt;; };
+<span class="lineNum">     925 </span>            : 
+<span class="lineNum">     926 </span>            :       template&lt;size_t _Np&gt;
+<span class="lineNum">     927 </span>            :         using __to_type = typename __to_type_impl&lt;_Np&gt;::type;
+<span class="lineNum">     928 </span>            : 
+<span class="lineNum">     929 </span>            :       template&lt;typename _Tp&gt;
+<span class="lineNum">     930 </span>            :         using __accepted_type = __to_type&lt;__accepted_index&lt;_Tp&gt;&gt;;
+<span class="lineNum">     931 </span>            : 
+<span class="lineNum">     932 </span>            :       template&lt;typename _Tp&gt;
+<span class="lineNum">     933 </span>            :         static constexpr size_t __index_of =
+<span class="lineNum">     934 </span>            :           __detail::__variant::__index_of_v&lt;_Tp, _Types...&gt;;
+<span class="lineNum">     935 </span>            : 
+<span class="lineNum">     936 </span>            :     public:
+<span class="lineNum">     937 </span>            :       constexpr variant()
+<span class="lineNum">     938 </span>            :       noexcept(is_nothrow_default_constructible_v&lt;__to_type&lt;0&gt;&gt;) = default;
+<span class="lineNum">     939 </span>            :       variant(const variant&amp;) = default;
+<span class="lineNum">     940 </span>            :       variant(variant&amp;&amp;)
+<span class="lineNum">     941 </span>            :       noexcept((is_nothrow_move_constructible_v&lt;_Types&gt; &amp;&amp; ...)) = default;
+<span class="lineNum">     942 </span>            : 
+<span class="lineNum">     943 </span>            :       template&lt;typename _Tp,
+<span class="lineNum">     944 </span>            :                typename = enable_if_t&lt;!is_same_v&lt;decay_t&lt;_Tp&gt;, variant&gt;&gt;,
+<span class="lineNum">     945 </span>            :                typename = enable_if_t&lt;(sizeof...(_Types)&gt;0)&gt;,
+<span class="lineNum">     946 </span>            :                typename = enable_if_t&lt;__exactly_once&lt;__accepted_type&lt;_Tp&amp;&amp;&gt;&gt;
+<a name="947"><span class="lineNum">     947 </span>            :                           &amp;&amp; is_constructible_v&lt;__accepted_type&lt;_Tp&amp;&amp;&gt;, _Tp&amp;&amp;&gt;&gt;&gt;</a>
+<span class="lineNum">     948 </span>            :         constexpr
+<span class="lineNum">     949 </span><span class="lineCov">          1 :         variant(_Tp&amp;&amp; __t)</span>
+<span class="lineNum">     950 </span>            :         noexcept(is_nothrow_constructible_v&lt;__accepted_type&lt;_Tp&amp;&amp;&gt;, _Tp&amp;&amp;&gt;)
+<span class="lineNum">     951 </span><span class="lineCov">          1 :         : variant(in_place_index&lt;__accepted_index&lt;_Tp&amp;&amp;&gt;&gt;, std::forward&lt;_Tp&gt;(__t))</span>
+<span class="lineNum">     952 </span><span class="lineCov">          1 :         { __glibcxx_assert(holds_alternative&lt;__accepted_type&lt;_Tp&amp;&amp;&gt;&gt;(*this)); }</span>
+<span class="lineNum">     953 </span>            : 
+<span class="lineNum">     954 </span>            :       template&lt;typename _Tp, typename... _Args,
+<span class="lineNum">     955 </span>            :                typename = enable_if_t&lt;__exactly_once&lt;_Tp&gt;
+<span class="lineNum">     956 </span>            :                           &amp;&amp; is_constructible_v&lt;_Tp, _Args&amp;&amp;...&gt;&gt;&gt;
+<span class="lineNum">     957 </span>            :         constexpr explicit
+<span class="lineNum">     958 </span>            :         variant(in_place_type_t&lt;_Tp&gt;, _Args&amp;&amp;... __args)
+<span class="lineNum">     959 </span>            :         : variant(in_place_index&lt;__index_of&lt;_Tp&gt;&gt;, std::forward&lt;_Args&gt;(__args)...)
+<span class="lineNum">     960 </span>            :         { __glibcxx_assert(holds_alternative&lt;_Tp&gt;(*this)); }
+<span class="lineNum">     961 </span>            : 
+<span class="lineNum">     962 </span>            :       template&lt;typename _Tp, typename _Up, typename... _Args,
+<span class="lineNum">     963 </span>            :                typename = enable_if_t&lt;__exactly_once&lt;_Tp&gt;
+<span class="lineNum">     964 </span>            :                           &amp;&amp; is_constructible_v&lt;
+<span class="lineNum">     965 </span>            :                             _Tp, initializer_list&lt;_Up&gt;&amp;, _Args&amp;&amp;...&gt;&gt;&gt;
+<span class="lineNum">     966 </span>            :         constexpr explicit
+<span class="lineNum">     967 </span>            :         variant(in_place_type_t&lt;_Tp&gt;, initializer_list&lt;_Up&gt; __il,
+<span class="lineNum">     968 </span>            :                 _Args&amp;&amp;... __args)
+<span class="lineNum">     969 </span>            :         : variant(in_place_index&lt;__index_of&lt;_Tp&gt;&gt;, __il,
+<span class="lineNum">     970 </span>            :                   std::forward&lt;_Args&gt;(__args)...)
+<span class="lineNum">     971 </span>            :         { __glibcxx_assert(holds_alternative&lt;_Tp&gt;(*this)); }
+<span class="lineNum">     972 </span>            : 
+<span class="lineNum">     973 </span>            :       template&lt;size_t _Np, typename... _Args,
+<span class="lineNum">     974 </span>            :                typename = enable_if_t&lt;
+<a name="975"><span class="lineNum">     975 </span>            :                  is_constructible_v&lt;__to_type&lt;_Np&gt;, _Args&amp;&amp;...&gt;&gt;&gt;</a>
+<span class="lineNum">     976 </span>            :         constexpr explicit
+<span class="lineNum">     977 </span><span class="lineCov">          2 :         variant(in_place_index_t&lt;_Np&gt;, _Args&amp;&amp;... __args)</span>
+<span class="lineNum">     978 </span>            :         : _Base(in_place_index&lt;_Np&gt;, std::forward&lt;_Args&gt;(__args)...),
+<span class="lineNum">     979 </span><span class="lineCov">          2 :         _Default_ctor_enabler(_Enable_default_constructor_tag{})</span>
+<span class="lineNum">     980 </span><span class="lineCov">          2 :         { __glibcxx_assert(index() == _Np); }</span>
+<span class="lineNum">     981 </span>            : 
+<span class="lineNum">     982 </span>            :       template&lt;size_t _Np, typename _Up, typename... _Args,
+<span class="lineNum">     983 </span>            :                typename = enable_if_t&lt;is_constructible_v&lt;__to_type&lt;_Np&gt;,
+<span class="lineNum">     984 </span>            :                                       initializer_list&lt;_Up&gt;&amp;, _Args&amp;&amp;...&gt;&gt;&gt;
+<span class="lineNum">     985 </span>            :         constexpr explicit
+<span class="lineNum">     986 </span>            :         variant(in_place_index_t&lt;_Np&gt;, initializer_list&lt;_Up&gt; __il,
+<span class="lineNum">     987 </span>            :                 _Args&amp;&amp;... __args)
+<span class="lineNum">     988 </span>            :         : _Base(in_place_index&lt;_Np&gt;, __il, std::forward&lt;_Args&gt;(__args)...),
+<span class="lineNum">     989 </span>            :         _Default_ctor_enabler(_Enable_default_constructor_tag{})
+<a name="990"><span class="lineNum">     990 </span>            :         { __glibcxx_assert(index() == _Np); }</a>
+<span class="lineNum">     991 </span>            : 
+<span class="lineNum">     992 </span><span class="lineCov">          2 :       ~variant() = default;</span>
+<span class="lineNum">     993 </span>            : 
+<span class="lineNum">     994 </span>            :       variant&amp; operator=(const variant&amp;) = default;
+<span class="lineNum">     995 </span>            :       variant&amp; operator=(variant&amp;&amp;)
+<span class="lineNum">     996 </span>            :       noexcept((is_nothrow_move_constructible_v&lt;_Types&gt; &amp;&amp; ...)
+<span class="lineNum">     997 </span>            :           &amp;&amp; (is_nothrow_move_assignable_v&lt;_Types&gt; &amp;&amp; ...)) = default;
+<span class="lineNum">     998 </span>            : 
+<span class="lineNum">     999 </span>            :       template&lt;typename _Tp&gt;
+<span class="lineNum">    1000 </span>            :         enable_if_t&lt;__exactly_once&lt;__accepted_type&lt;_Tp&amp;&amp;&gt;&gt;
+<span class="lineNum">    1001 </span>            :                     &amp;&amp; is_constructible_v&lt;__accepted_type&lt;_Tp&amp;&amp;&gt;, _Tp&amp;&amp;&gt;
+<span class="lineNum">    1002 </span>            :                     &amp;&amp; is_assignable_v&lt;__accepted_type&lt;_Tp&amp;&amp;&gt;&amp;, _Tp&amp;&amp;&gt;
+<span class="lineNum">    1003 </span>            :                     &amp;&amp; !is_same_v&lt;decay_t&lt;_Tp&gt;, variant&gt;, variant&amp;&gt;
+<span class="lineNum">    1004 </span>            :         operator=(_Tp&amp;&amp; __rhs)
+<span class="lineNum">    1005 </span>            :         noexcept(is_nothrow_assignable_v&lt;__accepted_type&lt;_Tp&amp;&amp;&gt;&amp;, _Tp&amp;&amp;&gt;
+<span class="lineNum">    1006 </span>            :                  &amp;&amp; is_nothrow_constructible_v&lt;__accepted_type&lt;_Tp&amp;&amp;&gt;, _Tp&amp;&amp;&gt;)
+<span class="lineNum">    1007 </span>            :         {
+<span class="lineNum">    1008 </span>            :           constexpr auto __index = __accepted_index&lt;_Tp&amp;&amp;&gt;;
+<span class="lineNum">    1009 </span>            :           if (index() == __index)
+<span class="lineNum">    1010 </span>            :             std::get&lt;__index&gt;(*this) = std::forward&lt;_Tp&gt;(__rhs);
+<span class="lineNum">    1011 </span>            :           else
+<span class="lineNum">    1012 </span>            :             this-&gt;emplace&lt;__index&gt;(std::forward&lt;_Tp&gt;(__rhs));
+<span class="lineNum">    1013 </span>            :           __glibcxx_assert(holds_alternative&lt;__accepted_type&lt;_Tp&amp;&amp;&gt;&gt;(*this));
+<span class="lineNum">    1014 </span>            :           return *this;
+<span class="lineNum">    1015 </span>            :         }
+<span class="lineNum">    1016 </span>            : 
+<span class="lineNum">    1017 </span>            :       template&lt;typename _Tp, typename... _Args&gt;
+<span class="lineNum">    1018 </span>            :         enable_if_t&lt;is_constructible_v&lt;_Tp, _Args...&gt; &amp;&amp; __exactly_once&lt;_Tp&gt;,
+<span class="lineNum">    1019 </span>            :                     _Tp&amp;&gt;
+<span class="lineNum">    1020 </span>            :         emplace(_Args&amp;&amp;... __args)
+<span class="lineNum">    1021 </span>            :         {
+<span class="lineNum">    1022 </span>            :           auto&amp; ret =
+<span class="lineNum">    1023 </span>            :             this-&gt;emplace&lt;__index_of&lt;_Tp&gt;&gt;(std::forward&lt;_Args&gt;(__args)...);
+<span class="lineNum">    1024 </span>            :           __glibcxx_assert(holds_alternative&lt;_Tp&gt;(*this));
+<span class="lineNum">    1025 </span>            :           return ret;
+<span class="lineNum">    1026 </span>            :         }
+<span class="lineNum">    1027 </span>            : 
+<span class="lineNum">    1028 </span>            :       template&lt;typename _Tp, typename _Up, typename... _Args&gt;
+<span class="lineNum">    1029 </span>            :         enable_if_t&lt;is_constructible_v&lt;_Tp, initializer_list&lt;_Up&gt;&amp;, _Args...&gt;
+<span class="lineNum">    1030 </span>            :                     &amp;&amp; __exactly_once&lt;_Tp&gt;,
+<span class="lineNum">    1031 </span>            :                     _Tp&amp;&gt;
+<span class="lineNum">    1032 </span>            :         emplace(initializer_list&lt;_Up&gt; __il, _Args&amp;&amp;... __args)
+<span class="lineNum">    1033 </span>            :         {
+<span class="lineNum">    1034 </span>            :           auto&amp; ret =
+<span class="lineNum">    1035 </span>            :             this-&gt;emplace&lt;__index_of&lt;_Tp&gt;&gt;(__il,
+<span class="lineNum">    1036 </span>            :                                            std::forward&lt;_Args&gt;(__args)...);
+<span class="lineNum">    1037 </span>            :           __glibcxx_assert(holds_alternative&lt;_Tp&gt;(*this));
+<span class="lineNum">    1038 </span>            :           return ret;
+<span class="lineNum">    1039 </span>            :         }
+<span class="lineNum">    1040 </span>            : 
+<span class="lineNum">    1041 </span>            :       template&lt;size_t _Np, typename... _Args&gt;
+<span class="lineNum">    1042 </span>            :         enable_if_t&lt;is_constructible_v&lt;variant_alternative_t&lt;_Np, variant&gt;,
+<span class="lineNum">    1043 </span>            :                                        _Args...&gt;,
+<span class="lineNum">    1044 </span>            :                     variant_alternative_t&lt;_Np, variant&gt;&amp;&gt;
+<span class="lineNum">    1045 </span>            :         emplace(_Args&amp;&amp;... __args)
+<span class="lineNum">    1046 </span>            :         {
+<span class="lineNum">    1047 </span>            :           static_assert(_Np &lt; sizeof...(_Types),
+<span class="lineNum">    1048 </span>            :                         &quot;The index should be in [0, number of alternatives)&quot;);
+<span class="lineNum">    1049 </span>            :           this-&gt;~variant();
+<span class="lineNum">    1050 </span>            :           __try
+<span class="lineNum">    1051 </span>            :             {
+<span class="lineNum">    1052 </span>            :               ::new (this) variant(in_place_index&lt;_Np&gt;,
+<span class="lineNum">    1053 </span>            :                                    std::forward&lt;_Args&gt;(__args)...);
+<span class="lineNum">    1054 </span>            :             }
+<span class="lineNum">    1055 </span>            :           __catch (...)
+<span class="lineNum">    1056 </span>            :             {
+<span class="lineNum">    1057 </span>            :               this-&gt;_M_index = variant_npos;
+<span class="lineNum">    1058 </span>            :               __throw_exception_again;
+<span class="lineNum">    1059 </span>            :             }
+<span class="lineNum">    1060 </span>            :           __glibcxx_assert(index() == _Np);
+<span class="lineNum">    1061 </span>            :           return std::get&lt;_Np&gt;(*this);
+<span class="lineNum">    1062 </span>            :         }
+<span class="lineNum">    1063 </span>            : 
+<span class="lineNum">    1064 </span>            :       template&lt;size_t _Np, typename _Up, typename... _Args&gt;
+<span class="lineNum">    1065 </span>            :         enable_if_t&lt;is_constructible_v&lt;variant_alternative_t&lt;_Np, variant&gt;,
+<span class="lineNum">    1066 </span>            :                                        initializer_list&lt;_Up&gt;&amp;, _Args...&gt;,
+<span class="lineNum">    1067 </span>            :                     variant_alternative_t&lt;_Np, variant&gt;&amp;&gt;
+<span class="lineNum">    1068 </span>            :         emplace(initializer_list&lt;_Up&gt; __il, _Args&amp;&amp;... __args)
+<span class="lineNum">    1069 </span>            :         {
+<span class="lineNum">    1070 </span>            :           static_assert(_Np &lt; sizeof...(_Types),
+<span class="lineNum">    1071 </span>            :                         &quot;The index should be in [0, number of alternatives)&quot;);
+<span class="lineNum">    1072 </span>            :           this-&gt;~variant();
+<span class="lineNum">    1073 </span>            :           __try
+<span class="lineNum">    1074 </span>            :             {
+<span class="lineNum">    1075 </span>            :               ::new (this) variant(in_place_index&lt;_Np&gt;, __il,
+<span class="lineNum">    1076 </span>            :                                    std::forward&lt;_Args&gt;(__args)...);
+<span class="lineNum">    1077 </span>            :             }
+<span class="lineNum">    1078 </span>            :           __catch (...)
+<span class="lineNum">    1079 </span>            :             {
+<span class="lineNum">    1080 </span>            :               this-&gt;_M_index = variant_npos;
+<span class="lineNum">    1081 </span>            :               __throw_exception_again;
+<span class="lineNum">    1082 </span>            :             }
+<span class="lineNum">    1083 </span>            :           __glibcxx_assert(index() == _Np);
+<span class="lineNum">    1084 </span>            :           return std::get&lt;_Np&gt;(*this);
+<a name="1085"><span class="lineNum">    1085 </span>            :         }</a>
+<span class="lineNum">    1086 </span>            : 
+<span class="lineNum">    1087 </span><span class="lineCov">          2 :       constexpr bool valueless_by_exception() const noexcept</span>
+<a name="1088"><span class="lineNum">    1088 </span><span class="lineCov">          2 :       { return !this-&gt;_M_valid(); }</span></a>
+<span class="lineNum">    1089 </span>            : 
+<span class="lineNum">    1090 </span><span class="lineCov">          4 :       constexpr size_t index() const noexcept</span>
+<span class="lineNum">    1091 </span>            :       {
+<span class="lineNum">    1092 </span><span class="lineCov">          4 :         if (this-&gt;_M_index ==</span>
+<span class="lineNum">    1093 </span>            :             typename _Base::_Storage::__index_type(variant_npos))
+<span class="lineNum">    1094 </span><span class="lineNoCov">          0 :           return variant_npos;</span>
+<span class="lineNum">    1095 </span><span class="lineCov">          4 :         return this-&gt;_M_index;</span>
+<span class="lineNum">    1096 </span>            :       }
+<span class="lineNum">    1097 </span>            : 
+<span class="lineNum">    1098 </span>            :       void
+<span class="lineNum">    1099 </span>            :       swap(variant&amp; __rhs)
+<span class="lineNum">    1100 </span>            :       noexcept((__is_nothrow_swappable&lt;_Types&gt;::value &amp;&amp; ...)
+<span class="lineNum">    1101 </span>            :                &amp;&amp; is_nothrow_move_constructible_v&lt;variant&gt;)
+<span class="lineNum">    1102 </span>            :       {
+<span class="lineNum">    1103 </span>            :         if (this-&gt;index() == __rhs.index())
+<span class="lineNum">    1104 </span>            :           {
+<span class="lineNum">    1105 </span>            :             if (this-&gt;_M_valid())
+<span class="lineNum">    1106 </span>            :               {
+<span class="lineNum">    1107 </span>            :                 static constexpr void (*_S_vtable[])(void*, void*) =
+<span class="lineNum">    1108 </span>            :                   { &amp;__detail::__variant::__erased_swap&lt;_Types&amp;, _Types&amp;&gt;... };
+<span class="lineNum">    1109 </span>            :                 _S_vtable[__rhs._M_index](this-&gt;_M_storage(),
+<span class="lineNum">    1110 </span>            :                                           __rhs._M_storage());
+<span class="lineNum">    1111 </span>            :               }
+<span class="lineNum">    1112 </span>            :           }
+<span class="lineNum">    1113 </span>            :         else if (!this-&gt;_M_valid())
+<span class="lineNum">    1114 </span>            :           {
+<span class="lineNum">    1115 </span>            :             this-&gt;_M_destructive_move(std::move(__rhs));
+<span class="lineNum">    1116 </span>            :             __rhs._M_reset();
+<span class="lineNum">    1117 </span>            :           }
+<span class="lineNum">    1118 </span>            :         else if (!__rhs._M_valid())
+<span class="lineNum">    1119 </span>            :           {
+<span class="lineNum">    1120 </span>            :             __rhs._M_destructive_move(std::move(*this));
+<span class="lineNum">    1121 </span>            :             this-&gt;_M_reset();
+<span class="lineNum">    1122 </span>            :           }
+<span class="lineNum">    1123 </span>            :         else
+<span class="lineNum">    1124 </span>            :           {
+<span class="lineNum">    1125 </span>            :             auto __tmp = std::move(__rhs);
+<span class="lineNum">    1126 </span>            :             __rhs._M_destructive_move(std::move(*this));
+<span class="lineNum">    1127 </span>            :             this-&gt;_M_destructive_move(std::move(__tmp));
+<span class="lineNum">    1128 </span>            :           }
+<span class="lineNum">    1129 </span>            :       }
+<span class="lineNum">    1130 </span>            : 
+<span class="lineNum">    1131 </span>            :     private:
+<span class="lineNum">    1132 </span>            : #define _VARIANT_RELATION_FUNCTION_TEMPLATE(__OP, __NAME) \
+<span class="lineNum">    1133 </span>            :       template&lt;size_t... __indices&gt; \
+<span class="lineNum">    1134 </span>            :         static constexpr bool \
+<span class="lineNum">    1135 </span>            :         (*_S_erased_##__NAME[])(const variant&amp;, const variant&amp;) = \
+<span class="lineNum">    1136 </span>            :           { &amp;__detail::__variant::__erased_##__NAME&lt; \
+<span class="lineNum">    1137 </span>            :                 const variant&amp;, __indices&gt;... }; \
+<span class="lineNum">    1138 </span>            :       template&lt;size_t... __indices&gt; \
+<span class="lineNum">    1139 </span>            :         constexpr inline bool \
+<span class="lineNum">    1140 </span>            :         _M_##__NAME(const variant&amp; __rhs, \
+<span class="lineNum">    1141 </span>            :                     std::index_sequence&lt;__indices...&gt;) const \
+<span class="lineNum">    1142 </span>            :         { \
+<span class="lineNum">    1143 </span>            :           auto __lhs_index = this-&gt;index(); \
+<span class="lineNum">    1144 </span>            :           auto __rhs_index = __rhs.index(); \
+<span class="lineNum">    1145 </span>            :           if (__lhs_index != __rhs_index || valueless_by_exception()) \
+<span class="lineNum">    1146 </span>            :             /* Modulo addition. */ \
+<span class="lineNum">    1147 </span>            :             return __lhs_index + 1 __OP __rhs_index + 1; \
+<span class="lineNum">    1148 </span>            :           return _S_erased_##__NAME&lt;__indices...&gt;[__lhs_index](*this, __rhs); \
+<span class="lineNum">    1149 </span>            :         }
+<span class="lineNum">    1150 </span>            : 
+<span class="lineNum">    1151 </span>            :       _VARIANT_RELATION_FUNCTION_TEMPLATE(&lt;, less)
+<span class="lineNum">    1152 </span>            :       _VARIANT_RELATION_FUNCTION_TEMPLATE(&lt;=, less_equal)
+<span class="lineNum">    1153 </span>            :       _VARIANT_RELATION_FUNCTION_TEMPLATE(==, equal)
+<span class="lineNum">    1154 </span>            :       _VARIANT_RELATION_FUNCTION_TEMPLATE(!=, not_equal)
+<span class="lineNum">    1155 </span>            :       _VARIANT_RELATION_FUNCTION_TEMPLATE(&gt;=, greater_equal)
+<span class="lineNum">    1156 </span>            :       _VARIANT_RELATION_FUNCTION_TEMPLATE(&gt;, greater)
+<span class="lineNum">    1157 </span>            : 
+<span class="lineNum">    1158 </span>            : #undef _VARIANT_RELATION_FUNCTION_TEMPLATE
+<span class="lineNum">    1159 </span>            : 
+<span class="lineNum">    1160 </span>            :       template&lt;size_t _Np, typename _Vp&gt;
+<span class="lineNum">    1161 </span>            :         friend constexpr decltype(auto) __detail::__variant::
+<span class="lineNum">    1162 </span>            : #if _GLIBCXX_INLINE_VERSION
+<span class="lineNum">    1163 </span>            :         __7:: // Required due to PR c++/59256
+<span class="lineNum">    1164 </span>            : #endif
+<span class="lineNum">    1165 </span>            :         __get(_Vp&amp;&amp; __v);
+<span class="lineNum">    1166 </span>            : 
+<span class="lineNum">    1167 </span>            :       template&lt;typename _Vp&gt;
+<span class="lineNum">    1168 </span>            :         friend void* __detail::__variant::
+<span class="lineNum">    1169 </span>            : #if _GLIBCXX_INLINE_VERSION
+<span class="lineNum">    1170 </span>            :         __7:: // Required due to PR c++/59256
+<span class="lineNum">    1171 </span>            : #endif
+<span class="lineNum">    1172 </span>            :         __get_storage(_Vp&amp;&amp; __v);
+<span class="lineNum">    1173 </span>            : 
+<span class="lineNum">    1174 </span>            : #define _VARIANT_RELATION_FUNCTION_TEMPLATE(__OP) \
+<span class="lineNum">    1175 </span>            :       template&lt;typename... _Tp&gt; \
+<span class="lineNum">    1176 </span>            :         friend constexpr bool \
+<span class="lineNum">    1177 </span>            :         operator __OP(const variant&lt;_Tp...&gt;&amp; __lhs, \
+<span class="lineNum">    1178 </span>            :                       const variant&lt;_Tp...&gt;&amp; __rhs);
+<span class="lineNum">    1179 </span>            : 
+<span class="lineNum">    1180 </span>            :       _VARIANT_RELATION_FUNCTION_TEMPLATE(&lt;)
+<span class="lineNum">    1181 </span>            :       _VARIANT_RELATION_FUNCTION_TEMPLATE(&lt;=)
+<span class="lineNum">    1182 </span>            :       _VARIANT_RELATION_FUNCTION_TEMPLATE(==)
+<span class="lineNum">    1183 </span>            :       _VARIANT_RELATION_FUNCTION_TEMPLATE(!=)
+<span class="lineNum">    1184 </span>            :       _VARIANT_RELATION_FUNCTION_TEMPLATE(&gt;=)
+<span class="lineNum">    1185 </span>            :       _VARIANT_RELATION_FUNCTION_TEMPLATE(&gt;)
+<span class="lineNum">    1186 </span>            : 
+<span class="lineNum">    1187 </span>            : #undef _VARIANT_RELATION_FUNCTION_TEMPLATE
+<span class="lineNum">    1188 </span>            :     };
+<span class="lineNum">    1189 </span>            : 
+<a name="1190"><span class="lineNum">    1190 </span>            :   template&lt;size_t _Np, typename... _Types&gt;</a>
+<span class="lineNum">    1191 </span>            :     constexpr variant_alternative_t&lt;_Np, variant&lt;_Types...&gt;&gt;&amp;
+<span class="lineNum">    1192 </span><span class="lineCov">          2 :     get(variant&lt;_Types...&gt;&amp; __v)</span>
+<span class="lineNum">    1193 </span>            :     {
+<span class="lineNum">    1194 </span>            :       static_assert(_Np &lt; sizeof...(_Types),
+<span class="lineNum">    1195 </span>            :                     &quot;The index should be in [0, number of alternatives)&quot;);
+<span class="lineNum">    1196 </span><span class="lineCov">          2 :       if (__v.index() != _Np)</span>
+<span class="lineNum">    1197 </span><span class="lineNoCov">          0 :         __throw_bad_variant_access(&quot;Unexpected index&quot;);</span>
+<span class="lineNum">    1198 </span><span class="lineCov">          2 :       return __detail::__variant::__get&lt;_Np&gt;(__v);</span>
+<span class="lineNum">    1199 </span>            :     }
+<span class="lineNum">    1200 </span>            : 
+<span class="lineNum">    1201 </span>            :   template&lt;size_t _Np, typename... _Types&gt;
+<span class="lineNum">    1202 </span>            :     constexpr variant_alternative_t&lt;_Np, variant&lt;_Types...&gt;&gt;&amp;&amp;
+<span class="lineNum">    1203 </span>            :     get(variant&lt;_Types...&gt;&amp;&amp; __v)
+<span class="lineNum">    1204 </span>            :     {
+<span class="lineNum">    1205 </span>            :       static_assert(_Np &lt; sizeof...(_Types),
+<span class="lineNum">    1206 </span>            :                     &quot;The index should be in [0, number of alternatives)&quot;);
+<span class="lineNum">    1207 </span>            :       if (__v.index() != _Np)
+<span class="lineNum">    1208 </span>            :         __throw_bad_variant_access(&quot;Unexpected index&quot;);
+<span class="lineNum">    1209 </span>            :       return __detail::__variant::__get&lt;_Np&gt;(std::move(__v));
+<span class="lineNum">    1210 </span>            :     }
+<span class="lineNum">    1211 </span>            : 
+<span class="lineNum">    1212 </span>            :   template&lt;size_t _Np, typename... _Types&gt;
+<span class="lineNum">    1213 </span>            :     constexpr const variant_alternative_t&lt;_Np, variant&lt;_Types...&gt;&gt;&amp;
+<span class="lineNum">    1214 </span>            :     get(const variant&lt;_Types...&gt;&amp; __v)
+<span class="lineNum">    1215 </span>            :     {
+<span class="lineNum">    1216 </span>            :       static_assert(_Np &lt; sizeof...(_Types),
+<span class="lineNum">    1217 </span>            :                     &quot;The index should be in [0, number of alternatives)&quot;);
+<span class="lineNum">    1218 </span>            :       if (__v.index() != _Np)
+<span class="lineNum">    1219 </span>            :         __throw_bad_variant_access(&quot;Unexpected index&quot;);
+<span class="lineNum">    1220 </span>            :       return __detail::__variant::__get&lt;_Np&gt;(__v);
+<span class="lineNum">    1221 </span>            :     }
+<span class="lineNum">    1222 </span>            : 
+<span class="lineNum">    1223 </span>            :   template&lt;size_t _Np, typename... _Types&gt;
+<span class="lineNum">    1224 </span>            :     constexpr const variant_alternative_t&lt;_Np, variant&lt;_Types...&gt;&gt;&amp;&amp;
+<span class="lineNum">    1225 </span>            :     get(const variant&lt;_Types...&gt;&amp;&amp; __v)
+<span class="lineNum">    1226 </span>            :     {
+<span class="lineNum">    1227 </span>            :       static_assert(_Np &lt; sizeof...(_Types),
+<span class="lineNum">    1228 </span>            :                     &quot;The index should be in [0, number of alternatives)&quot;);
+<span class="lineNum">    1229 </span>            :       if (__v.index() != _Np)
+<span class="lineNum">    1230 </span>            :         __throw_bad_variant_access(&quot;Unexpected index&quot;);
+<span class="lineNum">    1231 </span>            :       return __detail::__variant::__get&lt;_Np&gt;(std::move(__v));
+<span class="lineNum">    1232 </span>            :     }
+<span class="lineNum">    1233 </span>            : 
+<a name="1234"><span class="lineNum">    1234 </span>            :   template&lt;typename _Visitor, typename... _Variants&gt;</a>
+<span class="lineNum">    1235 </span>            :     constexpr decltype(auto)
+<span class="lineNum">    1236 </span><span class="lineCov">          2 :     visit(_Visitor&amp;&amp; __visitor, _Variants&amp;&amp;... __variants)</span>
+<span class="lineNum">    1237 </span>            :     {
+<span class="lineNum">    1238 </span><span class="lineCov">          2 :       if ((__variants.valueless_by_exception() || ...))</span>
+<span class="lineNum">    1239 </span><span class="lineNoCov">          0 :         __throw_bad_variant_access(&quot;Unexpected index&quot;);</span>
+<span class="lineNum">    1240 </span>            : 
+<span class="lineNum">    1241 </span>            :       using _Result_type =
+<span class="lineNum">    1242 </span>            :         decltype(std::forward&lt;_Visitor&gt;(__visitor)(
+<span class="lineNum">    1243 </span>            :             get&lt;0&gt;(std::forward&lt;_Variants&gt;(__variants))...));
+<span class="lineNum">    1244 </span>            : 
+<span class="lineNum">    1245 </span><span class="lineCov">          2 :       constexpr auto&amp; __vtable = __detail::__variant::__gen_vtable&lt;</span>
+<span class="lineNum">    1246 </span>            :         _Result_type, _Visitor&amp;&amp;, _Variants&amp;&amp;...&gt;::_S_vtable;
+<span class="lineNum">    1247 </span>            : 
+<span class="lineNum">    1248 </span><span class="lineCov">          2 :       auto __func_ptr = __vtable._M_access(__variants.index()...);</span>
+<span class="lineNum">    1249 </span><span class="lineCov">          2 :       return (*__func_ptr)(std::forward&lt;_Visitor&gt;(__visitor),</span>
+<span class="lineNum">    1250 </span><span class="lineCov">          2 :                            std::forward&lt;_Variants&gt;(__variants)...);</span>
+<span class="lineNum">    1251 </span>            :     }
+<span class="lineNum">    1252 </span>            : 
+<span class="lineNum">    1253 </span>            :   template&lt;bool, typename... _Types&gt;
+<span class="lineNum">    1254 </span>            :     struct __variant_hash_call_base_impl
+<span class="lineNum">    1255 </span>            :     {
+<span class="lineNum">    1256 </span>            :       size_t
+<span class="lineNum">    1257 </span>            :       operator()(const variant&lt;_Types...&gt;&amp; __t) const
+<span class="lineNum">    1258 </span>            :       noexcept((is_nothrow_invocable_v&lt;hash&lt;decay_t&lt;_Types&gt;&gt;, _Types&gt; &amp;&amp; ...))
+<span class="lineNum">    1259 </span>            :       {
+<span class="lineNum">    1260 </span>            :         if (!__t.valueless_by_exception())
+<span class="lineNum">    1261 </span>            :           {
+<span class="lineNum">    1262 </span>            :             namespace __edv = __detail::__variant;
+<span class="lineNum">    1263 </span>            :             static constexpr size_t (*_S_vtable[])(void*) =
+<span class="lineNum">    1264 </span>            :               { &amp;__edv::__erased_hash&lt;const _Types&amp;&gt;... };
+<span class="lineNum">    1265 </span>            :             return hash&lt;size_t&gt;{}(__t.index())
+<span class="lineNum">    1266 </span>            :               + _S_vtable[__t.index()](__edv::__get_storage(__t));
+<span class="lineNum">    1267 </span>            :           }
+<span class="lineNum">    1268 </span>            :         return hash&lt;size_t&gt;{}(__t.index());
+<span class="lineNum">    1269 </span>            :       }
+<span class="lineNum">    1270 </span>            :     };
+<span class="lineNum">    1271 </span>            : 
+<span class="lineNum">    1272 </span>            :   template&lt;typename... _Types&gt;
+<span class="lineNum">    1273 </span>            :     struct __variant_hash_call_base_impl&lt;false, _Types...&gt; {};
+<span class="lineNum">    1274 </span>            : 
+<span class="lineNum">    1275 </span>            :   template&lt;typename... _Types&gt;
+<span class="lineNum">    1276 </span>            :     using __variant_hash_call_base =
+<span class="lineNum">    1277 </span>            :     __variant_hash_call_base_impl&lt;(__poison_hash&lt;remove_const_t&lt;_Types&gt;&gt;::
+<span class="lineNum">    1278 </span>            :                                    __enable_hash_call &amp;&amp;...), _Types...&gt;;
+<span class="lineNum">    1279 </span>            : 
+<span class="lineNum">    1280 </span>            :   template&lt;typename... _Types&gt;
+<span class="lineNum">    1281 </span>            :     struct hash&lt;variant&lt;_Types...&gt;&gt;
+<span class="lineNum">    1282 </span>            :     : private __detail::__variant::_Variant_hash_base&lt;
+<span class="lineNum">    1283 </span>            :         variant&lt;_Types...&gt;, std::index_sequence_for&lt;_Types...&gt;&gt;,
+<span class="lineNum">    1284 </span>            :       public __variant_hash_call_base&lt;_Types...&gt;
+<span class="lineNum">    1285 </span>            :     {
+<span class="lineNum">    1286 </span>            :       using result_type = size_t;
+<span class="lineNum">    1287 </span>            :       using argument_type = variant&lt;_Types...&gt;;
+<span class="lineNum">    1288 </span>            :     };
+<span class="lineNum">    1289 </span>            : 
+<span class="lineNum">    1290 </span>            :   template&lt;&gt;
+<span class="lineNum">    1291 </span>            :     struct hash&lt;monostate&gt;
+<span class="lineNum">    1292 </span>            :     {
+<span class="lineNum">    1293 </span>            :       using result_type = size_t;
+<span class="lineNum">    1294 </span>            :       using argument_type = monostate;
+<span class="lineNum">    1295 </span>            : 
+<span class="lineNum">    1296 </span>            :       size_t
+<span class="lineNum">    1297 </span>            :       operator()(const monostate&amp; __t) const noexcept
+<span class="lineNum">    1298 </span>            :       {
+<span class="lineNum">    1299 </span>            :         constexpr size_t __magic_monostate_hash = -7777;
+<span class="lineNum">    1300 </span>            :         return __magic_monostate_hash;
+<span class="lineNum">    1301 </span>            :       }
+<span class="lineNum">    1302 </span>            :     };
+<span class="lineNum">    1303 </span>            : 
+<span class="lineNum">    1304 </span>            : _GLIBCXX_END_NAMESPACE_VERSION
+<span class="lineNum">    1305 </span>            : } // namespace std
+<span class="lineNum">    1306 </span>            : 
+<span class="lineNum">    1307 </span>            : #endif // C++17
+<span class="lineNum">    1308 </span>            : 
+<span class="lineNum">    1309 </span>            : #endif // _GLIBCXX_VARIANT
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Code coverage - /home/travis/build/mikezackles/piecewise/include/mz/piecewise/callable_overload.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../../../../index.html">top level</a> - <a href="index.html">home/travis/build/mikezackles/piecewise/include/mz/piecewise</a> - callable_overload.hpp<span style="font-size: 80%;"> (source / <a href="callable_overload.hpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Code coverage</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2018-02-19 01:04:17</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Legend:</td>
+            <td class="headerValueLeg">            Lines:
+            <span class="coverLegendCov">hit</span>
+            <span class="coverLegendNoCov">not hit</span>
+</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : #ifndef UUID_AA9FDD71_5F9D_4874_B5E2_888E951DB878</a>
+<span class="lineNum">       2 </span>            : #define UUID_AA9FDD71_5F9D_4874_B5E2_888E951DB878
+<span class="lineNum">       3 </span>            : 
+<span class="lineNum">       4 </span>            : #include &lt;type_traits&gt;
+<span class="lineNum">       5 </span>            : #include &lt;utility&gt;
+<span class="lineNum">       6 </span>            : 
+<span class="lineNum">       7 </span>            : namespace mz { namespace piecewise {
+<span class="lineNum">       8 </span>            : #if __cplusplus &gt;= 201703L
+<span class="lineNum">       9 </span>            :   template &lt;typename ...Lambdas&gt;
+<span class="lineNum">      10 </span>            :   struct CallableOverload : Lambdas... {
+<span class="lineNum">      11 </span>            :     using Lambdas::operator()...;
+<span class="lineNum">      12 </span>            :   };
+<span class="lineNum">      13 </span>            : #else
+<span class="lineNum">      14 </span>            :   template &lt;typename Lambda, typename ...Lambdas&gt;
+<span class="lineNum">      15 </span>            :   struct CallableOverload : Lambda, CallableOverload&lt;Lambdas...&gt; {
+<span class="lineNum">      16 </span>            :     using Lambda::operator();
+<span class="lineNum">      17 </span>            :     using CallableOverload&lt;Lambdas...&gt;::operator();
+<span class="lineNum">      18 </span>            :     template &lt;typename ForwardLambda, typename ...ForwardLambdas&gt;
+<span class="lineNum">      19 </span>            :     CallableOverload(ForwardLambda&amp;&amp; lambda, ForwardLambdas&amp;&amp;... lambdas)
+<span class="lineNum">      20 </span>            :       : Lambda{std::forward&lt;ForwardLambda&gt;(lambda)}
+<span class="lineNum">      21 </span>            :       , CallableOverload&lt;Lambdas...&gt;{std::forward&lt;ForwardLambdas&gt;(lambdas)...}
+<span class="lineNum">      22 </span>            :     {}
+<span class="lineNum">      23 </span>            :   };
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            :   template &lt;typename Lambda&gt;
+<span class="lineNum">      26 </span>            :   struct CallableOverload&lt;Lambda&gt; : Lambda {
+<span class="lineNum">      27 </span>            :     using Lambda::operator();
+<span class="lineNum">      28 </span>            :     CallableOverload(Lambda lambda) : Lambda{std::move(lambda)} {}
+<span class="lineNum">      29 </span>            :   };
+<span class="lineNum">      30 </span>            : #endif
+<a name="31"><span class="lineNum">      31 </span>            : </a>
+<span class="lineNum">      32 </span>            :   template &lt;typename ...ForwardLambdas&gt;
+<span class="lineNum">      33 </span><span class="lineCov">          4 :   auto handler(ForwardLambdas&amp;&amp;... lambdas) {</span>
+<span class="lineNum">      34 </span>            :     return CallableOverload&lt;std::remove_reference_t&lt;ForwardLambdas&gt;...&gt;{
+<span class="lineNum">      35 </span><span class="lineCov">          6 :       std::forward&lt;ForwardLambdas&gt;(lambdas)...</span>
+<span class="lineNum">      36 </span><span class="lineCov">          6 :     };</span>
+<span class="lineNum">      37 </span>            :   }
+<span class="lineNum">      38 </span>            : }}
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span>            : #endif
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

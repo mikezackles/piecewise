@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Code coverage - /home/travis/build/mikezackles/piecewise/include/mz/piecewise/tuple_list.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../../../../index.html">top level</a> - <a href="index.html">home/travis/build/mikezackles/piecewise/include/mz/piecewise</a> - tuple_list.hpp<span style="font-size: 80%;"> (source / <a href="tuple_list.hpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Code coverage</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">17</td>
+            <td class="headerCovTableEntry">17</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2018-02-19 01:04:17</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">36</td>
+            <td class="headerCovTableEntry">52</td>
+            <td class="headerCovTableEntryLo">69.2 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Legend:</td>
+            <td class="headerValueLeg">            Lines:
+            <span class="coverLegendCov">hit</span>
+            <span class="coverLegendNoCov">not hit</span>
+</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : #ifndef UUID_D1091115_FC3B_4BB0_BCB7_0F0137449C49</a>
+<span class="lineNum">       2 </span>            : #define UUID_D1091115_FC3B_4BB0_BCB7_0F0137449C49
+<span class="lineNum">       3 </span>            : 
+<span class="lineNum">       4 </span>            : #include &lt;tuple&gt;
+<span class="lineNum">       5 </span>            : #include &lt;type_traits&gt;
+<span class="lineNum">       6 </span>            : 
+<span class="lineNum">       7 </span>            : namespace mz { namespace piecewise { namespace tuple_list {
+<span class="lineNum">       8 </span>            :   template &lt;typename T, typename ...Ts&gt;
+<span class="lineNum">       9 </span>            :   struct split_result {
+<span class="lineNum">      10 </span>            :     std::remove_reference_t&lt;T&gt; head;
+<span class="lineNum">      11 </span>            :     std::tuple&lt;Ts...&gt; tail;
+<span class="lineNum">      12 </span>            :   };
+<span class="lineNum">      13 </span>            : 
+<a name="14"><span class="lineNum">      14 </span>            :   namespace detail {</a>
+<span class="lineNum">      15 </span>            :     template &lt;typename T, typename ...Ts, std::size_t ...Indices&gt;
+<span class="lineNum">      16 </span><span class="lineCov">         21 :     inline auto split_impl(</span>
+<span class="lineNum">      17 </span>            :       std::tuple&lt;T, Ts...&gt; list
+<span class="lineNum">      18 </span>            :     , std::index_sequence&lt;Indices...&gt;
+<span class="lineNum">      19 </span>            :     )-&gt; split_result&lt;T, Ts...&gt; {
+<span class="lineNum">      20 </span>            :       return {
+<span class="lineNum">      21 </span><span class="lineCov">         21 :         std::move(std::get&lt;0&gt;(list))</span>
+<span class="lineNum">      22 </span><span class="lineCov">         17 :       , std::make_tuple(std::move(std::get&lt;Indices+1&gt;(list))...)</span>
+<span class="lineNum">      23 </span><span class="lineCov">         56 :       };</span>
+<span class="lineNum">      24 </span>            :     }
+<span class="lineNum">      25 </span>            : 
+<span class="lineNum">      26 </span>            :     #if defined(__clang__)
+<span class="lineNum">      27 </span>            :     #elif defined(__GNUC__) || defined(__GNUG__)
+<span class="lineNum">      28 </span>            :       #pragma GCC diagnostic push
+<span class="lineNum">      29 </span>            :       #pragma GCC diagnostic ignored &quot;-Wunused-but-set-parameter&quot;
+<span class="lineNum">      30 </span>            :     #elif defined(_MSC_VER)
+<span class="lineNum">      31 </span>            :       #pragma warning( push )
+<span class="lineNum">      32 </span>            :       #pragma warning( disable : 4100 )
+<a name="33"><span class="lineNum">      33 </span>            :     #endif</a>
+<span class="lineNum">      34 </span>            :     template &lt;typename ...Ts, typename T, std::size_t ...Indices&gt;
+<span class="lineNum">      35 </span><span class="lineCov">         15 :     inline auto combine_impl(</span>
+<span class="lineNum">      36 </span>            :       std::tuple&lt;Ts...&gt; reverse_tail
+<span class="lineNum">      37 </span>            :     , std::index_sequence&lt;Indices...&gt;
+<span class="lineNum">      38 </span>            :     , T reverse_head
+<span class="lineNum">      39 </span>            :     ) {
+<span class="lineNum">      40 </span>            :       return std::make_tuple(
+<span class="lineNum">      41 </span><span class="lineCov">          9 :         std::move(std::get&lt;Indices&gt;(reverse_tail))...</span>
+<span class="lineNum">      42 </span><span class="lineCov">         15 :       , std::move(reverse_head)</span>
+<span class="lineNum">      43 </span><span class="lineCov">         15 :       );</span>
+<span class="lineNum">      44 </span>            :     }
+<span class="lineNum">      45 </span>            :     #if defined(__clang__)
+<span class="lineNum">      46 </span>            :     #elif defined(__GNUC__) || defined(__GNUG__)
+<span class="lineNum">      47 </span>            :       #pragma GCC diagnostic pop
+<span class="lineNum">      48 </span>            :     #elif defined(_MSC_VER)
+<span class="lineNum">      49 </span>            :       #pragma warning( pop )
+<span class="lineNum">      50 </span>            :     #endif
+<span class="lineNum">      51 </span>            :   }
+<a name="52"><span class="lineNum">      52 </span>            : </a>
+<span class="lineNum">      53 </span>            :   template &lt;typename T, typename ...Ts&gt;
+<span class="lineNum">      54 </span><span class="lineCov">         21 :   inline auto split(std::tuple&lt;T, Ts...&gt; list) {</span>
+<span class="lineNum">      55 </span><span class="lineCov">          3 :     return detail::split_impl(</span>
+<span class="lineNum">      56 </span><span class="lineCov">         21 :       std::move(list)</span>
+<span class="lineNum">      57 </span>            :     , std::make_index_sequence&lt;sizeof...(Ts)&gt;{}
+<span class="lineNum">      58 </span><span class="lineCov">         21 :     );</span>
+<span class="lineNum">      59 </span>            :   }
+<a name="60"><span class="lineNum">      60 </span>            : </a>
+<span class="lineNum">      61 </span>            :   template &lt;typename ...Ts, typename T&gt;
+<span class="lineNum">      62 </span><span class="lineCov">         15 :   inline auto combine(std::tuple&lt;Ts...&gt; reverse_tail, T reverse_head) {</span>
+<span class="lineNum">      63 </span><span class="lineCov">          1 :     return detail::combine_impl(</span>
+<span class="lineNum">      64 </span><span class="lineCov">         15 :       std::move(reverse_tail)</span>
+<span class="lineNum">      65 </span>            :     , std::make_index_sequence&lt;sizeof...(Ts)&gt;{}
+<span class="lineNum">      66 </span><span class="lineCov">         15 :     , std::move(reverse_head)</span>
+<span class="lineNum">      67 </span><span class="lineCov">         30 :     );</span>
+<span class="lineNum">      68 </span>            :   }
+<span class="lineNum">      69 </span>            : }}}
+<span class="lineNum">      70 </span>            : 
+<span class="lineNum">      71 </span>            : #endif
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

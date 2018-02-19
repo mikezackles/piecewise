@@ -1,0 +1,499 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Code coverage - /home/travis/build/mikezackles/piecewise/subprojects/catch/projects/SelfTest/TrickyTests.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../../../../../index.html">top level</a> - <a href="index.html">home/travis/build/mikezackles/piecewise/subprojects/catch/projects/SelfTest</a> - TrickyTests.cpp<span style="font-size: 80%;"> (source / <a href="TrickyTests.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Code coverage</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">100</td>
+            <td class="headerCovTableEntry">121</td>
+            <td class="headerCovTableEntryMed">82.6 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2018-02-19 01:04:17</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">28</td>
+            <td class="headerCovTableEntry">37</td>
+            <td class="headerCovTableEntryMed">75.7 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Legend:</td>
+            <td class="headerValueLeg">            Lines:
+            <span class="coverLegendCov">hit</span>
+            <span class="coverLegendNoCov">not hit</span>
+</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<span class="lineNum">       2 </span>            :  *  Created by Phil on 09/11/2010.
+<span class="lineNum">       3 </span>            :  *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
+<span class="lineNum">       4 </span>            :  *
+<span class="lineNum">       5 </span>            :  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
+<span class="lineNum">       6 </span>            :  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+<span class="lineNum">       7 </span>            :  */
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : #ifdef __clang__
+<span class="lineNum">      10 </span>            : #pragma clang diagnostic ignored &quot;-Wpadded&quot;
+<span class="lineNum">      11 </span>            : #endif
+<span class="lineNum">      12 </span>            : 
+<span class="lineNum">      13 </span>            : #include &lt;stdio.h&gt;
+<span class="lineNum">      14 </span>            : 
+<span class="lineNum">      15 </span>            : #include &quot;catch.hpp&quot;
+<span class="lineNum">      16 </span>            : 
+<span class="lineNum">      17 </span>            : #ifdef __clang__
+<span class="lineNum">      18 </span>            : #pragma clang diagnostic ignored &quot;-Wc++98-compat&quot;
+<span class="lineNum">      19 </span>            : #pragma clang diagnostic ignored &quot;-Wc++98-compat-pedantic&quot;
+<span class="lineNum">      20 </span>            : #endif
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            : namespace Catch
+<a name="23"><span class="lineNum">      23 </span>            : {</a>
+<span class="lineNum">      24 </span>            :     template&lt;&gt;
+<span class="lineNum">      25 </span><span class="lineCov">          2 :     std::string toString&lt;std::pair&lt;int, int&gt; &gt;( const std::pair&lt;int, int&gt;&amp; value )</span>
+<span class="lineNum">      26 </span>            :     {
+<span class="lineNum">      27 </span><span class="lineCov">          4 :         std::ostringstream oss;</span>
+<span class="lineNum">      28 </span><span class="lineCov">          2 :         oss &lt;&lt; &quot;std::pair( &quot; &lt;&lt; value.first &lt;&lt; &quot;, &quot; &lt;&lt; value.second &lt;&lt; &quot; )&quot;;</span>
+<span class="lineNum">      29 </span><span class="lineCov">          4 :         return oss.str();</span>
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            :     }
+<span class="lineNum">      32 </span>            : }
+<a name="33"><span class="lineNum">      33 </span>            : </a>
+<span class="lineNum">      34 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">      35 </span><span class="lineCov">          2 : TEST_CASE</span>
+<span class="lineNum">      36 </span>            : (
+<span class="lineNum">      37 </span>            :     &quot;Parsing a std::pair&quot;,
+<span class="lineNum">      38 </span>            :     &quot;[Tricky][std::pair]&quot;
+<span class="lineNum">      39 </span>            : )
+<span class="lineNum">      40 </span>            : {
+<span class="lineNum">      41 </span><span class="lineCov">          1 :     std::pair&lt;int, int&gt; aNicePair( 1, 2 );</span>
+<span class="lineNum">      42 </span>            : 
+<span class="lineNum">      43 </span><span class="lineCov">          1 :     REQUIRE( (std::pair&lt;int, int&gt;( 1, 2 )) == aNicePair );</span>
+<span class="lineNum">      44 </span><span class="lineCov">          1 : }</span>
+<a name="45"><span class="lineNum">      45 </span>            : </a>
+<span class="lineNum">      46 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">      47 </span><span class="lineCov">          1 : TEST_CASE</span>
+<span class="lineNum">      48 </span>            : (
+<span class="lineNum">      49 </span>            :     &quot;Where there is more to the expression after the RHS&quot;,
+<span class="lineNum">      50 </span>            :     &quot;[Tricky][failing][.]&quot;
+<span class="lineNum">      51 </span>            : )
+<span class="lineNum">      52 </span>            : {
+<span class="lineNum">      53 </span>            : //    int a = 1, b = 2;
+<span class="lineNum">      54 </span>            : //    REQUIRE( a == 2 || b == 2 );
+<span class="lineNum">      55 </span><span class="lineNoCov">          0 :     WARN( &quot;Uncomment the code in this test to check that it gives a sensible compiler error&quot; );</span>
+<a name="56"><span class="lineNum">      56 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">      57 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">      58 </span><span class="lineCov">          1 : TEST_CASE</span>
+<span class="lineNum">      59 </span>            : (
+<span class="lineNum">      60 </span>            :     &quot;Where the LHS is not a simple value&quot;,
+<span class="lineNum">      61 </span>            :     &quot;[Tricky][failing][.]&quot;
+<span class="lineNum">      62 </span>            : )
+<span class="lineNum">      63 </span>            : {
+<span class="lineNum">      64 </span>            :     /*
+<span class="lineNum">      65 </span>            :     int a = 1;
+<span class="lineNum">      66 </span>            :     int b = 2;
+<span class="lineNum">      67 </span>            : 
+<span class="lineNum">      68 </span>            :     // This only captures part of the expression, but issues a warning about the rest
+<span class="lineNum">      69 </span>            :     REQUIRE( a+1 == b-1 );
+<span class="lineNum">      70 </span>            :     */
+<span class="lineNum">      71 </span><span class="lineNoCov">          0 :     WARN( &quot;Uncomment the code in this test to check that it gives a sensible compiler error&quot; );</span>
+<span class="lineNum">      72 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">      73 </span>            : 
+<span class="lineNum">      74 </span>            : struct Opaque
+<a name="75"><span class="lineNum">      75 </span>            : {</a>
+<span class="lineNum">      76 </span>            :     int val;
+<span class="lineNum">      77 </span><span class="lineNoCov">          0 :     bool operator ==( const Opaque&amp; o ) const</span>
+<span class="lineNum">      78 </span>            :     {
+<span class="lineNum">      79 </span><span class="lineNoCov">          0 :         return val == o.val;</span>
+<span class="lineNum">      80 </span>            :     }
+<span class="lineNum">      81 </span>            : };
+<a name="82"><span class="lineNum">      82 </span>            : </a>
+<span class="lineNum">      83 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">      84 </span><span class="lineCov">          1 : TEST_CASE</span>
+<span class="lineNum">      85 </span>            : (
+<span class="lineNum">      86 </span>            :     &quot;A failing expression with a non streamable type is still captured&quot;,
+<span class="lineNum">      87 </span>            :     &quot;[Tricky][failing][.]&quot;
+<span class="lineNum">      88 </span>            : )
+<span class="lineNum">      89 </span>            : {
+<span class="lineNum">      90 </span>            : 
+<span class="lineNum">      91 </span>            :     Opaque o1, o2;
+<span class="lineNum">      92 </span><span class="lineNoCov">          0 :     o1.val = 7;</span>
+<span class="lineNum">      93 </span><span class="lineNoCov">          0 :     o2.val = 8;</span>
+<span class="lineNum">      94 </span>            : 
+<span class="lineNum">      95 </span><span class="lineNoCov">          0 :     CHECK( &amp;o1 == &amp;o2 );</span>
+<span class="lineNum">      96 </span><span class="lineNoCov">          0 :     CHECK( o1 == o2 );</span>
+<span class="lineNum">      97 </span><span class="lineNoCov">          0 : }</span>
+<a name="98"><span class="lineNum">      98 </span>            : </a>
+<span class="lineNum">      99 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     100 </span><span class="lineCov">          1 : TEST_CASE</span>
+<span class="lineNum">     101 </span>            : (
+<span class="lineNum">     102 </span>            :     &quot;string literals of different sizes can be compared&quot;,
+<span class="lineNum">     103 </span>            :     &quot;[Tricky][failing][.]&quot;
+<span class="lineNum">     104 </span>            : )
+<span class="lineNum">     105 </span>            : {
+<span class="lineNum">     106 </span><span class="lineNoCov">          0 :     REQUIRE( std::string( &quot;first&quot; ) == &quot;second&quot; );</span>
+<span class="lineNum">     107 </span>            : 
+<span class="lineNum">     108 </span><span class="lineNoCov">          0 : }</span>
+<a name="109"><span class="lineNum">     109 </span>            : </a>
+<span class="lineNum">     110 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     111 </span><span class="lineCov">          2 : TEST_CASE</span>
+<span class="lineNum">     112 </span>            : (
+<span class="lineNum">     113 </span>            :     &quot;An expression with side-effects should only be evaluated once&quot;,
+<span class="lineNum">     114 </span>            :     &quot;[Tricky]&quot;
+<span class="lineNum">     115 </span>            : )
+<span class="lineNum">     116 </span>            : {
+<span class="lineNum">     117 </span><span class="lineCov">          1 :     int i = 7;</span>
+<span class="lineNum">     118 </span>            : 
+<span class="lineNum">     119 </span><span class="lineCov">          1 :     REQUIRE( i++ == 7 );</span>
+<span class="lineNum">     120 </span><span class="lineCov">          1 :     REQUIRE( i++ == 8 );</span>
+<span class="lineNum">     121 </span>            : 
+<span class="lineNum">     122 </span><span class="lineCov">          1 : }</span>
+<span class="lineNum">     123 </span>            : 
+<span class="lineNum">     124 </span>            : namespace A {
+<span class="lineNum">     125 </span>            :     struct X
+<span class="lineNum">     126 </span>            :     {
+<span class="lineNum">     127 </span>            :         X() : a(4), b(2), c(7) {}
+<span class="lineNum">     128 </span>            :         X(int v) : a(v), b(2), c(7) {}
+<span class="lineNum">     129 </span>            :         int a;
+<span class="lineNum">     130 </span>            :         int b;
+<span class="lineNum">     131 </span>            :         int c;
+<span class="lineNum">     132 </span>            :     };
+<span class="lineNum">     133 </span>            : }
+<span class="lineNum">     134 </span>            : 
+<span class="lineNum">     135 </span>            : namespace B {
+<span class="lineNum">     136 </span>            :     struct Y
+<span class="lineNum">     137 </span>            :     {
+<span class="lineNum">     138 </span>            :         Y() : a(4), b(2), c(7) {}
+<span class="lineNum">     139 </span>            :         Y(int v) : a(v), b(2), c(7) {}
+<span class="lineNum">     140 </span>            :         int a;
+<span class="lineNum">     141 </span>            :         int b;
+<span class="lineNum">     142 </span>            :         int c;
+<span class="lineNum">     143 </span>            :     };
+<span class="lineNum">     144 </span>            : }
+<span class="lineNum">     145 </span>            : 
+<span class="lineNum">     146 </span>            : inline bool operator==(const A::X&amp; lhs, const B::Y&amp; rhs)
+<span class="lineNum">     147 </span>            : {
+<span class="lineNum">     148 </span>            :     return (lhs.a == rhs.a);
+<span class="lineNum">     149 </span>            : }
+<span class="lineNum">     150 </span>            : 
+<span class="lineNum">     151 </span>            : inline bool operator==(const B::Y&amp; lhs, const A::X&amp; rhs)
+<span class="lineNum">     152 </span>            : {
+<span class="lineNum">     153 </span>            :     return (lhs.a == rhs.a);
+<span class="lineNum">     154 </span>            : }
+<span class="lineNum">     155 </span>            : 
+<span class="lineNum">     156 </span>            : 
+<span class="lineNum">     157 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     158 </span>            : /* This, currently, does not compile with LLVM
+<span class="lineNum">     159 </span>            : TEST_CASE
+<span class="lineNum">     160 </span>            : (
+<span class="lineNum">     161 </span>            :     &quot;Operators at different namespace levels not hijacked by Koenig lookup&quot;
+<span class="lineNum">     162 </span>            :     &quot;[Tricky]&quot;
+<span class="lineNum">     163 </span>            : )
+<span class="lineNum">     164 </span>            : {
+<span class="lineNum">     165 </span>            :     A::X x;
+<span class="lineNum">     166 </span>            :     B::Y y;
+<span class="lineNum">     167 </span>            :     REQUIRE( x == y );
+<span class="lineNum">     168 </span>            : }
+<span class="lineNum">     169 </span>            : */
+<span class="lineNum">     170 </span>            : 
+<span class="lineNum">     171 </span>            : namespace ObjectWithConversions
+<span class="lineNum">     172 </span>            : {
+<a name="173"><span class="lineNum">     173 </span>            :     struct Object</a>
+<span class="lineNum">     174 </span>            :     {
+<span class="lineNum">     175 </span><span class="lineCov">          1 :         operator unsigned int() {return 0xc0000000;}</span>
+<span class="lineNum">     176 </span>            :     };
+<a name="177"><span class="lineNum">     177 </span>            : </a>
+<span class="lineNum">     178 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     179 </span><span class="lineCov">          2 :     TEST_CASE</span>
+<span class="lineNum">     180 </span>            :     (
+<span class="lineNum">     181 </span>            :         &quot;Operators at different namespace levels not hijacked by Koenig lookup&quot;,
+<span class="lineNum">     182 </span>            :         &quot;[Tricky]&quot;
+<span class="lineNum">     183 </span>            :     )
+<span class="lineNum">     184 </span>            :     {
+<span class="lineNum">     185 </span>            :         Object o;
+<span class="lineNum">     186 </span><span class="lineCov">          1 :         REQUIRE(0xc0000000 == o );</span>
+<span class="lineNum">     187 </span><span class="lineCov">          1 :     }</span>
+<span class="lineNum">     188 </span>            : }
+<span class="lineNum">     189 </span>            : 
+<span class="lineNum">     190 </span>            : namespace ObjectWithNonConstEqualityOperator
+<span class="lineNum">     191 </span>            : {
+<a name="192"><span class="lineNum">     192 </span>            :     struct Test</a>
+<span class="lineNum">     193 </span>            :     {
+<span class="lineNum">     194 </span><span class="lineCov">          2 :         Test( unsigned int v )</span>
+<span class="lineNum">     195 </span><span class="lineCov">          2 :         : m_value(v)</span>
+<a name="196"><span class="lineNum">     196 </span><span class="lineCov">          2 :         {}</span></a>
+<span class="lineNum">     197 </span>            : 
+<span class="lineNum">     198 </span><span class="lineCov">          1 :         bool operator==( const Test&amp;rhs )</span>
+<span class="lineNum">     199 </span>            :         {
+<span class="lineNum">     200 </span><span class="lineCov">          1 :             return (m_value == rhs.m_value);</span>
+<span class="lineNum">     201 </span>            :         }
+<span class="lineNum">     202 </span>            :         bool operator==( const Test&amp;rhs ) const
+<span class="lineNum">     203 </span>            :         {
+<span class="lineNum">     204 </span>            :             return (m_value != rhs.m_value);
+<span class="lineNum">     205 </span>            :         }
+<span class="lineNum">     206 </span>            :         unsigned int m_value;
+<a name="207"><span class="lineNum">     207 </span>            :     };</a>
+<span class="lineNum">     208 </span>            : 
+<span class="lineNum">     209 </span><span class="lineCov">          2 :     TEST_CASE(&quot;Demonstrate that a non-const == is not used&quot;, &quot;[Tricky]&quot; )</span>
+<span class="lineNum">     210 </span>            :     {
+<span class="lineNum">     211 </span><span class="lineCov">          1 :         Test t( 1 );</span>
+<span class="lineNum">     212 </span><span class="lineCov">          1 :         REQUIRE( t == 1u );</span>
+<span class="lineNum">     213 </span><span class="lineCov">          1 :     }</span>
+<span class="lineNum">     214 </span>            : }
+<span class="lineNum">     215 </span>            : 
+<span class="lineNum">     216 </span>            : namespace EnumBitFieldTests
+<span class="lineNum">     217 </span>            : {
+<span class="lineNum">     218 </span>            :     enum Bits {bit0 = 0x0001, bit1 = 0x0002, bit2 = 0x0004, bit3 = 0x0008, bit1and2 = 0x0006,
+<span class="lineNum">     219 </span>            :         bit30 = 0x40000000, bit31 = 0x80000000,
+<a name="220"><span class="lineNum">     220 </span>            :         bit30and31 = 0xc0000000};</a>
+<span class="lineNum">     221 </span>            : 
+<span class="lineNum">     222 </span><span class="lineCov">          2 :     TEST_CASE( &quot;Test enum bit values&quot;, &quot;[Tricky]&quot; )</span>
+<span class="lineNum">     223 </span>            :     {
+<span class="lineNum">     224 </span><span class="lineCov">          1 :         REQUIRE( 0xc0000000 == bit30and31 );</span>
+<span class="lineNum">     225 </span><span class="lineCov">          1 :     }</span>
+<span class="lineNum">     226 </span>            : }
+<span class="lineNum">     227 </span>            : 
+<a name="228"><span class="lineNum">     228 </span>            : struct Obj</a>
+<span class="lineNum">     229 </span>            : {
+<span class="lineNum">     230 </span><span class="lineCov">          1 :     Obj():prop(&amp;p){}</span>
+<span class="lineNum">     231 </span>            : 
+<span class="lineNum">     232 </span>            :     int p;
+<span class="lineNum">     233 </span>            :     int* prop;
+<a name="234"><span class="lineNum">     234 </span>            : };</a>
+<span class="lineNum">     235 </span>            : 
+<span class="lineNum">     236 </span><span class="lineCov">          2 : TEST_CASE(&quot;boolean member&quot;, &quot;[Tricky]&quot;)</span>
+<span class="lineNum">     237 </span>            : {
+<span class="lineNum">     238 </span><span class="lineCov">          1 :     Obj obj;</span>
+<span class="lineNum">     239 </span><span class="lineCov">          1 :     REQUIRE( obj.prop != CATCH_NULL );</span>
+<span class="lineNum">     240 </span><span class="lineCov">          1 : }</span>
+<span class="lineNum">     241 </span>            : 
+<span class="lineNum">     242 </span>            : // Tests for a problem submitted by Ralph McArdell
+<span class="lineNum">     243 </span>            : //
+<span class="lineNum">     244 </span>            : // The static bool value should not need to be defined outside the
+<span class="lineNum">     245 </span>            : // struct it is declared in - but when evaluating it in a deduced
+<span class="lineNum">     246 </span>            : // context it appears to require the extra definition.
+<span class="lineNum">     247 </span>            : // The issue was fixed by adding bool overloads to bypass the
+<span class="lineNum">     248 </span>            : // templates that were there to deduce it.
+<span class="lineNum">     249 </span>            : template &lt;bool B&gt;
+<span class="lineNum">     250 </span>            : struct is_true
+<span class="lineNum">     251 </span>            : {
+<span class="lineNum">     252 </span>            :     static const bool value = B;
+<a name="253"><span class="lineNum">     253 </span>            : };</a>
+<span class="lineNum">     254 </span>            : 
+<span class="lineNum">     255 </span><span class="lineCov">          6 : TEST_CASE( &quot;(unimplemented) static bools can be evaluated&quot;, &quot;[Tricky]&quot; )</span>
+<span class="lineNum">     256 </span>            : {
+<span class="lineNum">     257 </span><span class="lineCov">         10 :     SECTION(&quot;compare to true&quot;,&quot;&quot;)</span>
+<span class="lineNum">     258 </span>            :     {
+<span class="lineNum">     259 </span><span class="lineCov">          1 :         REQUIRE( is_true&lt;true&gt;::value == true );</span>
+<span class="lineNum">     260 </span><span class="lineCov">          1 :         REQUIRE( true == is_true&lt;true&gt;::value );</span>
+<span class="lineNum">     261 </span>            :     }
+<span class="lineNum">     262 </span><span class="lineCov">         10 :     SECTION(&quot;compare to false&quot;,&quot;&quot;)</span>
+<span class="lineNum">     263 </span>            :     {
+<span class="lineNum">     264 </span><span class="lineCov">          1 :         REQUIRE( is_true&lt;false&gt;::value == false );</span>
+<span class="lineNum">     265 </span><span class="lineCov">          1 :         REQUIRE( false == is_true&lt;false&gt;::value );</span>
+<span class="lineNum">     266 </span>            :     }
+<span class="lineNum">     267 </span>            : 
+<span class="lineNum">     268 </span><span class="lineCov">         10 :     SECTION(&quot;negation&quot;, &quot;&quot;)</span>
+<span class="lineNum">     269 </span>            :     {
+<span class="lineNum">     270 </span><span class="lineCov">          1 :         REQUIRE( !is_true&lt;false&gt;::value );</span>
+<span class="lineNum">     271 </span>            :     }
+<span class="lineNum">     272 </span>            : 
+<span class="lineNum">     273 </span><span class="lineCov">         10 :     SECTION(&quot;double negation&quot;,&quot;&quot;)</span>
+<span class="lineNum">     274 </span>            :     {
+<span class="lineNum">     275 </span><span class="lineCov">          1 :         REQUIRE( !!is_true&lt;true&gt;::value );</span>
+<span class="lineNum">     276 </span>            :     }
+<span class="lineNum">     277 </span>            : 
+<span class="lineNum">     278 </span><span class="lineCov">         10 :     SECTION(&quot;direct&quot;,&quot;&quot;)</span>
+<span class="lineNum">     279 </span>            :     {
+<span class="lineNum">     280 </span><span class="lineCov">          1 :         REQUIRE( is_true&lt;true&gt;::value );</span>
+<span class="lineNum">     281 </span><span class="lineCov">          1 :         REQUIRE_FALSE( is_true&lt;false&gt;::value );</span>
+<span class="lineNum">     282 </span>            :     }
+<span class="lineNum">     283 </span><span class="lineCov">          5 : }</span>
+<span class="lineNum">     284 </span>            : 
+<span class="lineNum">     285 </span>            : // Uncomment these tests to produce an error at test registration time
+<span class="lineNum">     286 </span>            : /*
+<span class="lineNum">     287 </span>            : TEST_CASE( &quot;Tests with the same name are not allowed&quot;, &quot;[Tricky]&quot; )
+<span class="lineNum">     288 </span>            : {
+<span class="lineNum">     289 </span>            : 
+<span class="lineNum">     290 </span>            : }
+<span class="lineNum">     291 </span>            : TEST_CASE( &quot;Tests with the same name are not allowed&quot;, &quot;[Tricky]&quot; )
+<span class="lineNum">     292 </span>            : {
+<span class="lineNum">     293 </span>            : 
+<span class="lineNum">     294 </span>            : }
+<span class="lineNum">     295 </span>            : */
+<span class="lineNum">     296 </span>            : 
+<a name="297"><span class="lineNum">     297 </span>            : struct Boolable</a>
+<span class="lineNum">     298 </span>            : {
+<a name="299"><span class="lineNum">     299 </span><span class="lineCov">          2 :     explicit Boolable( bool value ) : m_value( value ) {}</span></a>
+<span class="lineNum">     300 </span>            : 
+<span class="lineNum">     301 </span><span class="lineCov">          5 :     operator Catch::SafeBool::type() const {</span>
+<span class="lineNum">     302 </span><span class="lineCov">          5 :         return Catch::SafeBool::makeSafe( m_value );</span>
+<span class="lineNum">     303 </span>            :     }
+<span class="lineNum">     304 </span>            : 
+<span class="lineNum">     305 </span>            :     bool m_value;
+<a name="306"><span class="lineNum">     306 </span>            : };</a>
+<span class="lineNum">     307 </span>            : 
+<span class="lineNum">     308 </span><span class="lineCov">          2 : TEST_CASE( &quot;Objects that evaluated in boolean contexts can be checked&quot;, &quot;[Tricky][SafeBool]&quot; )</span>
+<span class="lineNum">     309 </span>            : {
+<span class="lineNum">     310 </span><span class="lineCov">          1 :     Boolable True( true );</span>
+<span class="lineNum">     311 </span><span class="lineCov">          1 :     Boolable False( false );</span>
+<span class="lineNum">     312 </span>            : 
+<span class="lineNum">     313 </span><span class="lineCov">          1 :     CHECK( True );</span>
+<span class="lineNum">     314 </span><span class="lineCov">          1 :     CHECK( !False );</span>
+<span class="lineNum">     315 </span><span class="lineCov">          1 :     CHECK_FALSE( False );</span>
+<a name="316"><span class="lineNum">     316 </span><span class="lineCov">          1 : }</span></a>
+<span class="lineNum">     317 </span>            : 
+<span class="lineNum">     318 </span><span class="lineCov">          3 : TEST_CASE( &quot;Assertions then sections&quot;, &quot;[Tricky]&quot; )</span>
+<span class="lineNum">     319 </span>            : {
+<span class="lineNum">     320 </span>            :     // This was causing a failure due to the way the console reporter was handling
+<span class="lineNum">     321 </span>            :     // the current section
+<span class="lineNum">     322 </span>            : 
+<span class="lineNum">     323 </span><span class="lineCov">          2 :     REQUIRE( Catch::alwaysTrue() );</span>
+<span class="lineNum">     324 </span>            : 
+<span class="lineNum">     325 </span><span class="lineCov">          4 :     SECTION( &quot;A section&quot;, &quot;&quot; )</span>
+<span class="lineNum">     326 </span>            :     {
+<span class="lineNum">     327 </span><span class="lineCov">          2 :         REQUIRE( Catch::alwaysTrue() );</span>
+<span class="lineNum">     328 </span>            : 
+<span class="lineNum">     329 </span><span class="lineCov">          4 :         SECTION( &quot;Another section&quot;, &quot;&quot; )</span>
+<span class="lineNum">     330 </span>            :         {
+<span class="lineNum">     331 </span><span class="lineCov">          1 :             REQUIRE( Catch::alwaysTrue() );</span>
+<span class="lineNum">     332 </span>            :         }
+<span class="lineNum">     333 </span><span class="lineCov">          4 :         SECTION( &quot;Another other section&quot;, &quot;&quot; )</span>
+<span class="lineNum">     334 </span>            :         {
+<span class="lineNum">     335 </span><span class="lineCov">          1 :             REQUIRE( Catch::alwaysTrue() );</span>
+<span class="lineNum">     336 </span>            :         }
+<span class="lineNum">     337 </span>            :     }
+<span class="lineNum">     338 </span><span class="lineCov">          2 : }</span>
+<span class="lineNum">     339 </span>            : 
+<a name="340"><span class="lineNum">     340 </span>            : struct Awkward</a>
+<span class="lineNum">     341 </span>            : {
+<span class="lineNum">     342 </span><span class="lineCov">          1 :     operator int() const { return 7; }</span>
+<a name="343"><span class="lineNum">     343 </span>            : };</a>
+<span class="lineNum">     344 </span>            : 
+<span class="lineNum">     345 </span><span class="lineCov">          2 : TEST_CASE( &quot;non streamable - with conv. op&quot;, &quot;[Tricky]&quot; )</span>
+<span class="lineNum">     346 </span>            : {
+<span class="lineNum">     347 </span>            :     Awkward awkward;
+<span class="lineNum">     348 </span><span class="lineCov">          2 :     std::string s = Catch::toString( awkward );</span>
+<span class="lineNum">     349 </span><span class="lineCov">          1 :     REQUIRE( s == &quot;7&quot; );</span>
+<a name="350"><span class="lineNum">     350 </span><span class="lineCov">          1 : }</span></a>
+<span class="lineNum">     351 </span>            : 
+<span class="lineNum">     352 </span><span class="lineNoCov">          0 : inline void foo() {}</span>
+<span class="lineNum">     353 </span>            : 
+<a name="354"><span class="lineNum">     354 </span>            : typedef void (*fooptr_t)();</a>
+<span class="lineNum">     355 </span>            : 
+<span class="lineNum">     356 </span><span class="lineCov">          2 : TEST_CASE( &quot;Comparing function pointers&quot;, &quot;[Tricky][function pointer]&quot; )</span>
+<span class="lineNum">     357 </span>            : {
+<span class="lineNum">     358 </span>            :     // This was giving a warning in VS2010
+<span class="lineNum">     359 </span>            :     // #179
+<span class="lineNum">     360 </span><span class="lineCov">          1 :     fooptr_t a = foo;</span>
+<span class="lineNum">     361 </span>            : 
+<span class="lineNum">     362 </span><span class="lineCov">          1 :     REQUIRE( a );</span>
+<span class="lineNum">     363 </span><span class="lineCov">          1 :     REQUIRE( a == &amp;foo );</span>
+<span class="lineNum">     364 </span><span class="lineCov">          1 : }</span>
+<span class="lineNum">     365 </span>            : 
+<a name="366"><span class="lineNum">     366 </span>            : struct S</a>
+<span class="lineNum">     367 </span>            : {
+<span class="lineNum">     368 </span><span class="lineNoCov">          0 :     void f() {}</span>
+<span class="lineNum">     369 </span>            : };
+<a name="370"><span class="lineNum">     370 </span>            : </a>
+<span class="lineNum">     371 </span>            : 
+<span class="lineNum">     372 </span><span class="lineCov">          2 : TEST_CASE( &quot;Comparing member function pointers&quot;, &quot;[Tricky][member function pointer]&quot; )</span>
+<span class="lineNum">     373 </span>            : {
+<span class="lineNum">     374 </span>            :     typedef void (S::*MF)();
+<span class="lineNum">     375 </span><span class="lineCov">          1 :     MF m = &amp;S::f;</span>
+<span class="lineNum">     376 </span>            : 
+<span class="lineNum">     377 </span><span class="lineCov">          1 :     CHECK( m == &amp;S::f );</span>
+<span class="lineNum">     378 </span><span class="lineCov">          1 : }</span>
+<span class="lineNum">     379 </span>            : 
+<a name="380"><span class="lineNum">     380 </span>            : class ClassName {};</a>
+<span class="lineNum">     381 </span>            : 
+<span class="lineNum">     382 </span><span class="lineCov">          2 : TEST_CASE( &quot;pointer to class&quot;, &quot;[Tricky]&quot; )</span>
+<span class="lineNum">     383 </span>            : {
+<span class="lineNum">     384 </span><span class="lineCov">          1 :    ClassName *p = 0;</span>
+<span class="lineNum">     385 </span><span class="lineCov">          1 :    REQUIRE( p == 0 );</span>
+<span class="lineNum">     386 </span><span class="lineCov">          1 : }</span>
+<span class="lineNum">     387 </span>            : 
+<span class="lineNum">     388 </span>            : #ifdef CATCH_CONFIG_CPP11_NULLPTR
+<span class="lineNum">     389 </span>            : 
+<a name="390"><span class="lineNum">     390 </span>            : #include &lt;memory&gt;</a>
+<span class="lineNum">     391 </span>            : 
+<span class="lineNum">     392 </span><span class="lineCov">          1 : TEST_CASE( &quot;null_ptr&quot;, &quot;[Tricky][c++11][.]&quot; )</span>
+<span class="lineNum">     393 </span>            : {
+<span class="lineNum">     394 </span><span class="lineNoCov">          0 :     std::unique_ptr&lt;int&gt; ptr;</span>
+<span class="lineNum">     395 </span><span class="lineNoCov">          0 :     REQUIRE(ptr.get() == nullptr);</span>
+<span class="lineNum">     396 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     397 </span>            : 
+<a name="398"><span class="lineNum">     398 </span>            : #endif</a>
+<a name="399"><span class="lineNum">     399 </span>            : </a>
+<a name="400"><span class="lineNum">     400 </span><span class="lineCov">          2 : TEST_CASE( &quot;X/level/0/a&quot;, &quot;[Tricky]&quot; )      { SUCCEED(&quot;&quot;); }</span></a>
+<a name="401"><span class="lineNum">     401 </span><span class="lineCov">          2 : TEST_CASE( &quot;X/level/0/b&quot;, &quot;[Tricky][fizz]&quot; ){ SUCCEED(&quot;&quot;); }</span></a>
+<span class="lineNum">     402 </span><span class="lineCov">          2 : TEST_CASE( &quot;X/level/1/a&quot;, &quot;[Tricky]&quot; )      { SUCCEED(&quot;&quot;); }</span>
+<a name="403"><span class="lineNum">     403 </span><span class="lineCov">          2 : TEST_CASE( &quot;X/level/1/b&quot;, &quot;[Tricky]&quot; )      { SUCCEED(&quot;&quot;); }</span></a>
+<span class="lineNum">     404 </span>            : 
+<span class="lineNum">     405 </span><span class="lineCov">          2 : TEST_CASE( &quot;has printf&quot;, &quot;&quot; ) {</span>
+<span class="lineNum">     406 </span>            : 
+<span class="lineNum">     407 </span>            :     // This can cause problems as, currently, stdout itself is not redirect - only the cout (and cerr) buffer
+<span class="lineNum">     408 </span><span class="lineCov">          1 :     printf( &quot;spanner&quot; );</span>
+<a name="409"><span class="lineNum">     409 </span><span class="lineCov">          1 : }</span></a>
+<span class="lineNum">     410 </span>            : 
+<span class="lineNum">     411 </span><span class="lineCov">          1 : TEST_CASE( &quot;null deref&quot;, &quot;[.][failing][!nonportable]&quot; ) {</span>
+<span class="lineNum">     412 </span><span class="lineNoCov">          0 :     CHECK( false );</span>
+<a name="413"><span class="lineNum">     413 </span><span class="lineNoCov">          0 :     int *x = NULL;</span></a>
+<span class="lineNum">     414 </span><span class="lineNoCov">          0 :     *x = 1;</span>
+<span class="lineNum">     415 </span><span class="lineCov">          3 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
