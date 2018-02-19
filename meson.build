@@ -46,7 +46,7 @@ tests = executable(
 , cpp_args: cpp_args
 , link_args: cpp_link_args
 , include_directories: incdir
-, dependencies: catch.get_variable('catch')
+, dependencies: catch.get_variable('catch_dep')
 )
 test('all tests', tests)
 
